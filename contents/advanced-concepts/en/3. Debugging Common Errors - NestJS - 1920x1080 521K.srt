@@ -1,0 +1,972 @@
+﻿1
+00:00:01,170 --> 00:00:03,180
+During your journey
+while learning ness jazz
+
+2
+00:00:03,450 --> 00:00:06,540
+you may have encountered various different
+errors while working with the framework.
+
+3
+00:00:07,080 --> 00:00:07,920
+In this lesson
+
+4
+00:00:08,220 --> 00:00:11,820
+will walk you through
+the most common issues
+
+5
+00:00:11,820 --> 00:00:13,300
+engineers typically run
+into when working with nest.
+
+6
+00:00:13,350 --> 00:00:17,050
+Telling you how you can solve and
+avoid them in your future applications.
+
+7
+00:00:17,430 --> 00:00:20,490
+A sort of by looking at the
+cannot resolve dependency air
+
+8
+00:00:20,730 --> 00:00:23,850
+which is probably the most
+common error message
+
+9
+00:00:23,850 --> 00:00:24,330
+you'll see when working
+with the framework.
+
+10
+00:00:24,810 --> 00:00:29,575
+The most common
+culprit of this air is not
+
+11
+00:00:29,580 --> 00:00:29,940
+having a provider in the
+models providers array.
+
+12
+00:00:30,300 --> 00:00:30,810
+However
+
+13
+00:00:31,110 --> 00:00:34,560
+this is not always the
+case in there are many other
+
+14
+00:00:34,560 --> 00:00:35,310
+scenarios where you
+may stumble across this air.
+
+15
+00:00:35,970 --> 00:00:36,330
+First.
+
+16
+00:00:36,690 --> 00:00:40,020
+Let's showcase the most evident
+scenario where our coffees controller
+
+17
+00:00:40,200 --> 00:00:41,910
+that we generated in
+the previous lesson.
+
+18
+00:00:42,240 --> 00:00:45,180
+Depends on a coffees
+service that is not registered
+
+19
+00:00:45,450 --> 00:00:47,620
+in the modules
+providers of right.
+
+20
+00:00:47,670 --> 00:00:49,440
+Though let's
+head over to r i d e
+
+21
+00:00:49,770 --> 00:00:54,180
+and open up the coffee's
+module file in remove
+
+22
+00:00:54,180 --> 00:00:54,540
+the coffee service from
+the providers a wreck.
+
+23
+00:00:55,230 --> 00:00:56,760
+Let's make sure to
+save our changes.
+
+24
+00:00:57,120 --> 00:00:58,590
+Then open up our terminals again
+
+25
+00:00:58,860 --> 00:00:59,790
+and as we can see
+
+26
+00:01:00,060 --> 00:01:04,060
+the info miss cannot resolve
+dependency air showed up of course.
+
+27
+00:01:04,140 --> 00:01:06,917
+If you run across this air while
+developing your application.
+
+28
+00:01:06,990 --> 00:01:10,988
+Take a look at the module mentioned in
+the air message and look at his providers.
+
+29
+00:01:11,160 --> 00:01:13,230
+Or each provider in
+the providers array
+
+30
+00:01:13,470 --> 00:01:16,840
+make sure the module has
+access to all the dependencies.
+
+31
+00:01:16,950 --> 00:01:17,910
+Often times
+
+32
+00:01:18,180 --> 00:01:20,730
+providers are duplicated
+in a future module oh
+
+33
+00:01:20,970 --> 00:01:25,720
+and a route module which means a nest
+will try to instantiate the provider twice.
+
+34
+00:01:26,100 --> 00:01:29,040
+Along with just manually verifying
+our dependencies are correct.
+
+35
+00:01:29,400 --> 00:01:30,240
+We can set the
+
+36
+00:01:30,420 --> 00:01:33,630
+nest underscored debug
+environment variable to a string
+
+37
+00:01:33,840 --> 00:01:35,130
+that resolves is true the
+
+38
+00:01:35,400 --> 00:01:37,170
+and get extra
+logging information
+
+39
+00:01:37,410 --> 00:01:41,020
+on nest is resolving all the
+dependencies for our application.
+
+40
+00:01:42,210 --> 00:01:44,290
+Though let's
+terminate our process.
+
+41
+00:01:44,520 --> 00:01:49,500
+And add nest underscored
+debug equals true
+
+42
+00:01:49,500 --> 00:01:49,920
+before the n p m run
+start calling def command.
+
+43
+00:01:50,280 --> 00:01:51,690
+Just to turn this feature on
+
+44
+00:01:52,170 --> 00:01:54,070
+and run everything again.
+
+45
+00:01:55,260 --> 00:01:59,700
+The string and yellow
+found in our terminal is
+
+46
+00:01:59,700 --> 00:02:00,700
+the host class of the
+dependency being injected.
+
+47
+00:02:00,780 --> 00:02:01,650
+The string and blue
+
+48
+00:02:01,920 --> 00:02:03,840
+is the name of the
+injected dependency
+
+49
+00:02:04,050 --> 00:02:05,700
+or it's injection token.
+
+50
+00:02:06,180 --> 00:02:07,200
+In the string and purple
+
+51
+00:02:07,500 --> 00:02:11,139
+is the module in which the
+dependency is being searched for.
+
+52
+00:02:11,880 --> 00:02:12,900
+Using this method
+
+53
+00:02:13,050 --> 00:02:16,710
+you can usually trace back the
+dependency resolution to see was happening
+
+54
+00:02:16,950 --> 00:02:20,500
+and why you're getting dependency
+injection issues and errors.
+
+55
+00:02:20,760 --> 00:02:21,840
+As we can see here.
+
+56
+00:02:22,170 --> 00:02:23,520
+For our coffees controller
+
+57
+00:02:23,820 --> 00:02:27,690
+nest is trying to resolve the
+coffee's service dependency
+
+58
+00:02:27,690 --> 00:02:29,250
+and it's sequentially
+searching for that dependency
+
+59
+00:02:29,550 --> 00:02:30,540
+in the host module.
+
+60
+00:02:30,870 --> 00:02:32,280
+Which is the coffee's ma module.
+
+61
+00:02:32,940 --> 00:02:33,900
+After looking there
+
+62
+00:02:34,110 --> 00:02:36,850
+it also searches within
+the imported modules.
+
+63
+00:02:37,080 --> 00:02:40,650
+Since our coffers module does not
+import other models at this moment.
+
+64
+00:02:40,980 --> 00:02:43,960
+It won't be able to find the
+coffee service there as well.
+
+65
+00:02:44,100 --> 00:02:45,150
+Interestingly enough.
+
+66
+00:02:45,510 --> 00:02:48,240
+We do see an internal
+core module show up here
+
+67
+00:02:48,570 --> 00:02:51,610
+but we didn't even import that
+in her application anywhere.
+
+68
+00:02:52,410 --> 00:02:52,920
+Well
+
+69
+00:02:53,100 --> 00:02:57,000
+the internal core module is actually
+an internal framework module that gets
+
+70
+00:02:57,000 --> 00:02:59,310
+automatically imported
+into every module.
+
+71
+00:02:59,670 --> 00:03:02,620
+Providing us access to
+classes such as reflector.
+
+72
+00:03:02,790 --> 00:03:03,690
+Module ref
+
+73
+00:03:03,900 --> 00:03:05,880
+and many others that
+you may have seen before.
+
+74
+00:03:06,300 --> 00:03:07,350
+A lot of which we covered
+
+75
+00:03:07,500 --> 00:03:09,280
+in the fundamentals course.
+
+76
+00:03:09,720 --> 00:03:10,080
+Though
+
+77
+00:03:10,380 --> 00:03:13,770
+as nest tried to search for
+coffee service and all those places
+
+78
+00:03:14,160 --> 00:03:16,380
+and it was not provided
+any of these modules.
+
+79
+00:03:16,770 --> 00:03:20,230
+Nest aired out with a can't
+resolve dependencies exception.
+
+80
+00:03:20,610 --> 00:03:21,810
+All right so far
+
+81
+00:03:21,990 --> 00:03:25,470
+this was the most
+obvious scenario where you
+
+82
+00:03:25,470 --> 00:03:25,890
+may have seen such
+an air plenty of times
+
+83
+00:03:26,190 --> 00:03:26,760
+next up
+
+84
+00:03:26,910 --> 00:03:29,290
+let's dive into something
+a bit more complex.
+
+85
+00:03:29,730 --> 00:03:30,960
+Before we continue onward.
+
+86
+00:03:31,410 --> 00:03:34,650
+Let's make sure we revert the
+change we did in the coffins module file
+
+87
+00:03:35,070 --> 00:03:38,261
+and add the coffee service
+provider back in the Iraq.
+
+88
+00:03:38,730 --> 00:03:42,600
+Let's change gear slightly to showcase
+another similar and common situation
+
+89
+00:03:42,600 --> 00:03:45,010
+developers frequently
+stumble upon.
+
+90
+00:03:45,180 --> 00:03:48,540
+What started off by declaring a new
+interface and the coffee service file
+
+91
+00:03:48,900 --> 00:03:50,760
+and call it coffees data source.
+
+92
+00:03:51,180 --> 00:03:54,070
+Leasing right above our
+coffee the service class.
+
+93
+00:03:55,980 --> 00:04:00,600
+We'll use the index signature to describe
+the types of values that are possible here.
+
+94
+00:04:01,050 --> 00:04:01,770
+In this case
+
+95
+00:04:02,040 --> 00:04:06,300
+we assume that the data source will be
+in array that consists of zero and elements
+
+96
+00:04:06,630 --> 00:04:07,470
+and those elements
+
+97
+00:04:07,590 --> 00:04:09,130
+are of type coffee.
+
+98
+00:04:09,300 --> 00:04:10,860
+As you can see in
+the comment above
+
+99
+00:04:11,160 --> 00:04:15,550
+we could alternately use the type
+declaration here if we wanted to.
+
+100
+00:04:15,750 --> 00:04:16,170
+Now
+
+101
+00:04:16,440 --> 00:04:20,400
+let's try to inject this coffees
+data source into our coffee service.
+
+102
+00:04:21,150 --> 00:04:22,630
+Let's save our changes.
+
+103
+00:04:22,740 --> 00:04:26,830
+Open up our terminals and look at
+the air message we received this time.
+
+104
+00:04:28,290 --> 00:04:29,070
+As we can see
+
+105
+00:04:29,310 --> 00:04:33,000
+instead of seeing a message that says
+something about our coffees data source here.
+
+106
+00:04:33,330 --> 00:04:34,710
+We only see object
+
+107
+00:04:34,920 --> 00:04:38,350
+which makes this air even
+more confusing and ambiguous.
+
+108
+00:04:39,360 --> 00:04:41,190
+But why isn't nest
+helping us out here.
+
+109
+00:04:41,670 --> 00:04:45,870
+Well the reason is
+actually because typescript
+
+110
+00:04:45,870 --> 00:04:46,870
+doesn't leave any meta
+data about interfaces.
+
+111
+00:04:47,070 --> 00:04:48,690
+Every interface is represented
+
+112
+00:04:48,930 --> 00:04:51,240
+as object in the
+produced js file.
+
+113
+00:04:51,810 --> 00:04:55,170
+Though we can't really provide users with
+helpful information about what's missing
+
+114
+00:04:55,442 --> 00:04:57,210
+the coffee service
+provider here.
+
+115
+00:04:57,750 --> 00:05:00,420
+But that's why we can't
+and shouldn't use interfaces
+
+116
+00:05:00,540 --> 00:05:02,170
+as provider tokens.
+
+117
+00:05:02,220 --> 00:05:03,870
+As a best practice instead.
+
+118
+00:05:04,290 --> 00:05:05,940
+As declare a new symbol
+
+119
+00:05:06,210 --> 00:05:07,740
+above the interface declaration
+
+120
+00:05:08,070 --> 00:05:10,950
+and name it coffees underscore
+data underscore source
+
+121
+00:05:11,220 --> 00:05:12,880
+and use this instead.
+
+122
+00:05:13,980 --> 00:05:14,460
+Now.
+
+123
+00:05:14,880 --> 00:05:20,208
+Let's use the inject annotation to inject
+that data source into our coffee service.
+
+124
+00:05:20,430 --> 00:05:24,040
+Let's save our changes and
+navigate to the coffee's module file.
+
+125
+00:05:24,480 --> 00:05:25,020
+In here
+
+126
+00:05:25,290 --> 00:05:28,080
+let's declare a new
+coffees data source provider
+
+127
+00:05:28,260 --> 00:05:30,463
+using the custom
+provider syntax.
+
+128
+00:05:31,980 --> 00:05:34,590
+If we save our changes again
+and check back in our terminal
+
+129
+00:05:34,710 --> 00:05:36,210
+will see that
+everything works though
+
+130
+00:05:36,390 --> 00:05:37,720
+no errors.
+
+131
+00:05:38,970 --> 00:05:40,050
+Oh now for fun.
+
+132
+00:05:40,410 --> 00:05:45,150
+Let's do a little experiment
+and move coffees data
+
+133
+00:05:45,150 --> 00:05:46,230
+source declaration to
+the coffee's modul instead
+
+134
+00:05:46,500 --> 00:05:48,610
+removing it from
+the coffee service.
+
+135
+00:05:48,930 --> 00:05:52,780
+Has also update our import
+pats as they will be different now.
+
+136
+00:05:54,990 --> 00:05:55,980
+Let's save our changes
+
+137
+00:05:56,280 --> 00:05:58,360
+and open up our terminals again.
+
+138
+00:05:59,520 --> 00:06:00,480
+As we can see here.
+
+139
+00:06:00,840 --> 00:06:02,010
+Are getting an error now
+
+140
+00:06:02,430 --> 00:06:03,700
+but what happened.
+
+141
+00:06:04,620 --> 00:06:05,070
+Well
+
+142
+00:06:05,310 --> 00:06:08,730
+the reason why we're seeing
+an air now is that we just
+
+143
+00:06:08,730 --> 00:06:10,336
+introduced a circular
+important in or application.
+
+144
+00:06:10,800 --> 00:06:14,370
+Circular dependencies can arise
+when to providers depend on each other.
+
+145
+00:06:14,820 --> 00:06:15,180
+Or
+
+146
+00:06:15,360 --> 00:06:17,010
+typescript files
+depend on each other
+
+147
+00:06:17,160 --> 00:06:21,580
+whether that's exported
+variables constance functions etc.
+
+148
+00:06:22,380 --> 00:06:26,850
+In our case here we have
+the coffee's module importing
+
+149
+00:06:26,850 --> 00:06:28,080
+the coffee service so it can
+be registered as a provider
+
+150
+00:06:28,320 --> 00:06:29,400
+but at the same time.
+
+151
+00:06:29,730 --> 00:06:32,700
+The coffee's data source is
+exported from the module file.
+
+152
+00:06:33,030 --> 00:06:34,650
+Being imported into the service
+
+153
+00:06:34,950 --> 00:06:36,300
+will can be injected
+there as well
+
+154
+00:06:36,600 --> 00:06:38,620
+hence the circular important.
+
+155
+00:06:38,820 --> 00:06:42,510
+In our exact case the reasoning this is
+all happening is pretty sure wait forward.
+
+156
+00:06:42,930 --> 00:06:45,450
+Especially since be noticed
+the issue the moment we did it.
+
+157
+00:06:46,080 --> 00:06:46,650
+However
+
+158
+00:06:46,890 --> 00:06:48,780
+and more sophisticated
+applications
+
+159
+00:06:48,900 --> 00:06:53,220
+fracking circular dependencies can be very
+tedious and generally difficult to uncover
+
+160
+00:06:53,280 --> 00:06:54,600
+where they're
+actually coming from.
+
+161
+00:06:55,260 --> 00:06:56,070
+Lucky for us.
+
+162
+00:06:56,460 --> 00:06:59,230
+This is where the tool
+maj comes in handy.
+
+163
+00:07:00,300 --> 00:07:05,010
+Maj is a developer tool for generating a
+visual graph of your module dependencies
+
+164
+00:07:05,190 --> 00:07:09,330
+binding circular
+dependencies and it even helps
+
+165
+00:07:09,360 --> 00:07:10,110
+give us other useful
+information about everything.
+
+166
+00:07:10,620 --> 00:07:12,270
+That's open up
+another terminal window
+
+167
+00:07:12,690 --> 00:07:14,740
+and execute the
+following commands.
+
+168
+00:07:14,880 --> 00:07:19,260
+And point match to are built
+nest code in disc slash main dot j s.
+
+169
+00:07:19,740 --> 00:07:22,180
+Passing in the circular flag.
+
+170
+00:07:22,560 --> 00:07:25,800
+We can see here that maj found
+one circular dependency for us
+
+171
+00:07:25,950 --> 00:07:27,130
+and tactic.
+
+172
+00:07:27,180 --> 00:07:29,160
+We can even generate
+a dependency graph.
+
+173
+00:07:29,580 --> 00:07:30,780
+Using the following command.
+
+174
+00:07:31,140 --> 00:07:32,970
+Passing the dash
+dash image flag.
+
+175
+00:07:33,330 --> 00:07:35,980
+In the name of the image
+we want to save it as.
+
+176
+00:07:36,600 --> 00:07:36,960
+Note.
+
+177
+00:07:37,290 --> 00:07:40,800
+If you want to generate a graph with
+the graph this tool you can find more
+
+178
+00:07:40,800 --> 00:07:43,990
+information about that in the
+description below this video.
+
+179
+00:07:44,550 --> 00:07:46,530
+Let's open up the
+graph we just created
+
+180
+00:07:46,650 --> 00:07:48,490
+and see what we have in there.
+
+181
+00:07:48,780 --> 00:07:49,890
+In the mid shown here
+
+182
+00:07:50,070 --> 00:07:52,510
+we can see that the blue
+notes have dependencies.
+
+183
+00:07:52,860 --> 00:07:54,820
+Reno it's have no dependencies.
+
+184
+00:07:55,110 --> 00:07:57,730
+And read notes have
+circular dependencies.
+
+185
+00:07:58,380 --> 00:07:59,160
+As we can see
+
+186
+00:07:59,280 --> 00:08:03,550
+maj really helps us visualize what
+depends on what in our applications.
+
+187
+00:08:04,350 --> 00:08:05,100
+Image tool
+
+188
+00:08:05,400 --> 00:08:09,690
+along with the
+visualization tool really help
+
+189
+00:08:09,690 --> 00:08:10,410
+us pinpoint and locate
+circular dependencies
+
+190
+00:08:10,650 --> 00:08:14,050
+as well as other issues in our
+application quickly and effectively.
+
+191
+00:08:14,220 --> 00:08:15,570
+Letting us make some changes
+
+192
+00:08:15,870 --> 00:08:18,420
+and give us the ability to
+test everything once again
+
+193
+00:08:18,660 --> 00:08:21,430
+to see if we fixed whatever
+problem were facing.
+
+194
+00:08:21,690 --> 00:08:24,160
+And the case of our
+circular issue here.
+
+195
+00:08:24,240 --> 00:08:25,470
+As a best practice.
+
+196
+00:08:25,860 --> 00:08:26,220
+We should
+
+197
+00:08:26,370 --> 00:08:29,220
+only ever export one
+thing from every file while
+
+198
+00:08:29,490 --> 00:08:33,720
+but sometimes we have go against this practice
+let's say we had a constants t s file.
+
+199
+00:08:34,080 --> 00:08:36,610
+Where we were holding a
+bunch of constant variables.
+
+200
+00:08:36,930 --> 00:08:37,530
+Ideally
+
+201
+00:08:37,800 --> 00:08:41,430
+we'd want to make sure he has lent is throwing
+a linting are at us whenever we forget
+
+202
+00:08:41,430 --> 00:08:44,890
+this to prevent situations like
+this from a rising in the future.
+
+203
+00:08:45,060 --> 00:08:47,760
+If we move the concert
+export into its own file
+
+204
+00:08:48,060 --> 00:08:51,976
+containing that new interface we
+made an make sure to update or imports.
+
+205
+00:08:52,050 --> 00:08:54,930
+Will see that our application
+now runs without any errors
+
+206
+00:08:55,260 --> 00:08:56,430
+and if we run maj again
+
+207
+00:08:56,730 --> 00:09:00,400
+we'll see there are no longer any
+circular dependency errors as well.
+
+208
+00:09:00,750 --> 00:09:04,320
+Following this best practice in the future
+will prevent these situations from arising.
+
+209
+00:09:04,680 --> 00:09:06,190
+In your know best applications.
+

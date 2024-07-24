@@ -1,0 +1,855 @@
+﻿1
+00:00:01,080 --> 00:00:04,680
+In today's world it's common
+for applications to make
+
+2
+00:00:04,680 --> 00:00:06,210
+remote calls to services
+running in different processes
+
+3
+00:00:06,450 --> 00:00:08,110
+or even on different machines.
+
+4
+00:00:08,310 --> 00:00:09,510
+And he distributed environment.
+
+5
+00:00:09,960 --> 00:00:14,280
+Also remote resources
+and services can fail due
+
+6
+00:00:14,280 --> 00:00:15,280
+to a variety of reasons
+the network connections.
+
+7
+00:00:15,406 --> 00:00:15,840
+Amounts.
+
+8
+00:00:16,200 --> 00:00:18,790
+Or the resources being
+temporarily unavailable.
+
+9
+00:00:19,290 --> 00:00:22,890
+What could make men
+there's worse as if you
+
+10
+00:00:22,890 --> 00:00:23,520
+have many callers to
+and unresponsive supplier
+
+11
+00:00:23,760 --> 00:00:26,430
+it's possible your system could
+run out of the critical resources
+
+12
+00:00:26,730 --> 00:00:28,380
+leading to a cascading failure.
+
+13
+00:00:28,770 --> 00:00:30,060
+Across multiple systems.
+
+14
+00:00:30,420 --> 00:00:32,710
+Also known as a snowball effect.
+
+15
+00:00:32,790 --> 00:00:36,510
+These types of false commonly resolve
+themselves after a short period of time
+
+16
+00:00:36,840 --> 00:00:38,550
+and any robust cloud application
+
+17
+00:00:38,850 --> 00:00:40,530
+should be prepared
+to handle them
+
+18
+00:00:40,650 --> 00:00:42,930
+by using a strategy
+such as the retry pattern
+
+19
+00:00:43,140 --> 00:00:44,710
+or many other strategies.
+
+20
+00:00:45,480 --> 00:00:45,960
+However
+
+21
+00:00:46,140 --> 00:00:50,010
+there also could be situations where
+faults are due to unanticipated events in
+
+22
+00:00:50,010 --> 00:00:53,140
+situations like that might
+take much longer to fix.
+
+23
+00:00:53,190 --> 00:00:54,540
+In these tough situations
+
+24
+00:00:54,810 --> 00:00:56,490
+it might be meaningless
+for an application
+
+25
+00:00:56,730 --> 00:00:58,920
+to continually
+retry an operation
+
+26
+00:00:59,190 --> 00:01:00,970
+that is unlikely to succeed.
+
+27
+00:01:01,020 --> 00:01:01,530
+Though instead.
+
+28
+00:01:01,860 --> 00:01:05,190
+The application should
+quickly except that the
+
+29
+00:01:05,190 --> 00:01:05,520
+operation has failed
+in handle this failure
+
+30
+00:01:05,640 --> 00:01:06,640
+accordingly.
+
+31
+00:01:07,410 --> 00:01:11,010
+The circuit breaker pattern can prevent
+an application from repeatedly trying to
+
+32
+00:01:11,010 --> 00:01:13,320
+execute an operation
+that is likely to fail.
+
+33
+00:01:13,890 --> 00:01:14,610
+In this lesson.
+
+34
+00:01:14,970 --> 00:01:16,770
+Will implement the
+circuit breaker pattern.
+
+35
+00:01:17,130 --> 00:01:21,730
+Using an interceptor bound to an endpoint
+that tries to invoke a remote service.
+
+36
+00:01:22,230 --> 00:01:24,780
+Will start off by generating
+the circuit breaker interceptor
+
+37
+00:01:25,050 --> 00:01:27,190
+using the nes jsc ally.
+
+38
+00:01:27,840 --> 00:01:31,860
+You can notice that were passing the no
+flat flag here so that the seal i creates a
+
+39
+00:01:31,860 --> 00:01:35,280
+new directory named circuit breaker
+inside of the interceptors folder.
+
+40
+00:01:35,610 --> 00:01:39,370
+Will use this directory to group
+circuit breaker feature related files.
+
+41
+00:01:39,840 --> 00:01:41,400
+Next to this interceptors file
+
+42
+00:01:41,670 --> 00:01:44,650
+let's create a new
+circuit breaker t s file.
+
+43
+00:01:46,170 --> 00:01:47,100
+Inside this file
+
+44
+00:01:47,370 --> 00:01:51,400
+a sort of by adding some constants that will
+determine our circuit breakers behavior.
+
+45
+00:01:51,690 --> 00:01:55,660
+Where success threshold represents
+the number of successful operations.
+
+46
+00:01:55,710 --> 00:01:57,120
+Which once we have risen above.
+
+47
+00:01:57,600 --> 00:01:59,230
+We should close the circuit.
+
+48
+00:01:59,610 --> 00:02:02,340
+Failure threshold which
+represents the number of failures.
+
+49
+00:02:02,730 --> 00:02:04,020
+Which once we've risen above
+
+50
+00:02:04,230 --> 00:02:05,100
+opens the circuit
+
+51
+00:02:05,580 --> 00:02:09,700
+to start repeating the last air
+instead of executing the route handler.
+
+52
+00:02:09,780 --> 00:02:11,700
+And opened a
+half open wait time.
+
+53
+00:02:12,150 --> 00:02:15,870
+Does the number of
+milliseconds after which are circuit
+
+54
+00:02:15,870 --> 00:02:17,250
+breaker changes to the
+half open state from open.
+
+55
+00:02:17,730 --> 00:02:20,770
+Will enter in one minute
+in milliseconds here.
+
+56
+00:02:21,300 --> 00:02:25,350
+Next below these
+constants let's declare an
+
+57
+00:02:25,355 --> 00:02:26,355
+enum that represents
+our circuit breaker state.
+
+58
+00:02:26,520 --> 00:02:27,270
+As we can see
+
+59
+00:02:27,570 --> 00:02:28,800
+we have three
+different states here
+
+60
+00:02:29,010 --> 00:02:29,610
+closed
+
+61
+00:02:29,820 --> 00:02:34,990
+which is the default state meeting at the
+circuit breaker is closed aka not enabled.
+
+62
+00:02:35,490 --> 00:02:35,970
+Open.
+
+63
+00:02:36,330 --> 00:02:40,080
+Which represents when the number of
+failures reaches the specified threshold
+
+64
+00:02:40,200 --> 00:02:42,370
+enabling our search breaker.
+
+65
+00:02:42,488 --> 00:02:43,860
+Lastly half open.
+
+66
+00:02:44,370 --> 00:02:48,270
+Indicating when the circuit
+breaker is in the middle
+
+67
+00:02:48,270 --> 00:02:49,900
+of transitioning from an
+open to a closed state.
+
+68
+00:02:50,100 --> 00:02:54,250
+Finally let's declare the actual circuit
+breaker class with a few useful properties.
+
+69
+00:02:55,950 --> 00:02:58,410
+State which represents the
+current state of the circuit breaker.
+
+70
+00:02:59,010 --> 00:03:01,870
+Failure count which is a
+count of the number of failures.
+
+71
+00:03:02,100 --> 00:03:02,880
+Success count
+
+72
+00:03:03,180 --> 00:03:05,710
+similarly the number of
+successful operations.
+
+73
+00:03:06,180 --> 00:03:06,930
+Last air
+
+74
+00:03:07,050 --> 00:03:08,880
+which stores the last thrown air
+
+75
+00:03:09,300 --> 00:03:10,470
+and next attempt
+
+76
+00:03:10,590 --> 00:03:14,550
+which represents when
+our circuit breaker should
+
+77
+00:03:14,550 --> 00:03:14,970
+transition from closed
+to half open state.
+
+78
+00:03:15,330 --> 00:03:17,340
+This is done by
+combining the current time.
+
+79
+00:03:17,670 --> 00:03:18,690
+Via data now
+
+80
+00:03:19,020 --> 00:03:21,580
+and adding the wait time
+that we've established.
+
+81
+00:03:22,140 --> 00:03:25,770
+Next up was declared three methods
+inside that will handle some of our logic.
+
+82
+00:03:26,310 --> 00:03:28,770
+Exec which wraps
+the execution logic
+
+83
+00:03:28,920 --> 00:03:31,050
+thinking the call handler
+as an input argument.
+
+84
+00:03:31,410 --> 00:03:32,970
+In applying the tap operator.
+
+85
+00:03:33,300 --> 00:03:36,630
+Which depending on whether an
+era was through one will call either the.
+
+86
+00:03:36,960 --> 00:03:39,850
+Handle success or
+handle air methods.
+
+87
+00:03:40,650 --> 00:03:41,790
+And handle success
+
+88
+00:03:42,060 --> 00:03:43,691
+and handle air.
+
+89
+00:03:43,770 --> 00:03:46,900
+So let's start by implementing
+the handle air method.
+
+90
+00:03:47,940 --> 00:03:48,780
+Inside this method.
+
+91
+00:03:49,260 --> 00:03:52,240
+Is make sure we first
+increment the number of failures.
+
+92
+00:03:52,410 --> 00:03:53,010
+Next up
+
+93
+00:03:53,280 --> 00:03:55,120
+let's add the
+following condition.
+
+94
+00:03:56,370 --> 00:04:00,270
+What we are trying to
+deduce here is that if
+
+95
+00:04:00,270 --> 00:04:00,840
+the number of failures
+reaches our threshold.
+
+96
+00:04:01,170 --> 00:04:01,650
+Or
+
+97
+00:04:01,770 --> 00:04:03,960
+if the current state of the
+circuit breakers half open
+
+98
+00:04:04,200 --> 00:04:04,920
+the we need to.
+
+99
+00:04:05,340 --> 00:04:06,690
+Update the state to open.
+
+100
+00:04:07,260 --> 00:04:09,000
+Save the last
+error that occurred
+
+101
+00:04:09,450 --> 00:04:11,730
+and we need to update
+the next attempt property
+
+102
+00:04:12,000 --> 00:04:14,070
+which as we mentioned
+is the current time.
+
+103
+00:04:14,430 --> 00:04:16,240
+Last hour wait time.
+
+104
+00:04:16,380 --> 00:04:16,770
+Right.
+
+105
+00:04:17,130 --> 00:04:19,360
+Now onto the handle
+success method.
+
+106
+00:04:19,590 --> 00:04:23,080
+First let's reset the number
+failures back to zero.
+
+107
+00:04:23,940 --> 00:04:24,330
+Next.
+
+108
+00:04:24,720 --> 00:04:28,680
+Let's check of the current
+state is half open and if
+
+109
+00:04:28,685 --> 00:04:30,432
+so we need to increment
+the success count property.
+
+110
+00:04:31,260 --> 00:04:32,010
+And lastly.
+
+111
+00:04:32,320 --> 00:04:35,550
+Needed to test whether we reached
+the success threshold and if so
+
+112
+00:04:35,791 --> 00:04:39,821
+need to change the state to
+closed in reset the success counter.
+
+113
+00:04:40,680 --> 00:04:41,680
+Perfect.
+
+114
+00:04:42,000 --> 00:04:42,900
+Last but not least
+
+115
+00:04:43,020 --> 00:04:46,030
+let's add the following
+conditions to the exact method.
+
+116
+00:04:48,120 --> 00:04:49,260
+If the state is open
+
+117
+00:04:49,500 --> 00:04:51,300
+meeting that the circuit
+breakers turned on.
+
+118
+00:04:51,720 --> 00:04:54,270
+The we checked to see if we
+have reached the next attempt date
+
+119
+00:04:54,540 --> 00:04:55,050
+and if not.
+
+120
+00:04:55,380 --> 00:04:57,790
+Let's re throw the
+last air that occurred.
+
+121
+00:04:57,990 --> 00:04:59,490
+Otherwise everything's all set
+
+122
+00:04:59,700 --> 00:05:01,650
+the we get update
+the state to half open
+
+123
+00:05:02,130 --> 00:05:03,400
+and that's it.
+
+124
+00:05:03,720 --> 00:05:04,530
+As we can see
+
+125
+00:05:04,680 --> 00:05:07,590
+we had quite a few conditions
+that situations we had to account for
+
+126
+00:05:07,710 --> 00:05:08,430
+but after all
+
+127
+00:05:08,610 --> 00:05:11,070
+the circuit breaker is doing
+quite a few things for us
+
+128
+00:05:11,220 --> 00:05:14,640
+in helping us dramatically improve our
+redress dragic so it's definitely worth it.
+
+129
+00:05:15,390 --> 00:05:16,860
+Let's make sure to
+save our changes.
+
+130
+00:05:17,282 --> 00:05:20,500
+Let's head over to our circuit
+breaker interceptor clothes.
+
+131
+00:05:21,030 --> 00:05:21,990
+Inside this class
+
+132
+00:05:22,230 --> 00:05:25,270
+let's create circuit breaker
+by handler collection.
+
+133
+00:05:25,350 --> 00:05:27,340
+Using a week map collection.
+
+134
+00:05:27,930 --> 00:05:28,620
+Generally
+
+135
+00:05:28,890 --> 00:05:31,920
+will have an individual circuit
+breaker instance per route handler
+
+136
+00:05:32,070 --> 00:05:35,700
+this is why we ideally want to have a
+collection like this where we can store or
+
+137
+00:05:35,910 --> 00:05:39,190
+which circuit breaker
+belongs to which route handler.
+
+138
+00:05:39,360 --> 00:05:40,770
+Inside the intercept method.
+
+139
+00:05:41,220 --> 00:05:43,530
+That's retrieve the currently
+processed route handler
+
+140
+00:05:43,710 --> 00:05:47,320
+using the execution context by
+calling the get handler method.
+
+141
+00:05:47,670 --> 00:05:48,060
+Next
+
+142
+00:05:48,180 --> 00:05:50,670
+depending on whether the
+circuit breaker exists already or not
+
+143
+00:05:50,940 --> 00:05:53,800
+we either retrieve it from
+our internal collection.
+
+144
+00:05:53,940 --> 00:05:57,700
+Or instantiate in update the
+circuit breaker by handler map.
+
+145
+00:05:58,920 --> 00:06:01,800
+And finally let's replace the last
+line of this method with the following.
+
+146
+00:06:02,400 --> 00:06:05,291
+Delegating the execution
+of the circuit breaker itself.
+
+147
+00:06:06,030 --> 00:06:06,570
+And that's it.
+
+148
+00:06:07,320 --> 00:06:09,550
+Now for demonstration purposes.
+
+149
+00:06:09,600 --> 00:06:11,520
+Let's to navigate to
+our coffees controller
+
+150
+00:06:11,940 --> 00:06:14,920
+and annotated with the
+use interceptors decorator.
+
+151
+00:06:15,030 --> 00:06:15,930
+Passing in our
+
+152
+00:06:16,050 --> 00:06:18,310
+circuit breaker
+interceptor inside.
+
+153
+00:06:19,500 --> 00:06:19,890
+Next
+
+154
+00:06:20,010 --> 00:06:22,920
+let's simulate that are find
+all always returns an error.
+
+155
+00:06:23,250 --> 00:06:26,350
+Replacing the current method
+implementation with the following.
+
+156
+00:06:27,450 --> 00:06:28,450
+Perfect.
+
+157
+00:06:30,420 --> 00:06:31,410
+But save our changes
+
+158
+00:06:31,650 --> 00:06:35,490
+make sure our app is
+running in a separate terminal
+
+159
+00:06:35,520 --> 00:06:37,660
+window let's call our
+endpoint fifty times using curl.
+
+160
+00:06:37,830 --> 00:06:38,730
+As we can see
+
+161
+00:06:38,970 --> 00:06:41,460
+for all these calls we
+received the far away
+
+162
+00:06:41,580 --> 00:06:42,780
+request timeout error.
+
+163
+00:06:43,320 --> 00:06:43,830
+However
+
+164
+00:06:43,950 --> 00:06:46,200
+if we switch back to our
+applications terminal window
+
+165
+00:06:46,350 --> 00:06:48,420
+who can see that our
+endpoint was only executed.
+
+166
+00:06:48,780 --> 00:06:49,500
+The retire times
+
+167
+00:06:49,710 --> 00:06:52,380
+cause that was the threshold we
+declared in our circuit breaker file
+
+168
+00:06:52,560 --> 00:06:53,680
+it worked.
+
+169
+00:06:54,060 --> 00:06:54,900
+Well as we can see.
+
+170
+00:06:55,330 --> 00:06:57,120
+Circuit breaker
+we built did it's job
+
+171
+00:06:57,480 --> 00:07:01,350
+and kept returning the last error message
+which was for away request time out
+
+172
+00:07:01,620 --> 00:07:05,650
+instead of constantly trying to hit the
+service that's unavailable at the moment.
+
+173
+00:07:06,090 --> 00:07:10,020
+In our case since we have forced this
+issue ourselves for demonstration purposes
+
+174
+00:07:10,320 --> 00:07:13,470
+we are not seeing the service recover
+and the called becoming successful
+
+175
+00:07:13,650 --> 00:07:15,330
+which eventually we
+would hope it would
+
+176
+00:07:15,750 --> 00:07:18,960
+but you can see with what we've
+built here in a real world scenario
+
+177
+00:07:19,230 --> 00:07:21,870
+if this endpoint was reaching
+out to an external service.
+
+178
+00:07:22,200 --> 00:07:23,790
+Once that service
+fully recovered
+
+179
+00:07:24,060 --> 00:07:27,780
+everything would return back to normal and
+eventually we'd get a successful response
+
+180
+00:07:28,020 --> 00:07:29,560
+back from that service.
+
+181
+00:07:30,360 --> 00:07:33,952
+Hopefully everything we've
+covered here helps to mystify
+
+182
+00:07:33,952 --> 00:07:35,250
+and show the value of this
+circuit breaker pattern to you
+
+183
+00:07:35,490 --> 00:07:38,310
+as it's an excellent strategy
+for improving system's ability
+
+184
+00:07:38,520 --> 00:07:39,510
+to handle faults
+
+185
+00:07:39,810 --> 00:07:42,250
+errors and other
+downtime problems.
+

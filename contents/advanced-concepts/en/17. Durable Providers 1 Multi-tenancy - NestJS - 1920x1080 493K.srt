@@ -1,0 +1,875 @@
+﻿1
+00:00:01,052 --> 00:00:04,410
+Another we have a good understanding
+of what multi-tenancy is and the different
+
+2
+00:00:04,410 --> 00:00:06,510
+techniques we can use to
+apply them in our systems.
+
+3
+00:00:06,900 --> 00:00:08,880
+Let's kick things off
+by switching to our ID.
+
+4
+00:00:09,300 --> 00:00:12,810
+Opening up our terminals and generating
+a new module named data source
+
+5
+00:00:12,960 --> 00:00:14,618
+using the not see alot.
+
+6
+00:00:15,870 --> 00:00:19,379
+But also generate a
+data source service that
+
+7
+00:00:19,379 --> 00:00:20,379
+we will configure it to
+be requested scoped.
+
+8
+00:00:20,520 --> 00:00:24,150
+This provider will
+represent a database or data
+
+9
+00:00:24,150 --> 00:00:25,150
+source connection any
+real world application.
+
+10
+00:00:25,710 --> 00:00:27,540
+And lastly before
+we continue onwards
+
+11
+00:00:27,720 --> 00:00:31,260
+must generate a new users
+resource that we will use
+
+12
+00:00:31,260 --> 00:00:32,650
+for demonstration purposes
+throughout this lesson.
+
+13
+00:00:35,100 --> 00:00:36,090
+With all that in place.
+
+14
+00:00:36,450 --> 00:00:39,930
+As navigate to the newly generated
+data source service class and first
+
+15
+00:00:40,170 --> 00:00:41,070
+exposure to flagged
+
+16
+00:00:41,190 --> 00:00:42,786
+as requests scoped.
+
+17
+00:00:45,390 --> 00:00:45,900
+Next.
+
+18
+00:00:46,290 --> 00:00:49,830
+Let's inject the
+request payload into our
+
+19
+00:00:49,830 --> 00:00:50,830
+class constructor using
+the inject decorated.
+
+20
+00:00:51,240 --> 00:00:55,230
+Know that for now we'll just use
+unknown as the type as this context payload
+
+21
+00:00:55,500 --> 00:00:59,680
+will differ depending on whether the service
+class is registered as durable are not.
+
+22
+00:00:59,820 --> 00:01:02,400
+Necklace navigate to
+the data source module file
+
+23
+00:01:02,670 --> 00:01:04,800
+it make sure that the date
+source service provider
+
+24
+00:01:04,920 --> 00:01:06,820
+is exported from this module.
+
+25
+00:01:10,350 --> 00:01:12,010
+But this module and place.
+
+26
+00:01:12,210 --> 00:01:14,940
+Just navigate to the user's
+service regenerated a minute ago
+
+27
+00:01:15,090 --> 00:01:19,270
+and eject the data source service provider
+they're using the standard approach.
+
+28
+00:01:20,250 --> 00:01:22,260
+Let's also make sure
+to console log this
+
+29
+00:01:22,560 --> 00:01:24,850
+wiki debug it later
+on in our terminals.
+
+30
+00:01:25,140 --> 00:01:28,320
+To make the data source service
+available in the context of users module
+
+31
+00:01:28,560 --> 00:01:31,000
+as make sure we add the
+corresponding important.
+
+32
+00:01:35,280 --> 00:01:36,280
+Perfect.
+
+33
+00:01:37,021 --> 00:01:38,550
+Their application
+running in the background
+
+34
+00:01:38,850 --> 00:01:43,048
+let's open of our terminals
+and use curl to trigger
+
+35
+00:01:43,110 --> 00:01:44,530
+get http request to the
+slash users endpoint.
+
+36
+00:01:44,640 --> 00:01:45,090
+Next
+
+37
+00:01:45,210 --> 00:01:46,980
+let's switch to the
+other terminal window
+
+38
+00:01:47,100 --> 00:01:48,240
+and as we can see their
+
+39
+00:01:48,540 --> 00:01:50,670
+the data source service
+was logged to our consul
+
+40
+00:01:50,790 --> 00:01:52,650
+containing the
+actual request object
+
+41
+00:01:52,890 --> 00:01:55,570
+as a request context
+dependency great.
+
+42
+00:01:55,770 --> 00:01:56,940
+So far we made our data
+
+43
+00:01:57,153 --> 00:01:58,260
+service request scoped.
+
+44
+00:01:58,771 --> 00:02:01,320
+And we also injected the request
+object through the constructed
+
+45
+00:02:01,710 --> 00:02:02,730
+but none of this was new year
+
+46
+00:02:02,940 --> 00:02:05,730
+we learned about the requests go
+providers in the fundamentals course.
+
+47
+00:02:06,180 --> 00:02:08,130
+Through durable providers
+come into play here.
+
+48
+00:02:08,820 --> 00:02:10,770
+Well as we mentioned
+in the previous lesson.
+
+49
+00:02:11,100 --> 00:02:15,100
+Durable providers are similar to requests
+go providers as they're both dynamic.
+
+50
+00:02:15,150 --> 00:02:19,080
+The differences
+requests go providers by
+
+51
+00:02:19,080 --> 00:02:20,080
+diff fault are instantiated
+per each request.
+
+52
+00:02:20,190 --> 00:02:23,519
+While with durable
+providers we can control
+
+53
+00:02:23,550 --> 00:02:24,550
+under which conditions
+they become durable.
+
+54
+00:02:24,600 --> 00:02:26,100
+In fact durable providers
+
+55
+00:02:26,400 --> 00:02:30,250
+are just a subtype of requests go
+providers with one essential difference.
+
+56
+00:02:30,330 --> 00:02:33,420
+While requests go providers
+are tied to the request life cycle.
+
+57
+00:02:33,810 --> 00:02:38,050
+Terrible providers lifecycle can
+be controlled and managed by us.
+
+58
+00:02:38,820 --> 00:02:42,660
+All right so back to
+our task at hand what's
+
+59
+00:02:42,660 --> 00:02:42,990
+navigate to the data
+source provider again
+
+60
+00:02:43,110 --> 00:02:46,411
+and let's flagged as durable
+passing the durable Colin true
+
+61
+00:02:46,650 --> 00:02:48,370
+sure injectable decorator.
+
+62
+00:02:48,963 --> 00:02:50,520
+Also before we continue further.
+
+63
+00:02:50,850 --> 00:02:54,970
+Something to always keep in mind
+custom providers can be durable as well.
+
+64
+00:02:58,200 --> 00:02:59,770
+Art back to our task.
+
+65
+00:02:59,880 --> 00:03:00,540
+Let's know that
+
+66
+00:03:00,660 --> 00:03:02,040
+similar to request scoped.
+
+67
+00:03:02,370 --> 00:03:05,220
+Durability bubbles up through
+the injection chains well.
+
+68
+00:03:05,850 --> 00:03:09,420
+That means if user
+service depends on data
+
+69
+00:03:09,420 --> 00:03:09,900
+source service which
+has flagged as durable.
+
+70
+00:03:10,320 --> 00:03:12,720
+User service implicitly
+becomes durable to
+
+71
+00:03:12,900 --> 00:03:17,400
+on less durable is
+explicitly set to false for
+
+72
+00:03:17,490 --> 00:03:18,760
+user service provider
+which right now it is not.
+
+73
+00:03:18,870 --> 00:03:22,020
+All right with our first
+herbal provider and place
+
+74
+00:03:22,020 --> 00:03:23,547
+what's though configured
+the strategy for managing their
+
+75
+00:03:23,678 --> 00:03:24,750
+riders in our system.
+
+76
+00:03:25,290 --> 00:03:28,090
+Where this let's create
+a new core folder.
+
+77
+00:03:29,460 --> 00:03:30,420
+In inside of this folder.
+
+78
+00:03:30,930 --> 00:03:33,720
+Create a new file called
+aggregate by tenant strategy
+
+79
+00:03:33,930 --> 00:03:35,140
+that ts.
+
+80
+00:03:36,570 --> 00:03:37,500
+Inside this file
+
+81
+00:03:37,800 --> 00:03:41,670
+was kicked things
+off by declaring a new
+
+82
+00:03:41,670 --> 00:03:42,150
+aggregate by tenant
+context ID strategy class
+
+83
+00:03:42,570 --> 00:03:45,790
+and make a implement the
+context ID strategy interface.
+
+84
+00:03:46,200 --> 00:03:48,990
+Are i do he should prompt us
+to auto implement the interface
+
+85
+00:03:49,110 --> 00:03:50,861
+lets go ahead and do it.
+
+86
+00:03:51,390 --> 00:03:52,390
+Next.
+
+87
+00:03:52,440 --> 00:03:55,540
+A stickler a new private
+property called tenants.
+
+88
+00:03:56,880 --> 00:04:01,150
+This collection will hold tenant
+ids and their associated context ids.
+
+89
+00:04:01,290 --> 00:04:04,770
+Don't we learned about context ID
+in the diving into DEA subtrees lesson
+
+90
+00:04:05,010 --> 00:04:08,935
+this context at he represents our
+manually created de-ice of true.
+
+91
+00:04:09,060 --> 00:04:10,770
+As we're using
+express in this course.
+
+92
+00:04:11,130 --> 00:04:16,181
+Has also update the type of the request
+parameter to be request from express package.
+
+93
+00:04:16,950 --> 00:04:18,660
+Depending on what
+we want to accomplish
+
+94
+00:04:18,930 --> 00:04:22,080
+there are different strategies for
+associating request with specific tenants.
+
+95
+00:04:22,560 --> 00:04:25,830
+For example the tenant ID could
+be encoded in the jwt payload.
+
+96
+00:04:26,280 --> 00:04:26,730
+Or
+
+97
+00:04:27,030 --> 00:04:28,806
+you could have a
+proxy in front of our a p i.
+
+98
+00:04:29,146 --> 00:04:32,380
+Would attach the
+corresponding x tenant ID header.
+
+99
+00:04:32,580 --> 00:04:36,510
+Even simpler if the
+communication is internal meeting
+
+100
+00:04:36,510 --> 00:04:37,950
+between private services
+running in an internal cluster.
+
+101
+00:04:38,400 --> 00:04:39,060
+In that case.
+
+102
+00:04:39,390 --> 00:04:42,630
+You could just manually
+attached that header
+
+103
+00:04:42,630 --> 00:04:43,630
+to every request been
+calling another service.
+
+104
+00:04:43,710 --> 00:04:44,640
+In this lesson
+
+105
+00:04:44,910 --> 00:04:46,620
+will be aggregating request by x
+
+106
+00:04:46,890 --> 00:04:47,340
+ID
+
+107
+00:04:47,520 --> 00:04:48,420
+had her values
+
+108
+00:04:48,690 --> 00:04:51,810
+but know that the
+implementation won't differ much
+
+109
+00:04:51,810 --> 00:04:53,080
+depending on which
+approach you end up taking.
+
+110
+00:04:53,340 --> 00:04:55,150
+All right so back to our task.
+
+111
+00:04:55,200 --> 00:04:58,020
+A start by retrieving that x
+tenant ID value from the header
+
+112
+00:04:58,350 --> 00:04:59,460
+and if it's undefined
+
+113
+00:04:59,760 --> 00:05:02,651
+has just returned the
+original context ID object.
+
+114
+00:05:04,050 --> 00:05:07,500
+Next let's declare a new
+local tenant subtree ID variable
+
+115
+00:05:07,770 --> 00:05:11,670
+that will represent our contexto de
+object for the given tenant DEA subtree
+
+116
+00:05:11,970 --> 00:05:14,800
+and chug of our collection
+already has such a key.
+
+117
+00:05:15,270 --> 00:05:15,870
+If so
+
+118
+00:05:16,170 --> 00:05:20,054
+let's retrieve their value and assign
+it to the tenant sub tree ID variable.
+
+119
+00:05:20,850 --> 00:05:23,370
+Otherwise let's construct
+a new context ID object
+
+120
+00:05:23,730 --> 00:05:25,240
+and added to the collection.
+
+121
+00:05:37,140 --> 00:05:38,340
+And last but not least.
+
+122
+00:05:38,641 --> 00:05:41,380
+Was returned the
+context resolver object.
+
+123
+00:05:49,381 --> 00:05:51,540
+Depending on whether
+the tree is durable or not
+
+124
+00:05:51,720 --> 00:05:54,870
+we return either the tenants
+specific context ID object
+
+125
+00:05:54,990 --> 00:05:57,280
+or the original parent one.
+
+126
+00:05:57,360 --> 00:06:01,170
+Also we specified the payload object
+that holds the tenant i do property.
+
+127
+00:06:01,530 --> 00:06:05,710
+This payload will be registered
+as per the i sub treat request object.
+
+128
+00:06:06,150 --> 00:06:06,660
+Finally.
+
+129
+00:06:06,990 --> 00:06:10,960
+Was up open up our app module file
+and apply this newly defined strategy.
+
+130
+00:06:12,750 --> 00:06:16,350
+Note that we could have applied this elsewhere
+as well we just picked up module as it
+
+131
+00:06:16,350 --> 00:06:18,600
+seems to be the most
+suitable as were applying
+
+132
+00:06:18,840 --> 00:06:21,360
+everything globally in our
+application and our case
+
+133
+00:06:21,750 --> 00:06:24,910
+but you may want or need to do
+things differently in your system.
+
+134
+00:06:25,710 --> 00:06:26,640
+With this and place.
+
+135
+00:06:27,030 --> 00:06:31,230
+Let's open up our terminals
+and use curl again and
+
+136
+00:06:31,260 --> 00:06:32,610
+execute the http request
+to the slash users endpoint.
+
+137
+00:06:32,970 --> 00:06:34,110
+This time passing in the
+
+138
+00:06:34,410 --> 00:06:36,660
+x dash tenant dash ID header.
+
+139
+00:06:37,050 --> 00:06:39,640
+Of one just for
+our demo purpose.
+
+140
+00:06:40,020 --> 00:06:40,440
+Now
+
+141
+00:06:40,740 --> 00:06:42,180
+a switch or the
+other terminal window
+
+142
+00:06:42,330 --> 00:06:43,290
+and as we can see
+
+143
+00:06:43,590 --> 00:06:47,100
+even though he triggered
+this endpoint multiple
+
+144
+00:06:47,100 --> 00:06:47,700
+time times the user
+service instance was created
+
+145
+00:06:47,850 --> 00:06:48,600
+only once.
+
+146
+00:06:49,080 --> 00:06:49,860
+More importantly.
+
+147
+00:06:50,280 --> 00:06:51,240
+Once per tenant
+
+148
+00:06:51,510 --> 00:06:52,510
+fantastic.
+
+149
+00:06:53,220 --> 00:06:57,300
+Also we can see that the request context
+is now equal to the payload we specified
+
+150
+00:06:57,540 --> 00:07:00,130
+in are accustomed
+context ID strategy.
+
+151
+00:07:01,530 --> 00:07:04,770
+Now just to verify and double check
+that everything works as it should.
+
+152
+00:07:05,100 --> 00:07:06,300
+Let's call us and point again
+
+153
+00:07:06,600 --> 00:07:09,760
+changing the x ten and ID
+header to be a different value.
+
+154
+00:07:09,810 --> 00:07:10,470
+And voila.
+
+155
+00:07:10,800 --> 00:07:11,520
+As we can see
+
+156
+00:07:11,790 --> 00:07:14,940
+what we did lets us construct
+separate DEA trees per tenant.
+
+157
+00:07:15,360 --> 00:07:16,050
+For example
+
+158
+00:07:16,350 --> 00:07:19,710
+we could have our
+application set up to have
+
+159
+00:07:19,710 --> 00:07:20,760
+separate type r ram or
+mongers connection per tenant.
+
+160
+00:07:21,150 --> 00:07:23,130
+Or any other
+multi-tenant situations
+
+161
+00:07:23,360 --> 00:07:25,990
+may need for your different
+tenants in your system.
+
+162
+00:07:26,067 --> 00:07:27,420
+The sky's the limit from here.
+
+163
+00:07:27,930 --> 00:07:29,550
+Now before we
+wrap up this lesson
+
+164
+00:07:29,700 --> 00:07:31,500
+there's one future would
+like to demonstrate as well.
+
+165
+00:07:32,070 --> 00:07:33,600
+Let's open up our strategy file
+
+166
+00:07:33,780 --> 00:07:36,990
+and after inserting a new context
+i do you to our tenants collection.
+
+167
+00:07:37,410 --> 00:07:41,670
+That at a time out
+and invalidate meaning
+
+168
+00:07:41,670 --> 00:07:42,670
+let's remove that key
+of after three seconds.
+
+169
+00:07:43,050 --> 00:07:46,600
+But save our changes open up
+our terminals and use curl again.
+
+170
+00:07:47,880 --> 00:07:51,330
+Wait at least three
+seconds and called the same
+
+171
+00:07:51,330 --> 00:07:52,600
+and point again passing
+the same tenant ID.
+
+172
+00:07:59,040 --> 00:08:02,758
+Now let's wish to our other terminal window
+and as we can see after three seconds our
+
+173
+00:08:02,758 --> 00:08:05,370
+d i saw trigger
+invalidated and recreated
+
+174
+00:08:05,640 --> 00:08:07,849
+when we hit our
+application again a worked.
+
+175
+00:08:08,160 --> 00:08:09,160
+Great.
+
+176
+00:08:09,330 --> 00:08:11,830
+So we covered quite
+a lot in this lesson.
+
+177
+00:08:11,880 --> 00:08:15,180
+But in summary although
+we just marked out certain
+
+178
+00:08:15,180 --> 00:08:16,980
+things like data source
+connections etc in our case.
+
+179
+00:08:17,460 --> 00:08:18,330
+Hopefully you can see
+
+180
+00:08:18,540 --> 00:08:21,900
+with everything we've set up we could
+have separate instances now per ten.
+
+181
+00:08:22,260 --> 00:08:23,790
+Each doing different
+things if needed.
+
+182
+00:08:24,240 --> 00:08:26,610
+Whether it's separate
+connections scheme us pretended.
+
+183
+00:08:26,910 --> 00:08:29,520
+Or dedicated repository
+data access class does
+
+184
+00:08:29,790 --> 00:08:33,190
+that automatically assigned
+tenant ID with were clauses etc.
+
+185
+00:08:33,240 --> 00:08:37,090
+Now that you know how to implement the
+basics of multi tenants in your applications.
+
+186
+00:08:37,350 --> 00:08:41,080
+The sky's the limit for your future
+nest apps and their use cases.
+

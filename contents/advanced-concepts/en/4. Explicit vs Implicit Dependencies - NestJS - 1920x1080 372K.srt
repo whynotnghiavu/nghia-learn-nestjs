@@ -1,0 +1,279 @@
+﻿1
+00:00:00,900 --> 00:00:04,320
+We can identify two different
+types of dependencies in ness Jess
+
+2
+00:00:04,500 --> 00:00:05,220
+explicit
+
+3
+00:00:05,490 --> 00:00:07,390
+and implicit dependencies.
+
+4
+00:00:07,830 --> 00:00:10,630
+Let's start off by analyzing
+implicit dependencies.
+
+5
+00:00:10,890 --> 00:00:13,080
+If we look at the following
+coffees controller class
+
+6
+00:00:13,380 --> 00:00:17,405
+will see we have a one implicit
+dependency which is the carton service.
+
+7
+00:00:17,700 --> 00:00:19,890
+We refer to it as an
+implicit dependency.
+
+8
+00:00:20,250 --> 00:00:23,670
+Because the framework is in charge
+of reading the constructors meta data
+
+9
+00:00:23,910 --> 00:00:27,340
+in the retrieval of the coffee
+service class reference itself.
+
+10
+00:00:27,570 --> 00:00:28,140
+In fact
+
+11
+00:00:28,410 --> 00:00:30,180
+this syntax is an
+implicit version
+
+12
+00:00:30,360 --> 00:00:34,690
+of the explicit syntax that
+uses the inject decorator like so.
+
+13
+00:00:34,890 --> 00:00:36,810
+Both variants are
+technically equivalent.
+
+14
+00:00:37,170 --> 00:00:39,790
+In would result in the
+same injected dependency.
+
+15
+00:00:39,960 --> 00:00:42,520
+But how does all this
+work behind the scenes.
+
+16
+00:00:43,200 --> 00:00:47,670
+When the typescript compiler transpires
+typescript files into javascript files.
+
+17
+00:00:48,000 --> 00:00:49,980
+It leave some additional
+meditative behind
+
+18
+00:00:50,130 --> 00:00:53,980
+that allows us to use reflection
+to analyze everything at runtime.
+
+19
+00:00:54,090 --> 00:00:56,970
+If we open up the transpire
+coffees controller jas file
+
+20
+00:00:57,240 --> 00:00:59,010
+located in our disc directory
+
+21
+00:00:59,340 --> 00:01:02,140
+and scroll down a bit will
+see the following code.
+
+22
+00:01:02,340 --> 00:01:03,450
+Thanks to the design and
+
+23
+00:01:03,600 --> 00:01:05,970
+puram types meta
+data we can see here
+
+24
+00:01:06,270 --> 00:01:08,910
+it is not required for us
+to use the inject decorator
+
+25
+00:01:09,060 --> 00:01:12,730
+and explicitly pass a token we
+want to look up this dependency.
+
+26
+00:01:12,870 --> 00:01:13,380
+However
+
+27
+00:01:13,560 --> 00:01:16,290
+we have to explicitly
+use the inject annotation
+
+28
+00:01:16,530 --> 00:01:19,900
+for dependencies that we can't
+simply referenced by their classes.
+
+29
+00:01:20,100 --> 00:01:20,880
+Take for example
+
+30
+00:01:21,060 --> 00:01:24,910
+the symbol and interface reference
+we used in the the last lesson.
+
+31
+00:01:25,110 --> 00:01:26,580
+To demonstrate
+everything further
+
+32
+00:01:26,850 --> 00:01:29,370
+as open up our coffees
+controller file again
+
+33
+00:01:29,700 --> 00:01:31,810
+and add a new dependency here.
+
+34
+00:01:31,890 --> 00:01:35,850
+Let's try to inject a coffees
+data source provider
+
+35
+00:01:35,850 --> 00:01:37,360
+just like we registered
+in the previous less.
+
+36
+00:01:37,470 --> 00:01:40,350
+If you have reverted
+those changes already
+
+37
+00:01:40,350 --> 00:01:41,350
+you can find the code
+below the course video.
+
+38
+00:01:41,430 --> 00:01:43,080
+Now let's open up our terminals
+
+39
+00:01:43,200 --> 00:01:43,800
+and run on
+
+40
+00:01:43,915 --> 00:01:45,670
+n p m run bills.
+
+41
+00:01:46,440 --> 00:01:47,800
+Once it finishes.
+
+42
+00:01:48,390 --> 00:01:52,780
+Let's navigate to the coffee's controller
+js file once again and take a look.
+
+43
+00:01:53,100 --> 00:01:53,940
+As we can see.
+
+44
+00:01:54,240 --> 00:01:57,990
+Instead of having the coffee's data
+source reference or some type of coffees
+
+45
+00:01:58,230 --> 00:01:59,700
+data source related meta data.
+
+46
+00:02:00,030 --> 00:02:02,470
+We simply have
+the object reference.
+
+47
+00:02:02,610 --> 00:02:03,570
+The reason once again
+
+48
+00:02:03,840 --> 00:02:06,060
+is a interfaces don't
+exist in javascript.
+
+49
+00:02:06,390 --> 00:02:10,450
+The air wiped out during the transpiration
+process by the typescript compiler.
+
+50
+00:02:11,100 --> 00:02:11,790
+And so.
+
+51
+00:02:12,180 --> 00:02:16,740
+This is why for other types of providers
+be at value providers or factory providers.
+
+52
+00:02:17,070 --> 00:02:19,600
+We have to use inject
+decorators explicitly.
+
+53
+00:02:19,830 --> 00:02:20,610
+This decorator
+
+54
+00:02:20,760 --> 00:02:25,510
+makes sure to tell the nest framework
+exactly which dependency should be injected.
+
+55
+00:02:25,830 --> 00:02:27,000
+So as we can see.
+
+56
+00:02:27,390 --> 00:02:30,570
+What we specifically used
+for providers be classes
+
+57
+00:02:30,690 --> 00:02:31,920
+interfaces etc
+
+58
+00:02:32,280 --> 00:02:33,540
+and how we inject them.
+
+59
+00:02:33,900 --> 00:02:35,070
+Is all very important.
+
+60
+00:02:35,641 --> 00:02:39,340
+Make sure to always keep these things
+in mind in your future nest applications.
+

@@ -1,0 +1,679 @@
+﻿1
+00:00:01,290 --> 00:00:04,770
+Now that we understand how
+dependency injection aka DEA subtrees work
+
+2
+00:00:05,070 --> 00:00:08,160
+let's build something a bit more complex
+so we can get a better understanding
+
+3
+00:00:08,460 --> 00:00:12,520
+how and when we could use the i some trees
+to benefit our real world applications.
+
+4
+00:00:12,810 --> 00:00:13,440
+This lesson.
+
+5
+00:00:13,770 --> 00:00:17,789
+Gonna use the nastiest
+event a metre package
+
+6
+00:00:17,790 --> 00:00:18,510
+which provides a simple
+observer implementation
+
+7
+00:00:18,810 --> 00:00:21,840
+that allows us to
+subscribe endless and for
+
+8
+00:00:21,840 --> 00:00:22,840
+various events that
+occur in our applications.
+
+9
+00:00:23,220 --> 00:00:27,030
+Events serve as a great way to decouple
+various aspects of our application.
+
+10
+00:00:27,360 --> 00:00:29,640
+That a single event can
+have multiple listeners
+
+11
+00:00:29,820 --> 00:00:31,840
+that do not depend
+on each other.
+
+12
+00:00:31,920 --> 00:00:32,640
+To get started.
+
+13
+00:00:32,976 --> 00:00:36,600
+A support of our
+terminals and installed the
+
+14
+00:00:36,600 --> 00:00:37,600
+nest year slash event
+dash a mirror dependency.
+
+15
+00:00:38,010 --> 00:00:39,870
+Once the installation
+process is complete.
+
+16
+00:00:40,320 --> 00:00:41,970
+As open up our app module
+
+17
+00:00:42,180 --> 00:00:44,680
+a registered the
+event a metre module.
+
+18
+00:00:46,290 --> 00:00:48,300
+Next up using the
+nastiest the ally
+
+19
+00:00:48,600 --> 00:00:50,950
+must generate a new
+payments module.
+
+20
+00:00:52,170 --> 00:00:56,290
+Let's also generate the payments
+webhook controller inside of that module.
+
+21
+00:00:56,640 --> 00:01:00,660
+Know that we're passing
+the flat flag here just to
+
+22
+00:01:00,660 --> 00:01:02,250
+instruct the nestle i to not
+create another nested payments
+
+23
+00:01:02,460 --> 00:01:04,180
+dash webhook director.
+
+24
+00:01:04,290 --> 00:01:07,290
+With all this and place let's open
+up the newly generated controller
+
+25
+00:01:07,470 --> 00:01:11,200
+and add a simple get route just
+for the demonstration purposes.
+
+26
+00:01:12,900 --> 00:01:14,190
+With this endpoint of place
+
+27
+00:01:14,460 --> 00:01:18,340
+that subject the event emitter to
+class using the standard approach.
+
+28
+00:01:19,170 --> 00:01:21,840
+We need this class in
+order to dispatch events.
+
+29
+00:01:22,290 --> 00:01:23,770
+Before we can proceed.
+
+30
+00:01:23,820 --> 00:01:28,030
+We need to declare the payment failed
+event class that will use in this lesson.
+
+31
+00:01:28,260 --> 00:01:29,970
+So inside of the
+payments folder.
+
+32
+00:01:30,330 --> 00:01:32,980
+Let's create a new
+directory called events.
+
+33
+00:01:33,120 --> 00:01:37,350
+And in this directory
+let's create a new file
+
+34
+00:01:37,350 --> 00:01:38,770
+named payment dash
+failed the event that t s.
+
+35
+00:01:40,230 --> 00:01:41,160
+Inside of this file.
+
+36
+00:01:41,490 --> 00:01:44,800
+Let's define the fallen class you
+can find below the course video.
+
+37
+00:01:45,660 --> 00:01:49,110
+This event will represent a
+failed possibly rejected payment.
+
+38
+00:01:49,590 --> 00:01:53,280
+It exposes the static key property
+that will use to identify the event.
+
+39
+00:01:53,790 --> 00:01:55,440
+And takes to input arguments.
+
+40
+00:01:55,890 --> 00:01:56,790
+Payment ID
+
+41
+00:01:56,910 --> 00:01:59,430
+which is a unique ID that
+represents that failed payment.
+
+42
+00:01:59,970 --> 00:02:03,220
+And meta object that
+will dive into later on.
+
+43
+00:02:03,480 --> 00:02:03,930
+Now.
+
+44
+00:02:04,380 --> 00:02:08,430
+Let's declare event hand
+slurs or event listeners that
+
+45
+00:02:08,430 --> 00:02:09,510
+will subscribe to the payment
+failed event occurrence
+
+46
+00:02:09,630 --> 00:02:10,357
+and will process
+
+47
+00:02:10,470 --> 00:02:11,742
+according accordingly.
+
+48
+00:02:12,240 --> 00:02:16,690
+It's open up our terminals and generate
+a new service called notifications service.
+
+49
+00:02:17,340 --> 00:02:21,000
+Normally we generated
+in a separate module
+
+50
+00:02:21,000 --> 00:02:21,330
+but since we want to
+keep things simple here
+
+51
+00:02:21,510 --> 00:02:23,830
+we'll just use the
+payments module for now.
+
+52
+00:02:24,030 --> 00:02:24,540
+Also
+
+53
+00:02:24,660 --> 00:02:28,354
+let's generate another
+subscription service class in
+
+54
+00:02:28,372 --> 00:02:29,950
+the same module using
+the nest the ally once again.
+
+55
+00:02:30,120 --> 00:02:30,900
+Both services
+
+56
+00:02:31,200 --> 00:02:32,940
+will listen to the
+payment failed event
+
+57
+00:02:33,240 --> 00:02:36,070
+and will perform relevant
+corresponding actions.
+
+58
+00:02:36,450 --> 00:02:38,220
+Let's start with the
+notification service
+
+59
+00:02:38,340 --> 00:02:42,220
+open it up and declare a new
+send payment notification method.
+
+60
+00:02:45,312 --> 00:02:47,804
+Register this method
+as an event subscriber.
+
+61
+00:02:47,880 --> 00:02:49,470
+Let's use the an event decorator
+
+62
+00:02:49,710 --> 00:02:53,530
+passing the payment failed event
+duck key as an input parameter.
+
+63
+00:02:53,700 --> 00:02:54,700
+Great.
+
+64
+00:02:54,750 --> 00:02:57,150
+Let's follow the same steps
+for the subscription service.
+
+65
+00:02:57,600 --> 00:02:58,200
+At a new
+
+66
+00:02:58,410 --> 00:03:02,110
+cancel subscription method an
+annotated with the same decorator.
+
+67
+00:03:02,760 --> 00:03:05,220
+Now there's one limitation
+you should be aware of here.
+
+68
+00:03:05,760 --> 00:03:10,110
+Events subscribers cannot be request
+scope by definition since thus can't really
+
+69
+00:03:10,110 --> 00:03:12,480
+tracked down what
+service controller
+
+70
+00:03:12,720 --> 00:03:15,960
+triggered the events as that would be
+against the loose coupling capabilities
+
+71
+00:03:16,260 --> 00:03:17,460
+the events provide us with.
+
+72
+00:03:18,000 --> 00:03:19,000
+Excellent.
+
+73
+00:03:19,162 --> 00:03:20,430
+The last but not least
+
+74
+00:03:20,730 --> 00:03:23,160
+let's switch back to our
+payment webhooks control solar
+
+75
+00:03:23,490 --> 00:03:25,620
+and dispatch a random
+payment failed event
+
+76
+00:03:25,860 --> 00:03:29,650
+with the webhook endpoint handler
+just to the contest everything out.
+
+77
+00:03:30,390 --> 00:03:31,620
+Right let's save our changes.
+
+78
+00:03:32,010 --> 00:03:34,500
+Open up our terminals and
+in a separate terminal window.
+
+79
+00:03:34,860 --> 00:03:38,590
+Was triggered the slash payments
+webhook endpoint using curl.
+
+80
+00:03:39,360 --> 00:03:43,110
+Now let's switch or the
+other terminal window and
+
+81
+00:03:43,116 --> 00:03:44,340
+as we can see both event
+subscribers were trigger
+
+82
+00:03:44,461 --> 00:03:45,461
+excellent.
+
+83
+00:03:46,110 --> 00:03:46,560
+Alright
+
+84
+00:03:46,710 --> 00:03:50,741
+so we already know how to emit
+and asynchronously process events.
+
+85
+00:03:50,790 --> 00:03:53,920
+We are also aware of the
+event subscribers limitations.
+
+86
+00:03:54,060 --> 00:03:56,076
+As they can't be requests scope.
+
+87
+00:03:57,060 --> 00:04:01,710
+So now what if we actually
+want to use a dynamic
+
+88
+00:04:01,710 --> 00:04:02,490
+requests go provider from
+within the event handler.
+
+89
+00:04:03,030 --> 00:04:05,550
+How can we access the
+original color request object
+
+90
+00:04:05,850 --> 00:04:07,980
+without polluting our
+event class even further
+
+91
+00:04:08,220 --> 00:04:10,660
+and explicitly passing it
+through the constructor.
+
+92
+00:04:11,040 --> 00:04:14,220
+What if we have a request scoped lager
+that would like to leverage inside of our
+
+93
+00:04:14,220 --> 00:04:16,980
+events subscribers or many
+other real world examples as.
+
+94
+00:04:17,520 --> 00:04:18,120
+Luckily
+
+95
+00:04:18,270 --> 00:04:22,140
+we can overcome this limitation with use
+of module rough and our knowledge of DEA
+
+96
+00:04:22,141 --> 00:04:24,880
+subtrees that we covered
+in the previous lesson.
+
+97
+00:04:25,830 --> 00:04:29,880
+Let's open up our payments webhook controller
+and first modify the webhook method
+
+98
+00:04:29,881 --> 00:04:32,800
+signature to take the
+request as an argument.
+
+99
+00:04:35,220 --> 00:04:37,530
+Next up using the
+context ID factory
+
+100
+00:04:37,770 --> 00:04:41,200
+a generate a new context ID
+as we did in the previous lesson.
+
+101
+00:04:43,620 --> 00:04:44,620
+Next.
+
+102
+00:04:44,670 --> 00:04:47,470
+Inject the module refusing
+the standard approach.
+
+103
+00:04:47,730 --> 00:04:52,480
+And must make sure we also register that
+request object for the given d i sub true.
+
+104
+00:04:54,570 --> 00:04:55,410
+And lastly
+
+105
+00:04:55,680 --> 00:04:59,340
+let's update the context i
+do that we pass as an input
+
+106
+00:04:59,340 --> 00:05:01,080
+parameter to our event
+constructor to be context ID
+
+107
+00:05:01,200 --> 00:05:02,010
+instead of no.
+
+108
+00:05:02,550 --> 00:05:03,550
+Perfect.
+
+109
+00:05:03,690 --> 00:05:06,000
+Let's save our changes
+and before we continue
+
+110
+00:05:06,120 --> 00:05:10,630
+let's create a new requests go provider
+that will represent our event context.
+
+111
+00:05:11,250 --> 00:05:12,630
+Inside the payments directory.
+
+112
+00:05:13,020 --> 00:05:16,590
+Let's create a new
+contexts folder and it's out of
+
+113
+00:05:16,620 --> 00:05:18,460
+this folder let's create
+the events contexts file.
+
+114
+00:05:20,100 --> 00:05:21,030
+Inside of this file
+
+115
+00:05:21,330 --> 00:05:24,700
+was paste the fallen content that
+you could find below the course video.
+
+116
+00:05:25,200 --> 00:05:29,040
+So basically this class will
+serve as our event context
+
+117
+00:05:29,040 --> 00:05:31,060
+that provides us with
+the caller request object.
+
+118
+00:05:31,200 --> 00:05:35,500
+It's also not forget to register this class
+as a provider in our payments module.
+
+119
+00:05:37,890 --> 00:05:39,180
+With his provider register.
+
+120
+00:05:39,570 --> 00:05:43,980
+Us navigate to our notification service
+and first inject the module rough rider
+
+121
+00:05:44,160 --> 00:05:45,880
+using the standard approach.
+
+122
+00:05:49,680 --> 00:05:51,960
+Inside of our send
+payment notification method.
+
+123
+00:05:52,440 --> 00:05:56,400
+Let's retrieve the event context
+object using the event dot Meadow
+
+124
+00:05:56,700 --> 00:05:57,780
+up context ID
+
+125
+00:05:58,110 --> 00:06:00,402
+and let's lock
+down as you are up.
+
+126
+00:06:07,680 --> 00:06:11,080
+Let's repeat the same steps in
+our subscription service as well.
+
+127
+00:06:22,890 --> 00:06:24,750
+Once finished let's
+save all of our changes.
+
+128
+00:06:25,170 --> 00:06:26,160
+Open up our terminals
+
+129
+00:06:26,370 --> 00:06:29,020
+and triggered the webhook
+and point once again.
+
+130
+00:06:29,790 --> 00:06:30,930
+And as we can see
+
+131
+00:06:31,110 --> 00:06:32,160
+both subscribers
+
+132
+00:06:32,280 --> 00:06:33,900
+can now access
+the request object
+
+133
+00:06:34,080 --> 00:06:35,910
+and could share the
+same DEA subtree
+
+134
+00:06:36,150 --> 00:06:37,150
+rate.
+
+135
+00:06:37,350 --> 00:06:40,770
+Though in this lesson we only use
+the request provider as an example
+
+136
+00:06:41,010 --> 00:06:44,100
+but you could actually resolve any
+requests go provider you wish or neat.
+
+137
+00:06:44,790 --> 00:06:45,360
+Furthermore.
+
+138
+00:06:45,722 --> 00:06:48,510
+The using the same context
+ID and both subscribers
+
+139
+00:06:48,780 --> 00:06:50,070
+if you Rick quest a let's say
+
+140
+00:06:50,280 --> 00:06:53,010
+request scope lager instance
+as we mentioned earlier.
+
+141
+00:06:53,370 --> 00:06:54,750
+It will only be created once
+
+142
+00:06:55,020 --> 00:06:57,250
+and share between
+all event handlers.
+
+143
+00:06:57,660 --> 00:07:01,860
+Hopefully you can see the multitude of use
+cases and possibilities available to you
+
+144
+00:07:01,890 --> 00:07:04,790
+now with his new DEA
+subtree superpower.
+

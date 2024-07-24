@@ -1,0 +1,1180 @@
+﻿1
+00:00:01,020 --> 00:00:05,687
+Manually creating highly configurable
+dynamic modules that expose async methods be
+
+2
+00:00:05,770 --> 00:00:08,790
+register async for route
+async is quite complicated
+
+3
+00:00:09,060 --> 00:00:10,080
+especially for newcomers.
+
+4
+00:00:10,560 --> 00:00:13,770
+You may have seen methods
+like these when working with
+
+5
+00:00:13,770 --> 00:00:15,790
+official ness packages such
+as type or ram or graft ul.
+
+6
+00:00:15,990 --> 00:00:19,290
+In these packages
+you have certainly done
+
+7
+00:00:19,290 --> 00:00:19,560
+things like typo around
+module dot for route
+
+8
+00:00:19,800 --> 00:00:22,541
+or for or route a sink
+when working with them.
+
+9
+00:00:22,710 --> 00:00:26,730
+If you have ever tried to create your own
+dynamic module that accomplishes similar
+
+10
+00:00:26,730 --> 00:00:29,160
+things you may have realized
+it's not very straightforward
+
+11
+00:00:29,430 --> 00:00:31,450
+and of also quite
+a bit of boilerplate.
+
+12
+00:00:31,590 --> 00:00:36,550
+This is why nest exposes a somewhat new
+class called the configurable module builder.
+
+13
+00:00:36,630 --> 00:00:41,280
+Which helps us facility
+and simplify this entire
+
+14
+00:00:41,280 --> 00:00:42,675
+process and lets us
+construct a module blueprint.
+
+15
+00:00:42,840 --> 00:00:44,860
+All in just a few lines of code.
+
+16
+00:00:44,970 --> 00:00:48,390
+While creating basic configurable
+modules is pretty straightforward process
+
+17
+00:00:48,420 --> 00:00:50,190
+leveraging all the
+built in features
+
+18
+00:00:50,490 --> 00:00:52,200
+of the configurable
+module builder
+
+19
+00:00:52,440 --> 00:00:54,340
+might not be that obvious.
+
+20
+00:00:54,840 --> 00:00:55,620
+In this lesson
+
+21
+00:00:55,830 --> 00:00:59,130
+will showcase all the features of their
+configurable model builder provides
+
+22
+00:00:59,430 --> 00:01:02,850
+and how it makes things significantly easier
+compared to doing everything man you're.
+
+23
+00:01:03,540 --> 00:01:05,440
+So for demonstration purposes.
+
+24
+00:01:05,490 --> 00:01:08,371
+Let's start this off by generating
+a new module with the nastiest
+
+25
+00:01:08,490 --> 00:01:08,850
+ally
+
+26
+00:01:09,030 --> 00:01:11,500
+and call it http client module.
+
+27
+00:01:13,260 --> 00:01:17,730
+Next alongside the newly
+generated module file let's
+
+28
+00:01:17,730 --> 00:01:19,330
+create a new http client
+module definition file.
+
+29
+00:01:21,570 --> 00:01:22,530
+Inside this file
+
+30
+00:01:22,770 --> 00:01:25,260
+let's construct a new
+configurable module class.
+
+31
+00:01:25,620 --> 00:01:27,420
+Using the configurable
+module builder.
+
+32
+00:01:27,930 --> 00:01:30,519
+Exported from the
+nastiest common package.
+
+33
+00:01:30,990 --> 00:01:31,800
+As we can see
+
+34
+00:01:32,010 --> 00:01:35,967
+to create a new class we
+simply have to instantiate a
+
+35
+00:01:35,967 --> 00:01:38,080
+new builder instance and
+called the build method on it.
+
+36
+00:01:38,430 --> 00:01:42,790
+Next let's make sure we also specify
+and options interface for this module.
+
+37
+00:01:43,530 --> 00:01:47,640
+Here we've specified
+that our module takes an
+
+38
+00:01:47,640 --> 00:01:48,120
+object consisting of
+one optional parameter
+
+39
+00:01:48,420 --> 00:01:49,800
+which is the base you rl
+
+40
+00:01:50,100 --> 00:01:51,960
+that we will use
+for our http client
+
+41
+00:01:52,080 --> 00:01:53,770
+as and options object.
+
+42
+00:01:54,360 --> 00:01:55,500
+With all of this and place
+
+43
+00:01:55,920 --> 00:01:57,899
+but switched to r
+http client module
+
+44
+00:01:58,200 --> 00:02:02,380
+and make sure our class extends the
+configurable module class as follows.
+
+45
+00:02:03,450 --> 00:02:05,670
+Now if we navigate
+to the app module
+
+46
+00:02:05,880 --> 00:02:06,930
+and type dot
+
+47
+00:02:07,230 --> 00:02:09,630
+after we try to empower
+our http client module.
+
+48
+00:02:10,230 --> 00:02:11,070
+Our ID he
+
+49
+00:02:11,250 --> 00:02:13,290
+will show us to new
+predefined methods
+
+50
+00:02:13,530 --> 00:02:14,130
+register
+
+51
+00:02:14,310 --> 00:02:16,180
+and register a sink.
+
+52
+00:02:16,931 --> 00:02:17,880
+We type register
+
+53
+00:02:18,000 --> 00:02:19,630
+and go inside the parentheses.
+
+54
+00:02:19,800 --> 00:02:22,750
+Will see that it even
+shows us our options object.
+
+55
+00:02:23,280 --> 00:02:24,280
+Alternatively
+
+56
+00:02:24,390 --> 00:02:27,330
+we could also use the asynchronous
+variant and we will still have all the
+
+57
+00:02:27,330 --> 00:02:29,950
+intelligence and place
+for our options object.
+
+58
+00:02:30,120 --> 00:02:31,900
+Will stop here for a moment.
+
+59
+00:02:31,950 --> 00:02:34,620
+While building applications
+with ness jazz you may have seen
+
+60
+00:02:34,860 --> 00:02:36,120
+methods like for route
+
+61
+00:02:36,420 --> 00:02:37,080
+register her
+
+62
+00:02:37,560 --> 00:02:40,140
+and for feature around
+some of the nastiest packages.
+
+63
+00:02:40,443 --> 00:02:43,230
+You might have been wondering what
+the difference our for all these methods.
+
+64
+00:02:43,710 --> 00:02:44,100
+Well
+
+65
+00:02:44,280 --> 00:02:45,810
+there is no hard
+rule about this.
+
+66
+00:02:46,144 --> 00:02:49,690
+All the nest years packages try
+to follow a few simple guidelines.
+
+67
+00:02:50,430 --> 00:02:52,680
+When creating a
+module with register
+
+68
+00:02:52,980 --> 00:02:57,060
+we are expecting the
+module to be able to configure
+
+69
+00:02:57,060 --> 00:02:58,060
+a dynamic module with
+a specific configuration.
+
+70
+00:02:58,470 --> 00:03:00,450
+Or use only by
+the calling module.
+
+71
+00:03:00,870 --> 00:03:03,880
+You can do this for as
+many models as you want.
+
+72
+00:03:03,960 --> 00:03:04,980
+With for route.
+
+73
+00:03:05,310 --> 00:03:09,328
+We are expecting to be able to configure
+a dynamic module once in reuse that
+
+74
+00:03:09,328 --> 00:03:11,280
+configuration in
+multi will places.
+
+75
+00:03:11,700 --> 00:03:13,110
+Though possibly unknowingly
+
+76
+00:03:13,350 --> 00:03:14,520
+as is abstracted away.
+
+77
+00:03:15,120 --> 00:03:18,180
+This is why you have only
+one graft your module for route
+
+78
+00:03:18,480 --> 00:03:21,400
+one type r m
+module for route etc.
+
+79
+00:03:22,230 --> 00:03:23,280
+With for feature.
+
+80
+00:03:23,670 --> 00:03:27,270
+We are expecting to use the configuration
+of a dynamic modules for route
+
+81
+00:03:27,600 --> 00:03:31,800
+but need to modify some
+configuration specific to
+
+82
+00:03:31,800 --> 00:03:32,490
+the calling modules
+needs let's say for example
+
+83
+00:03:32,790 --> 00:03:37,170
+which repository this
+model should have access
+
+84
+00:03:37,170 --> 00:03:38,170
+to or the context that
+a lager should use.
+
+85
+00:03:39,210 --> 00:03:42,210
+All of these methods usually
+have a sink counterparts as well.
+
+86
+00:03:42,660 --> 00:03:44,700
+Register async for route async
+
+87
+00:03:44,820 --> 00:03:46,720
+and for feature a sink.
+
+88
+00:03:46,770 --> 00:03:49,260
+They typically achieve the
+same thing as their counterpart
+
+89
+00:03:49,500 --> 00:03:51,720
+but they use nest
+dependency injection
+
+90
+00:03:51,840 --> 00:03:55,030
+for the configuration in order to
+handle things a synchronously.
+
+91
+00:03:55,924 --> 00:03:59,280
+Back to our task at hand
+to test everything out
+
+92
+00:03:59,280 --> 00:04:00,390
+what's navigate to the
+module definition file again
+
+93
+00:04:00,810 --> 00:04:02,910
+and export the
+module options token
+
+94
+00:04:03,210 --> 00:04:06,520
+from the result of our canoe
+configuration module builder.
+
+95
+00:04:06,990 --> 00:04:08,040
+As a best practice
+
+96
+00:04:08,280 --> 00:04:12,300
+we also recommend
+renaming that constant to avoid
+
+97
+00:04:12,300 --> 00:04:13,050
+miss importing the wrong
+module options token.
+
+98
+00:04:13,500 --> 00:04:16,920
+This may come in handy if
+you have multiple modules
+
+99
+00:04:16,920 --> 00:04:17,730
+using the configuration
+module build a class.
+
+100
+00:04:18,150 --> 00:04:18,900
+Now or case
+
+101
+00:04:19,170 --> 00:04:22,360
+are going to rename it
+to be http module options.
+
+102
+00:04:22,980 --> 00:04:24,120
+And with distant place
+
+103
+00:04:24,420 --> 00:04:28,710
+let's open up our http
+client module and inject the
+
+104
+00:04:28,719 --> 00:04:30,190
+options object they're
+using the standard approach.
+
+105
+00:04:30,750 --> 00:04:34,800
+Also console log the
+options object just so that it
+
+106
+00:04:34,800 --> 00:04:35,790
+shows up in are cancelled
+to see what it actually is.
+
+107
+00:04:36,330 --> 00:04:37,680
+Let's make sure to
+save our changes.
+
+108
+00:04:38,040 --> 00:04:41,170
+Open up our terminals and
+see will got log to our console.
+
+109
+00:04:41,610 --> 00:04:42,450
+And as we can see
+
+110
+00:04:42,660 --> 00:04:47,530
+we have the base you are rl and nastiest
+dot com that we passed in so far so good.
+
+111
+00:04:47,700 --> 00:04:51,090
+Let's switch back to
+our module definition file
+
+112
+00:04:51,090 --> 00:04:52,090
+and see what other
+possible what his behalf.
+
+113
+00:04:52,710 --> 00:04:56,700
+The configurable module
+class by default provides the
+
+114
+00:04:56,700 --> 00:04:58,230
+methods register and it's
+counterpart register a sink.
+
+115
+00:04:58,741 --> 00:05:02,760
+Use a different method name we can
+use the set class method name method
+
+116
+00:05:02,880 --> 00:05:04,060
+as follows.
+
+117
+00:05:04,920 --> 00:05:07,200
+Now if we navigate
+to the app module file
+
+118
+00:05:07,470 --> 00:05:09,450
+will see that register
+is no longer present.
+
+119
+00:05:09,840 --> 00:05:12,430
+Instead we have
+the for route method.
+
+120
+00:05:13,050 --> 00:05:14,430
+Back to our module definition
+
+121
+00:05:14,700 --> 00:05:17,650
+was coming out at line as
+we want to keep using register.
+
+122
+00:05:18,000 --> 00:05:22,450
+Another useful method we might
+want to use is set factory method name.
+
+123
+00:05:23,160 --> 00:05:27,809
+Since the register async
+method or for route a sink or any
+
+124
+00:05:27,840 --> 00:05:29,380
+other name you have chosen
+depending on your configuration.
+
+125
+00:05:29,490 --> 00:05:34,089
+Lets consumers pass a provider definition
+that resolves to the modules configuration.
+
+126
+00:05:34,560 --> 00:05:38,309
+A library consumer could
+potentially supply a class
+
+127
+00:05:38,310 --> 00:05:40,000
+to be used to construct
+the configuration object.
+
+128
+00:05:40,110 --> 00:05:41,160
+This class by default
+
+129
+00:05:41,430 --> 00:05:43,080
+must provide the create method.
+
+130
+00:05:43,500 --> 00:05:45,810
+That returns a module
+configuration object.
+
+131
+00:05:46,200 --> 00:05:46,710
+However
+
+132
+00:05:46,890 --> 00:05:49,740
+if our library is supposed to follow
+a different naming convention.
+
+133
+00:05:50,070 --> 00:05:51,240
+We can change their behavior
+
+134
+00:05:51,360 --> 00:05:55,500
+and instruct configurable
+module builder to expect a
+
+135
+00:05:55,590 --> 00:05:57,610
+different method for example
+resolved as were showing here.
+
+136
+00:05:58,500 --> 00:05:59,790
+Now if someone used the a
+
+137
+00:06:00,074 --> 00:06:01,140
+configuration variant
+
+138
+00:06:01,440 --> 00:06:03,810
+it decided to provide a
+configuration factor class.
+
+139
+00:06:04,140 --> 00:06:07,241
+This class would have to
+provide the resolve method you.
+
+140
+00:06:07,530 --> 00:06:08,010
+Again
+
+141
+00:06:08,190 --> 00:06:11,580
+let's come at this out as in our example
+we can just use the default value we just
+
+142
+00:06:11,580 --> 00:06:14,110
+wanted to showcase
+the possibilities here.
+
+143
+00:06:14,400 --> 00:06:17,310
+The moving onto another interesting
+use case for the configuration builder
+
+144
+00:06:17,610 --> 00:06:20,310
+is when our module needs to
+take extra options that determined
+
+145
+00:06:20,520 --> 00:06:21,840
+how it is supposed to behave.
+
+146
+00:06:22,140 --> 00:06:24,630
+Imagine an option
+such as the is global flag.
+
+147
+00:06:25,050 --> 00:06:25,800
+Or just global.
+
+148
+00:06:26,370 --> 00:06:30,210
+Which at the same time and
+extra option like this should
+
+149
+00:06:30,210 --> 00:06:31,800
+not be included in the
+module options token provider
+
+150
+00:06:32,100 --> 00:06:35,610
+as those options are
+irrelevant to services and
+
+151
+00:06:35,610 --> 00:06:36,060
+provide riders registered
+within that modul.
+
+152
+00:06:36,540 --> 00:06:40,710
+Take for example http client which itself
+does not need to know whether it's host
+
+153
+00:06:40,712 --> 00:06:43,170
+module is registered as
+a global module or not.
+
+154
+00:06:43,710 --> 00:06:46,440
+But these options are important
+to those using our module.
+
+155
+00:06:46,877 --> 00:06:50,110
+Ideally we would want to
+include them as additional options.
+
+156
+00:06:50,340 --> 00:06:51,270
+To achieve all this
+
+157
+00:06:51,570 --> 00:06:53,986
+we can use the
+set extras method.
+
+158
+00:06:54,990 --> 00:06:59,040
+The first argument passed
+into the set extra method is an
+
+159
+00:06:59,040 --> 00:07:01,210
+object containing default
+values for the extra properties.
+
+160
+00:07:01,470 --> 00:07:03,030
+The second
+argument is a function
+
+161
+00:07:03,180 --> 00:07:07,200
+that takes an auto generated module
+definition with providers exports etc
+
+162
+00:07:07,470 --> 00:07:10,200
+in the extra object which
+represents extra properties.
+
+163
+00:07:10,560 --> 00:07:13,480
+Either specified by the
+consumer or defaults.
+
+164
+00:07:13,980 --> 00:07:17,620
+The return value this dysfunction
+is a modified module definition.
+
+165
+00:07:17,760 --> 00:07:19,110
+In this specific example.
+
+166
+00:07:19,500 --> 00:07:21,960
+Were taking the extras
+that is global property
+
+167
+00:07:22,320 --> 00:07:25,200
+and a sending it to the global
+property of the module definition
+
+168
+00:07:25,410 --> 00:07:29,140
+which and our case determines
+whether a module is global or not.
+
+169
+00:07:29,490 --> 00:07:30,960
+Now if we save our changes
+
+170
+00:07:31,200 --> 00:07:35,370
+navigate back to the app
+module file will see that we
+
+171
+00:07:35,370 --> 00:07:37,420
+can pass in this additional
+is global flag now we wanted.
+
+172
+00:07:37,770 --> 00:07:40,530
+And even though he pass in his
+property here we look at our council
+
+173
+00:07:40,800 --> 00:07:42,510
+will notice that it does
+not show up there.
+
+174
+00:07:42,930 --> 00:07:44,579
+This is because as
+we've mentioned above.
+
+175
+00:07:44,940 --> 00:07:48,360
+Extras can be used to modify the
+auto-generated module definition
+
+176
+00:07:48,630 --> 00:07:52,540
+they are not registered as part
+of the options object or provider.
+
+177
+00:07:53,370 --> 00:07:55,020
+One thing that we
+did not touch on yet
+
+178
+00:07:55,140 --> 00:07:57,120
+as that currently
+this property is global
+
+179
+00:07:57,300 --> 00:07:58,920
+we added is always required
+
+180
+00:07:59,100 --> 00:08:01,050
+so how can we make
+sure it is optional instead.
+
+181
+00:08:01,680 --> 00:08:03,300
+Back to our
+models definition file
+
+182
+00:08:03,570 --> 00:08:07,600
+a specify the type argument of
+the set extra method as follows.
+
+183
+00:08:07,830 --> 00:08:08,430
+And wala.
+
+184
+00:08:08,910 --> 00:08:11,200
+He has global property
+as now optional.
+
+185
+00:08:12,060 --> 00:08:13,770
+Now for demonstration purposes
+
+186
+00:08:13,950 --> 00:08:15,900
+let's open up the
+app module file again.
+
+187
+00:08:16,320 --> 00:08:18,360
+Remove the is global
+prop we just added.
+
+188
+00:08:18,780 --> 00:08:23,260
+Copy the http client modul
+import and paste it multiple times.
+
+189
+00:08:24,150 --> 00:08:25,140
+Let's save our changes
+
+190
+00:08:25,380 --> 00:08:26,340
+open up our terminals
+
+191
+00:08:26,520 --> 00:08:28,150
+and take a look at the logs.
+
+192
+00:08:28,590 --> 00:08:33,330
+As we can see even though
+we imported http client module
+
+193
+00:08:33,330 --> 00:08:34,710
+multiple times only one
+module was actually created.
+
+194
+00:08:35,040 --> 00:08:35,760
+For why is the.
+
+195
+00:08:36,330 --> 00:08:40,290
+While a nest every module is
+represented as a note in a directed graph.
+
+196
+00:08:40,710 --> 00:08:43,180
+Meaning that notes
+have specified directions.
+
+197
+00:08:43,440 --> 00:08:47,680
+Every node has its unique hash has
+generated based on the modules definition.
+
+198
+00:08:47,910 --> 00:08:50,250
+If there is an existing
+note with a specific cash
+
+199
+00:08:50,520 --> 00:08:54,370
+the nes points to that note
+instead of creating a new one.
+
+200
+00:08:54,840 --> 00:08:59,160
+This all means that when we
+have three http client module
+
+201
+00:08:59,160 --> 00:09:00,970
+imports and each module
+shares the same configuration.
+
+202
+00:09:01,170 --> 00:09:03,280
+Only one node will be created.
+
+203
+00:09:03,420 --> 00:09:03,840
+However
+
+204
+00:09:04,080 --> 00:09:08,290
+when we change base your else to be
+unique as follows an save our changes.
+
+205
+00:09:08,460 --> 00:09:10,560
+Will see that now we
+have three models created
+
+206
+00:09:10,740 --> 00:09:12,100
+instead of one.
+
+207
+00:09:12,480 --> 00:09:16,660
+Let's revert this change and use the
+same jarrell for Oliver imports for now.
+
+208
+00:09:18,330 --> 00:09:22,300
+Let's save those reverted changes and
+switch back to the module definition file.
+
+209
+00:09:23,340 --> 00:09:27,150
+Let's pass the configuration object to
+the configurable module builder constructor
+
+210
+00:09:27,180 --> 00:09:29,910
+setting the always
+transient property to be true.
+
+211
+00:09:30,240 --> 00:09:31,990
+You see some
+different functionality.
+
+212
+00:09:32,820 --> 00:09:34,860
+Let's save our changes
+open up our terminals
+
+213
+00:09:35,130 --> 00:09:35,970
+and as we can see
+
+214
+00:09:36,240 --> 00:09:39,930
+there are three http
+client modules now even
+
+215
+00:09:39,930 --> 00:09:40,740
+though they all have
+the same configuration
+
+216
+00:09:40,890 --> 00:09:43,660
+because the module
+is transient now instead.
+
+217
+00:09:43,800 --> 00:09:46,950
+This can be useful in situations
+where you want to ensure
+
+218
+00:09:46,950 --> 00:09:49,120
+that every creation of the
+module is in fact unique.
+
+219
+00:09:49,380 --> 00:09:51,900
+Back to our configuration
+module builder options object.
+
+220
+00:09:52,260 --> 00:09:55,440
+There are two two other interesting and
+useful properties you might want to use.
+
+221
+00:09:56,010 --> 00:09:57,510
+Options injection token
+
+222
+00:09:57,630 --> 00:10:01,410
+which lets us specify under which token
+the options object should be registered
+
+223
+00:10:01,590 --> 00:10:04,090
+note that this is auto
+generated by default.
+
+224
+00:10:04,634 --> 00:10:05,504
+Module name.
+
+225
+00:10:05,894 --> 00:10:08,024
+Which lets us specified
+the modules name.
+
+226
+00:10:08,324 --> 00:10:11,124
+Which can be useful for
+simpler debugging etc.
+
+227
+00:10:11,444 --> 00:10:15,734
+Also note that the build
+method returns an object and
+
+228
+00:10:15,734 --> 00:10:17,424
+so far we've only used
+to properties of that object.
+
+229
+00:10:17,564 --> 00:10:19,124
+Configurable module class.
+
+230
+00:10:19,454 --> 00:10:21,354
+In module options token.
+
+231
+00:10:21,884 --> 00:10:25,244
+There are two other properties
+that may come in handy
+
+232
+00:10:25,244 --> 00:10:26,684
+if we wanted to override
+the auto generated register
+
+233
+00:10:26,804 --> 00:10:28,394
+in register async methods.
+
+234
+00:10:28,784 --> 00:10:30,564
+Which are options type.
+
+235
+00:10:30,704 --> 00:10:32,904
+And async options type.
+
+236
+00:10:34,304 --> 00:10:34,784
+Now
+
+237
+00:10:34,904 --> 00:10:36,974
+let's switch to r
+http client module
+
+238
+00:10:37,244 --> 00:10:39,084
+and see how we can use them.
+
+239
+00:10:40,694 --> 00:10:41,504
+As we can see.
+
+240
+00:10:41,924 --> 00:10:46,064
+Now we can make these options types
+available for use since sometimes we may have
+
+241
+00:10:46,064 --> 00:10:48,344
+different configurable
+options between register
+
+242
+00:10:48,614 --> 00:10:50,694
+and a sink register methods.
+
+243
+00:10:51,014 --> 00:10:55,064
+So in this lesson we've covered a lot and
+done a deep dive into all the functionality
+
+244
+00:10:55,124 --> 00:10:58,134
+available with the
+configuration module builder.
+
+245
+00:10:58,214 --> 00:10:59,384
+Hopefully you can see the power
+
+246
+00:10:59,536 --> 00:11:03,434
+and time-saving
+capability that this build it
+
+247
+00:11:03,434 --> 00:11:03,944
+provides and creating
+dynamic nest modules.
+
+248
+00:11:04,244 --> 00:11:05,984
+With his little
+boilerplate as possible.
+
+249
+00:11:06,464 --> 00:11:08,234
+All while still having
+complete control
+
+250
+00:11:08,444 --> 00:11:11,784
+over the dynamic module
+process for your end users.
+

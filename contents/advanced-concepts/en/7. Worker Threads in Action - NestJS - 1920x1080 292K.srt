@@ -1,0 +1,992 @@
+﻿1
+00:00:00,810 --> 00:00:05,160
+Worker threads help us offload cpu
+intensive tasks away from the event loop
+
+2
+00:00:05,280 --> 00:00:07,078
+so that they can be
+executed paralleling.
+
+3
+00:00:07,380 --> 00:00:08,640
+In a non-blocking manner.
+
+4
+00:00:09,120 --> 00:00:09,630
+Although
+
+5
+00:00:09,870 --> 00:00:14,250
+they do not help us much with io or input
+output intensive work since the know js
+
+6
+00:00:14,250 --> 00:00:16,350
+built-in a synchronous
+io operations
+
+7
+00:00:16,500 --> 00:00:18,550
+are much more
+efficient themselves.
+
+8
+00:00:18,990 --> 00:00:24,306
+Each worker thread how as its own isolated
+v eight environment context event loop of
+
+9
+00:00:24,540 --> 00:00:25,380
+que etc.
+
+10
+00:00:25,770 --> 00:00:26,250
+However
+
+11
+00:00:26,430 --> 00:00:27,720
+they can share memory.
+
+12
+00:00:28,110 --> 00:00:32,580
+They could do so by
+transferring array buffer instances
+
+13
+00:00:32,580 --> 00:00:33,870
+or sharing shared a re buffer
+instances with one another.
+
+14
+00:00:34,563 --> 00:00:35,010
+Also
+
+15
+00:00:35,220 --> 00:00:39,130
+a worker and parent can communicate with
+each other through a messaging channel.
+
+16
+00:00:39,480 --> 00:00:44,010
+Note that in no Jess it's important to
+differentiate between cpu intensive long
+
+17
+00:00:44,010 --> 00:00:46,450
+running event loop
+blocking operations
+
+18
+00:00:46,620 --> 00:00:47,340
+and io
+
+19
+00:00:47,460 --> 00:00:49,270
+or input output operations.
+
+20
+00:00:49,320 --> 00:00:50,760
+Such as http requests
+
+21
+00:00:50,970 --> 00:00:52,960
+inquiring the database etc.
+
+22
+00:00:53,760 --> 00:00:57,300
+Or us to better understand when
+worker threads might come in handy
+
+23
+00:00:57,660 --> 00:01:01,930
+but switch over to our ids and
+generate a new fibonacci module.
+
+24
+00:01:02,040 --> 00:01:03,000
+Inside this module
+
+25
+00:01:03,210 --> 00:01:05,790
+let's also generate a
+new fibonacci controller
+
+26
+00:01:06,000 --> 00:01:07,680
+that we used to
+test out a few ideas.
+
+27
+00:01:08,070 --> 00:01:12,030
+Let's open up this newly
+generated a controller
+
+28
+00:01:12,031 --> 00:01:13,150
+file a declare a new get
+route there as follows.
+
+29
+00:01:13,470 --> 00:01:15,570
+This endpoint will accept
+one query parameter
+
+30
+00:01:15,870 --> 00:01:16,200
+and
+
+31
+00:01:16,500 --> 00:01:18,970
+which is the nth
+fibonacci number.
+
+32
+00:01:19,170 --> 00:01:22,390
+Inside this method was
+implement the fibonacci formula.
+
+33
+00:01:22,950 --> 00:01:28,080
+Note that there are no i o operations
+here so this is a perfect example of a cpu
+
+34
+00:01:28,080 --> 00:01:31,600
+intensive time consuming
+and or blocking operation.
+
+35
+00:01:31,920 --> 00:01:32,850
+Let's save our changes
+
+36
+00:01:33,150 --> 00:01:37,080
+open the our terminals
+and run our application and
+
+37
+00:01:37,110 --> 00:01:38,680
+development mode with
+n p m run start calling deaf.
+
+38
+00:01:39,750 --> 00:01:41,100
+Once our app as bootstrapped
+
+39
+00:01:41,250 --> 00:01:45,570
+let's open up a separate
+terminal window and
+
+40
+00:01:45,600 --> 00:01:46,050
+use curl to call our
+get fibonacci endpoint.
+
+41
+00:01:46,470 --> 00:01:47,970
+Passing question Mark n.
+
+42
+00:01:48,420 --> 00:01:50,700
+With are cleared
+perimeter equaling forty one.
+
+43
+00:01:51,060 --> 00:01:54,000
+Where forty one represents
+the forty first fibonacci number.
+
+44
+00:01:54,660 --> 00:01:58,200
+Below the video you'll
+find the curl code to
+
+45
+00:01:58,200 --> 00:01:59,200
+can copy pasted and
+tried out for yourself.
+
+46
+00:02:00,360 --> 00:02:01,170
+As we can see
+
+47
+00:02:01,290 --> 00:02:03,180
+it took approximately
+five seconds
+
+48
+00:02:03,480 --> 00:02:07,380
+which may not seem like a
+long time but since calculating
+
+49
+00:02:07,410 --> 00:02:09,640
+the fibonacci number is a
+synchronous blocking operation.
+
+50
+00:02:09,690 --> 00:02:10,980
+During these five seconds
+
+51
+00:02:11,250 --> 00:02:13,350
+even if someone
+tried reaching our a p i
+
+52
+00:02:13,620 --> 00:02:15,777
+r application would
+not be able to respond.
+
+53
+00:02:16,260 --> 00:02:20,480
+That means if there were any other http
+request during this five sec timeframe.
+
+54
+00:02:20,520 --> 00:02:24,780
+All of these would have to wait until this
+specific fibonacci calculation is done.
+
+55
+00:02:25,260 --> 00:02:26,220
+As you may have already guessed.
+
+56
+00:02:26,640 --> 00:02:28,450
+This is far from ideal.
+
+57
+00:02:29,130 --> 00:02:30,300
+So case in point
+
+58
+00:02:30,570 --> 00:02:34,050
+situations like this are exactly when
+worker threads might come in handy.
+
+59
+00:02:34,560 --> 00:02:36,210
+Instead of blocking
+the main thread.
+
+60
+00:02:36,540 --> 00:02:40,770
+We could delegate that operation to a
+separate worker therefore r a p i would remain
+
+61
+00:02:40,770 --> 00:02:43,660
+fully responsive and
+operate like normal.
+
+62
+00:02:43,770 --> 00:02:45,930
+Let's start by
+creating a worker file
+
+63
+00:02:46,140 --> 00:02:49,210
+and naming it fibonacci
+dot worker dot t s.
+
+64
+00:02:49,681 --> 00:02:52,960
+Inside of this file let's
+paste art fibonacci function.
+
+65
+00:02:55,320 --> 00:02:55,770
+Next
+
+66
+00:02:55,890 --> 00:02:57,900
+we need to register
+an event listener.
+
+67
+00:02:58,320 --> 00:03:01,080
+Listening to incoming
+messages from the parent port
+
+68
+00:03:01,380 --> 00:03:03,070
+our workers parent.
+
+69
+00:03:03,540 --> 00:03:07,649
+To do so let's utilize
+the parent port object
+
+70
+00:03:07,684 --> 00:03:08,610
+imported from the worker
+underscore threads module
+
+71
+00:03:08,850 --> 00:03:11,560
+and register the on
+message listener.
+
+72
+00:03:12,930 --> 00:03:14,940
+As an input argument
+for the callback function.
+
+73
+00:03:15,330 --> 00:03:19,780
+Let's use an ID destructuring
+the incoming message object.
+
+74
+00:03:20,280 --> 00:03:24,160
+Where n represents the nth
+fibonacci number to be calculated.
+
+75
+00:03:24,330 --> 00:03:25,020
+And ID
+
+76
+00:03:25,230 --> 00:03:28,180
+is the unique
+request call identifier.
+
+77
+00:03:29,280 --> 00:03:30,510
+And last but not least.
+
+78
+00:03:30,930 --> 00:03:35,070
+Inside this callback
+function let's calculate the
+
+79
+00:03:35,070 --> 00:03:35,850
+fibonacci number and
+respond to the parent port.
+
+80
+00:03:36,300 --> 00:03:37,620
+Using the post message
+
+81
+00:03:37,770 --> 00:03:38,220
+method.
+
+82
+00:03:38,670 --> 00:03:41,350
+Passing the unique
+call ID and the result.
+
+83
+00:03:42,240 --> 00:03:45,330
+Let's save our changes and
+next to the fibonacci worker file
+
+84
+00:03:45,630 --> 00:03:49,900
+let's create a another file intimate
+fibonacci worker dot hosts file.
+
+85
+00:03:50,250 --> 00:03:54,480
+Inside this file let's declare
+the injectable fibonacci
+
+86
+00:03:54,480 --> 00:03:56,280
+worker host class that
+implements to lifecycle hooks.
+
+87
+00:03:56,760 --> 00:03:58,020
+An application bootstrap
+
+88
+00:03:58,290 --> 00:03:59,970
+and an application shut down
+
+89
+00:04:00,270 --> 00:04:04,290
+as well as provide a run
+method where will set up the
+
+90
+00:04:04,350 --> 00:04:06,220
+logic that helps us communicate
+with the underlying worker.
+
+91
+00:04:06,720 --> 00:04:10,000
+Let's also declared to
+private properties in this class.
+
+92
+00:04:10,200 --> 00:04:11,200
+Worker.
+
+93
+00:04:11,250 --> 00:04:13,590
+Which represents the
+underlying worker instance
+
+94
+00:04:13,920 --> 00:04:15,330
+and message dollar sign
+
+95
+00:04:15,630 --> 00:04:19,170
+which is where will store our
+messages in and rx js observable stream.
+
+96
+00:04:19,620 --> 00:04:21,370
+More on that in a moment.
+
+97
+00:04:21,720 --> 00:04:22,620
+To start things off
+
+98
+00:04:22,920 --> 00:04:24,960
+inside of our an application
+bootstrap method.
+
+99
+00:04:25,290 --> 00:04:27,910
+Let's initialized
+the worker inst this.
+
+100
+00:04:34,200 --> 00:04:38,160
+Let's create the message dollar sign
+event stream using the from event helper
+
+101
+00:04:38,160 --> 00:04:40,140
+function from the
+rx Jess package.
+
+102
+00:04:40,530 --> 00:04:42,660
+Constructing a
+stream based off the
+
+103
+00:04:42,780 --> 00:04:43,920
+this dot worker
+
+104
+00:04:44,070 --> 00:04:45,430
+on message.
+
+105
+00:04:46,110 --> 00:04:50,010
+With our bootstrap
+face all set up let's move
+
+106
+00:04:50,010 --> 00:04:50,400
+on to the an application
+shut down method
+
+107
+00:04:50,670 --> 00:04:52,020
+a make sure we
+clean everything up.
+
+108
+00:04:52,830 --> 00:04:56,340
+Here we just want to
+terminate the spawned
+
+109
+00:04:56,340 --> 00:04:56,460
+workers let's call the
+terminate method on it.
+
+110
+00:04:57,210 --> 00:05:00,850
+Now let's move on to the fun
+part and set up the logic itself.
+
+111
+00:05:00,960 --> 00:05:04,900
+Inside of our run method
+let's first generate a unique ID.
+
+112
+00:05:05,220 --> 00:05:09,510
+We will use this ID to
+differentiate requests
+
+113
+00:05:09,510 --> 00:05:10,260
+as each message will
+have its own unique ID.
+
+114
+00:05:10,620 --> 00:05:13,840
+So that we can associated
+with a given specific request.
+
+115
+00:05:14,580 --> 00:05:18,450
+Next let's send a message to the
+worker using the post message method
+
+116
+00:05:18,660 --> 00:05:21,600
+passing in an object that
+consists of two properties and
+
+117
+00:05:22,050 --> 00:05:23,290
+and ID.
+
+118
+00:05:23,580 --> 00:05:26,402
+Know that we could have
+used array buffer and shared a
+
+119
+00:05:26,580 --> 00:05:30,610
+buffer to implement memory transfer as
+we mentioned at the start of this lesson.
+
+120
+00:05:30,660 --> 00:05:34,540
+Or share between threads to make
+the execution even more efficient.
+
+121
+00:05:34,770 --> 00:05:35,370
+Lastly
+
+122
+00:05:35,640 --> 00:05:38,070
+let's return the value from
+our messages observable
+
+123
+00:05:38,250 --> 00:05:40,710
+making sure to filter it
+based on the unique ID
+
+124
+00:05:41,010 --> 00:05:43,090
+and grabbing the result value.
+
+125
+00:05:43,800 --> 00:05:45,780
+If you're not too
+familiar with our extra as
+
+126
+00:05:45,900 --> 00:05:50,021
+it's unfortunately out of the scope of this
+course to dive into all of the specifics
+
+127
+00:05:50,070 --> 00:05:51,750
+but just know that
+here were essentially
+
+128
+00:05:52,020 --> 00:05:53,250
+piping the stream.
+
+129
+00:05:53,640 --> 00:05:55,110
+Filtering by unique ID.
+
+130
+00:05:55,432 --> 00:05:58,080
+The mapping and
+plucking that result value
+
+131
+00:05:58,230 --> 00:05:59,680
+just as we mentioned.
+
+132
+00:05:59,730 --> 00:06:02,520
+If you're interested in learning
+more about our ex jazz itself.
+
+133
+00:06:02,820 --> 00:06:06,400
+Check out the official docs
+station at our exchange dot death.
+
+134
+00:06:06,720 --> 00:06:07,050
+Great.
+
+135
+00:06:07,590 --> 00:06:11,730
+Let's save our changes and
+navigate to the fibonacci module
+
+136
+00:06:11,730 --> 00:06:14,303
+to register our fibonacci
+worker host as a provider there.
+
+137
+00:06:16,470 --> 00:06:17,700
+With our provider registered
+
+138
+00:06:17,970 --> 00:06:19,800
+let's wish to the
+fibonacci controller
+
+139
+00:06:19,920 --> 00:06:24,310
+and inject our fibonacci work or host
+they're using the standard approach.
+
+140
+00:06:28,440 --> 00:06:29,100
+And finally.
+
+141
+00:06:29,430 --> 00:06:33,420
+Us replace our current fibonacci method
+implementation with the following code
+
+142
+00:06:33,720 --> 00:06:36,660
+a caused the run method of
+our fibonacci workers hosts.
+
+143
+00:06:37,200 --> 00:06:38,200
+Excellent.
+
+144
+00:06:38,460 --> 00:06:40,050
+At once again save our changes.
+
+145
+00:06:40,410 --> 00:06:44,470
+Open a bar terminals and call
+that fibonacci and point once again.
+
+146
+00:06:46,530 --> 00:06:48,070
+It works perfect.
+
+147
+00:06:48,300 --> 00:06:51,870
+Now for fun let's change the
+and parameter to let's say sixty
+
+148
+00:06:52,050 --> 00:06:54,660
+just so it takes a very long
+time to calculate that number
+
+149
+00:06:54,930 --> 00:06:56,800
+and call that and point again.
+
+150
+00:06:58,350 --> 00:06:59,040
+In the meantime
+
+151
+00:06:59,250 --> 00:07:03,090
+let's open up another
+terminal window and see if our
+
+152
+00:07:03,090 --> 00:07:04,870
+Apia is responsive by hitting
+another random endpoint.
+
+153
+00:07:06,570 --> 00:07:07,380
+And as we can see
+
+154
+00:07:07,560 --> 00:07:10,390
+our Apia is still
+responsive now great.
+
+155
+00:07:10,950 --> 00:07:11,370
+Next.
+
+156
+00:07:11,820 --> 00:07:15,540
+Let's try to hit the fibonacci endpoint
+bullets change the end perimeter to something
+
+157
+00:07:15,540 --> 00:07:18,250
+that shouldn't take too
+long for example five.
+
+158
+00:07:19,020 --> 00:07:19,830
+And as we can see.
+
+159
+00:07:20,220 --> 00:07:24,010
+The application is hanging
+on us but why what happened.
+
+160
+00:07:24,270 --> 00:07:28,500
+Well the reason or application is hanging
+here is because our worker is still busy
+
+161
+00:07:28,530 --> 00:07:30,450
+with the previous
+request of we executed.
+
+162
+00:07:30,750 --> 00:07:32,130
+Where we asked them to calculate
+
+163
+00:07:32,340 --> 00:07:34,780
+the sixtieth the
+fibonacci number.
+
+164
+00:07:34,860 --> 00:07:37,450
+But how can we overcome
+this kind of an issue.
+
+165
+00:07:37,560 --> 00:07:39,390
+Well to address
+this limo citation
+
+166
+00:07:39,690 --> 00:07:43,710
+we could implement
+a pool of workers so
+
+167
+00:07:43,710 --> 00:07:44,220
+basically instead of
+having one worker instance
+
+168
+00:07:44,490 --> 00:07:45,810
+we'd maintain a pool
+
+169
+00:07:46,110 --> 00:07:48,210
+aka a collection of workers.
+
+170
+00:07:48,600 --> 00:07:51,180
+Then instead of delegating
+work to a busy worker
+
+171
+00:07:51,480 --> 00:07:54,100
+we'd just retrieve one
+that is available and free.
+
+172
+00:07:54,240 --> 00:07:57,960
+In this lesson instead
+of implementing static
+
+173
+00:07:57,960 --> 00:07:58,960
+and dynamic worker
+pools by hand ourselves.
+
+174
+00:07:59,100 --> 00:08:00,900
+Will be utilizing
+the Pacino library.
+
+175
+00:08:01,410 --> 00:08:04,770
+Which will make things much easier for
+us and with a lot less boilerplate code.
+
+176
+00:08:05,400 --> 00:08:06,030
+Pacino
+
+177
+00:08:06,270 --> 00:08:10,530
+is a widely used node worker pool
+package that supports flexible pool sizes
+
+178
+00:08:10,800 --> 00:08:12,750
+provides fast communication
+between threads
+
+179
+00:08:13,110 --> 00:08:13,890
+and covers both
+
+180
+00:08:14,070 --> 00:08:17,110
+fixed task and
+variable task scenarios.
+
+181
+00:08:17,490 --> 00:08:19,090
+So let's get it installed.
+
+182
+00:08:19,680 --> 00:08:21,090
+Once the installation
+is complete.
+
+183
+00:08:21,450 --> 00:08:24,300
+Before we continue let's
+open up our ts config file
+
+184
+00:08:24,630 --> 00:08:27,450
+and said the as modul
+interrupt property to true
+
+185
+00:08:27,720 --> 00:08:30,100
+as it is required
+by this library.
+
+186
+00:08:30,630 --> 00:08:31,080
+Next
+
+187
+00:08:31,380 --> 00:08:35,340
+let's move onto the fibonacci controller
+and replaced the classes constructor
+
+188
+00:08:35,460 --> 00:08:36,450
+with the following code.
+
+189
+00:08:37,140 --> 00:08:38,940
+Initializing the
+Pacino worker pool
+
+190
+00:08:39,270 --> 00:08:42,130
+and passing in the
+filepath to our worker.
+
+191
+00:08:42,660 --> 00:08:46,410
+Also let's make sure to
+not forget to update the
+
+192
+00:08:46,440 --> 00:08:48,850
+fibonacci method to use the
+fibonacci worker now as well.
+
+193
+00:08:49,110 --> 00:08:49,380
+And
+
+194
+00:08:49,482 --> 00:08:50,520
+last but not least
+
+195
+00:08:50,640 --> 00:08:52,770
+let's open up our
+fibonacci dot worker vile
+
+196
+00:08:53,160 --> 00:08:55,050
+and replace our on message event
+
+197
+00:08:55,171 --> 00:08:57,610
+listener with a simple export.
+
+198
+00:08:59,790 --> 00:09:00,450
+And that's it.
+
+199
+00:09:01,080 --> 00:09:02,070
+If we save our changes
+
+200
+00:09:02,310 --> 00:09:04,950
+open up our terminals
+and use curl to again
+
+201
+00:09:05,130 --> 00:09:07,260
+calculate that sixtieth
+fibonacci number
+
+202
+00:09:07,560 --> 00:09:09,180
+and we switched to
+another terminal window
+
+203
+00:09:09,480 --> 00:09:13,737
+and call the fibonacci and point again with
+a different value of and let's say five.
+
+204
+00:09:13,980 --> 00:09:14,670
+As we could see
+
+205
+00:09:14,970 --> 00:09:17,010
+were able to start up
+multiple workers now
+
+206
+00:09:17,190 --> 00:09:19,110
+without causing the
+application to hang.
+
+207
+00:09:19,440 --> 00:09:22,560
+All while keeping our application
+fully row responsive so if you want.
+
+208
+00:09:22,920 --> 00:09:24,360
+Try to hit a random point again
+
+209
+00:09:24,480 --> 00:09:25,900
+and see if that works.
+
+210
+00:09:26,520 --> 00:09:29,790
+With everything we've
+learned and done in this
+
+211
+00:09:29,790 --> 00:09:30,600
+lesson we can now handle
+any intensive tasks we need
+
+212
+00:09:30,900 --> 00:09:33,190
+in our nest js
+applications future.
+

@@ -1,0 +1,509 @@
+﻿1
+00:00:01,020 --> 00:00:03,390
+By default modules
+are eagerly loaded
+
+2
+00:00:03,600 --> 00:00:05,820
+which means that as soon
+as the application loads
+
+3
+00:00:06,000 --> 00:00:08,040
+so do all the
+applications modules.
+
+4
+00:00:08,340 --> 00:00:10,540
+Whether or not there
+immediately necessary.
+
+5
+00:00:10,830 --> 00:00:15,300
+While this is fine for most applications it
+may become a bottleneck for applications
+
+6
+00:00:15,300 --> 00:00:17,640
+or workers running in a
+serverless environment.
+
+7
+00:00:18,000 --> 00:00:19,860
+Or having little to
+no startup latency.
+
+8
+00:00:20,190 --> 00:00:21,060
+Or cold start
+
+9
+00:00:21,180 --> 00:00:22,900
+is absolutely crucial.
+
+10
+00:00:23,370 --> 00:00:27,874
+Lazy loading can help decrease bootstrap
+time by loading only the modules required by
+
+11
+00:00:27,874 --> 00:00:30,310
+a specific serverless
+function invocation.
+
+12
+00:00:30,540 --> 00:00:31,170
+In addition
+
+13
+00:00:31,470 --> 00:00:33,960
+you could also load other
+models a synchronously
+
+14
+00:00:34,110 --> 00:00:36,000
+wants the serverless
+function is warm
+
+15
+00:00:36,180 --> 00:00:39,480
+to speed up the bootstrap time for
+any subsequent calls even further.
+
+16
+00:00:39,870 --> 00:00:40,470
+This is no one
+
+17
+00:00:40,680 --> 00:00:42,766
+as deferred
+modules registration.
+
+18
+00:00:43,320 --> 00:00:47,340
+Most commonly you will
+see lazy loaded modules
+
+19
+00:00:47,370 --> 00:00:48,210
+in situations where
+your worker cronjob
+
+20
+00:00:48,360 --> 00:00:48,960
+lambda
+
+21
+00:00:49,080 --> 00:00:52,590
+or serverless function or webhooks
+must trigger different services
+
+22
+00:00:52,800 --> 00:00:53,730
+or different logic.
+
+23
+00:00:54,060 --> 00:00:55,890
+Based on any given
+input arguments
+
+24
+00:00:56,160 --> 00:00:57,690
+be at route path date.
+
+25
+00:00:58,080 --> 00:01:00,010
+Worry parameters etc.
+
+26
+00:01:00,570 --> 00:01:01,410
+On the other hand
+
+27
+00:01:01,560 --> 00:01:05,580
+lazy loading modules may not make
+too much sense for monolithic applications
+
+28
+00:01:05,820 --> 00:01:08,082
+where the startup
+time is rather irrelevant.
+
+29
+00:01:08,190 --> 00:01:08,670
+So
+
+30
+00:01:08,850 --> 00:01:10,680
+let's get started by
+switching to r i d e
+
+31
+00:01:10,920 --> 00:01:13,990
+and see how we can lazy
+load modules in ness jazz.
+
+32
+00:01:14,041 --> 00:01:14,430
+First.
+
+33
+00:01:14,820 --> 00:01:17,860
+Let's start off by generating
+a new rewards module.
+
+34
+00:01:18,420 --> 00:01:22,770
+Note raising the skip
+import flag here to instruct
+
+35
+00:01:22,770 --> 00:01:24,240
+the cla to not add the newly
+generated rewards module
+
+36
+00:01:24,420 --> 00:01:25,200
+to our route
+
+37
+00:01:25,440 --> 00:01:26,940
+at modules imports array
+
+38
+00:01:27,210 --> 00:01:29,320
+as we wondered lazy load it.
+
+39
+00:01:29,670 --> 00:01:33,670
+Next up let's generate a single
+reward service within this module.
+
+40
+00:01:34,770 --> 00:01:37,770
+With this in place what's
+navigate to our coffee service file
+
+41
+00:01:37,950 --> 00:01:41,520
+and before we start let's inject
+the new lazy module loader provider
+
+42
+00:01:41,820 --> 00:01:43,720
+using the standard approach.
+
+43
+00:01:45,480 --> 00:01:48,630
+But this dependency and place
+what's that we want to the create method
+
+44
+00:01:49,080 --> 00:01:49,680
+and first
+
+45
+00:01:49,890 --> 00:01:53,020
+let's update the method
+signature to be a sink.
+
+46
+00:01:53,850 --> 00:01:54,300
+Next.
+
+47
+00:01:54,660 --> 00:01:58,860
+Let's use the load method of the
+lazy module loader provider to lazy load
+
+48
+00:01:59,010 --> 00:02:00,670
+the rewards module.
+
+49
+00:02:01,380 --> 00:02:06,330
+The lazy module loader
+load method returns of
+
+50
+00:02:06,330 --> 00:02:06,660
+the module reference
+of rewards module here.
+
+51
+00:02:07,020 --> 00:02:10,239
+Which lets us navigate
+the internal list of providers
+
+52
+00:02:10,350 --> 00:02:12,360
+and obtain a reference
+to any provider
+
+53
+00:02:12,540 --> 00:02:15,790
+using its injection to
+good as a lookup keep.
+
+54
+00:02:16,080 --> 00:02:16,740
+Next up.
+
+55
+00:02:17,070 --> 00:02:20,770
+Let's retrieved the rewards
+service class reference as follows.
+
+56
+00:02:20,970 --> 00:02:21,780
+And lastly
+
+57
+00:02:21,930 --> 00:02:25,270
+let's use that reference to
+retrieve the corresponding provider.
+
+58
+00:02:26,400 --> 00:02:27,810
+Just so we could
+test everything out.
+
+59
+00:02:28,140 --> 00:02:32,430
+As open of the rewards
+service and at a random
+
+60
+00:02:32,430 --> 00:02:33,430
+method in there that
+console logs some texts.
+
+61
+00:02:34,200 --> 00:02:35,550
+Right let's save our changes
+
+62
+00:02:35,940 --> 00:02:40,000
+and back to the coffee service
+and call that method from within their.
+
+63
+00:02:42,000 --> 00:02:42,330
+Great.
+
+64
+00:02:42,810 --> 00:02:44,620
+Now onto our terminals.
+
+65
+00:02:44,670 --> 00:02:47,610
+Just make sure we have the application
+up and running in the background
+
+66
+00:02:47,880 --> 00:02:50,634
+with n p m run start
+Colin def command.
+
+67
+00:02:51,570 --> 00:02:52,050
+And
+
+68
+00:02:52,350 --> 00:02:57,150
+let's open up a separate
+terminal window and use
+
+69
+00:02:57,150 --> 00:02:57,630
+curl to call our post
+slash coffees and endpoint
+
+70
+00:02:57,780 --> 00:02:58,980
+just a test everything out.
+
+71
+00:02:59,700 --> 00:03:01,930
+Great as we can see no errors.
+
+72
+00:03:02,220 --> 00:03:02,640
+So
+
+73
+00:03:02,880 --> 00:03:06,220
+let's switch back to the other
+terminal window with our app running.
+
+74
+00:03:06,330 --> 00:03:07,500
+And as we can see here.
+
+75
+00:03:07,950 --> 00:03:11,520
+There's our hello from the lazy
+loaded rewards service message
+
+76
+00:03:11,730 --> 00:03:14,890
+which is logged to our console
+just as we should have expected.
+
+77
+00:03:15,300 --> 00:03:17,010
+Now what happens
+if we call this endpoint
+
+78
+00:03:17,130 --> 00:03:18,610
+a second time.
+
+79
+00:03:18,690 --> 00:03:20,820
+Will the rewards module
+be loaded once again.
+
+80
+00:03:21,150 --> 00:03:21,540
+Well
+
+81
+00:03:21,780 --> 00:03:26,250
+lazy loaded modules
+are cached upon the first
+
+82
+00:03:26,250 --> 00:03:27,250
+lazy module loader
+load method invocation.
+
+83
+00:03:27,480 --> 00:03:29,760
+This means that each
+consecutive attempt to load it
+
+84
+00:03:30,060 --> 00:03:32,700
+will be very fast and will
+return a cached instance
+
+85
+00:03:32,940 --> 00:03:35,040
+instead of loading the
+module all over again.
+
+86
+00:03:35,700 --> 00:03:36,930
+Just to prove that it works.
+
+87
+00:03:37,290 --> 00:03:38,700
+Etc or to our crate method
+
+88
+00:03:39,000 --> 00:03:42,750
+and use the console that time and
+console that time and methods there
+
+89
+00:03:43,050 --> 00:03:45,120
+who can measure how
+long it takes to retrieve
+
+90
+00:03:45,300 --> 00:03:47,410
+the rewards service instance.
+
+91
+00:03:47,820 --> 00:03:51,570
+Let's save our changes
+head back to our
+
+92
+00:03:51,570 --> 00:03:51,840
+terminals switch to that
+second terminal window
+
+93
+00:03:51,960 --> 00:03:54,520
+and run that curl
+multiple times.
+
+94
+00:03:56,970 --> 00:03:57,390
+Next.
+
+95
+00:03:57,840 --> 00:04:02,080
+Let's switch back to our applications
+terminal and see will got log to our console.
+
+96
+00:04:02,670 --> 00:04:03,570
+And as we can see
+
+97
+00:04:03,840 --> 00:04:06,450
+each consecutive attempt
+to load rewards modul
+
+98
+00:04:06,630 --> 00:04:10,380
+was much faster as the load methods
+simply returned a cached instance
+
+99
+00:04:10,650 --> 00:04:11,820
+instead of loading the module
+
+100
+00:04:11,970 --> 00:04:13,360
+again and again.
+
+101
+00:04:14,430 --> 00:04:18,060
+Of course our example here is it one
+you would likely due in the real world.
+
+102
+00:04:18,390 --> 00:04:22,120
+We kept things simple in this lesson
+and just use our existing application.
+
+103
+00:04:22,170 --> 00:04:24,180
+Just for demonstration
+purposes of course
+
+104
+00:04:24,540 --> 00:04:26,190
+but achieving
+everything we did here
+
+105
+00:04:26,460 --> 00:04:28,560
+or whatever scenario
+you need in the future
+
+106
+00:04:28,770 --> 00:04:30,540
+whether it's for microservices
+
+107
+00:04:30,840 --> 00:04:31,650
+Ron jobs
+
+108
+00:04:31,890 --> 00:04:33,450
+serverless functions etc
+
+109
+00:04:33,750 --> 00:04:35,190
+just know that everything
+could be achieved
+
+110
+00:04:35,460 --> 00:04:37,360
+exactly the same way.
+

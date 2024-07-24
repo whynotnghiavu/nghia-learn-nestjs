@@ -1,0 +1,1324 @@
+﻿1
+00:00:01,170 --> 00:00:04,500
+Internationalization typically
+abbreviated as i eighteen in
+
+2
+00:00:04,770 --> 00:00:06,810
+is the process of
+designing an application
+
+3
+00:00:07,110 --> 00:00:09,810
+that it can be adapted to
+various languages and regions.
+
+4
+00:00:10,290 --> 00:00:13,770
+Adding support for more
+languages currencies etc
+
+5
+00:00:13,770 --> 00:00:14,850
+shouldn't require project
+implementation tweaks
+
+6
+00:00:15,150 --> 00:00:18,930
+and depending on the
+implementation whether
+
+7
+00:00:18,930 --> 00:00:19,590
+reload translations
+statically or dynamically
+
+8
+00:00:19,890 --> 00:00:22,260
+we should be able to
+modify translations on the fly
+
+9
+00:00:22,650 --> 00:00:24,690
+but that means
+is textual elements
+
+10
+00:00:24,990 --> 00:00:27,780
+such just status messages
+error messages etc
+
+11
+00:00:27,960 --> 00:00:29,160
+should not be hard-coded
+
+12
+00:00:29,400 --> 00:00:30,000
+but instead
+
+13
+00:00:30,210 --> 00:00:32,550
+pulled from a specific
+translation file or source
+
+14
+00:00:32,820 --> 00:00:34,260
+relevant to a user's region.
+
+15
+00:00:34,710 --> 00:00:38,490
+Is allows for an incredibly
+flexible system where a user
+
+16
+00:00:38,490 --> 00:00:40,440
+could ask for something in a
+certain language currency etc oh
+
+17
+00:00:40,710 --> 00:00:43,360
+and get it returned back
+to them in that format.
+
+18
+00:00:43,950 --> 00:00:47,640
+Now when it comes to
+internationalization there
+
+19
+00:00:47,640 --> 00:00:48,210
+are a lot of libraries we
+could use in our apps
+
+20
+00:00:48,480 --> 00:00:49,440
+i eighteen an
+
+21
+00:00:49,590 --> 00:00:50,700
+eye eighteen next.
+
+22
+00:00:51,060 --> 00:00:53,740
+Sjs dash eighteen n etc.
+
+23
+00:00:53,880 --> 00:00:57,150
+And whether you choose one of those or just
+decide to implement something on your own
+
+24
+00:00:57,420 --> 00:01:01,860
+really depends on what
+complex features your app
+
+25
+00:01:01,860 --> 00:01:02,954
+requires and of course
+how much time you have.
+
+26
+00:01:03,420 --> 00:01:04,140
+In this lesson
+
+27
+00:01:04,410 --> 00:01:08,580
+will implement a very basic mechanism
+by ourselves just to avoid pulling another
+
+28
+00:01:08,580 --> 00:01:10,590
+library and making
+our application prone
+
+29
+00:01:10,860 --> 00:01:13,200
+to potential breaking changes
+that could be introduced.
+
+30
+00:01:13,530 --> 00:01:15,180
+By third party
+packages in the future.
+
+31
+00:01:15,600 --> 00:01:16,110
+However
+
+32
+00:01:16,320 --> 00:01:19,650
+to make our lives at least a little bit
+easier and focus on the task at hand.
+
+33
+00:01:19,980 --> 00:01:22,240
+Will be installing
+to utility packages.
+
+34
+00:01:22,590 --> 00:01:24,720
+The first being a
+except language parser
+
+35
+00:01:24,840 --> 00:01:29,040
+which parses the except
+language hunter from and http
+
+36
+00:01:29,040 --> 00:01:30,180
+request and produces an
+array of a language objects
+
+37
+00:01:30,450 --> 00:01:31,380
+sorted by quality
+
+38
+00:01:31,860 --> 00:01:33,120
+and string format
+
+39
+00:01:33,390 --> 00:01:36,210
+which is a small javascript
+library for formatting strings
+
+40
+00:01:36,450 --> 00:01:38,380
+that accepts named properties.
+
+41
+00:01:38,730 --> 00:01:39,150
+All right.
+
+42
+00:01:39,540 --> 00:01:40,870
+Let's head over to r ID
+
+43
+00:01:41,070 --> 00:01:43,630
+open up our terminals
+and install both is packages.
+
+44
+00:01:48,270 --> 00:01:49,350
+Once everything's installed.
+
+45
+00:01:49,710 --> 00:01:53,681
+Us generate a new i eighteen and
+module using the necessary osceola.
+
+46
+00:01:54,090 --> 00:01:56,680
+Also as generate a
+corresponding service.
+
+47
+00:01:58,260 --> 00:02:02,550
+Let's open up this newly generated module
+and start by making sure we export that new
+
+48
+00:02:02,550 --> 00:02:05,830
+i eighteen and service said it's
+available to our other providers.
+
+49
+00:02:07,050 --> 00:02:10,140
+Next up in the source directory
+let's create and assets folder
+
+50
+00:02:10,350 --> 00:02:11,310
+and inside of this folder
+
+51
+00:02:11,430 --> 00:02:13,360
+another directory
+called locales.
+
+52
+00:02:16,050 --> 00:02:16,770
+In this folder
+
+53
+00:02:16,950 --> 00:02:18,670
+will create two files.
+
+54
+00:02:18,720 --> 00:02:21,870
+E n dot Jason for our default
+language which will be English
+
+55
+00:02:22,260 --> 00:02:25,690
+and pl that jaison for
+another language Polish.
+
+56
+00:02:26,010 --> 00:02:29,050
+And side both files let's
+paste the following content.
+
+57
+00:02:30,660 --> 00:02:32,700
+In the e n Jason
+file hello hello
+
+58
+00:02:32,910 --> 00:02:36,040
+and in the pl Jason
+file hollow sash.
+
+59
+00:02:36,832 --> 00:02:37,560
+As we can see
+
+60
+00:02:37,860 --> 00:02:42,090
+we have to translations
+so far and each
+
+61
+00:02:42,090 --> 00:02:43,090
+translation file contains
+one key which is hello.
+
+62
+00:02:43,770 --> 00:02:46,979
+This is just for demonstration
+purposes of course but if you're new to
+
+63
+00:02:47,010 --> 00:02:50,730
+internationalization in these files you
+would have all of your key values for
+
+64
+00:02:50,730 --> 00:02:52,530
+everything you need
+translated in your system.
+
+65
+00:02:53,111 --> 00:02:54,210
+As we mentioned earlier
+
+66
+00:02:54,480 --> 00:02:57,540
+this can be specific success
+error messages prompts
+
+67
+00:02:57,810 --> 00:03:01,650
+general ai responses
+anything and everything that
+
+68
+00:03:01,650 --> 00:03:02,650
+would be important for
+you to have translated.
+
+69
+00:03:03,180 --> 00:03:06,150
+Let's also make sure we
+update our ts config js on file.
+
+70
+00:03:06,480 --> 00:03:11,279
+Setting resolve jaison
+module to true which lets us
+
+71
+00:03:11,281 --> 00:03:12,780
+import Jason modules from
+within typescript the modules.
+
+72
+00:03:12,900 --> 00:03:14,850
+Now onto our
+eighteen and service.
+
+73
+00:03:15,180 --> 00:03:16,590
+There by adding three imports.
+
+74
+00:03:17,070 --> 00:03:20,880
+Note that alongside the to
+language specific imports
+
+75
+00:03:20,880 --> 00:03:21,570
+you might see English
+and Polish and our case.
+
+76
+00:03:22,020 --> 00:03:24,300
+We also have one
+additional to type only import
+
+77
+00:03:24,600 --> 00:03:28,500
+the indicates that will tree
+our e and jaison schema as the
+
+78
+00:03:28,500 --> 00:03:30,160
+main schema for all the other
+languages and translations
+
+79
+00:03:30,360 --> 00:03:33,850
+and will be making it our
+default locale for our application.
+
+80
+00:03:34,620 --> 00:03:38,340
+Also note that in our case here were
+statically importing all the languages
+
+81
+00:03:38,520 --> 00:03:39,870
+the more languages we would have
+
+82
+00:03:40,080 --> 00:03:41,700
+the more important
+we'd have to add here
+
+83
+00:03:42,000 --> 00:03:42,540
+however
+
+84
+00:03:42,780 --> 00:03:44,820
+if we wanted to load all
+languages dynamically
+
+85
+00:03:45,090 --> 00:03:48,000
+the could just iterate through
+files located in the locales folder.
+
+86
+00:03:48,450 --> 00:03:51,660
+Check out the corresponding
+code in the description of this
+
+87
+00:03:51,660 --> 00:03:53,260
+video for how that can be
+achieved if you're interested.
+
+88
+00:03:53,520 --> 00:03:55,350
+Inside the eighteen
+and service class
+
+89
+00:03:55,650 --> 00:03:57,490
+let's declare three properties.
+
+90
+00:03:57,540 --> 00:04:01,410
+Static default language
+which is pretty self descriptive
+
+91
+00:04:01,410 --> 00:04:02,950
+will make it equal to e
+n or English in our case.
+
+92
+00:04:03,000 --> 00:04:06,330
+Static supported languages
+which is an array the
+
+93
+00:04:06,330 --> 00:04:08,170
+represents all the supported
+languages by our application.
+
+94
+00:04:08,520 --> 00:04:10,590
+And a local private
+locales object
+
+95
+00:04:10,830 --> 00:04:13,000
+which holds all the
+actual translations.
+
+96
+00:04:14,190 --> 00:04:15,270
+With all this the place
+
+97
+00:04:15,540 --> 00:04:17,580
+was now declared the
+translate method next
+
+98
+00:04:17,735 --> 00:04:19,390
+and let's break it down.
+
+99
+00:04:19,620 --> 00:04:20,580
+This transit method
+
+100
+00:04:20,730 --> 00:04:25,020
+takes a single input argument which is a
+key under which each transaction provide the
+
+101
+00:04:25,020 --> 00:04:26,910
+appropriate string
+and returns a string.
+
+102
+00:04:27,570 --> 00:04:28,470
+Or translations
+
+103
+00:04:28,710 --> 00:04:30,570
+only have one key
+so far which is hollow.
+
+104
+00:04:30,871 --> 00:04:34,480
+This will work just the same if we
+had ten thousand keys there as well.
+
+105
+00:04:34,680 --> 00:04:35,610
+Inside of this method
+
+106
+00:04:35,910 --> 00:04:38,490
+we retrieve the corresponding
+texts for any given keep.
+
+107
+00:04:39,090 --> 00:04:41,550
+But how can we get the current
+users locale on this method.
+
+108
+00:04:42,210 --> 00:04:44,040
+This is where
+requests go providers
+
+109
+00:04:44,340 --> 00:04:47,140
+and especially durable
+providers come in handy.
+
+110
+00:04:47,430 --> 00:04:48,480
+So let's first
+
+111
+00:04:48,630 --> 00:04:52,410
+slag this class as
+request scoped passing
+
+112
+00:04:52,410 --> 00:04:52,980
+scoped out request to
+the injectable decorator
+
+113
+00:04:53,250 --> 00:04:53,910
+and also
+
+114
+00:04:54,210 --> 00:04:56,322
+let's set it to durable true.
+
+115
+00:04:57,090 --> 00:04:58,020
+With this and place
+
+116
+00:04:58,290 --> 00:04:58,548
+we can
+
+117
+00:04:58,672 --> 00:05:03,220
+inject our durable DEA subtree payload
+using the inject request instructions.
+
+118
+00:05:03,600 --> 00:05:07,500
+Here we can expect
+that the payload will be
+
+119
+00:05:07,500 --> 00:05:07,860
+an object with a single
+property locale code
+
+120
+00:05:08,100 --> 00:05:10,330
+which represents
+the users locale.
+
+121
+00:05:10,770 --> 00:05:13,560
+And with this dependency
+injected into her classes constructor
+
+122
+00:05:13,860 --> 00:05:16,560
+we can now use it in the
+translate method to retrieve a user
+
+123
+00:05:16,675 --> 00:05:17,190
+locale
+
+124
+00:05:17,430 --> 00:05:19,380
+removing the to do
+comment we had here
+
+125
+00:05:19,560 --> 00:05:21,820
+and replacing it
+with a fallen coat.
+
+126
+00:05:23,730 --> 00:05:28,230
+Last but not least we
+must implement our custom
+
+127
+00:05:28,230 --> 00:05:29,640
+context ID strategy to
+actually register per locale
+
+128
+00:05:29,790 --> 00:05:30,870
+DEA sub trees.
+
+129
+00:05:31,350 --> 00:05:33,990
+For this let's create a new
+file in the core directory
+
+130
+00:05:34,260 --> 00:05:36,600
+alongside the strategy we
+created in the previous lesson
+
+131
+00:05:37,050 --> 00:05:37,559
+and call it.
+
+132
+00:05:37,890 --> 00:05:40,151
+Aggregate by locale strategy.
+
+133
+00:05:40,830 --> 00:05:41,700
+Inside this file.
+
+134
+00:05:42,030 --> 00:05:45,720
+That space where we
+implemented in the previous
+
+135
+00:05:45,720 --> 00:05:46,720
+lesson replacing the
+tenant word with locale.
+
+136
+00:05:52,740 --> 00:05:55,470
+Now aside from the boilerplate
+code that's almost identical
+
+137
+00:05:55,650 --> 00:05:57,720
+there are a few other things
+we will need to change your.
+
+138
+00:05:58,350 --> 00:06:02,010
+First let's replace every occurrence
+of locale ID with locale code.
+
+139
+00:06:02,370 --> 00:06:04,450
+Is to make things
+more itself descriptive.
+
+140
+00:06:06,420 --> 00:06:07,540
+And also.
+
+141
+00:06:07,620 --> 00:06:11,246
+Let's make sure our
+payload matches the interface
+
+142
+00:06:11,246 --> 00:06:12,729
+be expected to be inside
+the i eighteen and service.
+
+143
+00:06:13,140 --> 00:06:13,620
+Next
+
+144
+00:06:13,770 --> 00:06:16,050
+instead of using the
+x locale ID header
+
+145
+00:06:16,290 --> 00:06:19,440
+that's retrieved the locale information
+from the except language header
+
+146
+00:06:19,590 --> 00:06:20,790
+using the pick function.
+
+147
+00:06:21,120 --> 00:06:25,093
+From the except language parser package
+we installed in the beginning of this less.
+
+148
+00:06:27,300 --> 00:06:27,840
+Also
+
+149
+00:06:28,080 --> 00:06:31,930
+in case locale code is know we
+can fall back to our default language.
+
+150
+00:06:32,640 --> 00:06:36,540
+You can also remove
+the condition below since
+
+151
+00:06:36,540 --> 00:06:37,540
+locale code will never
+be no or undefined.
+
+152
+00:06:38,550 --> 00:06:42,450
+With this in place was
+make sure we replaced the
+
+153
+00:06:42,450 --> 00:06:43,290
+context i do strategy we
+applied in the previous lesson
+
+154
+00:06:43,470 --> 00:06:45,150
+with the new one we
+built in this chapter.
+
+155
+00:06:45,630 --> 00:06:46,140
+Over this.
+
+156
+00:06:46,470 --> 00:06:48,330
+With navigate to
+the app module file
+
+157
+00:06:48,571 --> 00:06:52,680
+and change the aggregate
+by tenant contexts ID
+
+158
+00:06:52,680 --> 00:06:54,311
+strategy to aggregate by
+locale context ID strategy.
+
+159
+00:06:54,900 --> 00:06:55,260
+Great
+
+160
+00:06:55,710 --> 00:06:57,180
+and now before we
+test everything out.
+
+161
+00:06:57,480 --> 00:06:59,970
+We have to actually do use the
+eighteen and service someone.
+
+162
+00:07:00,390 --> 00:07:02,220
+Let's open up
+our app service file
+
+163
+00:07:02,550 --> 00:07:06,120
+and start by first
+injecting the eighteen and
+
+164
+00:07:06,120 --> 00:07:07,120
+service inside of it using
+the standard approach.
+
+165
+00:07:08,490 --> 00:07:12,300
+Note that this will make our app service
+and app controller implicitly durable as
+
+166
+00:07:12,300 --> 00:07:14,499
+well so always
+keep that in mind.
+
+167
+00:07:14,610 --> 00:07:15,930
+Inside the get hello method
+
+168
+00:07:16,230 --> 00:07:19,242
+let's use the i eighteen and
+service translate method.
+
+169
+00:07:19,320 --> 00:07:21,450
+When typing things inside
+of the translate method.
+
+170
+00:07:21,780 --> 00:07:23,970
+We could see that we have
+things strongly typed here.
+
+171
+00:07:24,600 --> 00:07:27,390
+Since hello is the only
+key we have provided so far
+
+172
+00:07:27,570 --> 00:07:28,890
+let's go ahead and use it here.
+
+173
+00:07:29,550 --> 00:07:30,210
+Naturally.
+
+174
+00:07:30,570 --> 00:07:33,825
+Reduce different keys
+in different situations
+
+175
+00:07:33,825 --> 00:07:35,020
+where we needed a
+different strengths sent back.
+
+176
+00:07:35,130 --> 00:07:38,760
+Okay so let's save our
+changes open of our
+
+177
+00:07:38,760 --> 00:07:39,180
+terminals and use curl
+to test our important.
+
+178
+00:07:39,630 --> 00:07:39,990
+First.
+
+179
+00:07:40,320 --> 00:07:42,190
+Without passing any headers.
+
+180
+00:07:43,590 --> 00:07:46,200
+And we received hello just as
+we could have expected great.
+
+181
+00:07:46,560 --> 00:07:49,320
+Especially since we have set up a
+default language and or application
+
+182
+00:07:49,530 --> 00:07:52,480
+and he returns the English
+translations for us automatically.
+
+183
+00:07:53,160 --> 00:07:55,320
+Now let's specify the
+except language header
+
+184
+00:07:55,440 --> 00:07:58,270
+setting peel or
+Polish for the value.
+
+185
+00:08:00,150 --> 00:08:01,410
+And voila there we have it
+
+186
+00:08:01,620 --> 00:08:03,180
+says she got
+returned back to us.
+
+187
+00:08:03,750 --> 00:08:07,570
+If we change her head or to e n
+or English will receive hello again.
+
+188
+00:08:07,620 --> 00:08:08,400
+As we can see
+
+189
+00:08:08,640 --> 00:08:11,220
+not only could users now
+pass in their desired language
+
+190
+00:08:11,430 --> 00:08:15,910
+of we forgot to do so we even have our
+default all set up a working properly great.
+
+191
+00:08:16,410 --> 00:08:17,820
+So before we
+wrap up this lesson.
+
+192
+00:08:18,150 --> 00:08:21,660
+We'd like to demonstrate how you could also
+enhance your eighteen and module to let
+
+193
+00:08:21,660 --> 00:08:23,740
+you pass arguments
+to translations.
+
+194
+00:08:24,120 --> 00:08:27,342
+This essentially add support
+for parameter his strengths.
+
+195
+00:08:27,390 --> 00:08:31,149
+Also will dive into how you could
+have grouped aka a nested translations.
+
+196
+00:08:31,200 --> 00:08:34,661
+Both of these will come in handy in
+your future internationalized applications.
+
+197
+00:08:35,160 --> 00:08:36,480
+Let's start by first opening our
+
+198
+00:08:36,600 --> 00:08:36,986
+he ended
+
+199
+00:08:37,230 --> 00:08:37,740
+on file
+
+200
+00:08:38,130 --> 00:08:41,140
+and modifying the hollow
+translation to be hello.
+
+201
+00:08:41,190 --> 00:08:43,540
+First name surrounded
+by curly braces.
+
+202
+00:08:43,710 --> 00:08:47,065
+These braces indicate that we're going
+to be inserting a variable or parameter
+
+203
+00:08:47,230 --> 00:08:48,700
+to string here.
+
+204
+00:08:48,780 --> 00:08:49,410
+Similarly
+
+205
+00:08:49,530 --> 00:08:52,360
+as to the same thing
+and r p thou Jason file.
+
+206
+00:08:55,920 --> 00:08:59,970
+With our translation files updated let's
+navigate to our eighteen and service and add
+
+207
+00:08:59,970 --> 00:09:02,580
+a new spread parameter to
+the translate method signature
+
+208
+00:09:02,850 --> 00:09:04,360
+calling it barks.
+
+209
+00:09:05,850 --> 00:09:10,140
+Will pass these args or arguments to the
+format function exported from the string
+
+210
+00:09:10,140 --> 00:09:13,060
+format package that we installed
+at the beginning of this lesson.
+
+211
+00:09:16,500 --> 00:09:17,490
+Let's save our changes
+
+212
+00:09:17,820 --> 00:09:19,470
+and navigate to
+our app service now
+
+213
+00:09:19,950 --> 00:09:22,110
+and for the second argument
+of our translate method.
+
+214
+00:09:22,530 --> 00:09:25,890
+Let's pass an object setting
+first name to an arbitrary name
+
+215
+00:09:26,010 --> 00:09:27,341
+let's say Camille.
+
+216
+00:09:27,510 --> 00:09:27,960
+Once again
+
+217
+00:09:28,080 --> 00:09:32,080
+let's save our changes open up our terminals
+and let's test our and point once again.
+
+218
+00:09:32,160 --> 00:09:32,880
+And while i.
+
+219
+00:09:33,450 --> 00:09:34,780
+Allow Camille.
+
+220
+00:09:35,460 --> 00:09:39,030
+If we test Polish we'll see we'll get back
+safe Camille and if we set the language
+
+221
+00:09:39,030 --> 00:09:40,620
+header to English
+will see once again
+
+222
+00:09:40,800 --> 00:09:41,550
+hello Camille.
+
+223
+00:09:41,880 --> 00:09:43,870
+Perfect everything's
+working great.
+
+224
+00:09:44,430 --> 00:09:48,210
+Although our example is simplified here the
+same logic and set up could be applied in
+
+225
+00:09:48,300 --> 00:09:51,990
+any other situation where you need to
+have dynamic parameters string values set.
+
+226
+00:09:52,350 --> 00:09:56,050
+Whether it's a specific Erica that
+you're returning or anything else.
+
+227
+00:09:56,430 --> 00:10:00,010
+Or our last demonstration let's
+implement translation grouping.
+
+228
+00:10:00,060 --> 00:10:02,550
+For this lets navigate
+to r e n Jason file
+
+229
+00:10:02,700 --> 00:10:04,390
+now the following entry.
+
+230
+00:10:06,898 --> 00:10:10,136
+Similarly was to the same
+thing in a PR Jason file.
+
+231
+00:10:13,576 --> 00:10:14,086
+Next up.
+
+232
+00:10:14,476 --> 00:10:17,956
+Is navigate to are eighteen
+and service and as we can
+
+233
+00:10:17,956 --> 00:10:19,586
+see we're already getting
+some type of errors now.
+
+234
+00:10:20,356 --> 00:10:23,836
+The reason for these errors as
+that now our translations are not flat.
+
+235
+00:10:24,286 --> 00:10:27,986
+Some keys might be equal to
+objects not just strings as before.
+
+236
+00:10:28,066 --> 00:10:30,496
+Thankfully typescript is
+helping us prevent errors here.
+
+237
+00:10:30,814 --> 00:10:32,606
+We should have
+expected ourselves.
+
+238
+00:10:32,986 --> 00:10:34,066
+But a fix all of this up.
+
+239
+00:10:34,456 --> 00:10:37,126
+Let's replace the current
+implementation of our techs variable
+
+240
+00:10:37,246 --> 00:10:40,555
+with the following code that can be
+found below the course video was always.
+
+241
+00:10:41,776 --> 00:10:42,826
+Now with this and place
+
+242
+00:10:42,946 --> 00:10:46,336
+i eighteen and service consumers
+will be able to pass the translation key
+
+243
+00:10:46,546 --> 00:10:48,496
+using the dot
+notation for example.
+
+244
+00:10:48,886 --> 00:10:51,896
+Errors dot user
+not found in artists.
+
+245
+00:10:52,397 --> 00:10:52,996
+Lastly.
+
+246
+00:10:53,416 --> 00:10:57,076
+We have to update the type of the key
+argument as well as it right now does not
+
+247
+00:10:57,076 --> 00:10:59,936
+support passing strings
+with this dot notation.
+
+248
+00:11:00,286 --> 00:11:00,706
+For this.
+
+249
+00:11:01,126 --> 00:11:03,806
+Will declare to help
+or types of of our class.
+
+250
+00:11:08,566 --> 00:11:12,596
+Note that like always you can find this
+code to copy paste below the course video.
+
+251
+00:11:12,886 --> 00:11:15,736
+We will be diving into these types as there
+is someone outside of the scope of this
+
+252
+00:11:15,736 --> 00:11:17,356
+lesson but just so
+that you are aware.
+
+253
+00:11:17,716 --> 00:11:18,316
+Combined.
+
+254
+00:11:18,616 --> 00:11:20,296
+These types let
+us construct a type
+
+255
+00:11:20,536 --> 00:11:23,086
+that consists of a union
+of all the keys of an object
+
+256
+00:11:23,296 --> 00:11:24,316
+including nested at
+
+257
+00:11:24,498 --> 00:11:24,796
+next.
+
+258
+00:11:25,366 --> 00:11:27,256
+Don't worry we'll see everything
+in action here in a moment.
+
+259
+00:11:27,976 --> 00:11:32,246
+Using these types down what's up the
+our translate method signature as follows.
+
+260
+00:11:32,446 --> 00:11:33,466
+Let's save our changes
+
+261
+00:11:33,706 --> 00:11:37,456
+navigate to our app
+service and remove the
+
+262
+00:11:37,456 --> 00:11:38,756
+hollow argument and see
+what keys we can pass it.
+
+263
+00:11:39,706 --> 00:11:40,366
+And there we have it
+
+264
+00:11:40,636 --> 00:11:43,696
+now or keys are strongly typed
+and fully contextually aware.
+
+265
+00:11:44,056 --> 00:11:48,386
+We could see hello and errors dot
+user not found shown here fantastic.
+
+266
+00:11:48,706 --> 00:11:53,026
+Now for testing purposes let's just
+temporarily use errors dot user not found here
+
+267
+00:11:53,236 --> 00:11:55,226
+just the we can make
+sure that it works.
+
+268
+00:11:55,696 --> 00:11:56,626
+But save our changes
+
+269
+00:11:56,746 --> 00:12:00,626
+open up or terminals and use curl
+to test that and point one last time.
+
+270
+00:12:01,876 --> 00:12:02,536
+And there we have it
+
+271
+00:12:02,716 --> 00:12:05,996
+user Camille does not
+exist great it worked.
+
+272
+00:12:06,166 --> 00:12:09,976
+So in this lesson not only did we learn
+about an extremely important part of most
+
+273
+00:12:09,976 --> 00:12:12,416
+enterprise applications
+which is internationalization.
+
+274
+00:12:12,826 --> 00:12:15,316
+We also learned about the
+power of durable providers.
+
+275
+00:12:15,616 --> 00:12:17,566
+That unlike requests
+scope providers.
+
+276
+00:12:17,896 --> 00:12:20,056
+We have things stay in
+memory for quite some time.
+
+277
+00:12:20,386 --> 00:12:24,626
+As opposed to be in created ain't
+garbage collected on every single request.
+
+278
+00:12:25,516 --> 00:12:29,296
+We hope you enjoyed learning
+more advanced concepts
+
+279
+00:12:29,296 --> 00:12:31,226
+and sgs and stay tuned for
+more courses coming soon.
+
+280
+00:12:31,876 --> 00:12:33,926
+Thanks for helping
+support in sjs.
+

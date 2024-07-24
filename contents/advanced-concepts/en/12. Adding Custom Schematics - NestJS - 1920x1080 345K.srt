@@ -1,0 +1,1707 @@
+﻿1
+00:00:00,931 --> 00:00:03,300
+Get started with creating
+our own custom schematics
+
+2
+00:00:03,480 --> 00:00:05,490
+let's create a blank
+schematics project
+
+3
+00:00:05,640 --> 00:00:08,557
+using the angular delicate
+schematic see alive.
+
+4
+00:00:09,000 --> 00:00:12,900
+We're going to be using and px here but know
+that alternatively you could install the
+
+5
+00:00:12,900 --> 00:00:15,360
+angular Jeff kit schematic
+steel i packaged globally
+
+6
+00:00:15,780 --> 00:00:19,720
+and refer to it as schematics
+instead of using and px if you prefer.
+
+7
+00:00:20,010 --> 00:00:23,490
+As for the name of our project
+which was schematics but
+
+8
+00:00:23,490 --> 00:00:24,510
+if you want to use something
+else that's totally fine.
+
+9
+00:00:24,900 --> 00:00:27,810
+Just make sure to put the
+output a project in the schematics
+
+10
+00:00:28,050 --> 00:00:31,440
+or tools directory so it doesn't get
+mixed up with your actual code base.
+
+11
+00:00:31,950 --> 00:00:32,950
+Rate.
+
+12
+00:00:33,330 --> 00:00:34,590
+A blank schematic we used.
+
+13
+00:00:34,950 --> 00:00:38,790
+Rates either a new project or adds a
+blank schematic to an existing project.
+
+14
+00:00:39,180 --> 00:00:40,590
+He can actually
+be used for by both.
+
+15
+00:00:41,340 --> 00:00:42,180
+Before we proceed.
+
+16
+00:00:42,570 --> 00:00:45,390
+What's open of rts
+config build jaison file
+
+17
+00:00:45,870 --> 00:00:49,260
+and add the schematics folder to
+the exclude configuration property.
+
+18
+00:00:49,620 --> 00:00:53,170
+This the make sure it doesn't get
+built alongside our applications coat.
+
+19
+00:00:54,180 --> 00:00:55,590
+With our boilerplate generated.
+
+20
+00:00:55,950 --> 00:01:00,000
+Us navigate to this newly created schematics
+folder and before we continue let's
+
+21
+00:01:00,000 --> 00:01:02,460
+install the schematics
+slashed angular package
+
+22
+00:01:02,640 --> 00:01:04,840
+as will need it later
+on in this lesson.
+
+23
+00:01:05,400 --> 00:01:06,810
+Once the installation
+is complete.
+
+24
+00:01:07,140 --> 00:01:11,710
+Inside the source directory we can
+see a new collection that Jason file.
+
+25
+00:01:12,780 --> 00:01:14,220
+The collection da Jason file
+
+26
+00:01:14,370 --> 00:01:19,150
+is the main definition file for the entire
+schematics library in contains definitions
+
+27
+00:01:19,200 --> 00:01:22,030
+of all the schematics
+available in that library.
+
+28
+00:01:22,560 --> 00:01:26,890
+Well as we create more schematics
+this file will have all of them listed out.
+
+29
+00:01:27,270 --> 00:01:31,500
+We can see that our project
+currently contains one schematic
+
+30
+00:01:31,590 --> 00:01:33,400
+with the name schematics
+which might be quite confusing.
+
+31
+00:01:33,450 --> 00:01:36,520
+Let's rename it to
+configurable dash module.
+
+32
+00:01:38,400 --> 00:01:40,110
+Also as we can
+see it points to the
+
+33
+00:01:40,230 --> 00:01:44,220
+dot slash schematics slashed
+index file a more specifically to the
+
+34
+00:01:44,430 --> 00:01:47,740
+pound schematics
+function within that file.
+
+35
+00:01:47,820 --> 00:01:50,910
+Must change the directory name
+to be configurable dash module.
+
+36
+00:01:51,300 --> 00:01:54,180
+Endless was changed the name of
+the function to be generate as well
+
+37
+00:01:54,420 --> 00:01:57,940
+as it makes a little more sense in
+context of what we will be building.
+
+38
+00:01:58,350 --> 00:02:02,250
+And lastly within this file
+let's make sure we also update
+
+39
+00:02:02,250 --> 00:02:04,540
+the description to be
+generates a configurable module.
+
+40
+00:02:05,640 --> 00:02:06,640
+Excellent.
+
+41
+00:02:07,140 --> 00:02:11,910
+Next let's open up the index file located
+in the source slashed schematics folder
+
+42
+00:02:12,210 --> 00:02:14,580
+and update the name of
+the function to be January.
+
+43
+00:02:14,910 --> 00:02:17,809
+As that's what we change
+it to and our schema file.
+
+44
+00:02:19,290 --> 00:02:19,860
+So far
+
+45
+00:02:20,040 --> 00:02:23,970
+we can see that this
+is a simple factory it
+
+46
+00:02:23,970 --> 00:02:24,480
+takes and options
+argument and returns a rule
+
+47
+00:02:24,750 --> 00:02:25,980
+which takes in a tree
+
+48
+00:02:26,370 --> 00:02:28,240
+and returns it back unchanged.
+
+49
+00:02:28,590 --> 00:02:32,700
+The options argument here is an object that
+can be seen as the input of the factory
+
+50
+00:02:33,030 --> 00:02:36,880
+and based on those properties lets us
+determined the behavior of that factor.
+
+51
+00:02:37,350 --> 00:02:38,440
+And schematics.
+
+52
+00:02:38,681 --> 00:02:41,890
+Virtual file system is
+represented as a treat.
+
+53
+00:02:42,090 --> 00:02:46,410
+A tree data structure contains a
+base or a set of files that already exists.
+
+54
+00:02:46,800 --> 00:02:48,300
+As well as a staging area.
+
+55
+00:02:48,690 --> 00:02:51,940
+Does a list of changes
+to be applied to that base.
+
+56
+00:02:52,620 --> 00:02:56,550
+When making modifications we don't actually
+change the base itself but add those
+
+57
+00:02:56,550 --> 00:02:59,140
+modifications to
+the staging area.
+
+58
+00:02:59,430 --> 00:03:00,510
+A rule object
+
+59
+00:03:00,780 --> 00:03:02,700
+the finds a function
+that takes a tree.
+
+60
+00:03:03,000 --> 00:03:04,573
+Applies transformations.
+
+61
+00:03:05,010 --> 00:03:06,600
+More on transformations
+in a moment
+
+62
+00:03:06,960 --> 00:03:09,160
+and it returns ain't new tree.
+
+63
+00:03:09,360 --> 00:03:12,540
+The main file for a schematic
+which is that index t s file
+
+64
+00:03:12,810 --> 00:03:16,210
+the finds a set of rules that
+implement the schematics logic.
+
+65
+00:03:16,440 --> 00:03:18,870
+Transformation is
+represented by an action.
+
+66
+00:03:19,230 --> 00:03:21,580
+For which there
+are four action types.
+
+67
+00:03:21,630 --> 00:03:22,080
+Create.
+
+68
+00:03:22,500 --> 00:03:23,130
+Rename
+
+69
+00:03:23,370 --> 00:03:25,330
+overripe and elite.
+
+70
+00:03:26,220 --> 00:03:31,360
+Each schematic runs in a context
+represented by a schematic context object.
+
+71
+00:03:32,040 --> 00:03:35,760
+All right so now that we understand the
+major building blocks of schematics let's
+
+72
+00:03:35,760 --> 00:03:38,250
+learn how things work by
+calling an external schematic.
+
+73
+00:03:38,669 --> 00:03:39,000
+The nes.
+
+74
+00:03:39,367 --> 00:03:41,920
+Module schematic
+and see what happens.
+
+75
+00:03:42,630 --> 00:03:43,680
+In the code shown here
+
+76
+00:03:43,950 --> 00:03:48,030
+we are using the external
+schematic function to
+
+77
+00:03:48,030 --> 00:03:49,440
+refer to an outside schematic
+in composing its rules
+
+78
+00:03:49,680 --> 00:03:51,759
+onto our customs schematic.
+
+79
+00:03:51,990 --> 00:03:54,570
+We also pass the options
+object in but for now
+
+80
+00:03:54,810 --> 00:03:58,860
+were temporarily marketing
+the name of the module to be
+
+81
+00:03:58,860 --> 00:04:01,330
+placeholder instead of it
+being passed and via user input.
+
+82
+00:04:02,130 --> 00:04:05,190
+Also make sure to notice the
+chain function call were using here
+
+83
+00:04:05,310 --> 00:04:09,160
+which lets us combine multiple
+rules if we need that ability.
+
+84
+00:04:09,270 --> 00:04:09,660
+Currently
+
+85
+00:04:09,900 --> 00:04:11,010
+we only have one rule
+
+86
+00:04:11,280 --> 00:04:13,500
+for calling chain is not
+require but eventually
+
+87
+00:04:13,740 --> 00:04:18,100
+we're going to add other custom operations
+applied here so we'll add those later on.
+
+88
+00:04:18,330 --> 00:04:18,930
+Lastly.
+
+89
+00:04:19,230 --> 00:04:23,550
+Let's prefix the tree parameter name with
+underscore just instruct typescript that
+
+90
+00:04:23,550 --> 00:04:26,339
+this argument is intentionally
+unused for the time being.
+
+91
+00:04:26,820 --> 00:04:29,250
+Otherwise the typescript
+compiler would throw an error at us
+
+92
+00:04:29,490 --> 00:04:31,000
+when building the schematic.
+
+93
+00:04:31,800 --> 00:04:35,460
+Rizzo now let's save our
+changes and before we test
+
+94
+00:04:35,520 --> 00:04:36,990
+everything out let's rename
+the inner schematics folder name
+
+95
+00:04:37,290 --> 00:04:39,180
+be configurable dash module.
+
+96
+00:04:39,542 --> 00:04:41,860
+Reflect our configuration file.
+
+97
+00:04:42,510 --> 00:04:45,900
+Now let's open up our terminals and and
+a separate terminal window navigate to the
+
+98
+00:04:45,900 --> 00:04:48,210
+schematics directory
+with cd schematics.
+
+99
+00:04:48,542 --> 00:04:49,350
+Then let's run
+
+100
+00:04:49,680 --> 00:04:50,700
+and p m run build.
+
+101
+00:04:51,120 --> 00:04:55,600
+Dash dash dash dash watch to
+build our schematics in watch mode.
+
+102
+00:04:56,160 --> 00:04:57,030
+Once it's complete
+
+103
+00:04:57,240 --> 00:05:00,360
+let's which to the original terminal
+window in execute the schematic with the
+
+104
+00:05:00,360 --> 00:05:03,880
+following command you can find
+below the course video was always.
+
+105
+00:05:04,320 --> 00:05:06,090
+Remember that
+instead of using and px
+
+106
+00:05:06,390 --> 00:05:09,720
+we could have installed the
+angular delicate schematic
+
+107
+00:05:09,720 --> 00:05:11,050
+seal like globally or
+locally within our project.
+
+108
+00:05:11,580 --> 00:05:12,360
+All right so
+
+109
+00:05:12,480 --> 00:05:15,780
+as we can see in our console are
+schematic executed in debug mode.
+
+110
+00:05:16,440 --> 00:05:20,730
+Debug mode results in
+the same behavior as if
+
+111
+00:05:20,730 --> 00:05:21,180
+we ran into schematic
+with the dry run flag.
+
+112
+00:05:21,540 --> 00:05:24,030
+Meaning that no changes
+get permitted to the file system.
+
+113
+00:05:24,510 --> 00:05:24,990
+Instead
+
+114
+00:05:25,230 --> 00:05:29,430
+we are shown the create
+update delete statuses of
+
+115
+00:05:29,430 --> 00:05:30,520
+files that will be affected
+with our schematic.
+
+116
+00:05:30,810 --> 00:05:35,280
+To turn debug mode off we could just pass
+the dash dash debug equals false flag but
+
+117
+00:05:35,280 --> 00:05:36,990
+since our schematic
+is not ready yet.
+
+118
+00:05:37,350 --> 00:05:38,639
+Let's wait to try this later on.
+
+119
+00:05:39,210 --> 00:05:43,590
+Otherwise things look just as we could have
+expected a new module named placeholder.
+
+120
+00:05:43,920 --> 00:05:46,290
+Would have been generated
+and the app module files
+
+121
+00:05:46,530 --> 00:05:47,700
+would be updated as well.
+
+122
+00:05:48,240 --> 00:05:51,783
+The external nest
+module schematic is doing
+
+123
+00:05:51,783 --> 00:05:52,050
+everything we could
+have expected it to do do
+
+124
+00:05:52,290 --> 00:05:52,620
+rate.
+
+125
+00:05:53,220 --> 00:05:56,580
+So we already know how to
+execute external schematics but now.
+
+126
+00:05:56,940 --> 00:06:00,310
+How can we accept parameters
+to control our schematic.
+
+127
+00:06:01,110 --> 00:06:01,890
+Well first
+
+128
+00:06:02,010 --> 00:06:06,090
+let's navigate to the
+collection Jason file in
+
+129
+00:06:06,120 --> 00:06:07,459
+at a new property to our
+schematic called schema.
+
+130
+00:06:07,500 --> 00:06:11,559
+Make equal to configurable dash
+module slashed schema that jaison.
+
+131
+00:06:12,060 --> 00:06:16,601
+Next let's create that scheme a file in
+the configurable dash module directory.
+
+132
+00:06:17,370 --> 00:06:18,270
+Inside this file
+
+133
+00:06:18,510 --> 00:06:20,380
+what's paste the
+following schema.
+
+134
+00:06:21,810 --> 00:06:22,410
+Like always
+
+135
+00:06:22,590 --> 00:06:25,150
+you can find the code
+here below the course video.
+
+136
+00:06:25,680 --> 00:06:28,390
+Alright let's break things
+down here at step by step.
+
+137
+00:06:28,980 --> 00:06:33,360
+The dollar schema key points to
+the jaison schema defining this format.
+
+138
+00:06:33,930 --> 00:06:38,280
+It is used by i didn't used
+to do auto-completion
+
+139
+00:06:38,280 --> 00:06:39,880
+tools for validation and
+it is entirely optional.
+
+140
+00:06:40,860 --> 00:06:44,050
+ID is a unique ID for this
+scheme and the collection.
+
+141
+00:06:44,460 --> 00:06:47,760
+Type is a descriptor for the
+type provided by the properties
+
+142
+00:06:47,880 --> 00:06:49,480
+object in our case.
+
+143
+00:06:49,626 --> 00:06:51,540
+Let's focus on the
+most important part here.
+
+144
+00:06:51,930 --> 00:06:52,890
+Properties object.
+
+145
+00:06:53,520 --> 00:06:56,590
+This object defines the available
+options for our schematic.
+
+146
+00:06:56,670 --> 00:06:59,070
+Each option associates
+a key with a type
+
+147
+00:06:59,340 --> 00:07:02,020
+description and
+of original alias.
+
+148
+00:07:02,490 --> 00:07:05,970
+The dollar default parameters tells us
+that it will assume that the first argument
+
+149
+00:07:06,000 --> 00:07:08,428
+given to this command is the
+value for the name property.
+
+150
+00:07:08,970 --> 00:07:11,700
+The type defines the shape
+of the value we expect.
+
+151
+00:07:12,060 --> 00:07:12,930
+In the description
+
+152
+00:07:13,170 --> 00:07:16,660
+is displayed when the user
+requests usage help for a schematic.
+
+153
+00:07:16,710 --> 00:07:20,279
+You could check out the angler documentation
+for additional customization for
+
+154
+00:07:20,280 --> 00:07:22,810
+schematic of options
+link below the video.
+
+155
+00:07:23,160 --> 00:07:26,040
+Here we specified that the
+required property his name.
+
+156
+00:07:26,370 --> 00:07:28,710
+Which determines the name
+of the module to be generated.
+
+157
+00:07:29,040 --> 00:07:32,910
+Will pass this option down to the underlying
+external nastiest modul schematic.
+
+158
+00:07:33,240 --> 00:07:35,800
+The show everything
+working here at full circle.
+
+159
+00:07:36,810 --> 00:07:39,930
+Not that you could of course at as
+many other properties as you need here
+
+160
+00:07:40,170 --> 00:07:43,870
+and creating schematics were just keeping
+things simple for learning purposes.
+
+161
+00:07:44,160 --> 00:07:47,890
+But save our changes open up our
+terminals and run the schematic again.
+
+162
+00:07:48,900 --> 00:07:52,740
+So as we can see the
+schematic seal i now prompts us
+
+163
+00:07:52,740 --> 00:07:53,850
+for the name that we want
+for the module will create.
+
+164
+00:07:54,210 --> 00:07:54,720
+However
+
+165
+00:07:54,930 --> 00:07:56,940
+since we haven't updated
+the actual schematic.
+
+166
+00:07:57,330 --> 00:08:00,360
+You can see that it still tries to
+generate the police holder module
+
+167
+00:08:00,570 --> 00:08:03,100
+instead of a module
+with the name we specify.
+
+168
+00:08:03,360 --> 00:08:04,020
+To fix this.
+
+169
+00:08:04,350 --> 00:08:07,410
+Let's open up the index js file
+again and start by declaring a new
+
+170
+00:08:07,590 --> 00:08:10,780
+configured module
+schematic options interface.
+
+171
+00:08:12,180 --> 00:08:16,110
+Next let's up the degenerate function
+signature to instead of using the type
+
+172
+00:08:16,230 --> 00:08:17,310
+any for options
+
+173
+00:08:17,610 --> 00:08:19,930
+to use our newly
+created interface.
+
+174
+00:08:21,000 --> 00:08:24,000
+And lastly instead of passing
+the hard-coded placeholder string.
+
+175
+00:08:24,360 --> 00:08:27,400
+Let's pass down the
+options dot name value.
+
+176
+00:08:29,280 --> 00:08:32,700
+But save our changes
+again open up our
+
+177
+00:08:32,701 --> 00:08:33,150
+terminals and run that
+schematic will more time
+
+178
+00:08:33,420 --> 00:08:35,590
+entering the name of recipes.
+
+179
+00:08:40,080 --> 00:08:44,470
+And voila as we can see a generated
+the recipes module now perfect.
+
+180
+00:08:44,610 --> 00:08:46,050
+All right for the next step
+
+181
+00:08:46,170 --> 00:08:50,370
+let's update our generator to also generate
+the module definition alongside the
+
+182
+00:08:50,370 --> 00:08:52,480
+module t s file
+that gets create.
+
+183
+00:08:52,560 --> 00:08:53,310
+Were achieved this.
+
+184
+00:08:53,730 --> 00:08:56,610
+Inside of are configurable
+dash modules schematic folder
+
+185
+00:08:56,910 --> 00:08:58,140
+let's create another directory
+
+186
+00:08:58,320 --> 00:08:59,741
+and caught files.
+
+187
+00:09:00,840 --> 00:09:04,703
+We have to use the files
+folder name because it will
+
+188
+00:09:04,703 --> 00:09:06,000
+be excluded from the
+typescript compilation by default
+
+189
+00:09:06,240 --> 00:09:09,821
+check the t s config Jason in
+the root of the project for more.
+
+190
+00:09:09,990 --> 00:09:10,650
+This folder
+
+191
+00:09:10,800 --> 00:09:14,460
+has to be excluded because we do
+not want to compile these template files.
+
+192
+00:09:14,850 --> 00:09:16,990
+You'll see why
+and just a moment.
+
+193
+00:09:17,730 --> 00:09:20,400
+Let's add one more nested
+folder inside of the files folder
+
+194
+00:09:20,520 --> 00:09:21,270
+with the name
+
+195
+00:09:21,510 --> 00:09:23,921
+underscore underscore
+name at dash
+
+196
+00:09:24,056 --> 00:09:24,450
+eyes
+
+197
+00:09:24,570 --> 00:09:26,170
+underscore underscore.
+
+198
+00:09:26,671 --> 00:09:31,020
+The w underscores is a
+delimiter which separates the
+
+199
+00:09:31,020 --> 00:09:31,890
+name variable from the
+rest of the normal string.
+
+200
+00:09:32,490 --> 00:09:34,560
+Dasher ice here
+is a helper function
+
+201
+00:09:34,830 --> 00:09:36,750
+which will receive the
+value of the name variable
+
+202
+00:09:37,020 --> 00:09:39,910
+in converted to a
+kebab case stream.
+
+203
+00:09:40,170 --> 00:09:40,860
+And lastly
+
+204
+00:09:41,040 --> 00:09:42,030
+the at symbol here
+
+205
+00:09:42,240 --> 00:09:45,660
+is a way of applying variables
+to help her function so in our case
+
+206
+00:09:45,930 --> 00:09:48,791
+were passing name
+and to dash rats.
+
+207
+00:09:49,080 --> 00:09:49,980
+Inside that folder
+
+208
+00:09:50,280 --> 00:09:51,390
+let's create a file.
+
+209
+00:09:51,810 --> 00:09:54,120
+Named w underscore name at dash
+
+210
+00:09:54,227 --> 00:09:54,540
+eyes
+
+211
+00:09:54,720 --> 00:09:55,650
+w underscore.
+
+212
+00:09:55,980 --> 00:10:00,851
+That module dash definition that t s
+and paste the following code inside.
+
+213
+00:10:01,856 --> 00:10:02,306
+I see
+
+214
+00:10:02,456 --> 00:10:06,056
+the code here is our
+regular template for configure
+
+215
+00:10:06,056 --> 00:10:06,896
+will modules we covered
+in a previous lesson.
+
+216
+00:10:07,466 --> 00:10:11,766
+Our goal is to auto generate
+that file alongside the module file.
+
+217
+00:10:11,966 --> 00:10:13,736
+Now onto our schematic function.
+
+218
+00:10:14,126 --> 00:10:18,456
+Said the following code to make
+sure includes this new folder and file.
+
+219
+00:10:18,776 --> 00:10:21,816
+And let's break everything
+down here line by line again.
+
+220
+00:10:22,676 --> 00:10:26,646
+Dot slash files is the location
+of the files we want to include.
+
+221
+00:10:27,236 --> 00:10:27,836
+Options.
+
+222
+00:10:28,136 --> 00:10:30,396
+Is the options pass
+into our schematic.
+
+223
+00:10:31,166 --> 00:10:35,846
+And strings is a
+collection of utility functions
+
+224
+00:10:35,846 --> 00:10:36,536
+such as dash eyes which
+we used just a moment ago
+
+225
+00:10:36,836 --> 00:10:38,968
+provided by the
+delicate schematics.
+
+226
+00:10:39,686 --> 00:10:43,376
+The template method
+generates our template based on
+
+227
+00:10:43,376 --> 00:10:44,636
+those options and string
+utilities passed down to her.
+
+228
+00:10:45,296 --> 00:10:47,276
+Next up we are going
+to call the move method
+
+229
+00:10:47,396 --> 00:10:52,566
+to move those files to a desired location
+which and our case is the so source folder.
+
+230
+00:10:52,976 --> 00:10:54,596
+Once we have the
+template source.
+
+231
+00:10:55,016 --> 00:10:58,356
+We can add it to the chain
+using the merge with function.
+
+232
+00:10:58,796 --> 00:11:02,766
+Merge with merges and input
+tree with these source passed in.
+
+233
+00:11:03,086 --> 00:11:06,326
+Remember all this is happening
+within the trees staged environment
+
+234
+00:11:06,506 --> 00:11:09,806
+to try to keep that in mind and think
+of what has happened there already
+
+235
+00:11:10,106 --> 00:11:13,566
+in what your desired outcome is
+whenever you're building schematics.
+
+236
+00:11:14,276 --> 00:11:15,266
+Let's save our changes.
+
+237
+00:11:15,716 --> 00:11:18,516
+Open up our terminals
+and run schematic again.
+
+238
+00:11:23,576 --> 00:11:24,697
+And voila.
+
+239
+00:11:24,776 --> 00:11:25,526
+As we can see
+
+240
+00:11:25,736 --> 00:11:30,566
+we have a new module dash name that
+module dash definition file auto generated
+
+241
+00:11:30,836 --> 00:11:31,836
+rate.
+
+242
+00:11:32,036 --> 00:11:35,486
+The last step we
+need is to configure our
+
+243
+00:11:35,486 --> 00:11:36,116
+schematic to automatically
+import that definition
+
+244
+00:11:36,416 --> 00:11:39,326
+into our module class and
+also make this class extend.
+
+245
+00:11:39,656 --> 00:11:41,796
+The configurable module class.
+
+246
+00:11:42,296 --> 00:11:44,366
+This part is going to be
+the most tricky one yet
+
+247
+00:11:44,546 --> 00:11:47,216
+as will have to operate
+on the typescript as tea
+
+248
+00:11:47,426 --> 00:11:50,076
+or abstract syntax
+tree directly.
+
+249
+00:11:50,276 --> 00:11:54,026
+Luckily we can leverage
+some of the existing as
+
+250
+00:11:54,027 --> 00:11:54,656
+to utilities provided by
+the angler schematics
+
+251
+00:11:54,956 --> 00:11:57,516
+which had helped make
+things somewhat easier.
+
+252
+00:11:57,716 --> 00:12:02,066
+Now that we will be using
+quite a bit of advanced
+
+253
+00:12:02,066 --> 00:12:03,386
+schematic utilities and methods
+and tools here from now on.
+
+254
+00:12:03,928 --> 00:12:06,536
+It's difficult to explain
+every aspect but hopefully
+
+255
+00:12:06,806 --> 00:12:08,126
+once it's all piece together
+
+256
+00:12:08,366 --> 00:12:10,016
+you have a good
+understanding of what's what
+
+257
+00:12:10,166 --> 00:12:12,696
+and how things are
+all tied together here.
+
+258
+00:12:13,316 --> 00:12:15,536
+So let's start by
+adding a new function
+
+259
+00:12:15,656 --> 00:12:17,336
+called update module file
+
+260
+00:12:17,516 --> 00:12:18,746
+that takes two parameters
+
+261
+00:12:18,896 --> 00:12:19,346
+tree
+
+262
+00:12:19,706 --> 00:12:23,786
+and the options object and then let's
+return the modified tree object back.
+
+263
+00:12:24,356 --> 00:12:25,376
+Inside this function.
+
+264
+00:12:25,766 --> 00:12:27,786
+Let's start by
+defining to constance.
+
+265
+00:12:27,896 --> 00:12:28,496
+Name
+
+266
+00:12:28,706 --> 00:12:30,236
+which is a dash
+your eyes the name
+
+267
+00:12:30,506 --> 00:12:34,535
+and module file path which is
+the path to the mall agile file.
+
+268
+00:12:34,796 --> 00:12:39,266
+Next using the tree
+object let's retrieve the
+
+269
+00:12:39,296 --> 00:12:40,296
+module foul content
+with the read text method.
+
+270
+00:12:40,826 --> 00:12:43,676
+Using module filepath
+and module foul content
+
+271
+00:12:43,976 --> 00:12:46,749
+as construct a new
+typescript source file.
+
+272
+00:12:47,486 --> 00:12:51,686
+Let's also make sure
+we import the typescript
+
+273
+00:12:51,686 --> 00:12:52,526
+compiler Apia itself
+using import star as ts.
+
+274
+00:12:52,886 --> 00:12:56,276
+Just to make sure we're
+using the same version
+
+275
+00:12:56,298 --> 00:12:57,298
+of typescript the
+schematic utility support.
+
+276
+00:12:57,776 --> 00:12:58,766
+Back to our function
+
+277
+00:12:59,006 --> 00:13:02,256
+with all that in place we
+can begin updating our tree.
+
+278
+00:13:02,726 --> 00:13:03,056
+First
+
+279
+00:13:03,176 --> 00:13:05,426
+let's call the tree dot
+begin update method.
+
+280
+00:13:05,936 --> 00:13:08,676
+Passing and module
+filepath as an argument.
+
+281
+00:13:08,906 --> 00:13:13,256
+Next up will use the
+insert import utility function
+
+282
+00:13:13,316 --> 00:13:14,996
+exported from the schematics
+slash angler slash utility.
+
+283
+00:13:15,326 --> 00:13:16,256
+Lush as t
+
+284
+00:13:16,376 --> 00:13:17,786
+dashed you tells package.
+
+285
+00:13:18,116 --> 00:13:19,836
+Passing and for arguments.
+
+286
+00:13:20,396 --> 00:13:21,686
+Typescript source file.
+
+287
+00:13:22,256 --> 00:13:23,886
+Or module filepath.
+
+288
+00:13:24,296 --> 00:13:27,716
+The item to import which is
+configurable module class in our case nice.
+
+289
+00:13:28,256 --> 00:13:31,687
+And the path to the file we
+want to import the item from.
+
+290
+00:13:32,246 --> 00:13:35,396
+As insert import returns
+a generic change object
+
+291
+00:13:35,666 --> 00:13:38,862
+we have to check if it's an
+instance of import change.
+
+292
+00:13:38,906 --> 00:13:39,536
+And if so
+
+293
+00:13:39,776 --> 00:13:41,156
+using the update recorder
+
+294
+00:13:41,396 --> 00:13:42,896
+and it's insert right method.
+
+295
+00:13:43,316 --> 00:13:47,546
+We can insert a new line at the
+insert import change that pos position.
+
+296
+00:13:47,906 --> 00:13:50,646
+With the insert in poor
+changed up to add content.
+
+297
+00:13:51,146 --> 00:13:53,636
+Know that to at is just a
+simple generated string
+
+298
+00:13:53,804 --> 00:13:55,746
+we want to insert in our case.
+
+299
+00:13:56,276 --> 00:14:00,806
+Lastly after the if condition let's commit
+the update using the commit update method
+
+300
+00:14:00,926 --> 00:14:01,886
+of the tree object
+
+301
+00:14:02,156 --> 00:14:04,746
+passing an update
+recorder as an argument.
+
+302
+00:14:05,306 --> 00:14:08,526
+Just a test everything out
+what's also add a console logging.
+
+303
+00:14:09,206 --> 00:14:10,136
+In before we finish
+
+304
+00:14:10,406 --> 00:14:14,036
+just make sure we actually
+use dysfunction so scroll
+
+305
+00:14:14,037 --> 00:14:15,296
+down to generate an ad
+update module file to the chain.
+
+306
+00:14:15,626 --> 00:14:16,626
+Great.
+
+307
+00:14:17,190 --> 00:14:21,336
+Make sure we save our changes open up
+our terminals and run the schematic again.
+
+308
+00:14:27,026 --> 00:14:28,916
+And voila as we can
+see in the console.
+
+309
+00:14:29,336 --> 00:14:31,346
+Our new import was
+added successfully
+
+310
+00:14:31,586 --> 00:14:32,586
+fantastic.
+
+311
+00:14:33,326 --> 00:14:34,376
+Last but not least.
+
+312
+00:14:34,706 --> 00:14:38,216
+We have to make sure
+they're module class actually
+
+313
+00:14:38,216 --> 00:14:39,356
+extends the configurable
+module class we just important.
+
+314
+00:14:39,776 --> 00:14:40,316
+Over this.
+
+315
+00:14:40,736 --> 00:14:44,876
+Let's first retrieve the class declaration
+note using the find nodes utility function
+
+316
+00:14:44,996 --> 00:14:46,716
+from anglers utilities.
+
+317
+00:14:48,416 --> 00:14:48,776
+Here
+
+318
+00:14:49,016 --> 00:14:51,956
+we're passing the typescript
+source file as the first argument
+
+319
+00:14:52,316 --> 00:14:57,696
+and the syntax kind or the type of a know
+that we're looking for as the second one.
+
+320
+00:14:58,346 --> 00:15:02,516
+Also as this function returns an array of
+notes and and our case where a hundred per
+
+321
+00:15:02,516 --> 00:15:05,006
+cent sure there's exactly
+one class in that file.
+
+322
+00:15:05,396 --> 00:15:07,166
+We can simply
+retrieved the first element.
+
+323
+00:15:07,526 --> 00:15:08,456
+With a re zero.
+
+324
+00:15:08,846 --> 00:15:12,536
+Will make sure to handle
+things accordingly here
+
+325
+00:15:12,536 --> 00:15:13,626
+when building your own
+schematics in the future.
+
+326
+00:15:13,886 --> 00:15:15,176
+Now it's update our file.
+
+327
+00:15:15,506 --> 00:15:18,146
+Let's use the update
+recorder to insert right again
+
+328
+00:15:18,566 --> 00:15:21,386
+and for the first argument
+we need to pass in the position
+
+329
+00:15:21,686 --> 00:15:24,636
+indicating where we
+need to put that new string.
+
+330
+00:15:25,376 --> 00:15:29,186
+Since we know that our classes empty
+meaning it doesn't have any methods.
+
+331
+00:15:29,636 --> 00:15:33,056
+We can just take the and
+property of the class note minus two
+
+332
+00:15:33,227 --> 00:15:34,496
+to get the desired position
+
+333
+00:15:34,796 --> 00:15:36,546
+to right before the brackets.
+
+334
+00:15:36,956 --> 00:15:39,926
+Know that this might not always be the
+case for whatever you might be building and
+
+335
+00:15:39,930 --> 00:15:41,786
+future schematics
+so just keep in mind.
+
+336
+00:15:42,146 --> 00:15:45,416
+You might need a little different logic
+here this was implemented on let's say a
+
+337
+00:15:45,626 --> 00:15:47,966
+existing modules that a
+user might already have
+
+338
+00:15:48,086 --> 00:15:49,416
+a code base.
+
+339
+00:15:49,496 --> 00:15:52,826
+Where the second
+argument let's passed a
+
+340
+00:15:52,826 --> 00:15:53,636
+stringer want to insert
+their which is extends
+
+341
+00:15:53,817 --> 00:15:55,747
+configurable module class.
+
+342
+00:15:56,156 --> 00:15:56,696
+And that's it.
+
+343
+00:15:57,356 --> 00:15:58,646
+Let's remove the console log
+
+344
+00:15:58,796 --> 00:16:02,156
+save our changes open up our
+terminals again and run the schematic.
+
+345
+00:16:02,576 --> 00:16:03,176
+This time
+
+346
+00:16:03,446 --> 00:16:04,196
+let's pass in.
+
+347
+00:16:04,556 --> 00:16:09,156
+Dash dash debug eagles false to actually
+apply the schematic to our project.
+
+348
+00:16:09,446 --> 00:16:10,076
+And voila
+
+349
+00:16:10,286 --> 00:16:10,826
+if we look.
+
+350
+00:16:11,216 --> 00:16:15,506
+We can see we have our recipes folder
+created with both the module definition file
+
+351
+00:16:15,896 --> 00:16:19,826
+and our recipes module x attending
+are generated configurable module class
+
+352
+00:16:19,946 --> 00:16:20,946
+fantastic.
+
+353
+00:16:21,956 --> 00:16:25,256
+Although things might have gotten a bit
+overwhelming near the end of this lesson as
+
+354
+00:16:25,256 --> 00:16:29,886
+we started to really deep dive into some
+advanced schematic use cases in utilities.
+
+355
+00:16:30,146 --> 00:16:31,526
+Hopefully you can see the power
+
+356
+00:16:31,826 --> 00:16:35,526
+and abilities you could have when working
+on schematics for your own organization.
+
+357
+00:16:36,596 --> 00:16:40,736
+Whether it's generating libraries
+microservices etc with batteries included.
+
+358
+00:16:41,066 --> 00:16:44,816
+Bill with of the important but boilerplate
+code that your organization needs
+
+359
+00:16:45,086 --> 00:16:47,396
+or maybe you need a schematic
+to handle something else important
+
+360
+00:16:47,606 --> 00:16:48,476
+the sky's the limit.
+
+361
+00:16:49,046 --> 00:16:50,066
+More inspiration
+
+362
+00:16:50,336 --> 00:16:54,026
+check out how the nest seal icicle medics
+are built themselves to get some ideas on
+
+363
+00:16:54,266 --> 00:16:56,496
+how to handle other
+tricky scenarios.
+

@@ -1,0 +1,938 @@
+﻿1
+00:00:00,900 --> 00:00:05,580
+Often times when building integration and
+generic libraries we require access to the
+
+2
+00:00:05,580 --> 00:00:08,910
+applications inversion of
+control or i o c container
+
+3
+00:00:09,210 --> 00:00:13,000
+in order to introspect all of the
+register providers and controllers.
+
+4
+00:00:13,410 --> 00:00:14,100
+For example
+
+5
+00:00:14,400 --> 00:00:18,602
+if we look at some
+of the official nest js
+
+6
+00:00:18,602 --> 00:00:18,900
+packages such as ness
+j a slash graft you well.
+
+7
+00:00:19,320 --> 00:00:22,590
+We will see that this pack which
+traverses and applications module graph
+
+8
+00:00:22,890 --> 00:00:23,730
+and providers
+
+9
+00:00:23,970 --> 00:00:28,530
+by analyzing their meta
+data to determine which
+
+10
+00:00:28,620 --> 00:00:29,950
+providers contain graft
+your specific meta data.
+
+11
+00:00:30,480 --> 00:00:34,890
+For instance the package checks of a
+classes annotated with the resolve decorator
+
+12
+00:00:35,130 --> 00:00:39,580
+and searches for methods decorated
+with the resolve field decorator as well.
+
+13
+00:00:39,840 --> 00:00:40,440
+Similarly
+
+14
+00:00:40,710 --> 00:00:43,111
+if we look at another
+nastiest package the nest
+
+15
+00:00:43,380 --> 00:00:44,550
+schedule or library.
+
+16
+00:00:44,910 --> 00:00:47,850
+Will notice of this package
+iterates through all providers as well.
+
+17
+00:00:48,240 --> 00:00:51,702
+Checking to see if any of them
+register schedule or methods.
+
+18
+00:00:51,780 --> 00:00:53,520
+Intervals or cron jobs.
+
+19
+00:00:54,000 --> 00:00:54,420
+So
+
+20
+00:00:54,660 --> 00:00:57,340
+let's learn how we could
+do similar things ourselves.
+
+21
+00:00:57,900 --> 00:01:01,110
+To help facilitate creating
+extensible modules and libraries.
+
+22
+00:01:01,440 --> 00:01:04,920
+Nest jazz exposes a module
+known as the discovery module
+
+23
+00:01:05,100 --> 00:01:07,240
+that will showcase
+in this lesson.
+
+24
+00:01:07,740 --> 00:01:12,180
+Let's recreate our own
+small scheduler like
+
+25
+00:01:12,180 --> 00:01:13,180
+library to help us put
+everything together.
+
+26
+00:01:13,320 --> 00:01:16,080
+But start things off by
+generating a scheduler module
+
+27
+00:01:16,290 --> 00:01:17,700
+using the nest jsc ally
+
+28
+00:01:17,970 --> 00:01:21,490
+it will use as a central point to
+help us understand everything.
+
+29
+00:01:21,900 --> 00:01:23,070
+In sight of this module.
+
+30
+00:01:23,430 --> 00:01:24,930
+Let's generate a single provider
+
+31
+00:01:25,170 --> 00:01:27,190
+in name of interval scheduler.
+
+32
+00:01:28,201 --> 00:01:32,110
+Will use this service to traverse
+the modules graph in ultimately.
+
+33
+00:01:32,190 --> 00:01:34,690
+Auto register any
+discovered intervals.
+
+34
+00:01:35,730 --> 00:01:40,060
+Let's open up that file and start by
+annotating it with the injectable decorator.
+
+35
+00:01:41,340 --> 00:01:41,790
+Next.
+
+36
+00:01:42,150 --> 00:01:46,630
+Let's make this class implement the
+an application bootstrap life cycle hook.
+
+37
+00:01:46,860 --> 00:01:51,460
+Our ID he should prompt us to implement
+the interface so let's go ahead and do it.
+
+38
+00:01:51,780 --> 00:01:53,520
+Moving on from here for a moment
+
+39
+00:01:53,850 --> 00:01:56,040
+but to navigate to our
+schedule or module file.
+
+40
+00:01:56,370 --> 00:01:58,200
+In register the
+interval scheduler
+
+41
+00:01:58,500 --> 00:01:59,740
+as a provider.
+
+42
+00:02:00,300 --> 00:02:04,020
+Let's also make sure to
+import the discovery module
+
+43
+00:02:04,080 --> 00:02:05,770
+from nastiest that we
+mentioned just a moment ago.
+
+44
+00:02:06,360 --> 00:02:06,690
+Great.
+
+45
+00:02:07,140 --> 00:02:08,980
+Actor are interval scheduler.
+
+46
+00:02:09,060 --> 00:02:13,840
+As inject a new service called discovery
+service using the standard approach.
+
+47
+00:02:15,360 --> 00:02:15,810
+Next.
+
+48
+00:02:16,230 --> 00:02:18,750
+Let's move onto the an
+application bootstrap method
+
+49
+00:02:19,050 --> 00:02:23,400
+and use the discovery
+service to retrieve a list
+
+50
+00:02:23,400 --> 00:02:24,400
+of all providers registered
+in our application.
+
+51
+00:02:25,230 --> 00:02:28,120
+Note that if we wanted to
+retrieve a list of all controllers.
+
+52
+00:02:28,260 --> 00:02:30,910
+We could instead use
+the get controllers method.
+
+53
+00:02:31,200 --> 00:02:33,570
+If we hover over the
+providers variable here.
+
+54
+00:02:33,930 --> 00:02:37,840
+We'll see that it's type is an
+array of instance rapper objects.
+
+55
+00:02:38,220 --> 00:02:39,120
+Instance rapper
+
+56
+00:02:39,330 --> 00:02:43,860
+is an internal nastiest
+wrapper class that
+
+57
+00:02:43,890 --> 00:02:44,890
+represents all controllers
+providers enhancers
+
+58
+00:02:45,000 --> 00:02:48,730
+in any thing that gets registered in
+nests inversion of control container.
+
+59
+00:02:49,020 --> 00:02:52,560
+This class exposes several
+methods but in the majority of cases.
+
+60
+00:02:52,890 --> 00:02:53,970
+Who won't need a lot of 'em.
+
+61
+00:02:54,720 --> 00:02:55,800
+Most are simply
+
+62
+00:02:55,920 --> 00:02:59,710
+needed and used by other
+internal nest packages and modules.
+
+63
+00:03:00,600 --> 00:03:02,220
+Though for
+demonstration purposes
+
+64
+00:03:02,430 --> 00:03:05,940
+as soon as the for each method on
+providers to iterate through this array
+
+65
+00:03:06,270 --> 00:03:08,700
+and then console log
+each providers token now.
+
+66
+00:03:09,420 --> 00:03:10,410
+Let's save our changes
+
+67
+00:03:10,650 --> 00:03:11,730
+open up our terminals
+
+68
+00:03:12,000 --> 00:03:14,050
+and see will get
+logged to our console.
+
+69
+00:03:15,180 --> 00:03:15,990
+As we can see.
+
+70
+00:03:16,320 --> 00:03:18,840
+Here is an entire list of
+everything in our application
+
+71
+00:03:19,110 --> 00:03:21,010
+from modules configurations.
+
+72
+00:03:21,301 --> 00:03:21,900
+Services
+
+73
+00:03:22,170 --> 00:03:24,430
+and even our intervals
+schedule or itself.
+
+74
+00:03:25,230 --> 00:03:26,610
+Act or interval scheduler.
+
+75
+00:03:26,970 --> 00:03:29,940
+So far we've learned how to
+retrieve a list of all provider rappers
+
+76
+00:03:30,240 --> 00:03:30,600
+but
+
+77
+00:03:30,840 --> 00:03:34,170
+how can we filter out
+some of those providers
+
+78
+00:03:34,170 --> 00:03:34,710
+for example by checking
+if they're annotated
+
+79
+00:03:34,890 --> 00:03:36,090
+with a specific decorator.
+
+80
+00:03:36,480 --> 00:03:39,460
+Similar to how nest does
+itself in certain packages.
+
+81
+00:03:40,380 --> 00:03:43,950
+Though before we
+continue let's start out by
+
+82
+00:03:44,010 --> 00:03:44,790
+creating a new decorator
+that we will search for
+
+83
+00:03:44,940 --> 00:03:47,190
+to learn more about how
+all this functionality works.
+
+84
+00:03:47,730 --> 00:03:49,720
+Inside our scheduler directory.
+
+85
+00:03:49,770 --> 00:03:53,220
+As create a new folder called
+decorators and side of this folder
+
+86
+00:03:53,460 --> 00:03:57,880
+let's create a new file and name
+of interval host decorator dot t s.
+
+87
+00:03:58,200 --> 00:03:59,040
+Inside this file.
+
+88
+00:03:59,430 --> 00:04:01,950
+A stickler a do inch
+yeovil host key constant
+
+89
+00:04:02,310 --> 00:04:03,930
+and make it equal
+to the string of
+
+90
+00:04:04,200 --> 00:04:05,190
+interval host key
+
+91
+00:04:05,460 --> 00:04:07,873
+which will use as
+are met a day to keep.
+
+92
+00:04:08,790 --> 00:04:09,750
+Below that constant.
+
+93
+00:04:10,080 --> 00:04:14,310
+Let's utilize the set meditate
+a function exported from
+
+94
+00:04:14,310 --> 00:04:16,020
+NASA has common and declare
+a new interval host decorator
+
+95
+00:04:16,230 --> 00:04:17,650
+as shown here.
+
+96
+00:04:18,150 --> 00:04:19,140
+A save our changes.
+
+97
+00:04:19,590 --> 00:04:24,000
+Open up our terminals
+and generate a new
+
+98
+00:04:24,000 --> 00:04:25,000
+module called cron
+using the and sgs the alive.
+
+99
+00:04:26,430 --> 00:04:27,270
+Then that module
+
+100
+00:04:27,540 --> 00:04:29,833
+has also generate
+a cron service.
+
+101
+00:04:31,560 --> 00:04:35,220
+In this newly generated
+service lets annotate the class
+
+102
+00:04:35,280 --> 00:04:37,360
+with the interval hosts
+decorator that we just created.
+
+103
+00:04:39,930 --> 00:04:40,930
+Great.
+
+104
+00:04:41,340 --> 00:04:42,570
+Now let's save our changes.
+
+105
+00:04:42,960 --> 00:04:45,360
+Which back to our interval
+scheduler class again
+
+106
+00:04:45,510 --> 00:04:49,500
+and let's start by injecting
+the reflector class as
+
+107
+00:04:49,501 --> 00:04:50,890
+the second dependency
+using the standard approach.
+
+108
+00:04:52,710 --> 00:04:54,120
+But this dependency injected.
+
+109
+00:04:54,450 --> 00:04:56,760
+Let's move onto the an
+application bootstrap method
+
+110
+00:04:57,030 --> 00:04:59,490
+and inside the providers
+that for each callback.
+
+111
+00:04:59,910 --> 00:05:03,970
+As retrieve the providers instance
+from the instance rapper object.
+
+112
+00:05:05,130 --> 00:05:08,440
+Let's make sure that the
+instance is a not know or undefined
+
+113
+00:05:08,580 --> 00:05:13,660
+and grabbed the instances prototype using
+the object i'd get prototype of function.
+
+114
+00:05:14,040 --> 00:05:18,630
+Next up let's make sure we
+add a condition checking of
+
+115
+00:05:18,630 --> 00:05:20,100
+both instance or prototype
+variables are not defined
+
+116
+00:05:20,460 --> 00:05:24,100
+and if that's the case let's return
+to prevent running for their coat.
+
+117
+00:05:24,330 --> 00:05:28,480
+Doing this as your useful to exclude
+value and factory providers as well.
+
+118
+00:05:28,920 --> 00:05:29,520
+Lastly.
+
+119
+00:05:29,850 --> 00:05:34,780
+Let's use the reflector instance in
+retrieve the instances meta data like so.
+
+120
+00:05:36,840 --> 00:05:38,340
+So if we get a value here.
+
+121
+00:05:38,670 --> 00:05:40,860
+Meaning that there's an
+interval decorator found
+
+122
+00:05:41,130 --> 00:05:44,320
+let's log the providers
+token down to our console.
+
+123
+00:05:45,360 --> 00:05:46,840
+At save our changes.
+
+124
+00:05:47,010 --> 00:05:50,700
+Open up our terminals and as we can
+see the only provider that got logged out.
+
+125
+00:05:51,240 --> 00:05:53,190
+His are annotated
+crown service great
+
+126
+00:05:53,370 --> 00:05:54,850
+a worked like a charm.
+
+127
+00:05:55,530 --> 00:05:56,040
+Alright
+
+128
+00:05:56,340 --> 00:05:59,910
+so as we already know how to
+access providers host class meta data.
+
+129
+00:06:00,420 --> 00:06:02,920
+How could we analyzed
+the providers methods.
+
+130
+00:06:03,300 --> 00:06:07,380
+Let's imagine that we'd want our interval
+scheduler to discover all methods annotated
+
+131
+00:06:07,380 --> 00:06:09,420
+with the interval
+decorator on its own.
+
+132
+00:06:09,930 --> 00:06:10,710
+And register them
+
+133
+00:06:11,010 --> 00:06:13,600
+as intervals
+automatically for us.
+
+134
+00:06:14,580 --> 00:06:16,230
+Since we don't have
+that decorator yet
+
+135
+00:06:16,380 --> 00:06:19,840
+let's go ahead and create that
+first before we continue further.
+
+136
+00:06:20,040 --> 00:06:22,560
+Let's create another new
+decorator named interval.
+
+137
+00:06:23,010 --> 00:06:24,150
+Just like we did before
+
+138
+00:06:24,390 --> 00:06:25,650
+and this time with a constant
+
+139
+00:06:25,770 --> 00:06:26,610
+interval key.
+
+140
+00:06:27,150 --> 00:06:28,920
+And when we
+declare our decorator.
+
+141
+00:06:29,280 --> 00:06:31,560
+Let's make sure it has
+a parameter named m s
+
+142
+00:06:31,770 --> 00:06:33,610
+which is of type number.
+
+143
+00:06:33,720 --> 00:06:37,770
+Let's never go back to
+our crown service and
+
+144
+00:06:37,770 --> 00:06:38,160
+declare a new method
+they're named every second.
+
+145
+00:06:38,610 --> 00:06:41,260
+Annotating it with our
+new interval decorator.
+
+146
+00:06:41,370 --> 00:06:42,540
+Passing in one thousand
+
+147
+00:06:42,660 --> 00:06:43,900
+as an argument.
+
+148
+00:06:44,520 --> 00:06:45,600
+Let's save our changes
+
+149
+00:06:45,870 --> 00:06:47,868
+and head back to
+the interval scheduler.
+
+150
+00:06:48,090 --> 00:06:49,980
+And let's inject yet
+another dependency.
+
+151
+00:06:50,370 --> 00:06:52,271
+Belt meta data scanner.
+
+152
+00:06:53,190 --> 00:06:53,640
+Next
+
+153
+00:06:53,880 --> 00:06:57,030
+let's use this new meta data
+Skinner right below are if condition.
+
+154
+00:06:57,480 --> 00:06:59,670
+Calling the get all
+method names method.
+
+155
+00:07:00,120 --> 00:07:03,400
+Passing the providers prototype
+function as an argument.
+
+156
+00:07:03,720 --> 00:07:08,310
+Next let's iterate through the method keys
+array and retrieve the interval meta data
+
+157
+00:07:08,340 --> 00:07:10,780
+using the reflector
+like we have previously.
+
+158
+00:07:11,475 --> 00:07:15,520
+And let's make sure to pass in the
+meth reference as the second argument.
+
+159
+00:07:15,690 --> 00:07:16,920
+Which we can grab thea
+
+160
+00:07:17,070 --> 00:07:18,940
+instance method key.
+
+161
+00:07:19,560 --> 00:07:20,280
+Like before.
+
+162
+00:07:20,670 --> 00:07:23,290
+Let's also make sure
+that it's not undefined.
+
+163
+00:07:24,000 --> 00:07:27,820
+This helps exclude methods that are
+not annotated with the interval decorator.
+
+164
+00:07:28,440 --> 00:07:29,970
+And last but not least
+
+165
+00:07:30,270 --> 00:07:33,690
+now that we've established that we're
+using the interval decorator on this method
+
+166
+00:07:33,930 --> 00:07:35,010
+and we found a function.
+
+167
+00:07:35,460 --> 00:07:37,200
+As register the actual interval
+
+168
+00:07:37,410 --> 00:07:40,210
+using the native
+set interval function.
+
+169
+00:07:41,250 --> 00:07:42,270
+Let's save our changes.
+
+170
+00:07:42,750 --> 00:07:45,460
+Open up our terminals and
+take a look at our console.
+
+171
+00:07:46,170 --> 00:07:47,460
+And as we could have expected.
+
+172
+00:07:47,850 --> 00:07:48,690
+We can see the
+
+173
+00:07:48,930 --> 00:07:50,970
+this will be logged
+every second message
+
+174
+00:07:51,090 --> 00:07:53,830
+is being displayed in
+our console every second.
+
+175
+00:07:54,120 --> 00:07:56,110
+Everything worked
+perfectly great.
+
+176
+00:07:56,160 --> 00:07:58,870
+One tiny improvement
+before we finish though.
+
+177
+00:07:59,400 --> 00:08:02,760
+We always want to
+make sure we clean up all
+
+178
+00:08:02,760 --> 00:08:03,760
+resources when we
+terminate or applications.
+
+179
+00:08:03,990 --> 00:08:07,410
+Let's make sure we implement the
+an application shut down life cycle hook
+
+180
+00:08:07,830 --> 00:08:10,450
+and close all registered
+intervals there.
+
+181
+00:08:10,620 --> 00:08:14,740
+So let's start by first implementing
+the an application shut down interface.
+
+182
+00:08:15,060 --> 00:08:17,951
+And then declare the an
+application shut down method.
+
+183
+00:08:18,300 --> 00:08:21,690
+Let's leave it empty for
+now as we don't keep
+
+184
+00:08:21,690 --> 00:08:22,680
+track of registered
+intervals in our class just yet
+
+185
+00:08:23,010 --> 00:08:24,940
+but will implement
+that right now.
+
+186
+00:08:25,260 --> 00:08:29,790
+As that a new class
+property called intervals
+
+187
+00:08:29,880 --> 00:08:30,880
+making it of type
+know js dot timer array.
+
+188
+00:08:31,470 --> 00:08:35,430
+And inside of our for
+each callback function let's
+
+189
+00:08:35,430 --> 00:08:37,274
+make sure we add the
+interval we create to data array.
+
+190
+00:08:37,590 --> 00:08:38,190
+Lastly.
+
+191
+00:08:38,550 --> 00:08:40,830
+Let's head back to our an
+application shut down method
+
+192
+00:08:40,950 --> 00:08:44,640
+and make sure we clear all the intervals
+looping through everything in the array
+
+193
+00:08:45,000 --> 00:08:48,160
+and calling the clear interval
+method on each iteration.
+
+194
+00:08:49,890 --> 00:08:52,050
+So we've covered
+a lot in this lesson.
+
+195
+00:08:52,560 --> 00:08:56,400
+And although we
+created just a simple utility
+
+196
+00:08:56,400 --> 00:08:57,760
+decorator for easily turning
+methods into intervals.
+
+197
+00:08:57,900 --> 00:09:00,120
+Hopefully you can see the
+power of what we've accomplished
+
+198
+00:09:00,450 --> 00:09:04,800
+and how you could add
+much more intensive or
+
+199
+00:09:04,800 --> 00:09:05,800
+useful functionality in
+your future applications.
+
+200
+00:09:06,000 --> 00:09:09,190
+Utilizing the same
+strategies we put to use here.
+

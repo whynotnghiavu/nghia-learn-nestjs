@@ -1,0 +1,100 @@
+﻿1
+00:00:00,990 --> 00:00:05,220
+Before we kick things off let's start off
+by generating an empty nest js application
+
+2
+00:00:05,520 --> 00:00:08,710
+just the we have something we
+can work with in the following lessons.
+
+3
+00:00:08,760 --> 00:00:10,050
+Let's head over
+to our terminals.
+
+4
+00:00:10,440 --> 00:00:12,510
+In enter into the
+nest new command.
+
+5
+00:00:12,930 --> 00:00:15,330
+Calling our project
+advanced dash concepts
+
+6
+00:00:15,480 --> 00:00:17,080
+or whatever you wish.
+
+7
+00:00:17,550 --> 00:00:19,480
+Once everything
+finishes installing.
+
+8
+00:00:19,650 --> 00:00:24,510
+Let's cd or change directory into our
+newly created application by entering cd
+
+9
+00:00:24,750 --> 00:00:26,621
+advanced dash concepts.
+
+10
+00:00:27,930 --> 00:00:29,790
+With our initial
+starter in place
+
+11
+00:00:29,940 --> 00:00:32,050
+let's generate a
+single resource.
+
+12
+00:00:32,280 --> 00:00:35,200
+With nest g resource
+that we will call coffees.
+
+13
+00:00:35,251 --> 00:00:38,350
+Miss the we have something to
+operate on throughout the course.
+
+14
+00:00:38,700 --> 00:00:43,300
+Will use the auto generated module
+service and controller in future lessons.
+
+15
+00:00:43,470 --> 00:00:43,860
+Great.
+
+16
+00:00:44,310 --> 00:00:47,640
+With all the some place
+we can now start our
+
+17
+00:00:47,670 --> 00:00:48,690
+application in development
+mode owed with n p m run
+
+18
+00:00:48,870 --> 00:00:50,620
+start Colin depth.
+
+19
+00:00:52,350 --> 00:00:56,280
+As always our application will now
+be available on port three thousand
+
+20
+00:00:56,460 --> 00:00:57,180
+and there we have it
+
+21
+00:00:57,360 --> 00:00:59,770
+were all set to continue
+moving forward.
+

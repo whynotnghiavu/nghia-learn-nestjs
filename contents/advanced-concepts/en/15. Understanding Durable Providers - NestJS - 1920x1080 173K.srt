@@ -1,0 +1,238 @@
+﻿1
+00:00:00,871 --> 00:00:04,710
+Requests go providers can
+sometimes lead to increased latency
+
+2
+00:00:04,710 --> 00:00:06,570
+since we're having at least
+one request to go provider
+
+3
+00:00:06,810 --> 00:00:09,540
+injected into let's say a
+controller instance or deeper
+
+4
+00:00:09,720 --> 00:00:11,190
+inject into one
+of its providers.
+
+5
+00:00:11,520 --> 00:00:13,470
+Makes the controller
+request scoped as well.
+
+6
+00:00:13,890 --> 00:00:16,380
+That means it must be
+recreated or instantiated
+
+7
+00:00:16,650 --> 00:00:20,050
+for each individual request an
+garbage collected afterwards.
+
+8
+00:00:20,730 --> 00:00:24,539
+For instance for thirty thousand requests
+in parallel there will be thirty thousand
+
+9
+00:00:24,570 --> 00:00:26,340
+ephemeral instances
+of the controller
+
+10
+00:00:26,550 --> 00:00:28,374
+and it's requests go providers.
+
+11
+00:00:28,950 --> 00:00:33,060
+Having a common
+provider that most providers
+
+12
+00:00:33,060 --> 00:00:33,600
+depend on for example
+a database connection.
+
+13
+00:00:33,990 --> 00:00:37,350
+Automatically converts all those
+providers to requests go providers as well.
+
+14
+00:00:37,770 --> 00:00:40,890
+As compose a challenge and
+multi-tenant applications for for example
+
+15
+00:00:41,074 --> 00:00:44,550
+especially for those the have a central
+request scope data source provider
+
+16
+00:00:44,790 --> 00:00:47,280
+that grabs headers tokens
+from their quest object
+
+17
+00:00:47,640 --> 00:00:48,780
+and based on those values
+
+18
+00:00:49,050 --> 00:00:51,420
+retrieves the corresponding
+database connection schema
+
+19
+00:00:51,540 --> 00:00:53,410
+specific to that tenant.
+
+20
+00:00:53,760 --> 00:00:54,420
+For instance
+
+21
+00:00:54,660 --> 00:00:57,900
+let's say you have an application
+alternately used by ten different customers.
+
+22
+00:00:58,230 --> 00:01:00,720
+Each customer could have
+its own dedicated dataset arts
+
+23
+00:01:00,990 --> 00:01:02,550
+and you want to
+make sure customer a
+
+24
+00:01:02,820 --> 00:01:05,351
+will never be able to reach
+customer bees database.
+
+25
+00:01:05,430 --> 00:01:08,372
+One way to achieve this could
+be to declare a request scope data
+
+26
+00:01:08,610 --> 00:01:09,180
+provider
+
+27
+00:01:09,449 --> 00:01:12,780
+a based on the request object
+determines who the current customers
+
+28
+00:01:13,050 --> 00:01:14,790
+and retrieves it's
+corresponding database
+
+29
+00:01:15,210 --> 00:01:15,540
+but
+
+30
+00:01:15,810 --> 00:01:19,680
+as we said a major downside
+to this approach is that
+
+31
+00:01:19,680 --> 00:01:20,400
+since most likely a large
+chunk of your applications
+
+32
+00:01:20,640 --> 00:01:21,060
+opponents
+
+33
+00:01:21,300 --> 00:01:22,860
+rely on the data source provider
+
+34
+00:01:23,130 --> 00:01:25,410
+it will implicitly become
+request scoped as well
+
+35
+00:01:25,650 --> 00:01:29,560
+and therefore you will undoubtedly
+see an impact in your apps performance.
+
+36
+00:01:29,850 --> 00:01:30,150
+But
+
+37
+00:01:30,390 --> 00:01:32,080
+what if we had
+a better solution.
+
+38
+00:01:33,030 --> 00:01:37,410
+Let's say that we only
+have ten customers can we
+
+39
+00:01:37,410 --> 00:01:37,890
+have ten individual DEA
+subtrees per customer.
+
+40
+00:01:38,250 --> 00:01:41,290
+Instead of recreating
+each tree per request.
+
+41
+00:01:41,520 --> 00:01:44,820
+Well if your providers don't rely
+on any property that's truly unique
+
+42
+00:01:45,120 --> 00:01:46,530
+for each consecutive request
+
+43
+00:01:46,830 --> 00:01:51,390
+for example request view
+ids but instead there are
+
+44
+00:01:51,390 --> 00:01:52,290
+some specific attributes
+that led us aggregate them.
+
+45
+00:01:52,710 --> 00:01:57,160
+The we have no reason to recreate the
+DEA subtree on every incoming request.
+
+46
+00:01:57,540 --> 00:01:59,820
+This is exactly where durable
+providers come in handy.
+
+47
+00:02:00,420 --> 00:02:04,200
+In the next two lessons will show you how
+to leverage durable provider futures when
+
+48
+00:02:04,200 --> 00:02:05,880
+implementing to
+common use cases.
+
+49
+00:02:06,330 --> 00:02:07,470
+Internationalization
+
+50
+00:02:07,800 --> 00:02:09,040
+and multi-tenancy.
+

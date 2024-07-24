@@ -1,0 +1,252 @@
+﻿1
+00:00:01,140 --> 00:00:02,010
+Multi-tenancy
+
+2
+00:00:02,130 --> 00:00:05,370
+is an architecture in which a single
+instance of a software application
+
+3
+00:00:05,520 --> 00:00:06,900
+serves multiple tenants
+
+4
+00:00:07,110 --> 00:00:07,770
+or customers.
+
+5
+00:00:08,250 --> 00:00:08,940
+Each tenant.
+
+6
+00:00:09,270 --> 00:00:10,440
+As its own set of data
+
+7
+00:00:10,620 --> 00:00:14,670
+as a major security concern is data
+partitioning across accounts or tenants.
+
+8
+00:00:15,180 --> 00:00:15,780
+For example
+
+9
+00:00:16,080 --> 00:00:19,470
+users from tenant a should not be
+able to access data from tenant be
+
+10
+00:00:19,684 --> 00:00:21,160
+advice for ursa.
+
+11
+00:00:21,450 --> 00:00:25,410
+The most common use case for multi-tenant
+systems are sas based applications
+
+12
+00:00:25,650 --> 00:00:27,630
+which was different
+levels of data isolation.
+
+13
+00:00:27,960 --> 00:00:29,950
+Depending on the
+domain of the application.
+
+14
+00:00:30,390 --> 00:00:33,970
+Let's start by going through the most common
+techniques for blending multi-tenancy.
+
+15
+00:00:34,620 --> 00:00:35,940
+In the silo strategy.
+
+16
+00:00:36,270 --> 00:00:38,400
+Where have a separate
+database instance per tenant.
+
+17
+00:00:38,940 --> 00:00:42,480
+This approach provides
+a strict data separation at
+
+18
+00:00:42,480 --> 00:00:43,710
+the expense of both
+higher infrastructure costs.
+
+19
+00:00:44,070 --> 00:00:48,090
+Any more complicated tenants set up because
+you will have to provision and manage a
+
+20
+00:00:48,090 --> 00:00:51,850
+new database instance for each
+tenant the onboard your sas offering.
+
+21
+00:00:52,620 --> 00:00:56,310
+The nature of a single-tenant
+silo means you're never
+
+22
+00:00:56,310 --> 00:00:57,270
+sharing resources but as
+we mentioned of course.
+
+23
+00:00:57,600 --> 00:00:59,324
+This comes with
+price and concerns.
+
+24
+00:01:00,240 --> 00:01:01,200
+In the pool model.
+
+25
+00:01:01,650 --> 00:01:03,720
+All tenants share one
+database instance.
+
+26
+00:01:04,260 --> 00:01:05,070
+In this approach.
+
+27
+00:01:05,460 --> 00:01:07,860
+Data for all the
+customers said side by side
+
+28
+00:01:08,340 --> 00:01:11,130
+but each table or view
+contains a partitioning g
+
+29
+00:01:11,400 --> 00:01:14,430
+usually the tenant
+identifier aka a tenant ID
+
+30
+00:01:14,700 --> 00:01:17,110
+which we used to
+filter the data by.
+
+31
+00:01:17,220 --> 00:01:19,590
+The pool model uses
+resources more efficiently
+
+32
+00:01:19,890 --> 00:01:21,690
+save the most an
+operational costs
+
+33
+00:01:21,990 --> 00:01:23,790
+a reduces your
+infrastructure overhead.
+
+34
+00:01:24,210 --> 00:01:24,930
+On the other hand
+
+35
+00:01:25,140 --> 00:01:27,000
+there's no separation
+of tenant data
+
+36
+00:01:27,120 --> 00:01:30,690
+and there's a risk that
+data may lead to other
+
+37
+00:01:30,690 --> 00:01:31,440
+customers if we forget
+to apply the query filter
+
+38
+00:01:31,680 --> 00:01:35,770
+whether it's an additional where
+clause or a local per transaction variable.
+
+39
+00:01:37,140 --> 00:01:39,400
+And lastly the bridge strategy.
+
+40
+00:01:39,810 --> 00:01:43,830
+In this approach we
+share the same database
+
+41
+00:01:43,830 --> 00:01:45,070
+instance but use a different
+schema for each tenant.
+
+42
+00:01:45,120 --> 00:01:48,630
+Scheme us are technically
+the same for all tenants
+
+43
+00:01:48,630 --> 00:01:49,470
+the same tables and
+constraint definitions for all
+
+44
+00:01:49,920 --> 00:01:52,540
+but they remain
+isolated from each other.
+
+45
+00:01:52,770 --> 00:01:56,825
+This strategy makes
+sense if you have a few high
+
+46
+00:01:56,850 --> 00:01:57,690
+value tenants using
+your busy mr business sas
+
+47
+00:01:57,840 --> 00:02:02,340
+otherwise you might
+be best using the pulling
+
+48
+00:02:02,348 --> 00:02:03,580
+strategy augmented with
+rls or row level security.
+
+49
+00:02:03,930 --> 00:02:05,610
+Regardless of which
+approach you choose
+
+50
+00:02:05,730 --> 00:02:09,300
+for your application but will
+showcase in the next lesson
+
+51
+00:02:09,300 --> 00:02:11,070
+should be helpful to
+understand how durable providers
+
+52
+00:02:11,280 --> 00:02:11,850
+can benefit
+
+53
+00:02:12,030 --> 00:02:14,650
+your future multi-tenant
+ness js applications.
+
