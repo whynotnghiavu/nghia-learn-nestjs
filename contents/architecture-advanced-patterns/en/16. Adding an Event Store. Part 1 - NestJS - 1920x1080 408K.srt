@@ -1,0 +1,1886 @@
+﻿1
+00:00:00,900 --> 00:00:01,800
+In events store
+
+2
+00:00:01,920 --> 00:00:05,560
+is designed to be the source
+of truth for the state of a system.
+
+3
+00:00:05,760 --> 00:00:10,470
+It is an append only
+log of events that can be
+
+4
+00:00:10,470 --> 00:00:11,858
+used to reconstruct the
+state at any point in time.
+
+5
+00:00:12,660 --> 00:00:17,070
+Now event store is nothing
+more than just a fancy
+
+6
+00:00:17,070 --> 00:00:18,240
+name for a database that
+stores events which means
+
+7
+00:00:18,510 --> 00:00:20,610
+we can practically use
+any database we want.
+
+8
+00:00:21,060 --> 00:00:24,040
+As long as it meets all the
+requirements for our application.
+
+9
+00:00:24,990 --> 00:00:27,118
+For example we
+could use mongo db
+
+10
+00:00:27,330 --> 00:00:32,160
+post grass Cassandra or
+even a kafka message broker
+
+11
+00:00:32,160 --> 00:00:33,460
+with persistent storage
+which is an event log.
+
+12
+00:00:33,930 --> 00:00:37,020
+While kafka was not specifically
+designed for event sourcing.
+
+13
+00:00:37,410 --> 00:00:39,000
+Its features and characteristics
+
+14
+00:00:39,180 --> 00:00:41,580
+it a suitable choice for
+managing events streams
+
+15
+00:00:41,760 --> 00:00:43,450
+and event driven architectures.
+
+16
+00:00:43,890 --> 00:00:44,460
+Although
+
+17
+00:00:44,700 --> 00:00:46,950
+there's a few things to keep
+in mind when you said kafka
+
+18
+00:00:47,070 --> 00:00:51,580
+for example who would need to ensure
+we have the correct ordering of events etc.
+
+19
+00:00:52,770 --> 00:00:57,030
+There are also specialized databases that
+are designed specifically for event source
+
+20
+00:00:57,270 --> 00:00:58,380
+such as the events store
+
+21
+00:00:58,530 --> 00:00:59,530
+be.
+
+22
+00:00:59,610 --> 00:01:03,420
+A provides a number of useful features
+out of the box such as storing events
+
+23
+00:01:03,630 --> 00:01:06,750
+in ordered streams and providing
+a way to filter them by type.
+
+24
+00:01:07,200 --> 00:01:09,790
+Storing their meta
+data and much more.
+
+25
+00:01:09,990 --> 00:01:10,800
+On the downside
+
+26
+00:01:11,070 --> 00:01:13,830
+events thirty db as not as
+popular as other databases
+
+27
+00:01:14,010 --> 00:01:17,890
+so might be difficult to find
+resources and support when needed.
+
+28
+00:01:18,210 --> 00:01:19,050
+In this lesson
+
+29
+00:01:19,230 --> 00:01:23,760
+will learn how to implement
+event sourcing in our
+
+30
+00:01:23,790 --> 00:01:24,810
+nest js application using
+mongo db from the ground up
+
+31
+00:01:24,960 --> 00:01:28,660
+but just remembered that you can use
+any database of your choice of the future.
+
+32
+00:01:29,280 --> 00:01:32,250
+Since we're already using
+mongo db for our read side.
+
+33
+00:01:32,610 --> 00:01:35,350
+We won't even have to install
+any additional dependencies.
+
+34
+00:01:36,390 --> 00:01:39,390
+Remember the concepts and
+patterns will cover in this lesson
+
+35
+00:01:39,541 --> 00:01:43,170
+are applicable to any data store and
+can be easily adapted to your needs.
+
+36
+00:01:43,500 --> 00:01:43,980
+All right.
+
+37
+00:01:44,355 --> 00:01:45,610
+Let's get started.
+
+38
+00:01:45,900 --> 00:01:49,020
+Let's first at a new docker
+service to our docker compose file.
+
+39
+00:01:49,470 --> 00:01:50,100
+Will call it
+
+40
+00:01:50,322 --> 00:01:52,180
+event dash store.
+
+41
+00:01:53,400 --> 00:01:57,270
+It's important to note
+here that even though we
+
+42
+00:01:57,270 --> 00:01:58,420
+already have a mongo
+db service in our dockerfile.
+
+43
+00:01:58,590 --> 00:02:00,000
+We need to add a new one
+
+44
+00:02:00,120 --> 00:02:03,130
+that we use specifically
+for storing events.
+
+45
+00:02:03,450 --> 00:02:04,050
+Remember
+
+46
+00:02:04,320 --> 00:02:08,817
+this is because these
+two databases which
+
+47
+00:02:08,820 --> 00:02:09,210
+facilitate the read side
+and the events or side.
+
+48
+00:02:09,540 --> 00:02:10,950
+Are fundamentally different
+
+49
+00:02:11,220 --> 00:02:13,060
+and serve different purposes.
+
+50
+00:02:13,830 --> 00:02:18,270
+Also as we already mentioned in previous
+lesson in a real world application the read
+
+51
+00:02:18,271 --> 00:02:23,350
+side and right side services would and
+ideally should be deployed separately.
+
+52
+00:02:23,520 --> 00:02:25,690
+Instead of being part
+of the same application.
+
+53
+00:02:26,040 --> 00:02:29,901
+In this course we've
+decided to keep them together
+
+54
+00:02:29,901 --> 00:02:30,780
+in this project for
+simplicity's sake of horse.
+
+55
+00:02:31,351 --> 00:02:35,040
+Is to avoid introducing concepts that
+are relevant to what we're trying to learn.
+
+56
+00:02:35,490 --> 00:02:38,380
+Such as mon repos code
+sharing microservices
+
+57
+00:02:38,610 --> 00:02:40,480
+message brokers etc.
+
+58
+00:02:41,070 --> 00:02:43,930
+If you're interested in want to
+learn more about these topics.
+
+59
+00:02:43,980 --> 00:02:47,560
+Find out more in our dedicated
+microservices course extension.
+
+60
+00:02:48,000 --> 00:02:49,770
+Back to our docker
+compose file here.
+
+61
+00:02:50,310 --> 00:02:52,590
+What's also different bought
+this service that we just added
+
+62
+00:02:52,860 --> 00:02:54,480
+is that we're using
+a different port.
+
+63
+00:02:54,840 --> 00:02:56,100
+Two seven oh one eight
+
+64
+00:02:56,310 --> 00:02:58,480
+because otherwise
+we'd run into conflicts.
+
+65
+00:02:58,710 --> 00:03:02,310
+And we're also using a different
+command to stay dart the mongo db server.
+
+66
+00:03:02,760 --> 00:03:03,540
+Or passing the
+
+67
+00:03:03,693 --> 00:03:04,920
+rebel set flag
+
+68
+00:03:05,220 --> 00:03:08,580
+to enable replication and
+specify the name of the replica set.
+
+69
+00:03:08,970 --> 00:03:11,552
+Vf event store rebel set.
+
+70
+00:03:12,030 --> 00:03:16,440
+This is required as will
+be using mongo db change
+
+71
+00:03:16,440 --> 00:03:17,280
+streams to listen for
+changes in the event store
+
+72
+00:03:17,550 --> 00:03:20,020
+and the only work
+with replica sets.
+
+73
+00:03:20,490 --> 00:03:23,730
+Were also mounting a new file
+called events door mongo a net.
+
+74
+00:03:24,212 --> 00:03:26,220
+The docker entry point in it db
+
+75
+00:03:26,370 --> 00:03:27,370
+directory.
+
+76
+00:03:27,780 --> 00:03:30,990
+This file will be executed
+when the container is
+
+77
+00:03:30,990 --> 00:03:32,490
+started it will be used
+to initialize the data a's.
+
+78
+00:03:32,850 --> 00:03:36,970
+Let's go ahead and create this
+file inside of the new scripts director.
+
+79
+00:03:43,500 --> 00:03:45,690
+We don't need to pass
+any configuration here
+
+80
+00:03:45,840 --> 00:03:49,270
+since will only have a
+single note in the replica set.
+
+81
+00:03:49,740 --> 00:03:51,270
+With this service and place.
+
+82
+00:03:51,630 --> 00:03:56,020
+We can now run docker compose
+up dashti to start the events thorpe.
+
+83
+00:03:56,550 --> 00:03:56,940
+Great.
+
+84
+00:03:57,540 --> 00:03:59,160
+Now that we have our
+events or up and running
+
+85
+00:03:59,460 --> 00:04:03,480
+what's navigate to
+the core directory and
+
+86
+00:04:03,485 --> 00:04:04,230
+create a new file they're
+called core constance
+
+87
+00:04:04,470 --> 00:04:06,131
+with the following concept.
+
+88
+00:04:07,620 --> 00:04:11,550
+We will use this constant
+to register a separate
+
+89
+00:04:11,552 --> 00:04:12,552
+mongo db connection
+for the event store.
+
+90
+00:04:12,750 --> 00:04:15,930
+The reason we're doing this is because
+we want to maintain two different mongo db
+
+91
+00:04:15,930 --> 00:04:17,560
+connections that
+our application.
+
+92
+00:04:17,880 --> 00:04:18,960
+One for the reside
+
+93
+00:04:19,200 --> 00:04:20,980
+in one for the event store.
+
+94
+00:04:21,030 --> 00:04:23,590
+That achieve that we need to
+give them different namespaces.
+
+95
+00:04:24,720 --> 00:04:25,200
+Next
+
+96
+00:04:25,320 --> 00:04:27,090
+let's head over to
+the core module file
+
+97
+00:04:27,210 --> 00:04:29,380
+an import the mongoose module.
+
+98
+00:04:29,820 --> 00:04:32,460
+Know that we're passing the
+connection name option here.
+
+99
+00:04:32,762 --> 00:04:34,900
+Give this connection
+a different namespace.
+
+100
+00:04:35,430 --> 00:04:38,460
+Or also setting the direct
+connection option to true.
+
+101
+00:04:38,910 --> 00:04:41,800
+As we need to connect
+to local replica sets.
+
+102
+00:04:43,170 --> 00:04:44,460
+Without this option enabled.
+
+103
+00:04:44,790 --> 00:04:48,850
+You may run into errors when running your
+events door inside of a docker container.
+
+104
+00:04:49,170 --> 00:04:53,280
+Also since in this course we won't be
+implementing an in-memory events store
+
+105
+00:04:53,520 --> 00:04:57,720
+we just imported the
+mongoose module in a
+
+106
+00:04:57,720 --> 00:04:58,720
+static configuration
+object of the core module.
+
+107
+00:04:58,920 --> 00:05:02,280
+If you want to practice everything you
+learned in the hexagonal architecture section.
+
+108
+00:05:02,670 --> 00:05:06,820
+You can try to implement a swappable
+in memory of Ben store on your own.
+
+109
+00:05:07,230 --> 00:05:08,010
+Right moving on.
+
+110
+00:05:08,700 --> 00:05:10,830
+Now that we have our
+events door connection setup.
+
+111
+00:05:11,370 --> 00:05:15,420
+Let's create a new module
+called shared that will
+
+112
+00:05:15,420 --> 00:05:16,420
+contain all the shared
+code for our application.
+
+113
+00:05:16,890 --> 00:05:20,610
+You may be asking
+yourself why are we going to
+
+114
+00:05:20,610 --> 00:05:21,330
+use the existing common
+folder for this purpose.
+
+115
+00:05:21,780 --> 00:05:22,980
+Well the reason is
+
+116
+00:05:23,220 --> 00:05:26,260
+that this is a common pattern
+in ness Jess applications.
+
+117
+00:05:26,370 --> 00:05:28,150
+Because the common directory.
+
+118
+00:05:28,380 --> 00:05:29,280
+To be met the for
+
+119
+00:05:29,490 --> 00:05:32,350
+containing interfaces
+abstract classes.
+
+120
+00:05:32,430 --> 00:05:35,080
+Commonly used pipes
+guards interceptors
+
+121
+00:05:35,310 --> 00:05:38,520
+and basically any components that
+can be shared across multiple modules
+
+122
+00:05:38,850 --> 00:05:39,930
+and at the same time.
+
+123
+00:05:40,560 --> 00:05:43,960
+All of which do not belong
+to any specific module.
+
+124
+00:05:44,280 --> 00:05:48,240
+Whereas shared on the other hand will
+mostly contained components registered and
+
+125
+00:05:48,240 --> 00:05:50,370
+exported from a
+dedicated shared module
+
+126
+00:05:50,520 --> 00:05:52,630
+that were going to
+create and just a moment.
+
+127
+00:05:52,800 --> 00:05:54,720
+While these concepts
+may seem similar
+
+128
+00:05:54,990 --> 00:05:56,130
+they're are actually
+quite different.
+
+129
+00:05:56,670 --> 00:06:00,209
+However if you find
+this confusing you can
+
+130
+00:06:00,210 --> 00:06:00,810
+always use the common
+directory for both purposes
+
+131
+00:06:01,080 --> 00:06:03,850
+as long as you're consistent
+with your naming conventions.
+
+132
+00:06:04,470 --> 00:06:05,730
+Will take over to our terminal
+
+133
+00:06:05,970 --> 00:06:06,630
+and call
+
+134
+00:06:06,810 --> 00:06:07,980
+ness gee mo
+
+135
+00:06:08,100 --> 00:06:09,100
+shared.
+
+136
+00:06:09,810 --> 00:06:11,160
+Once the modules created
+
+137
+00:06:11,310 --> 00:06:12,900
+let's open up the
+share directory
+
+138
+00:06:13,140 --> 00:06:16,210
+and inside of this folder
+let's create to new directories.
+
+139
+00:06:16,440 --> 00:06:17,610
+One being domain
+
+140
+00:06:17,940 --> 00:06:18,510
+and the other
+
+141
+00:06:18,780 --> 00:06:20,050
+of infrastructure.
+
+142
+00:06:26,220 --> 00:06:28,440
+Well first focus on the
+infrastructure directorate
+
+143
+00:06:28,740 --> 00:06:29,550
+let's open it up
+
+144
+00:06:29,761 --> 00:06:31,860
+in and ordered have
+everything nicely organized.
+
+145
+00:06:32,220 --> 00:06:35,950
+Let's create a new directory
+called prevent store in side of it.
+
+146
+00:06:36,120 --> 00:06:36,780
+This folder
+
+147
+00:06:37,020 --> 00:06:40,800
+will contain all the code
+related to the event store
+
+148
+00:06:40,800 --> 00:06:42,670
+implementation including
+the event store class itself.
+
+149
+00:06:42,720 --> 00:06:46,080
+So let's stop your for a
+brief moment and think
+
+150
+00:06:46,080 --> 00:06:47,080
+about what we need
+to implement for first.
+
+151
+00:06:47,880 --> 00:06:51,750
+We need to declare an
+event mongo schema that
+
+152
+00:06:51,750 --> 00:06:52,750
+will represent the events
+stored in the database.
+
+153
+00:06:52,860 --> 00:06:54,425
+Will also need serializer
+
+154
+00:06:54,540 --> 00:06:58,480
+Andy serializer to convert
+events to and from Jason.
+
+155
+00:06:58,770 --> 00:07:01,710
+To connect our in memory
+events stream to the event store.
+
+156
+00:07:02,040 --> 00:07:04,650
+Only need to implement a
+publisher class that will hook up to the
+
+157
+00:07:04,950 --> 00:07:06,370
+you are as module.
+
+158
+00:07:06,690 --> 00:07:07,380
+And finally.
+
+159
+00:07:07,792 --> 00:07:11,100
+Need a class that
+will be responsible for
+
+160
+00:07:11,100 --> 00:07:11,700
+storing and retrieving
+events from the database
+
+161
+00:07:11,940 --> 00:07:14,200
+the of maga event store itself.
+
+162
+00:07:15,330 --> 00:07:15,780
+Perfect.
+
+163
+00:07:16,200 --> 00:07:17,670
+Now that our game
+plan is all clear
+
+164
+00:07:17,820 --> 00:07:19,960
+was actually start
+implementing everything.
+
+165
+00:07:20,250 --> 00:07:23,040
+Let's first create a new
+file called event schema
+
+166
+00:07:23,160 --> 00:07:26,410
+inside of the scheme us folder
+and add the following content.
+
+167
+00:07:30,990 --> 00:07:34,500
+This is a pretty straightforward
+schema definition bullets
+
+168
+00:07:34,500 --> 00:07:36,550
+break it down to make sure
+things become even more clear.
+
+169
+00:07:37,290 --> 00:07:37,680
+Erst
+
+170
+00:07:37,920 --> 00:07:41,970
+were using the schema
+decorator to specify that we want
+
+171
+00:07:41,970 --> 00:07:43,410
+to enable the created at
+timestamp for this schema.
+
+172
+00:07:43,890 --> 00:07:46,050
+Which means that every
+time a new of venice created.
+
+173
+00:07:46,500 --> 00:07:49,380
+This created at field will
+be automatically populated
+
+174
+00:07:49,620 --> 00:07:51,670
+with the current date and time.
+
+175
+00:07:52,530 --> 00:07:55,000
+Our class will contain
+the following properties.
+
+176
+00:07:55,050 --> 00:07:55,950
+Stream ID.
+
+177
+00:07:56,310 --> 00:07:59,070
+The ID of the stream to
+which the event belongs
+
+178
+00:07:59,280 --> 00:08:03,570
+this usually equals the
+aggregate ID which can
+
+179
+00:08:03,570 --> 00:08:04,570
+be prefixed with the
+aggregate type as well.
+
+180
+00:08:05,070 --> 00:08:05,460
+Type
+
+181
+00:08:05,760 --> 00:08:07,300
+the type of the event.
+
+182
+00:08:07,470 --> 00:08:10,545
+Position the position of
+the event in the stream.
+
+183
+00:08:10,710 --> 00:08:11,490
+And data
+
+184
+00:08:11,610 --> 00:08:13,480
+which is the event payload.
+
+185
+00:08:14,400 --> 00:08:19,601
+Below were also creating a unique
+index on the stream ID and position fields.
+
+186
+00:08:19,650 --> 00:08:20,640
+This is essential
+
+187
+00:08:20,790 --> 00:08:24,690
+as we want to make
+sure we'll never have to
+
+188
+00:08:24,690 --> 00:08:25,200
+events with the same
+position in the same stream
+
+189
+00:08:25,500 --> 00:08:26,520
+which could occur
+
+190
+00:08:26,670 --> 00:08:29,490
+if we had multiple operations
+happening at the same time
+
+191
+00:08:29,640 --> 00:08:30,720
+on the same aggregate
+
+192
+00:08:31,020 --> 00:08:32,410
+and in parallel.
+
+193
+00:08:32,910 --> 00:08:34,590
+By creating a unique index x.
+
+194
+00:08:34,950 --> 00:08:39,000
+Are making sure that
+the database will ruin air
+
+195
+00:08:39,000 --> 00:08:39,840
+if we try to insert an
+event in the same position.
+
+196
+00:08:40,290 --> 00:08:43,470
+As acquaintance preventing us
+from corrupting our event stream
+
+197
+00:08:43,680 --> 00:08:46,240
+and leaving us with
+a consistent state.
+
+198
+00:08:47,340 --> 00:08:47,820
+Now
+
+199
+00:08:48,000 --> 00:08:50,880
+this position will also represent
+the version of the aggregate.
+
+200
+00:08:51,270 --> 00:08:54,060
+The will need to make sure that
+we always incremented by one
+
+201
+00:08:54,360 --> 00:08:57,010
+when we append a
+new of it to the stream.
+
+202
+00:08:57,120 --> 00:08:59,500
+Will see how to do
+that and just a moment.
+
+203
+00:09:00,120 --> 00:09:01,710
+So with our schema and place.
+
+204
+00:09:02,040 --> 00:09:06,630
+Us navigate to the domain folder and here
+let's create a new file called version dot
+
+205
+00:09:06,630 --> 00:09:09,730
+t s inside of the value
+objects directory.
+
+206
+00:09:10,830 --> 00:09:13,230
+Version will be a simple
+primitive a number
+
+207
+00:09:13,620 --> 00:09:17,400
+but by wrapping it in a value objects
+were adding some additional semantics to it
+
+208
+00:09:17,670 --> 00:09:20,380
+making it more explicit
+and self explanatory.
+
+209
+00:09:20,730 --> 00:09:22,440
+So inside of the virgin file
+
+210
+00:09:22,710 --> 00:09:24,340
+as add the fallen content.
+
+211
+00:09:25,350 --> 00:09:25,919
+And that's it.
+
+212
+00:09:26,250 --> 00:09:30,540
+Next let's create a new
+aggregate route t s file
+
+213
+00:09:30,540 --> 00:09:31,814
+in the domain folder and
+add the fallen content.
+
+214
+00:09:35,160 --> 00:09:39,400
+All right so what we have here as a
+base class for our aggregate roots.
+
+215
+00:09:40,200 --> 00:09:44,790
+It extends the aggregate route class
+provided by the nest g as secure as package
+
+216
+00:09:45,090 --> 00:09:46,770
+and as a virgin property to it.
+
+217
+00:09:47,370 --> 00:09:50,730
+This property is private and can
+only be accessed via the getter
+
+218
+00:09:51,060 --> 00:09:54,160
+and updated through a
+private set version method.
+
+219
+00:09:54,600 --> 00:09:56,220
+Are also setting
+the initial version
+
+220
+00:09:56,400 --> 00:09:57,550
+two zero.
+
+221
+00:09:58,440 --> 00:09:59,070
+Lastly.
+
+222
+00:09:59,400 --> 00:10:03,030
+Let's create a new folder called interfaces
+in it's out of this folder will create
+
+223
+00:10:03,030 --> 00:10:05,520
+the serializable
+of vent t s file
+
+224
+00:10:05,670 --> 00:10:07,300
+with the fallen content.
+
+225
+00:10:09,824 --> 00:10:11,534
+Now let's break it
+down the line by line.
+
+226
+00:10:11,924 --> 00:10:14,334
+Starting from the
+bottom to the top.
+
+227
+00:10:14,984 --> 00:10:19,514
+Where defining the serializable
+event interface that will
+
+228
+00:10:19,514 --> 00:10:21,444
+represent an event that can
+be stored in the event store.
+
+229
+00:10:21,554 --> 00:10:25,094
+It will contain the same set of properties
+as our mongoose event schema.
+
+230
+00:10:25,424 --> 00:10:26,204
+Stream ID
+
+231
+00:10:26,384 --> 00:10:27,824
+type position and data.
+
+232
+00:10:28,304 --> 00:10:28,844
+However
+
+233
+00:10:29,024 --> 00:10:31,754
+the data property will be
+serialized version of the event.
+
+234
+00:10:32,384 --> 00:10:35,724
+Will see how to serialize the
+event payload and just a moment.
+
+235
+00:10:36,944 --> 00:10:37,454
+Above it
+
+236
+00:10:37,574 --> 00:10:41,798
+we're defining the serialized event payload
+type that will be used to infer this
+
+237
+00:10:41,798 --> 00:10:44,544
+serialized type of a
+given of at payload.
+
+238
+00:10:45,314 --> 00:10:46,514
+It's a recursive type
+
+239
+00:10:46,754 --> 00:10:50,984
+that will iterate over all the properties
+and if a property has a to jaison method.
+
+240
+00:10:51,404 --> 00:10:53,534
+It will in further return
+type of that method
+
+241
+00:10:53,744 --> 00:10:55,914
+as the serialized tight.
+
+242
+00:10:56,804 --> 00:10:57,794
+Long story short
+
+243
+00:10:57,974 --> 00:11:02,084
+serializable event
+describes the shape of the
+
+244
+00:11:02,084 --> 00:11:02,564
+event that can be
+stored in the event store.
+
+245
+00:11:02,924 --> 00:11:07,424
+We need to serialize the
+event payload before storing
+
+246
+00:11:07,424 --> 00:11:09,314
+it in the database to auto
+unwrap any value objects
+
+247
+00:11:09,614 --> 00:11:12,414
+and convert them to their
+corresponding primitives.
+
+248
+00:11:13,964 --> 00:11:15,704
+Back to our
+infrastructure folder
+
+249
+00:11:16,004 --> 00:11:17,324
+let's create a new directory
+
+250
+00:11:17,444 --> 00:11:18,764
+called serializer years
+
+251
+00:11:19,004 --> 00:11:22,964
+and its side of this
+folder will create the event
+
+252
+00:11:22,973 --> 00:11:23,973
+serializer ts filed
+with the fallen content.
+
+253
+00:11:26,804 --> 00:11:31,364
+This class here will be responsible for
+serializing domain of and instances into a
+
+254
+00:11:31,364 --> 00:11:34,104
+format that can be
+stored in the event store.
+
+255
+00:11:34,874 --> 00:11:38,594
+A provides a single serialized
+method that accepts two arguments.
+
+256
+00:11:38,984 --> 00:11:43,524
+The event instance and the aggregate
+route instance that dispatch the event.
+
+257
+00:11:43,784 --> 00:11:45,534
+Inside the method body.
+
+258
+00:11:45,614 --> 00:11:48,554
+Were extracting the event
+type and aggregate ID
+
+259
+00:11:48,974 --> 00:11:52,164
+and there were returning
+a serialized event object.
+
+260
+00:11:52,664 --> 00:11:54,914
+To determine the position
+of the event in the stream.
+
+261
+00:11:55,364 --> 00:11:59,274
+Were simply incriminating the
+current version of the aggregate by one.
+
+262
+00:12:00,134 --> 00:12:04,844
+Also were using the to jaison method which
+is missing to serialize the event paler
+
+263
+00:12:04,994 --> 00:12:07,584
+so let's go ahead and
+create that method now.
+
+264
+00:12:08,654 --> 00:12:12,344
+What this method does is that it iterates
+over all the properties of the event
+
+265
+00:12:12,524 --> 00:12:14,744
+and if a property has
+a to Jason method
+
+266
+00:12:15,014 --> 00:12:16,754
+it will call it a
+return the result.
+
+267
+00:12:17,324 --> 00:12:19,334
+Otherwise it will
+return the original value.
+
+268
+00:12:19,934 --> 00:12:23,334
+All it looks fairly complicated
+it's actually pretty simple.
+
+269
+00:12:23,804 --> 00:12:24,254
+Excellent.
+
+270
+00:12:24,734 --> 00:12:28,904
+Now that we have our event serializer in
+place let's create a new file called mongo
+
+271
+00:12:28,904 --> 00:12:31,524
+event store and add
+the fallen content.
+
+272
+00:12:34,064 --> 00:12:37,994
+This class here will be responsible
+for persisting events in the event store.
+
+273
+00:12:38,474 --> 00:12:40,634
+The provides a
+single persist method.
+
+274
+00:12:40,934 --> 00:12:42,584
+That accepts
+either a single event
+
+275
+00:12:42,824 --> 00:12:46,314
+or an array of events and then
+saves them to the database.
+
+276
+00:12:46,604 --> 00:12:51,224
+Were using the insert
+many method provided by
+
+277
+00:12:51,224 --> 00:12:52,314
+mongoose to insert
+multiple documents at once.
+
+278
+00:12:53,384 --> 00:12:57,224
+You can see there's also
+a try catch block to handle
+
+279
+00:12:57,224 --> 00:12:58,454
+any errors that might have
+occurred during the insertion
+
+280
+00:12:58,724 --> 00:12:59,324
+of are now.
+
+281
+00:12:59,684 --> 00:13:01,584
+It only aboard the transaction.
+
+282
+00:13:02,804 --> 00:13:04,004
+So in the code here
+
+283
+00:13:04,244 --> 00:13:06,974
+were checking if the error
+code is equal to eleven thousand.
+
+284
+00:13:07,454 --> 00:13:12,174
+This is the error code that mongo db
+returns when a unique constraint is finally.
+
+285
+00:13:12,344 --> 00:13:13,304
+If that's the case.
+
+286
+00:13:13,634 --> 00:13:17,694
+Where logging in error message and printing
+the air message out to the console.
+
+287
+00:13:19,196 --> 00:13:22,484
+Will use this error code to
+detect for stale aggregates
+
+288
+00:13:22,784 --> 00:13:25,364
+basically this is the scenario
+that were described earlier.
+
+289
+00:13:25,844 --> 00:13:29,384
+Were there can be multiple parallel
+operations on this same aggregate
+
+290
+00:13:29,714 --> 00:13:30,074
+but
+
+291
+00:13:30,314 --> 00:13:33,564
+we want to ensure that only
+one operation can succeed.
+
+292
+00:13:34,244 --> 00:13:34,754
+Perfect.
+
+293
+00:13:35,204 --> 00:13:38,624
+Now that we have our events store and place
+the only thing that's left is to connect
+
+294
+00:13:38,744 --> 00:13:43,854
+our newly created events door to the event
+bus so let's go ahead and do that now.
+
+295
+00:13:44,804 --> 00:13:47,234
+We'll start by creating
+a new publishers folder
+
+296
+00:13:47,564 --> 00:13:48,674
+and inside of this folder
+
+297
+00:13:48,884 --> 00:13:53,095
+will create the event store publisher
+ts file with the following content.
+
+298
+00:13:57,254 --> 00:13:58,184
+This class here
+
+299
+00:13:58,454 --> 00:14:03,684
+implements the i event publisher
+interface provided by nest js secure us.
+
+300
+00:14:03,974 --> 00:14:07,094
+This interface in forces us to
+define the published method.
+
+301
+00:14:07,454 --> 00:14:08,924
+Which accepts two arguments.
+
+302
+00:14:09,284 --> 00:14:13,854
+The event instance in the aggregate
+route instance that dispatched the event.
+
+303
+00:14:14,684 --> 00:14:15,914
+Inside the method body.
+
+304
+00:14:16,334 --> 00:14:20,444
+We are serializing the event with the use
+of the event serializer be created earlier
+
+305
+00:14:20,864 --> 00:14:23,544
+and then were persisting
+in the event store.
+
+306
+00:14:24,254 --> 00:14:26,504
+There's also the an
+application bootstrap method
+
+307
+00:14:26,624 --> 00:14:29,934
+that will be called by ness js when
+the application is bootstrapped.
+
+308
+00:14:30,314 --> 00:14:31,304
+Inside of this method.
+
+309
+00:14:31,664 --> 00:14:35,024
+Where setting the events bust
+out publisher property to this.
+
+310
+00:14:35,354 --> 00:14:40,134
+Which means that the event possible use our
+event store publisher to publish events.
+
+311
+00:14:40,994 --> 00:14:45,704
+While this is all we need for our application
+with also add a new publish all method
+
+312
+00:14:45,764 --> 00:14:49,344
+that can accept an array of events
+and and published them all at once.
+
+313
+00:14:49,454 --> 00:14:52,784
+We won't need this in
+our current project but it
+
+314
+00:14:52,784 --> 00:14:53,784
+might come in handy in
+your future applications.
+
+315
+00:14:53,894 --> 00:14:56,744
+The only difference here compared
+to the regular published method.
+
+316
+00:14:57,134 --> 00:15:00,264
+Is that we're updating the
+position of the event into the stream.
+
+317
+00:15:00,374 --> 00:15:03,944
+Are doing that by by
+adding the current version of
+
+318
+00:15:03,944 --> 00:15:05,054
+the aggregate to the index
+of the event in the array
+
+319
+00:15:05,264 --> 00:15:07,284
+and an incriminating it by one.
+
+320
+00:15:07,334 --> 00:15:10,814
+Know that this is very important to
+ensure that the events in the array
+
+321
+00:15:11,024 --> 00:15:13,374
+are stored in the correct order.
+
+322
+00:15:13,964 --> 00:15:14,474
+Excellent.
+
+323
+00:15:14,954 --> 00:15:15,434
+Finally
+
+324
+00:15:15,674 --> 00:15:20,264
+lets wire everything up
+by creating a new shared
+
+325
+00:15:20,264 --> 00:15:21,714
+infrastructure module file
+with the following content.
+
+326
+00:15:22,994 --> 00:15:23,444
+Here
+
+327
+00:15:23,594 --> 00:15:26,904
+we're just registering all the
+providers we created earlier.
+
+328
+00:15:27,404 --> 00:15:27,914
+Finally.
+
+329
+00:15:28,334 --> 00:15:30,794
+Let's import the shared
+infrastructure module
+
+330
+00:15:30,974 --> 00:15:34,083
+into our shared module
+and then very exported.
+
+331
+00:15:41,234 --> 00:15:42,404
+And last but not least.
+
+332
+00:15:43,034 --> 00:15:47,684
+Let's import the shared module into the
+alarms infrastructure module and again
+
+333
+00:15:47,804 --> 00:15:48,614
+reexport it
+
+334
+00:15:48,794 --> 00:15:49,964
+and then we're all done
+
+335
+00:15:50,234 --> 00:15:51,234
+rate.
+
+336
+00:15:52,664 --> 00:15:56,054
+Before we test everything out there are
+still a few things we need to change in our
+
+337
+00:15:56,084 --> 00:16:00,204
+alarms module to integrate it with
+the events store that we just created.
+
+338
+00:16:00,494 --> 00:16:00,914
+First.
+
+339
+00:16:01,244 --> 00:16:03,134
+Let's navigate to
+the domain folder
+
+340
+00:16:03,374 --> 00:16:08,474
+and open up the alarm t
+s class and make it extend
+
+341
+00:16:08,474 --> 00:16:09,829
+version aggregate route
+from our shared domain.
+
+342
+00:16:11,204 --> 00:16:15,134
+Since were no extending the versioned
+aggregate route class we need to make sure that
+
+343
+00:16:15,134 --> 00:16:17,994
+we're calling the super
+method in our constructor.
+
+344
+00:16:19,214 --> 00:16:19,664
+Next.
+
+345
+00:16:19,994 --> 00:16:23,864
+Let's head over to the alarm factory
+and after creating a new alarm instance
+
+346
+00:16:24,134 --> 00:16:26,354
+let's call the apply
+method of the aggregate.
+
+347
+00:16:26,684 --> 00:16:29,604
+Passing in the alarm
+created event instance.
+
+348
+00:16:31,784 --> 00:16:35,384
+You can see that were also
+setting the skip handler option to true
+
+349
+00:16:35,624 --> 00:16:40,439
+in order to skip the execution of
+the local in aggregate of and handler.
+
+350
+00:16:40,514 --> 00:16:43,704
+Don't worry we'll talk more
+about this in the next chapter.
+
+351
+00:16:44,774 --> 00:16:45,344
+Finally
+
+352
+00:16:45,644 --> 00:16:48,714
+lets navigate to the create
+alarm command handler.
+
+353
+00:16:48,794 --> 00:16:51,204
+And let's update its
+dependencies first.
+
+354
+00:16:51,524 --> 00:16:55,544
+We're not going to need the
+event bus nor create alarm
+
+355
+00:16:55,544 --> 00:16:56,594
+repository providers so let's
+go ahead and remove them.
+
+356
+00:16:57,044 --> 00:16:57,764
+Instead
+
+357
+00:16:58,034 --> 00:17:02,394
+we're going to need the event publisher
+so let's go ahead and inject that here.
+
+358
+00:17:03,014 --> 00:17:04,754
+Inside of the
+execute method here.
+
+359
+00:17:05,084 --> 00:17:09,134
+Let's remove the saving logic and
+event bus published call and instead
+
+360
+00:17:09,404 --> 00:17:12,524
+let's use the event publisher
+to merge the publisher context
+
+361
+00:17:12,734 --> 00:17:15,084
+with the alarm
+aggregate instance.
+
+362
+00:17:16,424 --> 00:17:18,024
+Now this one's important.
+
+363
+00:17:18,134 --> 00:17:23,054
+Merging the publisher contacts
+with the aggregate instance
+
+364
+00:17:23,054 --> 00:17:24,734
+will allow us to use the
+apply method of the aggregate
+
+365
+00:17:25,034 --> 00:17:27,014
+to apply the event
+to the aggregate
+
+366
+00:17:27,224 --> 00:17:29,534
+and then commit the
+changes to the event store.
+
+367
+00:17:30,104 --> 00:17:32,114
+This is a crucial
+step as otherwise
+
+368
+00:17:32,324 --> 00:17:35,036
+the event would never
+reach the event store.
+
+369
+00:17:35,894 --> 00:17:37,364
+So with all of that
+
+370
+00:17:37,544 --> 00:17:40,284
+let's save our changes
+and test everything out.
+
+371
+00:17:40,514 --> 00:17:44,020
+Let's open up our
+terminals and make sure that
+
+372
+00:17:44,020 --> 00:17:45,020
+our application has
+bootstrapped successfully.
+
+373
+00:17:45,224 --> 00:17:45,884
+If so.
+
+374
+00:17:46,394 --> 00:17:50,474
+Let's switch of the other terminal window
+and let's create a new alarm by sending a
+
+375
+00:17:50,474 --> 00:17:53,274
+post request to the
+alarms endpoint.
+
+376
+00:17:54,404 --> 00:17:59,264
+Once again we're using
+the jaison pp tool to format
+
+377
+00:17:59,264 --> 00:18:00,624
+the output but you can
+omit it if you need to.
+
+378
+00:18:01,244 --> 00:18:03,104
+Great so it seems
+everything's working.
+
+379
+00:18:03,704 --> 00:18:07,105
+Let's switch to the other terminal
+window endless checked locks.
+
+380
+00:18:07,304 --> 00:18:09,584
+As we can see here
+there are no heirs
+
+381
+00:18:09,854 --> 00:18:13,465
+our event was successfully
+persisted into the event store.
+
+382
+00:18:13,604 --> 00:18:14,144
+However
+
+383
+00:18:14,414 --> 00:18:17,594
+there's no sign of the alarm
+created event in the logs.
+
+384
+00:18:17,954 --> 00:18:21,084
+Mimi the alarm created
+event handler was not execute.
+
+385
+00:18:21,554 --> 00:18:22,094
+Also.
+
+386
+00:18:22,429 --> 00:18:23,834
+We try to fetch the alarms.
+
+387
+00:18:24,254 --> 00:18:26,774
+Will see that our newly
+created alarm is not there
+
+388
+00:18:27,044 --> 00:18:28,194
+but why.
+
+389
+00:18:28,964 --> 00:18:29,474
+Well
+
+390
+00:18:29,684 --> 00:18:32,084
+while we did published
+the event to the event store
+
+391
+00:18:32,324 --> 00:18:36,074
+we didn't get set up
+watchers that would listen for
+
+392
+00:18:36,074 --> 00:18:37,184
+new offense inserted into
+the Margaret e b collection
+
+393
+00:18:37,484 --> 00:18:40,074
+and execute the
+corresponding handlers.
+
+394
+00:18:40,544 --> 00:18:41,504
+But not to worry
+
+395
+00:18:41,714 --> 00:18:44,424
+we'll do all of that
+in the next lesson.
+
+396
+00:18:44,654 --> 00:18:47,444
+If you've been following
+along so far great job keep it up.
+
+397
+00:18:48,224 --> 00:18:49,574
+If you're seeing any heresy here
+
+398
+00:18:49,814 --> 00:18:53,204
+make sure you didn't miss
+any of the code snippets
+
+399
+00:18:53,204 --> 00:18:53,714
+or files that we added
+throughout this lesson.
+
+400
+00:18:54,254 --> 00:18:55,034
+All of the code
+
+401
+00:18:55,214 --> 00:18:58,044
+can be found below the
+course video as always.
+

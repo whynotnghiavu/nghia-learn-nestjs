@@ -1,0 +1,513 @@
+﻿1
+00:00:00,930 --> 00:00:01,770
+In this lesson.
+
+2
+00:00:02,250 --> 00:00:04,410
+Let's start by talking about
+what we will be building
+
+3
+00:00:04,530 --> 00:00:06,281
+before we dive and everything.
+
+4
+00:00:06,420 --> 00:00:10,230
+Will start off by creating
+our first event which
+
+5
+00:00:10,230 --> 00:00:11,230
+will represent the
+creation of a new alarm.
+
+6
+00:00:11,370 --> 00:00:11,820
+Then
+
+7
+00:00:12,090 --> 00:00:15,030
+we'll create an event handler
+that will subscribe to that event
+
+8
+00:00:15,150 --> 00:00:17,650
+it will be used to perform
+additional processing.
+
+9
+00:00:18,270 --> 00:00:19,560
+To keep things simple
+
+10
+00:00:19,830 --> 00:00:23,730
+are going to to implement both the read
+and right sides of the system in the same
+
+11
+00:00:23,730 --> 00:00:27,180
+application so we won't
+need a message broker
+
+12
+00:00:27,180 --> 00:00:28,180
+to communicate
+between different services.
+
+13
+00:00:28,320 --> 00:00:29,010
+Don't worry
+
+14
+00:00:29,310 --> 00:00:31,407
+that is something that will
+cover in an upcoming less.
+
+15
+00:00:32,070 --> 00:00:32,520
+Okay
+
+16
+00:00:32,820 --> 00:00:34,120
+let's get started.
+
+17
+00:00:34,981 --> 00:00:38,940
+First we'll need to
+create a new directory
+
+18
+00:00:38,940 --> 00:00:39,940
+called events inside
+of the domain directory.
+
+19
+00:00:40,140 --> 00:00:41,340
+Inside of this directory.
+
+20
+00:00:41,670 --> 00:00:45,420
+Let's create a new file named
+alarm created dot event that he s
+
+21
+00:00:45,600 --> 00:00:47,860
+that will contain
+the event class.
+
+22
+00:00:49,020 --> 00:00:49,890
+As we can see
+
+23
+00:00:50,070 --> 00:00:51,750
+the event class
+here is quite simple.
+
+24
+00:00:52,140 --> 00:00:56,860
+It contains a single property called alarm
+that represents the alarm that was created.
+
+25
+00:00:57,120 --> 00:01:01,540
+This property is marked as read only
+to prevent any accidental modifications.
+
+26
+00:01:03,060 --> 00:01:05,160
+Instead of passing the
+alarm object directly.
+
+27
+00:01:05,520 --> 00:01:07,350
+Who could also pass the alarm ID
+
+28
+00:01:07,590 --> 00:01:11,320
+and then fetch the alarm from the
+database inside of the event handler.
+
+29
+00:01:11,550 --> 00:01:12,550
+However.
+
+30
+00:01:12,630 --> 00:01:16,480
+As we want to eventually introduced
+the event sourcing pattern this course.
+
+31
+00:01:16,560 --> 00:01:19,570
+Will need our events
+to be fully self contained.
+
+32
+00:01:20,790 --> 00:01:24,390
+This means that they should contain all
+the information that is required to reflect
+
+33
+00:01:24,390 --> 00:01:27,220
+the state change that
+occurred in the system.
+
+34
+00:01:27,420 --> 00:01:29,770
+We distinguish
+two types of events.
+
+35
+00:01:29,880 --> 00:01:32,770
+Domain events
+and integration of its.
+
+36
+00:01:32,970 --> 00:01:35,970
+Domain events are events that
+are relevant to the domain model.
+
+37
+00:01:36,450 --> 00:01:40,210
+They represent the state changes
+that occur within the domain
+
+38
+00:01:40,320 --> 00:01:44,200
+and our case the alarm
+created event is a domain events.
+
+39
+00:01:45,360 --> 00:01:49,290
+Integration events are usually
+a lot thinner than domain
+
+40
+00:01:49,290 --> 00:01:51,100
+events and they are used for
+cross service communication.
+
+41
+00:01:51,840 --> 00:01:53,610
+Okay so back to our task at hand
+
+42
+00:01:54,000 --> 00:01:55,350
+to process this event
+
+43
+00:01:55,650 --> 00:02:00,120
+will need to create a new file called
+alarm created dot event dash handler dot ts
+
+44
+00:02:00,180 --> 00:02:02,710
+that will contain the
+event handler class.
+
+45
+00:02:03,420 --> 00:02:06,220
+But where should
+we put this file though.
+
+46
+00:02:06,360 --> 00:02:08,970
+Does it belong to the application
+layer or the domain layer.
+
+47
+00:02:09,690 --> 00:02:11,020
+Well it depends.
+
+48
+00:02:11,160 --> 00:02:15,160
+Handling the domain events is
+generally an application concern.
+
+49
+00:02:15,420 --> 00:02:18,360
+The domain meyer should
+only focus on the domain logic.
+
+50
+00:02:18,810 --> 00:02:19,260
+Meaning.
+
+51
+00:02:19,831 --> 00:02:22,150
+Things that a domain
+expert would understand.
+
+52
+00:02:22,920 --> 00:02:27,030
+Not application
+infrastructure like handlers and
+
+53
+00:02:27,060 --> 00:02:28,330
+side effect persistence
+actions using repositories.
+
+54
+00:02:29,070 --> 00:02:31,170
+For instance when
+the alarm is created
+
+55
+00:02:31,350 --> 00:02:35,760
+we might want to publish a
+domain event to propagate
+
+56
+00:02:35,760 --> 00:02:36,540
+that info to other
+aggregates or even raise
+
+57
+00:02:36,660 --> 00:02:39,400
+application actions
+like email notifications.
+
+58
+00:02:40,380 --> 00:02:41,340
+At the same time
+
+59
+00:02:41,640 --> 00:02:45,090
+some domain event handlers could be
+considered as part of the domain model.
+
+60
+00:02:45,450 --> 00:02:48,480
+Especially if they simply
+described the domain specific policy
+
+61
+00:02:48,750 --> 00:02:51,310
+on how to react to
+a particular event.
+
+62
+00:02:51,450 --> 00:02:51,960
+However
+
+63
+00:02:52,170 --> 00:02:55,770
+such event handlers couldn't
+interact with components
+
+64
+00:02:55,770 --> 00:02:58,330
+from upper layers such
+as repositories services etc.
+
+65
+00:02:58,830 --> 00:03:03,060
+With all that being said in our case will
+put the event handler in the application
+
+66
+00:03:03,060 --> 00:03:06,270
+layer and that's what you will usually
+end up doing in your projects as well.
+
+67
+00:03:06,720 --> 00:03:08,310
+Just try to always keep in mind
+
+68
+00:03:08,520 --> 00:03:12,040
+what layer the files you're
+working on should be placed him.
+
+69
+00:03:12,930 --> 00:03:13,590
+So first.
+
+70
+00:03:14,040 --> 00:03:17,610
+Let's create a new
+directory called event
+
+71
+00:03:17,610 --> 00:03:18,610
+handlers and side of
+the application directory.
+
+72
+00:03:19,170 --> 00:03:20,160
+Inside this directory
+
+73
+00:03:20,370 --> 00:03:23,460
+let's create a new file called
+alarm created event handler.
+
+74
+00:03:24,000 --> 00:03:25,510
+With the following content.
+
+75
+00:03:26,550 --> 00:03:30,300
+The event handler is very similar
+to the command inquiry handlers
+
+76
+00:03:30,540 --> 00:03:33,450
+it needs to be decorated with
+the events handler decorator
+
+77
+00:03:33,690 --> 00:03:36,280
+and implements the i
+event handler interface.
+
+78
+00:03:36,960 --> 00:03:39,660
+The reason why the event
+handler annotation is a plural.
+
+79
+00:03:40,020 --> 00:03:43,660
+Is that we can use it to subscribe
+to multiple events at once.
+
+80
+00:03:44,190 --> 00:03:47,370
+The handle method here will be
+called when the event is dispatched
+
+81
+00:03:47,700 --> 00:03:50,970
+and the original of an
+object will be passed
+
+82
+00:03:50,970 --> 00:03:51,970
+and is an argument to
+this method as always.
+
+83
+00:03:52,260 --> 00:03:53,260
+Great.
+
+84
+00:03:53,340 --> 00:03:54,690
+All right so with this in place.
+
+85
+00:03:55,020 --> 00:03:58,770
+Let's head over to our
+alarms module file and
+
+86
+00:03:58,770 --> 00:04:00,400
+register the event handler
+in our providers of wreck.
+
+87
+00:04:00,990 --> 00:04:01,950
+Last but not least.
+
+88
+00:04:02,340 --> 00:04:05,261
+Wanting to dispatch the event
+when the alarmists created.
+
+89
+00:04:05,460 --> 00:04:09,510
+To do that one needs to head over to the
+create alarm command handler file an import
+
+90
+00:04:09,518 --> 00:04:13,668
+the event bus from the nes jazz
+slash seek your arrest package.
+
+91
+00:04:20,220 --> 00:04:21,150
+With this and place.
+
+92
+00:04:21,480 --> 00:04:25,590
+You can now dispatched
+the event by calling the
+
+93
+00:04:25,620 --> 00:04:26,620
+this dot have been
+passed up publish method.
+
+94
+00:04:28,020 --> 00:04:30,690
+Please note that this isn't the
+best way to dispatch events.
+
+95
+00:04:31,110 --> 00:04:34,890
+Domain events should
+be dispatched from the
+
+96
+00:04:34,910 --> 00:04:35,370
+aggregate route not from
+the command handler.
+
+97
+00:04:35,730 --> 00:04:38,050
+Will cover that in the
+upcoming lessons.
+
+98
+00:04:39,000 --> 00:04:40,320
+For now let's save our changes
+
+99
+00:04:40,440 --> 00:04:44,280
+head over to the terminal
+and start the application
+
+100
+00:04:44,280 --> 00:04:45,550
+by running the n p m rum
+start depth commands.
+
+101
+00:04:47,040 --> 00:04:50,970
+When the application is up
+and running we could use the
+
+102
+00:04:50,970 --> 00:04:53,380
+curl command to send a post
+request to the alarms input.
+
+103
+00:04:54,300 --> 00:04:58,229
+If we switched to our other terminal
+window we should see that are alarm created
+
+104
+00:04:58,230 --> 00:05:01,990
+event handler has been triggered and
+the event has been successfully processed.
+
+105
+00:05:02,250 --> 00:05:02,850
+Excellent.
+
+106
+00:05:03,180 --> 00:05:07,180
+So we've successfully created
+our first event and event handler.
+
+107
+00:05:07,410 --> 00:05:11,100
+In the next lesson will continue experimenting
+with events and we'll see how we can
+
+108
+00:05:11,100 --> 00:05:14,170
+use them to implement
+the read side of our system.
+

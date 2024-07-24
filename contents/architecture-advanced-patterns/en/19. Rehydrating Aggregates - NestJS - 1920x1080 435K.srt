@@ -1,0 +1,1196 @@
+﻿1
+00:00:00,930 --> 00:00:02,610
+In the previous lessons
+
+2
+00:00:02,730 --> 00:00:03,540
+we learned how to
+
+3
+00:00:03,720 --> 00:00:06,240
+dispatch events from
+version aggregate.
+
+4
+00:00:06,330 --> 00:00:08,561
+Store events in the event store.
+
+5
+00:00:08,670 --> 00:00:11,560
+Subscribed to events
+using collection watchers.
+
+6
+00:00:11,850 --> 00:00:14,640
+The serialize events and
+pushed them onto the event bus
+
+7
+00:00:15,000 --> 00:00:15,720
+and lastly.
+
+8
+00:00:16,080 --> 00:00:21,160
+Listen to events from the event bus and
+update the read side database accord Langley.
+
+9
+00:00:21,630 --> 00:00:25,410
+While what we've accomplished so far is
+amazing and we were really made a lot of
+
+10
+00:00:25,410 --> 00:00:28,230
+progress we're still missing
+one important piece of the puzzle.
+
+11
+00:00:28,800 --> 00:00:32,230
+How can we make updates
+to our existing aggregates.
+
+12
+00:00:33,300 --> 00:00:37,770
+We can't retrieve their read
+model representation from the
+
+13
+00:00:37,770 --> 00:00:39,660
+eventually consistent read side
+database because as we know
+
+14
+00:00:39,900 --> 00:00:41,970
+it's not guaranteed
+to be up to date.
+
+15
+00:00:42,540 --> 00:00:46,406
+We also don't have a dedicated right side
+database because we're using the events
+
+16
+00:00:46,406 --> 00:00:49,120
+store as our single
+source of truth.
+
+17
+00:00:49,920 --> 00:00:51,360
+When you're in this situation
+
+18
+00:00:51,540 --> 00:00:55,810
+this is where the concept of
+rehydrating aggregates comes into play.
+
+19
+00:00:56,100 --> 00:01:00,720
+The rehydrating
+aggregates concept is the
+
+20
+00:01:00,750 --> 00:01:01,260
+process of reconstructing
+an aggregate object
+
+21
+00:01:01,530 --> 00:01:06,010
+by replaying the events that have
+been previously stored in the event store.
+
+22
+00:01:07,110 --> 00:01:08,680
+When we say hydration
+
+23
+00:01:08,790 --> 00:01:12,600
+we're referring to the process
+of populating and objects
+
+24
+00:01:12,600 --> 00:01:14,620
+fields or properties with
+data from a storage medium.
+
+25
+00:01:14,790 --> 00:01:16,630
+In the context of aggregates.
+
+26
+00:01:16,740 --> 00:01:19,181
+Rehydration is the
+reverse process.
+
+27
+00:01:19,230 --> 00:01:20,850
+It's about taking
+the stored data
+
+28
+00:01:21,150 --> 00:01:22,050
+in using it
+
+29
+00:01:22,200 --> 00:01:25,690
+to restore the aggregate
+object to it's previous state.
+
+30
+00:01:26,730 --> 00:01:31,770
+The rehydration process is critical for
+maintaining the consistency and integrity of
+
+31
+00:01:31,770 --> 00:01:34,510
+aggregates in a ddd
+driven application.
+
+32
+00:01:35,100 --> 00:01:38,250
+By carefully reconstructing
+aggregates from their stored state
+
+33
+00:01:38,580 --> 00:01:41,320
+and enforcing domain
+rules during this process.
+
+34
+00:01:41,400 --> 00:01:45,940
+We ensure that the system remains
+faithful to the underlying business logic.
+
+35
+00:01:46,650 --> 00:01:50,820
+It's important to note that while
+rehydration is a central concept in d d d.
+
+36
+00:01:51,150 --> 00:01:54,900
+It's implementation details can
+vary based on the technology stack
+
+37
+00:01:55,110 --> 00:01:58,630
+any architectural choices
+made in any specific project.
+
+38
+00:01:59,070 --> 00:02:02,040
+All right now that we've gone
+over some of the high level concepts
+
+39
+00:02:02,280 --> 00:02:03,790
+let's get down to business.
+
+40
+00:02:04,860 --> 00:02:05,520
+To begin.
+
+41
+00:02:05,940 --> 00:02:08,490
+Let's open up the
+monga events door t s file
+
+42
+00:02:08,670 --> 00:02:11,883
+and inject the event
+d serializer class.
+
+43
+00:02:12,180 --> 00:02:13,950
+Will use this class to d
+
+44
+00:02:14,130 --> 00:02:16,482
+realize events
+from the event store.
+
+45
+00:02:17,430 --> 00:02:22,300
+Next up let's create a new method
+here called get events by stream ID.
+
+46
+00:02:23,190 --> 00:02:24,300
+Inside of this method.
+
+47
+00:02:24,690 --> 00:02:27,570
+Let's first retrieve all of the
+events from the event store
+
+48
+00:02:27,930 --> 00:02:29,940
+and then filter
+them by stream ID
+
+49
+00:02:30,420 --> 00:02:32,830
+and then sort them
+by their position.
+
+50
+00:02:34,530 --> 00:02:38,640
+Next let's check if there are any events
+corresponding to the provided stream ID
+
+51
+00:02:38,970 --> 00:02:39,600
+and if not.
+
+52
+00:02:39,960 --> 00:02:41,920
+Let's make sure to
+throw an exception.
+
+53
+00:02:42,930 --> 00:02:43,620
+Lastly.
+
+54
+00:02:43,950 --> 00:02:47,170
+Let's the serialized the
+events and return them.
+
+55
+00:02:50,220 --> 00:02:50,640
+Great.
+
+56
+00:02:51,000 --> 00:02:51,480
+Now
+
+57
+00:02:51,600 --> 00:02:55,870
+let's create a new application
+directory inside of these shared folder.
+
+58
+00:02:59,850 --> 00:03:01,300
+Inside this directory.
+
+59
+00:03:01,440 --> 00:03:03,971
+Let's create another
+folder called ports.
+
+60
+00:03:04,620 --> 00:03:04,980
+Your
+
+61
+00:03:05,250 --> 00:03:08,130
+will create a new file called
+events stored up to yes
+
+62
+00:03:08,430 --> 00:03:10,480
+and then let's add
+the fallen code.
+
+63
+00:03:11,730 --> 00:03:16,470
+This port will be used to
+abstract the event store
+
+64
+00:03:16,470 --> 00:03:18,190
+implementation details away
+from the application layer.
+
+65
+00:03:19,260 --> 00:03:21,450
+Back to our mongo
+events or rts file.
+
+66
+00:03:21,870 --> 00:03:25,210
+Let's make this class
+implement the events store port.
+
+67
+00:03:29,070 --> 00:03:30,420
+Let's save our changes
+
+68
+00:03:30,720 --> 00:03:33,750
+navigate to the shared
+infrastructure module t s file
+
+69
+00:03:34,140 --> 00:03:36,060
+and let's register
+the event store port.
+
+70
+00:03:36,390 --> 00:03:39,443
+Using an existing mongol
+events store provider.
+
+71
+00:03:45,990 --> 00:03:50,050
+And let's not forget to export
+the events to report as well.
+
+72
+00:03:54,240 --> 00:03:55,240
+Great.
+
+73
+00:03:55,650 --> 00:03:56,910
+With this in place.
+
+74
+00:03:57,330 --> 00:03:59,490
+A ton of her to the
+aggregate route ts file
+
+75
+00:03:59,823 --> 00:04:01,440
+and let's declare a new method
+
+76
+00:04:01,560 --> 00:04:03,640
+called load from history.
+
+77
+00:04:06,180 --> 00:04:06,870
+The parrot
+
+78
+00:04:07,020 --> 00:04:10,560
+aggregate route class already
+has a load from history method
+
+79
+00:04:10,890 --> 00:04:13,290
+but it expects an
+array of domain events
+
+80
+00:04:13,590 --> 00:04:17,740
+not objects following our
+customer serializable event shape.
+
+81
+00:04:17,910 --> 00:04:19,380
+What the function does here
+
+82
+00:04:19,680 --> 00:04:23,910
+is that it iterates over
+the provided events and
+
+83
+00:04:23,970 --> 00:04:24,840
+applies them to the
+aggregate object one by one.
+
+84
+00:04:25,230 --> 00:04:27,070
+Using the apply method.
+
+85
+00:04:28,140 --> 00:04:29,070
+The apply method
+
+86
+00:04:29,280 --> 00:04:32,850
+invokes the corresponding event
+handler method on the aggregate object
+
+87
+00:04:33,060 --> 00:04:33,900
+which in turn.
+
+88
+00:04:34,260 --> 00:04:36,322
+Updates the aggregate state.
+
+89
+00:04:36,510 --> 00:04:40,650
+It also determines which of at handler
+method to invoke based on the events type.
+
+90
+00:04:41,250 --> 00:04:44,170
+We'll see how all of this
+works and just a second.
+
+91
+00:04:45,210 --> 00:04:48,420
+Also notice that it does not
+set the aggregate version
+
+92
+00:04:48,630 --> 00:04:51,370
+which is something we
+need to do manual here.
+
+93
+00:04:51,570 --> 00:04:52,710
+As an additional know
+
+94
+00:04:52,950 --> 00:04:56,970
+we assume hear that events are sorted
+by their position in ascending order.
+
+95
+00:04:57,300 --> 00:05:01,200
+So make sure that that is the case for your
+application to if you want to use his coat.
+
+96
+00:05:01,620 --> 00:05:03,940
+You may need to have
+it handled differently.
+
+97
+00:05:04,230 --> 00:05:05,400
+Let's save our changes
+
+98
+00:05:05,610 --> 00:05:08,010
+navigate to the shared
+application folder
+
+99
+00:05:08,160 --> 00:05:12,400
+let's create a new file they're
+called aggregate rehydrated up to us.
+
+100
+00:05:12,481 --> 00:05:14,470
+Here let's add
+the following code.
+
+101
+00:05:15,120 --> 00:05:18,810
+Will need the events the report to
+retrieve events from the event store
+
+102
+00:05:19,140 --> 00:05:23,950
+and the event publisher to merge
+the aggregate object with the event bus.
+
+103
+00:05:25,080 --> 00:05:25,530
+Next
+
+104
+00:05:25,740 --> 00:05:28,110
+let's create a new
+method called rehydrate
+
+105
+00:05:28,230 --> 00:05:30,580
+and let's break it
+down line by line.
+
+106
+00:05:31,710 --> 00:05:36,282
+First we retrieve all the events for a
+given aggregate from the event store.
+
+107
+00:05:36,750 --> 00:05:40,290
+Next we merge the aggregate
+class with the event publisher
+
+108
+00:05:40,470 --> 00:05:43,900
+so that we can dispatch
+events from objects of this class.
+
+109
+00:05:44,970 --> 00:05:45,420
+Then
+
+110
+00:05:45,660 --> 00:05:47,940
+we create a new
+instance of the aggregate
+
+111
+00:05:48,120 --> 00:05:50,980
+and pass the aggregate
+ID to its constructor.
+
+112
+00:05:51,870 --> 00:05:52,530
+Lastly
+
+113
+00:05:52,740 --> 00:05:56,400
+reload the aggregate from history
+using the method we've just created
+
+114
+00:05:56,520 --> 00:05:58,090
+and then return it.
+
+115
+00:05:58,650 --> 00:06:03,280
+Are a great slot save our changes and
+head over to the shared module t us file.
+
+116
+00:06:03,600 --> 00:06:03,990
+Here.
+
+117
+00:06:04,410 --> 00:06:09,210
+Let's register the aggregate
+rehydrate or class as a
+
+118
+00:06:09,270 --> 00:06:10,960
+provider and also once again
+let's not forget to exported.
+
+119
+00:06:12,780 --> 00:06:13,320
+Perfect.
+
+120
+00:06:13,770 --> 00:06:16,020
+We now have all the
+building blocks and place
+
+121
+00:06:16,260 --> 00:06:18,070
+let's put them to good use.
+
+122
+00:06:18,420 --> 00:06:19,560
+But before we can do that.
+
+123
+00:06:19,980 --> 00:06:24,659
+We need to first expose
+a new and point from r
+
+124
+00:06:24,660 --> 00:06:26,170
+a p i that lets us operate
+on an existing alarm.
+
+125
+00:06:26,340 --> 00:06:28,830
+Let's open up the
+alarms controller ts file
+
+126
+00:06:29,130 --> 00:06:31,840
+and let's add a new
+and point called patch.
+
+127
+00:06:31,980 --> 00:06:34,870
+Alarms Colin ID
+slash acknowledge.
+
+128
+00:06:36,210 --> 00:06:39,240
+This endpoint will be used to
+acknowledge and existing alarm
+
+129
+00:06:39,510 --> 00:06:40,260
+for example
+
+130
+00:06:40,380 --> 00:06:44,710
+when a supervisor confirms that an
+alarm is valid and has been investigated.
+
+131
+00:06:45,720 --> 00:06:49,410
+Let's save our changes
+head of rid of the commands
+
+132
+00:06:49,412 --> 00:06:50,010
+folder and let's create
+a new file they're called
+
+133
+00:06:50,280 --> 00:06:52,960
+acknowledge alarm
+dot command up t s.
+
+134
+00:06:53,160 --> 00:06:53,460
+Here
+
+135
+00:06:53,580 --> 00:06:55,360
+let's add the following code.
+
+136
+00:06:56,460 --> 00:06:57,540
+With this in place
+
+137
+00:06:57,690 --> 00:07:01,980
+let's open up the
+alarm service ts file let's
+
+138
+00:07:01,980 --> 00:07:02,980
+add the missing
+acknowledged method there.
+
+139
+00:07:04,320 --> 00:07:05,340
+This acknowledge method
+
+140
+00:07:05,490 --> 00:07:09,912
+will be used to dispatch the acknowledge
+alarm command to the command bus.
+
+141
+00:07:10,710 --> 00:07:13,290
+Now before we move onto
+the command handler part.
+
+142
+00:07:13,740 --> 00:07:18,421
+Let's switch to our domain layer must
+add a new alarm acknowledged of venn.
+
+143
+00:07:24,720 --> 00:07:28,890
+Note that here we're
+using the auto wired
+
+144
+00:07:28,893 --> 00:07:29,893
+event decorator to
+otter wire the evac class.
+
+145
+00:07:30,780 --> 00:07:33,030
+Next let's open up
+the alarm aggregate
+
+146
+00:07:33,316 --> 00:07:37,950
+let's update the existing
+acknowledge method to
+
+147
+00:07:37,980 --> 00:07:39,160
+dispatch the alarm
+acknowledged event of vent.
+
+148
+00:07:40,200 --> 00:07:40,920
+In this method.
+
+149
+00:07:41,250 --> 00:07:44,220
+We simply apply the alarm
+acknowledged event events
+
+150
+00:07:44,370 --> 00:07:45,730
+to the aggregate.
+
+151
+00:07:47,490 --> 00:07:50,141
+Okay so let's stop
+here for quick moment.
+
+152
+00:07:50,190 --> 00:07:52,890
+Where's the logic that actually
+acknowledges the alarm.
+
+153
+00:07:53,310 --> 00:07:54,570
+Well we don't have it yet
+
+154
+00:07:54,690 --> 00:07:56,370
+and that's something
+we'll implement right now.
+
+155
+00:07:56,940 --> 00:07:58,740
+As we mentioned in
+the previous lessons
+
+156
+00:07:59,040 --> 00:08:03,150
+the apply method
+invokes the corresponding
+
+157
+00:08:03,210 --> 00:08:03,750
+event handler method
+on the aggregate object.
+
+158
+00:08:04,110 --> 00:08:07,032
+Which in turn updates
+the aggregate state.
+
+159
+00:08:07,290 --> 00:08:07,800
+So.
+
+160
+00:08:08,160 --> 00:08:10,050
+Let's add a new event
+handler method called
+
+161
+00:08:10,230 --> 00:08:13,690
+an alarm acknowledged
+to create that very method.
+
+162
+00:08:14,610 --> 00:08:16,380
+To make it even more type-safe
+
+163
+00:08:16,560 --> 00:08:18,580
+we can use the
+following technique.
+
+164
+00:08:19,320 --> 00:08:21,720
+Now if we updated
+the event class name.
+
+165
+00:08:22,201 --> 00:08:27,040
+The corresponding event handler method name
+would be updated automatically as well.
+
+166
+00:08:27,480 --> 00:08:28,470
+Before we move on.
+
+167
+00:08:28,890 --> 00:08:31,230
+There's one missing handler
+we should add here as well.
+
+168
+00:08:31,680 --> 00:08:34,200
+Above the an alarm
+acknowledged event method.
+
+169
+00:08:34,620 --> 00:08:36,461
+Let's add the following handler.
+
+170
+00:08:38,610 --> 00:08:42,240
+This event handler will be executed
+by the load from history method
+
+171
+00:08:42,450 --> 00:08:45,280
+when we rehydrate the
+aggregate from history.
+
+172
+00:08:45,720 --> 00:08:48,010
+Were all sat in
+this file for now.
+
+173
+00:08:48,420 --> 00:08:48,720
+But
+
+174
+00:08:48,870 --> 00:08:51,900
+we need to do a few more
+things than some other
+
+175
+00:08:51,900 --> 00:08:52,900
+files to make everything
+work as expected.
+
+176
+00:08:52,983 --> 00:08:57,910
+Let's navigate to the alarm severity
+unless at a missing to Jason method.
+
+177
+00:08:58,380 --> 00:08:58,860
+Great.
+
+178
+00:08:59,280 --> 00:09:01,020
+Now if we go back to our alarm.
+
+179
+00:09:01,350 --> 00:09:02,790
+We can see that the errors gone.
+
+180
+00:09:03,270 --> 00:09:04,270
+Excellent.
+
+181
+00:09:05,220 --> 00:09:06,900
+With our aggregate updated
+
+182
+00:09:07,050 --> 00:09:09,960
+let's navigate to the commands
+folder in the application layer
+
+183
+00:09:10,080 --> 00:09:12,990
+and alongside the acknowledge
+alarm command ts while.
+
+184
+00:09:13,320 --> 00:09:14,490
+Let's create another file
+
+185
+00:09:14,610 --> 00:09:15,060
+are called
+
+186
+00:09:15,330 --> 00:09:18,270
+acknowledged alarm dot
+command dash handler dot yes.
+
+187
+00:09:18,840 --> 00:09:19,140
+Your
+
+188
+00:09:19,380 --> 00:09:21,010
+let's add the following code.
+
+189
+00:09:22,230 --> 00:09:24,960
+Or now we're just logging
+the command and that's it
+
+190
+00:09:25,080 --> 00:09:26,040
+slots improve their.
+
+191
+00:09:26,850 --> 00:09:29,650
+Using the aggregate
+rehydrate or dependency.
+
+192
+00:09:29,760 --> 00:09:32,040
+Let's rehydrate
+the alarm aggregate
+
+193
+00:09:32,160 --> 00:09:34,810
+based on the commands
+alarm ID property.
+
+194
+00:09:40,350 --> 00:09:40,950
+Next up
+
+195
+00:09:41,070 --> 00:09:43,000
+let's acknowledge the alarm.
+
+196
+00:09:44,220 --> 00:09:44,640
+Next
+
+197
+00:09:44,880 --> 00:09:48,612
+let's call commit to publish
+events to the event stream.
+
+198
+00:09:49,440 --> 00:09:50,160
+And finally
+
+199
+00:09:50,400 --> 00:09:52,540
+let's return the alarm instance.
+
+200
+00:09:55,290 --> 00:09:56,290
+Great.
+
+201
+00:09:56,640 --> 00:10:00,460
+Let's save our changes and head
+of her to the alarms module t s file.
+
+202
+00:10:00,900 --> 00:10:01,200
+Your.
+
+203
+00:10:01,620 --> 00:10:05,740
+Let's register the acknowledge alarm
+command handler class as a provider.
+
+204
+00:10:06,120 --> 00:10:07,320
+The last but not least
+
+205
+00:10:07,530 --> 00:10:11,010
+only need a corresponding event
+handler to update the read model.
+
+206
+00:10:11,400 --> 00:10:11,910
+So
+
+207
+00:10:12,090 --> 00:10:13,321
+let's create a new alarm.
+
+208
+00:10:13,888 --> 00:10:16,288
+Event handler file in
+the event handlers folder
+
+209
+00:10:16,438 --> 00:10:19,148
+and let's add our
+usual boilerplate code.
+
+210
+00:10:19,858 --> 00:10:22,029
+Inside of the handle method.
+
+211
+00:10:22,108 --> 00:10:26,578
+Let's use the up sir
+materialized alarm
+
+212
+00:10:26,578 --> 00:10:27,578
+repository dependency
+to update the read model.
+
+213
+00:10:28,858 --> 00:10:29,858
+Excellent.
+
+214
+00:10:30,328 --> 00:10:31,498
+Before we test everything out
+
+215
+00:10:31,768 --> 00:10:35,788
+let's make sure we register
+the alarm acknowledged of
+
+216
+00:10:35,818 --> 00:10:37,108
+at handler class as a
+provider in the alarms module t
+
+217
+00:10:37,258 --> 00:10:38,258
+file.
+
+218
+00:10:42,928 --> 00:10:43,618
+While here
+
+219
+00:10:43,798 --> 00:10:46,288
+let's also update the
+alarm created event handler
+
+220
+00:10:46,438 --> 00:10:48,328
+since it now might be airing out
+
+221
+00:10:48,628 --> 00:10:52,798
+due to the newly added
+to jaison method in the
+
+222
+00:10:52,798 --> 00:10:54,098
+alarm severity value object
+we added a moment ago.
+
+223
+00:10:54,328 --> 00:10:55,378
+All right and that's it.
+
+224
+00:10:55,918 --> 00:10:57,418
+With everything
+we've done in place
+
+225
+00:10:57,538 --> 00:10:59,078
+let's give it a try.
+
+226
+00:10:59,128 --> 00:11:02,638
+So let's head over to
+our terminal and make
+
+227
+00:11:02,638 --> 00:11:03,638
+sure that our application
+is up and running.
+
+228
+00:11:03,958 --> 00:11:05,188
+Since there are no heirs
+
+229
+00:11:05,308 --> 00:11:07,048
+let's open up a separate
+terminal window.
+
+230
+00:11:07,378 --> 00:11:09,638
+Unless retrieved
+the list of alarms.
+
+231
+00:11:11,548 --> 00:11:13,828
+Let's grab one of
+them by their alarm ID
+
+232
+00:11:14,038 --> 00:11:15,178
+and let's acknowledge a
+
+233
+00:11:15,358 --> 00:11:17,128
+curling alarms slash
+
+234
+00:11:17,428 --> 00:11:18,999
+the ID we copy.
+
+235
+00:11:19,078 --> 00:11:21,208
+And make sure that
+we do a patch request
+
+236
+00:11:21,328 --> 00:11:24,428
+to hit that new and point we
+just created a moment ago.
+
+237
+00:11:24,838 --> 00:11:26,858
+Fantastic no errors.
+
+238
+00:11:27,088 --> 00:11:30,358
+Let's switch over to the
+other terminal window
+
+239
+00:11:30,358 --> 00:11:31,358
+and verify if there
+are any errors there.
+
+240
+00:11:31,948 --> 00:11:34,987
+Perfect no errors
+here as well run a role.
+
+241
+00:11:35,188 --> 00:11:38,878
+Also we can see here that both
+acknowledged alarm command handler
+
+242
+00:11:39,088 --> 00:11:42,458
+and alarm acknowledged event
+handler providers were executed.
+
+243
+00:11:42,508 --> 00:11:43,468
+Just a double check.
+
+244
+00:11:43,798 --> 00:11:46,298
+Let's retrieved that
+list of alarms again.
+
+245
+00:11:48,448 --> 00:11:52,048
+And there we go we
+can see that the alarm
+
+246
+00:11:52,048 --> 00:11:53,048
+has actually been
+acknowledged or code works.
+
+247
+00:11:53,458 --> 00:11:54,178
+If we look
+
+248
+00:11:54,418 --> 00:11:59,498
+the is acknowledged property has been
+set to true for the given alarm we did it.
+
+249
+00:11:59,758 --> 00:12:03,868
+So we covered quite a lot in this lesson
+but we managed to successfully give her
+
+250
+00:12:03,876 --> 00:12:06,338
+application the
+ability for rehydration.
+
+251
+00:12:06,958 --> 00:12:10,568
+Allowing us to actually make
+updates to our existing aggregates.
+
+252
+00:12:11,758 --> 00:12:16,718
+Great work if you've been following along
+and have your application locally as well.
+
+253
+00:12:16,858 --> 00:12:20,788
+There might be some minor
+nuances as we mentioned earlier
+
+254
+00:12:20,788 --> 00:12:22,648
+in this lesson for your
+specific applications use cases
+
+255
+00:12:22,978 --> 00:12:23,308
+but.
+
+256
+00:12:23,638 --> 00:12:25,678
+The majority of
+everything we've done here
+
+257
+00:12:25,799 --> 00:12:28,058
+can be used for most any system.
+

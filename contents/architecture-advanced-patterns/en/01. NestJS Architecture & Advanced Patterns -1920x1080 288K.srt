@@ -1,0 +1,121 @@
+﻿1
+00:00:00,510 --> 00:00:01,200
+Hey everyone
+
+2
+00:00:01,380 --> 00:00:04,282
+and welcome to the
+official nastiest courses.
+
+3
+00:00:04,440 --> 00:00:05,340
+In this extension
+
+4
+00:00:05,460 --> 00:00:09,630
+will be going through
+many advanced architectural
+
+5
+00:00:09,630 --> 00:00:10,320
+concepts and patterns
+and sgs from top to bottom.
+
+6
+00:00:10,680 --> 00:00:14,880
+Which should help you
+get up to speed creating
+
+7
+00:00:14,880 --> 00:00:15,840
+enterprise great applications
+with the help of nestorius
+
+8
+00:00:15,960 --> 00:00:17,260
+in no time.
+
+9
+00:00:17,433 --> 00:00:19,781
+Let's introduce the
+instructors for this course.
+
+10
+00:00:19,830 --> 00:00:20,640
+My name Bismarck
+
+11
+00:00:20,760 --> 00:00:24,630
+part of the nastiest core team and together
+with Camille the creator of nastiest
+
+12
+00:00:24,660 --> 00:00:26,610
+we're excited to have
+you learning nest with us.
+
+13
+00:00:27,330 --> 00:00:28,890
+To get the most
+out of this course
+
+14
+00:00:29,040 --> 00:00:33,550
+try to code alongside us and remember
+that you can pause the videos at any time.
+
+15
+00:00:33,690 --> 00:00:36,330
+Please note that this
+extension is a continuation
+
+16
+00:00:36,600 --> 00:00:37,800
+knowledge wise of the nes
+
+17
+00:00:38,099 --> 00:00:39,120
+fundamentals course
+
+18
+00:00:39,480 --> 00:00:41,680
+and the advanced
+concepts course.
+
+19
+00:00:41,820 --> 00:00:45,270
+Before you start watching this course we
+recommend taking a step back and checking
+
+20
+00:00:45,270 --> 00:00:46,830
+the official
+fundamentals course.
+
+21
+00:00:47,160 --> 00:00:50,170
+Is you're already not
+comfortable witness yes that is.
+
+22
+00:00:50,280 --> 00:00:51,120
+And this extension
+
+23
+00:00:51,360 --> 00:00:54,270
+will assume that you're familiar with
+everything we've covered in that fundamentals
+
+24
+00:00:54,270 --> 00:00:56,040
+course an advanced
+concepts course
+
+25
+00:00:56,280 --> 00:00:56,700
+so
+
+26
+00:00:57,000 --> 00:00:58,930
+let's go ahead and get started.
+

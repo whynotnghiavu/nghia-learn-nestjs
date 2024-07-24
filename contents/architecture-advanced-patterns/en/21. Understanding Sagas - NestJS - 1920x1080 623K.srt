@@ -1,0 +1,1028 @@
+﻿1
+00:00:00,930 --> 00:00:01,710
+A saga
+
+2
+00:00:01,830 --> 00:00:06,270
+is a pattern used to
+manage and coordinate the
+
+3
+00:00:06,270 --> 00:00:07,020
+execution of long running
+business processes
+
+4
+00:00:07,230 --> 00:00:08,980
+or distributed transactions.
+
+5
+00:00:10,050 --> 00:00:13,200
+A saga can be thought of
+as a process or a workflow
+
+6
+00:00:13,410 --> 00:00:16,860
+that orchestrates the execution
+of multiple commands and events
+
+7
+00:00:17,040 --> 00:00:19,660
+across different
+aggregates or services.
+
+8
+00:00:20,100 --> 00:00:22,410
+It ensures that the
+entire sequence of actions
+
+9
+00:00:22,710 --> 00:00:24,570
+either succeeds or fails
+
+10
+00:00:24,690 --> 00:00:25,500
+as a whole
+
+11
+00:00:25,710 --> 00:00:28,240
+preserving the
+integrity of the data.
+
+12
+00:00:28,920 --> 00:00:34,290
+In event driven systems
+sagas are typically
+
+13
+00:00:34,341 --> 00:00:35,010
+implemented as a state
+machine that react to events
+
+14
+00:00:35,190 --> 00:00:38,260
+and issues commands to
+other aggregates or services.
+
+15
+00:00:39,120 --> 00:00:44,040
+Since the necessary as secure as packet uses
+are x j s to control the flow of events.
+
+16
+00:00:44,430 --> 00:00:47,890
+We can use the powerful are
+extra Jess operators to combined.
+
+17
+00:00:47,970 --> 00:00:48,570
+Buffer
+
+18
+00:00:48,720 --> 00:00:52,570
+and coordinate events emitted
+by different aggregates or services.
+
+19
+00:00:53,490 --> 00:00:57,300
+Sagas can also represent
+processes that span multiple steps
+
+20
+00:00:57,690 --> 00:01:00,820
+and might take a significant
+amount of time to complete.
+
+21
+00:01:00,930 --> 00:01:01,650
+For example
+
+22
+00:01:01,950 --> 00:01:07,000
+a saga could be used to implement a
+multi-step onboarding process for new users.
+
+23
+00:01:07,320 --> 00:01:08,760
+Each step of the process.
+
+24
+00:01:09,090 --> 00:01:12,340
+Will be represented by a
+command and an event.
+
+25
+00:01:13,200 --> 00:01:18,130
+The saga would react to these events in
+issue the next command in the sequence.
+
+26
+00:01:18,510 --> 00:01:22,840
+The saga would even be responsible
+for handling timeouts and failures.
+
+27
+00:01:22,980 --> 00:01:27,190
+Ensuring that the entire process
+either succeeds or fails as a whole.
+
+28
+00:01:27,420 --> 00:01:30,150
+This is why it's important
+that the state of a saga
+
+29
+00:01:30,330 --> 00:01:32,400
+needs to be persisted
+in a database.
+
+30
+00:01:32,730 --> 00:01:36,490
+Allowing it to survive
+system failures and restarts.
+
+31
+00:01:36,840 --> 00:01:37,800
+In this lesson
+
+32
+00:01:38,040 --> 00:01:42,240
+for going to implement a very simple time
+based saga with the business requirement
+
+33
+00:01:42,450 --> 00:01:45,450
+that are new saga will react
+to the alarm created event.
+
+34
+00:01:45,870 --> 00:01:46,680
+In issued the
+
+35
+00:01:46,890 --> 00:01:49,350
+notify facility
+supervisor command
+
+36
+00:01:49,500 --> 00:01:50,370
+in the instance
+
+37
+00:01:50,490 --> 00:01:52,530
+where three alarms
+from the same facility
+
+38
+00:01:52,800 --> 00:01:55,360
+or create did in a
+five second window.
+
+39
+00:01:55,410 --> 00:01:57,510
+Something must be
+really wrong at that facility.
+
+40
+00:01:57,870 --> 00:02:00,130
+Were making sure
+some one has notified.
+
+41
+00:02:01,080 --> 00:02:01,590
+Alright
+
+42
+00:02:01,830 --> 00:02:02,820
+so let's get started
+
+43
+00:02:02,997 --> 00:02:04,470
+let's head over to our ID
+
+44
+00:02:04,710 --> 00:02:08,430
+and create a new notify facility
+supervisor command class.
+
+45
+00:02:08,820 --> 00:02:10,980
+Inside of the alarms application
+
+46
+00:02:11,100 --> 00:02:12,640
+commands folder.
+
+47
+00:02:13,080 --> 00:02:13,650
+Next up
+
+48
+00:02:13,890 --> 00:02:15,720
+let's create a new sagas folder
+
+49
+00:02:15,900 --> 00:02:18,700
+inside of the alarms
+application directory.
+
+50
+00:02:19,590 --> 00:02:23,700
+And also create a new cast
+getting alarms saga t s file inside it
+
+51
+00:02:23,910 --> 00:02:25,570
+with a fallen content.
+
+52
+00:02:26,370 --> 00:02:30,400
+Now let's break everything down
+here as there's quite a lot happening.
+
+53
+00:02:30,510 --> 00:02:34,830
+So first you might have
+noticed that we're using
+
+54
+00:02:34,830 --> 00:02:35,190
+the saga decorator to
+Mark the start method
+
+55
+00:02:35,340 --> 00:02:36,610
+as a saga.
+
+56
+00:02:36,750 --> 00:02:37,740
+The start method
+
+57
+00:02:38,010 --> 00:02:41,400
+as a function that takes an
+observable of events as an input
+
+58
+00:02:41,850 --> 00:02:45,310
+and returns an observable
+of command as an output.
+
+59
+00:02:45,990 --> 00:02:49,980
+The events dollar sign
+observable is a stream
+
+60
+00:02:49,980 --> 00:02:50,980
+of all events emitted
+by the application.
+
+61
+00:02:51,120 --> 00:02:53,760
+In our case we're using
+the of type operator
+
+62
+00:02:54,030 --> 00:02:57,610
+to filter out only the alarm
+created event events.
+
+63
+00:02:58,020 --> 00:02:58,500
+Next.
+
+64
+00:02:58,830 --> 00:03:00,660
+Were using the group by operator
+
+65
+00:03:00,810 --> 00:03:02,730
+to just for
+demonstration purposes
+
+66
+00:03:02,850 --> 00:03:05,050
+group events by alarm name.
+
+67
+00:03:05,190 --> 00:03:09,750
+In a real world application
+also if we had the meditative
+
+68
+00:03:09,750 --> 00:03:11,500
+field here as we surely
+would with real facilities.
+
+69
+00:03:11,640 --> 00:03:14,670
+We would ideally want a
+group events by their facility ID.
+
+70
+00:03:15,120 --> 00:03:16,530
+Were keeping things simple
+
+71
+00:03:16,680 --> 00:03:19,060
+and is real world
+as we can hear.
+
+72
+00:03:19,470 --> 00:03:23,220
+Next we're using the buffer
+timer operator inside of roadmap
+
+73
+00:03:23,550 --> 00:03:26,520
+to buffer all events admitted
+with and a five second window.
+
+74
+00:03:27,000 --> 00:03:30,190
+Setting the maximum
+number of events two three.
+
+75
+00:03:31,080 --> 00:03:35,490
+Then we're using the
+filter operator to filter
+
+76
+00:03:35,490 --> 00:03:36,270
+out emissions that contain
+less than three events
+
+77
+00:03:36,571 --> 00:03:37,380
+and finally
+
+78
+00:03:37,500 --> 00:03:41,610
+we're using the map
+operator to map the buffered
+
+79
+00:03:41,611 --> 00:03:43,270
+events to the notify facility
+supervisor command.
+
+80
+00:03:43,800 --> 00:03:47,310
+You might have noticed that there's a lot
+of comments here in the coat as our alarms
+
+81
+00:03:47,310 --> 00:03:50,081
+currently don't have
+a facility ID property.
+
+82
+00:03:50,130 --> 00:03:52,050
+Since this is the
+focus of this lesson.
+
+83
+00:03:52,381 --> 00:03:56,620
+Are going to skip this part in assume that
+all alarms belonged to the same facility.
+
+84
+00:03:56,730 --> 00:04:01,990
+You could add the meta data attribute your
+alarm's as an exercise though if you want.
+
+85
+00:04:02,610 --> 00:04:03,600
+Okay moving on
+
+86
+00:04:03,720 --> 00:04:05,670
+so before we can use our saga
+
+87
+00:04:05,880 --> 00:04:09,880
+we need to register the saga
+in the alarms module ts file.
+
+88
+00:04:09,990 --> 00:04:11,040
+Let's save our changes
+
+89
+00:04:11,250 --> 00:04:12,540
+head over to our terminal
+
+90
+00:04:12,660 --> 00:04:16,540
+and let's create multiple
+alarms in a short period of time.
+
+91
+00:04:18,990 --> 00:04:22,650
+Let's switch to our
+other terminal window
+
+92
+00:04:22,650 --> 00:04:23,280
+and as we can see the
+saga has been executed
+
+93
+00:04:23,400 --> 00:04:26,880
+and and notified facility supervisor
+command has been dispatched
+
+94
+00:04:27,150 --> 00:04:28,150
+excellent.
+
+95
+00:04:28,650 --> 00:04:29,550
+Let's try again
+
+96
+00:04:29,850 --> 00:04:33,630
+and now create alarms
+with some delay between
+
+97
+00:04:33,630 --> 00:04:34,630
+them to make sure
+the saga doesn't trigger.
+
+98
+00:04:48,510 --> 00:04:52,960
+As we can see the saga hasn't been
+executed this time great it's working.
+
+99
+00:04:53,910 --> 00:04:54,480
+However
+
+100
+00:04:54,630 --> 00:04:57,990
+since we don't have a corresponding
+command handler were getting an error
+
+101
+00:04:58,110 --> 00:04:59,920
+so let's fix that real quick.
+
+102
+00:05:00,450 --> 00:05:03,600
+Let's head over to the alarms
+application commands folder
+
+103
+00:05:03,960 --> 00:05:05,790
+and let's create a
+new file they're called
+
+104
+00:05:06,090 --> 00:05:08,970
+notify facility supervisor
+command dash handler that
+
+105
+00:05:09,150 --> 00:05:09,510
+s.
+
+106
+00:05:09,840 --> 00:05:12,220
+Unless add the
+following code inside.
+
+107
+00:05:13,650 --> 00:05:15,810
+You might have noticed the
+note we added in the code here
+
+108
+00:05:16,110 --> 00:05:19,500
+and this is because we don't have an
+email or text message service implemented
+
+109
+00:05:19,710 --> 00:05:21,010
+in our project.
+
+110
+00:05:21,180 --> 00:05:22,890
+Of course any real
+world application
+
+111
+00:05:23,130 --> 00:05:25,380
+we would use a
+notification service here.
+
+112
+00:05:25,800 --> 00:05:26,490
+In our case
+
+113
+00:05:26,670 --> 00:05:30,310
+we're just going to log something else
+that we know we have hit this hanlon.
+
+114
+00:05:31,140 --> 00:05:33,030
+All right so now that we
+have this class and place
+
+115
+00:05:33,150 --> 00:05:36,490
+less register at any
+alarms module js file.
+
+116
+00:05:40,260 --> 00:05:41,250
+Let's save our changes
+
+117
+00:05:41,490 --> 00:05:45,030
+head over to our
+terminal and let's create
+
+118
+00:05:45,030 --> 00:05:46,030
+multiple alarms in a
+short period of time again.
+
+119
+00:05:49,800 --> 00:05:51,420
+Let's switch to the
+other terminal window
+
+120
+00:05:51,690 --> 00:05:55,950
+and as we can see the saga has been
+executed and then notify facility supervisor
+
+121
+00:05:55,950 --> 00:05:59,710
+command has been processed by
+the handler we just created fantastic.
+
+122
+00:06:01,380 --> 00:06:01,920
+So
+
+123
+00:06:02,160 --> 00:06:06,640
+we already demonstrated how we can
+use saga to construct time-based workflows.
+
+124
+00:06:07,860 --> 00:06:09,600
+Well this is a common use case.
+
+125
+00:06:10,020 --> 00:06:12,090
+Were not yet merging
+different streams together
+
+126
+00:06:12,360 --> 00:06:16,080
+which could come in
+very handy especially
+
+127
+00:06:16,080 --> 00:06:17,080
+when dealing with
+large distributed systems.
+
+128
+00:06:17,400 --> 00:06:17,940
+Also
+
+129
+00:06:18,210 --> 00:06:22,320
+joining events dreams
+might be particularly useful
+
+130
+00:06:22,320 --> 00:06:23,320
+when implementing
+compensating transactions.
+
+131
+00:06:24,390 --> 00:06:26,910
+If you're not familiar with
+compensating transactions
+
+132
+00:06:27,060 --> 00:06:31,290
+they are the car concept
+that transactions can
+
+133
+00:06:31,350 --> 00:06:32,310
+potentially be reversed by
+processing another transaction
+
+134
+00:06:32,430 --> 00:06:34,330
+with the opposite effect.
+
+135
+00:06:34,560 --> 00:06:35,400
+In our case.
+
+136
+00:06:35,790 --> 00:06:37,890
+Let's look at an example
+just to experiment
+
+137
+00:06:38,130 --> 00:06:41,670
+where we created yet
+another saga that triggers
+
+138
+00:06:41,670 --> 00:06:42,300
+a command every time
+an alarm has created
+
+139
+00:06:42,600 --> 00:06:45,580
+and it has not been
+acknowledged within a minute.
+
+140
+00:06:45,750 --> 00:06:48,400
+Let's take a look and
+see how we could do that.
+
+141
+00:06:48,540 --> 00:06:53,100
+Let's head over to the
+saga directory and create a
+
+142
+00:06:53,100 --> 00:06:55,000
+new unacknowledged
+alarms dot saugatuck t s file.
+
+143
+00:06:55,050 --> 00:06:55,680
+And inside
+
+144
+00:06:55,860 --> 00:06:57,700
+let's add the following code.
+
+145
+00:06:59,430 --> 00:06:59,910
+Now
+
+146
+00:07:00,030 --> 00:07:01,410
+inside of the start method.
+
+147
+00:07:01,830 --> 00:07:06,060
+Let's use the of type
+decorator to filter out
+
+148
+00:07:06,094 --> 00:07:07,480
+only the alarm acknowledged
+event events first.
+
+149
+00:07:08,310 --> 00:07:08,760
+Next
+
+150
+00:07:09,060 --> 00:07:12,220
+let's do the same for the
+alarm created event events.
+
+151
+00:07:19,740 --> 00:07:20,250
+Now
+
+152
+00:07:20,400 --> 00:07:22,422
+let's make use of both streams.
+
+153
+00:07:23,760 --> 00:07:27,420
+So essentially what we're doing here
+is that we are waiting for an alarm to be
+
+154
+00:07:27,420 --> 00:07:29,710
+acknowledged
+within fifteen seconds.
+
+155
+00:07:29,760 --> 00:07:30,090
+Know
+
+156
+00:07:30,390 --> 00:07:33,510
+we lowered the time to fifteen
+seconds for demonstration purposes
+
+157
+00:07:33,780 --> 00:07:35,940
+since waiting for a
+minute would take too long.
+
+158
+00:07:36,480 --> 00:07:37,170
+To do so
+
+159
+00:07:37,410 --> 00:07:42,150
+we're using the race operator that takes
+two or more observables as input and returns
+
+160
+00:07:42,180 --> 00:07:44,310
+an observable that
+amidst the first value
+
+161
+00:07:44,490 --> 00:07:46,510
+from any of the
+input observables.
+
+162
+00:07:47,910 --> 00:07:51,840
+If timer amidst first then
+we know that the alarm
+
+163
+00:07:51,840 --> 00:07:53,230
+has not been acknowledged
+within fifteen seconds.
+
+164
+00:07:53,700 --> 00:07:54,270
+Also.
+
+165
+00:07:54,690 --> 00:07:58,590
+You can see that we're using the filter
+operator to filter out only the alarm
+
+166
+00:07:58,590 --> 00:08:02,459
+acknowledge events that
+correspond to the alarm
+
+167
+00:08:02,490 --> 00:08:03,490
+created event that we
+are currently processing.
+
+168
+00:08:03,810 --> 00:08:04,980
+We are accomplishing this
+
+169
+00:08:05,100 --> 00:08:08,440
+by comparing the alarm
+ID above events it's.
+
+170
+00:08:08,490 --> 00:08:09,810
+When the alarm has acknowledged
+
+171
+00:08:10,050 --> 00:08:14,730
+were using the first operator to emit only
+the first value from the input observable
+
+172
+00:08:14,940 --> 00:08:17,190
+and then we're using
+the merge map operator
+
+173
+00:08:17,400 --> 00:08:19,680
+to map value to an
+empty observable
+
+174
+00:08:19,800 --> 00:08:21,400
+that never admits.
+
+175
+00:08:22,020 --> 00:08:25,020
+This way we're essentially
+ignoring the alarm created event
+
+176
+00:08:25,140 --> 00:08:27,190
+as as already been acknowledged.
+
+177
+00:08:27,930 --> 00:08:29,070
+And last but not least
+
+178
+00:08:29,340 --> 00:08:31,450
+let's add the map operator.
+
+179
+00:08:32,610 --> 00:08:37,260
+Here were simply logging
+the alarm name and
+
+180
+00:08:37,260 --> 00:08:38,260
+issuing the notify facility
+supervisor commands.
+
+181
+00:08:38,760 --> 00:08:41,610
+Note that this mapping
+function will only be executed.
+
+182
+00:08:41,940 --> 00:08:45,900
+If the alarm has not been acknowledged
+within fifteen seconds since the predefined
+
+183
+00:08:46,050 --> 00:08:48,640
+empty observable never admits.
+
+184
+00:08:49,680 --> 00:08:54,850
+All right so let's save our changes and
+head over to the alarms module t s file.
+
+185
+00:08:55,020 --> 00:08:55,380
+Here
+
+186
+00:08:55,590 --> 00:08:59,650
+let's register the unacknowledged
+alarm saga class as a provider.
+
+187
+00:09:00,420 --> 00:09:01,420
+Great.
+
+188
+00:09:01,590 --> 00:09:02,670
+Now at this and place
+
+189
+00:09:02,910 --> 00:09:06,160
+let's head over to our terminal
+and let's create a new alarm.
+
+190
+00:09:09,540 --> 00:09:10,320
+But this time
+
+191
+00:09:10,470 --> 00:09:12,270
+let's not acknowledge it yet.
+
+192
+00:09:12,840 --> 00:09:13,350
+Instead
+
+193
+00:09:13,560 --> 00:09:16,480
+let's wait for fifteen seconds
+and let's see what happens.
+
+194
+00:09:24,480 --> 00:09:25,800
+As we can see in the terminal.
+
+195
+00:09:26,130 --> 00:09:26,760
+The saga
+
+196
+00:09:26,880 --> 00:09:31,600
+has been executed and then notify facility
+supervisor command has been dispatched.
+
+197
+00:09:31,680 --> 00:09:32,680
+Excellent.
+
+198
+00:09:33,210 --> 00:09:34,770
+Let's try again and this time
+
+199
+00:09:35,070 --> 00:09:39,640
+let's acknowledge the alarm before the
+fifteen seconds passes to see what happens.
+
+200
+00:09:45,060 --> 00:09:46,740
+Let's switch to the
+other terminal window
+
+201
+00:09:46,860 --> 00:09:49,780
+and let's wait again
+for fifteen seconds.
+
+202
+00:10:00,000 --> 00:10:02,340
+And as we can see
+nothing happened this time
+
+203
+00:10:02,520 --> 00:10:05,520
+the alarm has been acknowledged
+and our saga didn't trigger
+
+204
+00:10:05,700 --> 00:10:08,290
+everything's working
+as expected great.
+
+205
+00:10:09,408 --> 00:10:12,378
+In this final lesson we have
+learned about what sagas are
+
+206
+00:10:12,588 --> 00:10:16,488
+and how we can implement them to tackle
+some interesting in common use cases that
+
+207
+00:10:16,488 --> 00:10:18,598
+come up in our nest
+Jess applications.
+
+208
+00:10:19,308 --> 00:10:22,818
+Also if you've been
+following along and made
+
+209
+00:10:22,848 --> 00:10:24,078
+it to this point in the
+course congratulations.
+
+210
+00:10:24,498 --> 00:10:28,068
+We have reached the end of the
+advance architecture and patterns course
+
+211
+00:10:28,338 --> 00:10:28,698
+but
+
+212
+00:10:28,908 --> 00:10:31,798
+our nest j as journey
+is never finished.
+
+213
+00:10:32,658 --> 00:10:37,458
+We hope you enjoyed all the complex topics
+and subjects we dove into in this course
+
+214
+00:10:37,548 --> 00:10:40,858
+and hope they benefit you
+greatly in your future ness projects.
+
+215
+00:10:41,178 --> 00:10:41,688
+Also
+
+216
+00:10:41,898 --> 00:10:45,948
+stay tuned for more upcoming nest years
+courses on a variety of different topics
+
+217
+00:10:46,188 --> 00:10:47,838
+and make sure to sign
+up for the newsletter
+
+218
+00:10:47,958 --> 00:10:50,298
+to stay up to date on
+everything ness jazz.
+
+219
+00:10:50,748 --> 00:10:51,738
+See when the next one
+
+220
+00:10:51,888 --> 00:10:54,808
+and thanks again for
+helping support ness js.
+

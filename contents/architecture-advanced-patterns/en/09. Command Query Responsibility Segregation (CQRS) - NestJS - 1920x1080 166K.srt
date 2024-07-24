@@ -1,0 +1,294 @@
+﻿1
+00:00:00,900 --> 00:00:03,462
+Commands query
+responsibility segregation.
+
+2
+00:00:03,630 --> 00:00:05,430
+Or shorthand secure us.
+
+3
+00:00:05,850 --> 00:00:10,470
+Is a software architectural pattern that
+separates the concerns of reading data
+
+4
+00:00:10,770 --> 00:00:11,310
+queries
+
+5
+00:00:11,520 --> 00:00:12,450
+and writing data
+
+6
+00:00:12,570 --> 00:00:14,890
+commands into separate models.
+
+7
+00:00:15,450 --> 00:00:19,740
+The core idea behind
+secure us as to have
+
+8
+00:00:19,740 --> 00:00:21,220
+different models and
+approaches for handling read.
+
+9
+00:00:21,330 --> 00:00:23,070
+And write operations in a system
+
+10
+00:00:23,310 --> 00:00:26,260
+rather than combining
+them into a single model.
+
+11
+00:00:26,400 --> 00:00:29,110
+In traditional architectures
+and crud systems.
+
+12
+00:00:29,190 --> 00:00:33,070
+The same model is often used to
+handle both read and write operations.
+
+13
+00:00:33,720 --> 00:00:34,350
+However
+
+14
+00:00:34,500 --> 00:00:36,700
+as applications
+grow and complexity.
+
+15
+00:00:36,951 --> 00:00:41,322
+Requirements for reading and writing
+data can diverge signify currently.
+
+16
+00:00:41,640 --> 00:00:46,870
+This can lead to issues related to
+performance scalability and maintain ability.
+
+17
+00:00:47,640 --> 00:00:52,540
+With seek your s the applications data
+model is divided into two separate parts.
+
+18
+00:00:53,310 --> 00:00:58,150
+The command model which handles
+write operations aka data modification.
+
+19
+00:00:58,830 --> 00:01:03,120
+This model enforces business
+rules and validation logic
+
+20
+00:01:03,120 --> 00:01:04,930
+to ensure that data changes
+are correct inconsistent.
+
+21
+00:01:05,640 --> 00:01:07,710
+And the second
+being the query model.
+
+22
+00:01:08,070 --> 00:01:11,830
+Which handles read
+operations a gay data retrieval.
+
+23
+00:01:12,240 --> 00:01:14,670
+The query model is
+optimized for reading data
+
+24
+00:01:14,850 --> 00:01:19,530
+and often involves d
+normalized data structures or
+
+25
+00:01:19,530 --> 00:01:21,760
+specialized views that cater
+to specific read use cases.
+
+26
+00:01:22,380 --> 00:01:27,060
+This separation allows
+for efficient querying in
+
+27
+00:01:27,060 --> 00:01:28,390
+improves the overall
+performance of the read operations.
+
+28
+00:01:29,280 --> 00:01:32,520
+The secure as approach
+offers several benefits such as.
+
+29
+00:01:32,940 --> 00:01:33,940
+Performance.
+
+30
+00:01:34,170 --> 00:01:37,890
+It allows us to optimize the read
+and write operations independently
+
+31
+00:01:38,010 --> 00:01:38,880
+for example.
+
+32
+00:01:39,210 --> 00:01:43,060
+We can use different data stores
+for the read and write models.
+
+33
+00:01:43,410 --> 00:01:45,690
+This allows us to choose
+the right tool for the job
+
+34
+00:01:46,080 --> 00:01:49,720
+and optimize the data stores
+for their specific use cases.
+
+35
+00:01:50,160 --> 00:01:51,520
+Scale ability.
+
+36
+00:01:51,660 --> 00:01:56,520
+Secure us lets us scaled the read and write
+operations independently for example a
+
+37
+00:01:56,520 --> 00:01:58,770
+nice use case is a
+flight booking system.
+
+38
+00:01:59,310 --> 00:02:01,890
+Where the read operations
+are much much more frequent
+
+39
+00:02:02,130 --> 00:02:03,670
+than the right operations.
+
+40
+00:02:04,320 --> 00:02:05,070
+And lastly.
+
+41
+00:02:05,400 --> 00:02:06,400
+Maintainability.
+
+42
+00:02:06,930 --> 00:02:11,650
+Secure us allows us to evolve the read
+and write my models independently as well.
+
+43
+00:02:12,720 --> 00:02:13,260
+However
+
+44
+00:02:13,710 --> 00:02:15,720
+like anything else in
+the engineering world
+
+45
+00:02:15,870 --> 00:02:19,810
+seek you are s also comes
+with some drawbacks such as.
+
+46
+00:02:20,250 --> 00:02:21,250
+Complexity.
+
+47
+00:02:21,480 --> 00:02:25,950
+Secure as certainly adds an additional
+complexity to a system making it harder to
+
+48
+00:02:25,950 --> 00:02:29,170
+understand and not suited
+for simple applications.
+
+49
+00:02:29,880 --> 00:02:30,510
+And also
+
+50
+00:02:30,660 --> 00:02:32,200
+eventual consistency.
+
+51
+00:02:32,640 --> 00:02:36,100
+The read and write models are
+typically eventually consistent.
+
+52
+00:02:36,180 --> 00:02:38,370
+Meaning that the changes
+made to the right model
+
+53
+00:02:38,580 --> 00:02:41,980
+are usually not immediately
+reflected in the read model.
+
+54
+00:02:42,180 --> 00:02:44,010
+While this isn't a
+drawback for say.
+
+55
+00:02:44,430 --> 00:02:47,920
+It's something that we he'd be
+aware of when using secure us.
+
+56
+00:02:48,120 --> 00:02:51,720
+Seek you r s is also used in
+combination with event sourcing
+
+57
+00:02:51,840 --> 00:02:53,590
+and event driven architectures.
+
+58
+00:02:53,820 --> 00:02:57,070
+Both of which will dive
+deeper into in future lessons.
+
+59
+00:02:57,990 --> 00:02:58,980
+In the next lesson
+
+60
+00:02:59,220 --> 00:03:00,720
+will take a look at
+how we can implement
+
+61
+00:03:00,960 --> 00:03:01,050
+you
+
+62
+00:03:01,230 --> 00:03:03,190
+us in our very an application.
+
+63
+00:03:03,630 --> 00:03:05,020
+Let's get started.
+

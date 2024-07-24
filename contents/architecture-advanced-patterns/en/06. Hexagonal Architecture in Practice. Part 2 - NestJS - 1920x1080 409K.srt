@@ -1,0 +1,1132 @@
+﻿1
+00:00:00,930 --> 00:00:01,710
+In this lesson
+
+2
+00:00:01,980 --> 00:00:06,000
+will continue working on our application
+but what a hexagonal architecture and mind
+
+3
+00:00:06,420 --> 00:00:08,820
+and create the
+interfaces known as ports
+
+4
+00:00:09,000 --> 00:00:13,510
+defined by the application layer as well
+as the adapters that will implement the.
+
+5
+00:00:13,620 --> 00:00:17,160
+Ports defined the contract for
+interactions with the external world.
+
+6
+00:00:17,610 --> 00:00:21,270
+While adapters implement
+these contracts and sir
+
+7
+00:00:21,270 --> 00:00:22,350
+serve as a bridge between
+the application layer
+
+8
+00:00:22,620 --> 00:00:24,250
+and the external systems.
+
+9
+00:00:24,990 --> 00:00:25,950
+Before we proceed.
+
+10
+00:00:26,310 --> 00:00:28,800
+What's the first installed the
+dependencies that will need in this lesson.
+
+11
+00:00:29,490 --> 00:00:30,810
+For demonstration purposes
+
+12
+00:00:31,081 --> 00:00:34,540
+are going to use the type or m library
+to implement one of the repositories
+
+13
+00:00:34,710 --> 00:00:36,840
+in the p g library
+to connect to a.
+
+14
+00:00:37,170 --> 00:00:38,680
+Crests sql database.
+
+15
+00:00:39,720 --> 00:00:41,560
+Back to our task at hand.
+
+16
+00:00:41,730 --> 00:00:45,551
+Let's create a new folder and the
+application directory called ports.
+
+17
+00:00:45,720 --> 00:00:46,320
+And side of it.
+
+18
+00:00:46,920 --> 00:00:51,100
+Let's create a new file called alarm
+repository with the fallen content.
+
+19
+00:00:53,550 --> 00:00:55,500
+This here is our first port.
+
+20
+00:00:55,830 --> 00:00:58,750
+Which defines the contract
+for the alarm repository.
+
+21
+00:00:59,250 --> 00:01:00,540
+It defines to methods.
+
+22
+00:01:00,930 --> 00:01:02,830
+Find all in say.
+
+23
+00:01:03,300 --> 00:01:04,170
+The find all method
+
+24
+00:01:04,290 --> 00:01:06,330
+will return a list of all alarms
+
+25
+00:01:06,630 --> 00:01:10,860
+while the same method
+will save a new alarmed
+
+26
+00:01:10,861 --> 00:01:11,861
+the database in return
+of that saved alarm.
+
+27
+00:01:12,660 --> 00:01:13,590
+It's worth noting
+
+28
+00:01:13,740 --> 00:01:16,290
+that both the class and
+the methods are abstract.
+
+29
+00:01:16,680 --> 00:01:18,850
+Meaning that they don't
+have an implementation.
+
+30
+00:01:19,860 --> 00:01:23,760
+This implementation will
+actually be provided by
+
+31
+00:01:23,760 --> 00:01:25,090
+the adapters which will
+get to and just a moment.
+
+32
+00:01:25,500 --> 00:01:29,490
+Note that instead of using abstract
+classes we could use interfaces here
+
+33
+00:01:29,820 --> 00:01:32,410
+but the reason we chose
+to use abstract classes.
+
+34
+00:01:32,490 --> 00:01:35,713
+Is that they serve as
+injection tokens and ness jazz.
+
+35
+00:01:35,760 --> 00:01:37,060
+While interfaces.
+
+36
+00:01:37,110 --> 00:01:41,680
+Are purely typescript constructs and are
+wiped out during the transportation process.
+
+37
+00:01:42,060 --> 00:01:42,720
+Essentially.
+
+38
+00:01:43,050 --> 00:01:45,270
+This means that they would
+not be available at runtime.
+
+39
+00:01:45,630 --> 00:01:48,850
+Making classes a much
+better choice for us to use.
+
+40
+00:01:49,350 --> 00:01:49,800
+Now
+
+41
+00:01:49,980 --> 00:01:51,400
+onto the adapters.
+
+42
+00:01:51,900 --> 00:01:54,130
+Inside the
+infrastructure folder.
+
+43
+00:01:54,180 --> 00:01:56,920
+Let's create a directory
+named persistence.
+
+44
+00:01:57,630 --> 00:01:58,320
+This folder.
+
+45
+00:01:58,650 --> 00:02:02,980
+Will contain the adapters that will lead
+us interact with different data sources.
+
+46
+00:02:03,300 --> 00:02:04,320
+In our case
+
+47
+00:02:04,530 --> 00:02:06,660
+will be using a
+postgraduate sql database
+
+48
+00:02:06,960 --> 00:02:09,180
+and interacting with
+it via type of ram.
+
+49
+00:02:09,600 --> 00:02:13,360
+As well as an in-memory database
+for demonstration purposes.
+
+50
+00:02:13,980 --> 00:02:18,990
+Note that type r m or post crests are not
+required by any means you're welcome to use
+
+51
+00:02:18,990 --> 00:02:21,300
+any or 'em or
+database of your choice
+
+52
+00:02:21,600 --> 00:02:25,210
+to achieve hexagonal architecture
+in your destiny as applications.
+
+53
+00:02:25,950 --> 00:02:26,280
+Oh
+
+54
+00:02:26,580 --> 00:02:28,050
+let's create to new folders
+
+55
+00:02:28,350 --> 00:02:31,650
+respectively in memory for
+the in-memory database adapter
+
+56
+00:02:31,980 --> 00:02:33,000
+and or m
+
+57
+00:02:33,120 --> 00:02:35,620
+for the type of r m
+database adapter.
+
+58
+00:02:37,320 --> 00:02:39,640
+Let's start with the
+type r m adapter.
+
+59
+00:02:39,750 --> 00:02:41,220
+Inside the are and folder
+
+60
+00:02:41,370 --> 00:02:45,390
+let's create a new file called alarm
+entity under the entities directory
+
+61
+00:02:45,630 --> 00:02:47,230
+with the following content.
+
+62
+00:02:49,470 --> 00:02:54,570
+This class will represent
+our database table it will be
+
+63
+00:02:54,570 --> 00:02:57,130
+used by type or m to map the
+data to and from the database.
+
+64
+00:02:58,260 --> 00:02:58,740
+Next.
+
+65
+00:02:59,250 --> 00:03:00,600
+Let's create a new file
+
+66
+00:03:00,810 --> 00:03:04,950
+while the alarm repository
+under the repositories
+
+67
+00:03:04,950 --> 00:03:05,950
+directory with the
+following content.
+
+68
+00:03:12,690 --> 00:03:13,080
+Here
+
+69
+00:03:13,320 --> 00:03:16,980
+were simply delegating the calls
+to the native type r m repository
+
+70
+00:03:17,220 --> 00:03:19,570
+which is injected
+into the constructor.
+
+71
+00:03:20,220 --> 00:03:20,790
+However
+
+72
+00:03:20,970 --> 00:03:23,340
+we can see that some of
+the lines are highlighted read.
+
+73
+00:03:23,790 --> 00:03:27,460
+This is because our type r m
+repository it returns the entity.
+
+74
+00:03:27,630 --> 00:03:29,010
+Our persistence model
+
+75
+00:03:29,310 --> 00:03:33,780
+while our application
+layer expects the domain
+
+76
+00:03:33,780 --> 00:03:35,110
+the model which is alarm
+instead of alarm entity.
+
+77
+00:03:35,280 --> 00:03:36,780
+So we need to convert the entity
+
+78
+00:03:37,050 --> 00:03:38,130
+with the domain model
+
+79
+00:03:38,460 --> 00:03:39,970
+and the opposite.
+
+80
+00:03:40,148 --> 00:03:42,220
+Let's go ahead and do that now.
+
+81
+00:03:42,630 --> 00:03:44,170
+To achieve this.
+
+82
+00:03:44,250 --> 00:03:49,620
+Let's create a new map or file called alarm
+app or she s under the mappers directory
+
+83
+00:03:49,830 --> 00:03:51,730
+and give it the
+following content.
+
+84
+00:03:54,060 --> 00:03:57,570
+This alarm mapper class
+exposes to static methods
+
+85
+00:03:57,810 --> 00:03:58,560
+to domain
+
+86
+00:03:58,890 --> 00:04:00,430
+and to persistence.
+
+87
+00:04:01,410 --> 00:04:05,410
+The to domain method converts
+the entity to the domain model.
+
+88
+00:04:05,460 --> 00:04:09,600
+While the to persistence method
+converts the domain model to the entity.
+
+89
+00:04:10,110 --> 00:04:12,480
+Nothing too fancy here
+but most importantly.
+
+90
+00:04:12,810 --> 00:04:15,120
+We need to ensure
+that the severe property.
+
+91
+00:04:15,450 --> 00:04:18,510
+Which is represented as the
+value object in our domain model
+
+92
+00:04:18,780 --> 00:04:20,730
+is converted to a regular string
+
+93
+00:04:21,120 --> 00:04:23,820
+and the other way around
+when converting from an entity
+
+94
+00:04:23,940 --> 00:04:25,690
+to the domain model.
+
+95
+00:04:26,910 --> 00:04:28,360
+Back to our repository.
+
+96
+00:04:28,650 --> 00:04:32,740
+Let's use our new alarm mapper
+to perform these conversions.
+
+97
+00:04:40,590 --> 00:04:41,590
+Great.
+
+98
+00:04:42,450 --> 00:04:43,590
+Last but not least.
+
+99
+00:04:44,010 --> 00:04:47,700
+We need to create the new or and
+persistence module file under the.
+
+100
+00:04:48,030 --> 00:04:50,530
+M directory with
+the following content.
+
+101
+00:04:52,530 --> 00:04:55,505
+Using the accustomed providers
+syntax here were telling nest
+
+102
+00:04:55,617 --> 00:04:58,830
+as to use the or ram
+alarm repository class
+
+103
+00:04:59,130 --> 00:05:02,230
+whenever the alarm
+repository token is requested.
+
+104
+00:05:02,790 --> 00:05:05,370
+Were also exporting the
+alarm repository token.
+
+105
+00:05:05,820 --> 00:05:08,040
+Let it can be used by
+other models as well
+
+106
+00:05:08,310 --> 00:05:09,960
+this is where we bind the port
+
+107
+00:05:10,290 --> 00:05:11,500
+to an adapter.
+
+108
+00:05:11,700 --> 00:05:12,700
+Excellent.
+
+109
+00:05:12,900 --> 00:05:13,470
+Now
+
+110
+00:05:13,710 --> 00:05:16,090
+let's create the in
+memory adapter.
+
+111
+00:05:16,170 --> 00:05:20,130
+Is going to be a lot of repetitive work
+here so let's go ahead and copy everything
+
+112
+00:05:20,130 --> 00:05:23,490
+over from the or ram directory
+to the in memory director
+
+113
+00:05:23,850 --> 00:05:24,570
+but of course
+
+114
+00:05:24,840 --> 00:05:26,470
+will need to make a few changes.
+
+115
+00:05:32,490 --> 00:05:35,160
+Let's start by first opening
+up the alarm entity file
+
+116
+00:05:35,280 --> 00:05:39,750
+and remove the type r m
+annotations as we won't need
+
+117
+00:05:39,750 --> 00:05:41,350
+any of that in the context
+of an in-memory adapt.
+
+118
+00:05:43,830 --> 00:05:45,030
+The alarm mapper
+
+119
+00:05:45,150 --> 00:05:49,267
+remains the same so technically we
+could move it to the shared directory.
+
+120
+00:05:49,590 --> 00:05:52,650
+But since for more sophisticated
+adapters a might be different
+
+121
+00:05:52,800 --> 00:05:54,430
+will keep it here instead.
+
+122
+00:05:54,870 --> 00:05:56,860
+Next up onto the repository.
+
+123
+00:05:57,390 --> 00:06:01,890
+Let's open up the alarm repository file
+and remove the inject repository dependency
+
+124
+00:06:02,160 --> 00:06:03,660
+what's also renamed this class
+
+125
+00:06:03,900 --> 00:06:06,310
+to in memory alarm repository.
+
+126
+00:06:07,890 --> 00:06:09,360
+Inside the body of this class.
+
+127
+00:06:09,750 --> 00:06:13,510
+Let's create a new map that will
+act as our in-memory database.
+
+128
+00:06:16,530 --> 00:06:18,060
+With this new map and place.
+
+129
+00:06:18,390 --> 00:06:21,270
+Let's update the find
+all and saved methods.
+
+130
+00:06:25,320 --> 00:06:26,430
+Last but not least.
+
+131
+00:06:26,790 --> 00:06:31,840
+Let's rename the or and persistence
+module to in memory persistence module.
+
+132
+00:06:31,950 --> 00:06:32,490
+Also
+
+133
+00:06:32,700 --> 00:06:36,330
+let's make sure to be named the module
+to in memory alarm persistence module.
+
+134
+00:06:36,690 --> 00:06:38,980
+In remove the type r m import.
+
+135
+00:06:42,900 --> 00:06:43,900
+Antarctic.
+
+136
+00:06:44,340 --> 00:06:47,710
+Now we have to adapters
+that implement this same port.
+
+137
+00:06:47,850 --> 00:06:49,170
+Now onto the fun part.
+
+138
+00:06:49,650 --> 00:06:52,030
+Let's see how we can
+use them in or application.
+
+139
+00:06:52,800 --> 00:06:53,220
+First and
+
+140
+00:06:53,490 --> 00:06:56,020
+of the root of the
+infrastructure directory.
+
+141
+00:06:56,100 --> 00:06:57,450
+Let's create a new file
+
+142
+00:06:57,660 --> 00:06:59,550
+called alarms
+infrastructure module
+
+143
+00:06:59,850 --> 00:07:01,480
+with the following content.
+
+144
+00:07:03,780 --> 00:07:08,610
+This module is responsible
+for exporting the correct
+
+145
+00:07:08,610 --> 00:07:10,540
+persistence module based
+on the driver that we pass in.
+
+146
+00:07:10,650 --> 00:07:13,110
+Both the in-memory
+alarm persistence module
+
+147
+00:07:13,590 --> 00:07:14,317
+and or
+
+148
+00:07:14,580 --> 00:07:17,880
+alarm persistence module
+export the alarm repository token.
+
+149
+00:07:18,240 --> 00:07:20,950
+We can easily swap
+one for the other.
+
+150
+00:07:21,840 --> 00:07:24,870
+With that in place what's
+navigate to the alarms module
+
+151
+00:07:25,140 --> 00:07:26,880
+and declare a new static method.
+
+152
+00:07:27,270 --> 00:07:29,080
+Called with infrastructure.
+
+153
+00:07:30,180 --> 00:07:32,940
+Here we're using the
+modules composition pattern
+
+154
+00:07:33,240 --> 00:07:35,490
+will allow the
+consumers of our modul
+
+155
+00:07:35,730 --> 00:07:38,650
+who pass in the infrastructure
+module that they want to use.
+
+156
+00:07:38,700 --> 00:07:40,410
+This is a very powerful pattern
+
+157
+00:07:40,680 --> 00:07:44,890
+that allows us to decouple the
+infrastructure from the application layer.
+
+158
+00:07:45,390 --> 00:07:46,050
+Next up.
+
+159
+00:07:46,410 --> 00:07:51,051
+Let's open up our alarms service
+and inject the alarm positively provider.
+
+160
+00:07:58,890 --> 00:08:01,300
+Let's also inject
+the alarm factory.
+
+161
+00:08:02,340 --> 00:08:04,960
+And great with both
+dependencies and place.
+
+162
+00:08:05,100 --> 00:08:08,170
+Let's update our find
+all and create methods.
+
+163
+00:08:09,120 --> 00:08:14,370
+The create method now uses the alarm
+factory to create a new alarm domain model
+
+164
+00:08:14,700 --> 00:08:18,250
+and then passes it to the
+alarm repository to be saved.
+
+165
+00:08:19,080 --> 00:08:21,100
+Now onto the find all method.
+
+166
+00:08:21,780 --> 00:08:26,490
+The find all method
+here simply returns the
+
+167
+00:08:26,491 --> 00:08:27,491
+result of the alarm
+repositories find all method.
+
+168
+00:08:27,570 --> 00:08:28,050
+Excellent.
+
+169
+00:08:28,590 --> 00:08:31,890
+There's just a few more
+quick things we need to do
+
+170
+00:08:31,890 --> 00:08:33,070
+before we can test everything
+out on our application.
+
+171
+00:08:33,660 --> 00:08:35,490
+Or stop in the source directory.
+
+172
+00:08:35,820 --> 00:08:38,261
+Let's create a new
+folder called common.
+
+173
+00:08:38,490 --> 00:08:41,940
+And inside of this directory
+let's create a new file
+
+174
+00:08:41,940 --> 00:08:43,320
+called application boots
+rep options dot interface
+
+175
+00:08:43,620 --> 00:08:45,220
+with the following content.
+
+176
+00:08:45,840 --> 00:08:49,440
+This interface will
+represent the options
+
+177
+00:08:49,440 --> 00:08:50,440
+that we can use to
+configure our application.
+
+178
+00:08:50,670 --> 00:08:53,520
+Next let's generate a
+new module called core
+
+179
+00:08:53,640 --> 00:08:55,660
+using the nes jsc ally.
+
+180
+00:08:57,300 --> 00:09:01,830
+Let's open up this newly
+generated module and
+
+181
+00:09:01,830 --> 00:09:02,830
+let's define a new for
+route static method.
+
+182
+00:09:04,680 --> 00:09:05,610
+Essentially here
+
+183
+00:09:05,910 --> 00:09:07,740
+depending on the
+driver that we pass in.
+
+184
+00:09:08,130 --> 00:09:13,330
+We're either going to import the type
+r ram module or import nothing at all.
+
+185
+00:09:14,400 --> 00:09:14,880
+Next.
+
+186
+00:09:15,270 --> 00:09:16,050
+Let's open up the
+
+187
+00:09:16,290 --> 00:09:20,500
+app module t s file and declare
+a new static method there as well.
+
+188
+00:09:20,550 --> 00:09:22,330
+And let's call it register.
+
+189
+00:09:23,730 --> 00:09:27,600
+This register method accepts the
+application bootstrap options object
+
+190
+00:09:27,960 --> 00:09:31,270
+and passes it to the core
+module for route method.
+
+191
+00:09:31,830 --> 00:09:32,730
+As you can see
+
+192
+00:09:32,970 --> 00:09:37,470
+it also passes the driver to the alarms
+infrastructure module use method.
+
+193
+00:09:38,100 --> 00:09:40,560
+Which returns the correct
+infrastructure module
+
+194
+00:09:40,860 --> 00:09:42,878
+based on the selected driver.
+
+195
+00:09:43,350 --> 00:09:48,420
+It's also not forget to remove
+the previously important
+
+196
+00:09:48,420 --> 00:09:50,050
+alarms module that lacks
+this infrastructure module.
+
+197
+00:09:51,300 --> 00:09:52,300
+Finally.
+
+198
+00:09:52,350 --> 00:09:57,610
+Let's update the main ts file to use the
+register method and voila were all set.
+
+199
+00:09:58,200 --> 00:09:58,740
+For now
+
+200
+00:09:58,950 --> 00:10:00,840
+let's use the in-memory driver
+
+201
+00:10:01,020 --> 00:10:04,450
+i will switch to the typo or
+m driver in just a moment.
+
+202
+00:10:05,413 --> 00:10:06,092
+So now.
+
+203
+00:10:06,422 --> 00:10:07,772
+Let's head over to our terminals
+
+204
+00:10:08,012 --> 00:10:09,582
+and start up the application.
+
+205
+00:10:14,792 --> 00:10:15,542
+As we can see
+
+206
+00:10:15,812 --> 00:10:19,952
+our application is up
+and running slots test
+
+207
+00:10:19,952 --> 00:10:20,952
+everything out using a
+few simple curl commands.
+
+208
+00:10:25,532 --> 00:10:29,552
+Excellent both the create and find
+all methods are working as expected.
+
+209
+00:10:29,972 --> 00:10:34,064
+So but switch over to the
+type r m driver now to test data.
+
+210
+00:10:34,352 --> 00:10:37,592
+In order to do that first we're going to
+have to create a few things so let's start
+
+211
+00:10:37,592 --> 00:10:42,032
+by creating a docker
+compose yaml file in the root
+
+212
+00:10:42,032 --> 00:10:43,272
+of our project with the
+for following content.
+
+213
+00:10:47,192 --> 00:10:48,152
+As a note here
+
+214
+00:10:48,332 --> 00:10:52,322
+make sure that the
+password matches the one that
+
+215
+00:10:52,322 --> 00:10:53,832
+we used in the for route
+method of the core module.
+
+216
+00:10:54,542 --> 00:10:55,712
+Now back to our terminals.
+
+217
+00:10:56,162 --> 00:10:56,792
+Let's run
+
+218
+00:10:57,032 --> 00:11:01,002
+docker dash compose up
+dash d to start up that database.
+
+219
+00:11:02,882 --> 00:11:04,502
+Once our database
+is up and running.
+
+220
+00:11:04,922 --> 00:11:10,092
+Let's update the main t s file to use the
+type or ram driver instead of in memory.
+
+221
+00:11:10,622 --> 00:11:11,972
+Let's save our changes again
+
+222
+00:11:12,182 --> 00:11:15,312
+and head over to the terminal
+and observed those logs.
+
+223
+00:11:16,232 --> 00:11:17,042
+As we can see
+
+224
+00:11:17,252 --> 00:11:17,690
+the type of
+
+225
+00:11:17,792 --> 00:11:21,242
+ram module has been
+successfully initialized meaning
+
+226
+00:11:21,242 --> 00:11:22,922
+that our application is now
+using the type r m driver
+
+227
+00:11:23,102 --> 00:11:24,642
+and a real database.
+
+228
+00:11:24,932 --> 00:11:28,242
+As test it out using those
+same curl commands.
+
+229
+00:11:35,342 --> 00:11:36,122
+And it works
+
+230
+00:11:36,302 --> 00:11:37,302
+fantastic.
+
+231
+00:11:37,532 --> 00:11:39,122
+So just to recap everything.
+
+232
+00:11:39,452 --> 00:11:44,053
+We've created a simple application
+that allows us to create an fetch alarms.
+
+233
+00:11:44,402 --> 00:11:46,742
+But are simple application
+is much more than that.
+
+234
+00:11:47,162 --> 00:11:51,272
+We've also decoupled
+the infrastructure from the
+
+235
+00:11:51,272 --> 00:11:52,933
+application layer using the
+modules composition powder.
+
+236
+00:11:53,372 --> 00:11:54,542
+With that simple path pattern.
+
+237
+00:11:54,872 --> 00:11:58,562
+We can now simply switch between different
+infrastructure implementations without
+
+238
+00:11:58,562 --> 00:12:01,242
+haven't changed the
+application layer itself.
+
+239
+00:12:01,442 --> 00:12:02,342
+In our case.
+
+240
+00:12:02,702 --> 00:12:06,782
+We simply switch between
+an in-memory database
+
+241
+00:12:06,866 --> 00:12:07,291
+and a postgres
+database via type around
+
+242
+00:12:07,712 --> 00:12:10,652
+but hopefully you can see this
+newly gained power you have
+
+243
+00:12:10,862 --> 00:12:13,722
+of now changing between
+entirely different infrastructures.
+
+244
+00:12:13,982 --> 00:12:14,912
+Database cases.
+
+245
+00:12:15,272 --> 00:12:17,552
+If you needed to have
+such a powerful flexibility
+
+246
+00:12:17,822 --> 00:12:19,844
+in your future
+nest applications.
+

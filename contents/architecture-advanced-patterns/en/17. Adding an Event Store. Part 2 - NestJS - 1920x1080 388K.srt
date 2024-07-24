@@ -1,0 +1,719 @@
+﻿1
+00:00:01,170 --> 00:00:02,310
+In the previous lesson
+
+2
+00:00:02,610 --> 00:00:06,610
+we have created a new events or
+an integrated it with our application.
+
+3
+00:00:07,110 --> 00:00:11,170
+Dispatched events are now
+automatically persisted in the event store.
+
+4
+00:00:11,250 --> 00:00:13,120
+But that's when the magic stops.
+
+5
+00:00:13,200 --> 00:00:14,200
+Conceptually.
+
+6
+00:00:14,520 --> 00:00:18,510
+Our events are flowing out of the
+application but they're not flowing back in.
+
+7
+00:00:19,230 --> 00:00:23,310
+This will be even easy to
+see why it's happening if
+
+8
+00:00:23,310 --> 00:00:24,360
+we had a separate application
+for writing and reading.
+
+9
+00:00:24,960 --> 00:00:25,740
+Not to worry
+
+10
+00:00:26,040 --> 00:00:28,630
+we'll get things working
+here and just a moment.
+
+11
+00:00:29,280 --> 00:00:31,950
+Now when it comes
+to processing events
+
+12
+00:00:32,160 --> 00:00:33,720
+there are two
+different strategies
+
+13
+00:00:33,960 --> 00:00:34,440
+push
+
+14
+00:00:34,560 --> 00:00:35,860
+and pull.
+
+15
+00:00:35,970 --> 00:00:36,960
+In this course.
+
+16
+00:00:37,261 --> 00:00:41,430
+Are going to implement the pushed
+strategy with collection watchers meaning
+
+17
+00:00:41,640 --> 00:00:45,520
+we're going to watch for new
+mongo db documents or events.
+
+18
+00:00:46,110 --> 00:00:49,140
+Whenever a new document
+is inserted into the collection.
+
+19
+00:00:49,470 --> 00:00:53,640
+Our application will receive a signal with
+the new document payload past in with it.
+
+20
+00:00:54,240 --> 00:00:54,660
+Then.
+
+21
+00:00:54,990 --> 00:00:58,050
+We can use that document
+to recreate the event instance
+
+22
+00:00:58,230 --> 00:01:00,370
+and add added to the event bus.
+
+23
+00:01:01,020 --> 00:01:03,120
+In the poll strategy
+on the other hand
+
+24
+00:01:03,240 --> 00:01:05,910
+instead of subscribing
+to the collection watchers
+
+25
+00:01:06,210 --> 00:01:09,240
+who would periodically pull
+the database for new events
+
+26
+00:01:09,540 --> 00:01:11,190
+to determine what
+events are knew.
+
+27
+00:01:11,610 --> 00:01:14,460
+We would need to keep track
+of the last processed event.
+
+28
+00:01:14,820 --> 00:01:17,490
+For example by storing
+the version of the aggregate
+
+29
+00:01:17,670 --> 00:01:19,270
+in the read database.
+
+30
+00:01:19,620 --> 00:01:20,070
+Then.
+
+31
+00:01:20,430 --> 00:01:22,179
+It would query the database.
+
+32
+00:01:22,260 --> 00:01:25,800
+Or all events with a position greater
+than the version of the aggregate
+
+33
+00:01:26,040 --> 00:01:29,230
+which corresponds to
+the last process event.
+
+34
+00:01:29,910 --> 00:01:34,380
+Alternatively we could use
+a cursor based approach
+
+35
+00:01:34,380 --> 00:01:35,860
+and just track the number
+of events processed.
+
+36
+00:01:36,930 --> 00:01:38,910
+This is a slightly
+simpler approach
+
+37
+00:01:39,150 --> 00:01:42,090
+as our application can
+process events at its own pace
+
+38
+00:01:42,450 --> 00:01:44,290
+but it's also less efficient.
+
+39
+00:01:44,400 --> 00:01:47,100
+As we're constantly queering
+the database for new events
+
+40
+00:01:47,400 --> 00:01:49,210
+even if there are none.
+
+41
+00:01:49,350 --> 00:01:52,470
+Whether you choose
+the push or pull strategies
+
+42
+00:01:52,650 --> 00:01:54,120
+depends on your use cases
+
+43
+00:01:54,240 --> 00:01:55,560
+the frequency of events
+
+44
+00:01:55,830 --> 00:01:57,360
+type of the database
+your are using
+
+45
+00:01:57,510 --> 00:01:59,970
+whether it supports
+change streams or not
+
+46
+00:02:00,090 --> 00:02:01,090
+etc.
+
+47
+00:02:01,770 --> 00:02:03,510
+But in our case
+let's jump right in
+
+48
+00:02:03,840 --> 00:02:07,300
+and implement the push
+strategy with collection watchers.
+
+49
+00:02:08,010 --> 00:02:12,475
+Let's start by creating
+a new file called
+
+50
+00:02:12,490 --> 00:02:13,020
+events bridged at t s in
+the events store folder
+
+51
+00:02:13,174 --> 00:02:15,370
+let's add the
+following code inside.
+
+52
+00:02:16,230 --> 00:02:17,400
+And let's break it down the
+
+53
+00:02:17,520 --> 00:02:18,970
+line by line.
+
+54
+00:02:19,140 --> 00:02:22,080
+Our events bridge class
+implements to interfaces
+
+55
+00:02:22,350 --> 00:02:25,500
+an application bootstrap
+and an application shut down.
+
+56
+00:02:26,130 --> 00:02:28,380
+And the an application
+bootstrap life cycle hook.
+
+57
+00:02:28,830 --> 00:02:33,430
+Or creating a new change stream and
+were subscribing to the change event.
+
+58
+00:02:33,780 --> 00:02:36,540
+Whenever a new event is
+inserted into the of cent store
+
+59
+00:02:36,840 --> 00:02:41,748
+the change event will be omitted and will
+call the handle event store change method.
+
+60
+00:02:42,630 --> 00:02:44,430
+In the poll based approach
+
+61
+00:02:44,610 --> 00:02:46,470
+instead of using a change stream
+
+62
+00:02:46,590 --> 00:02:47,550
+as we're doing here
+
+63
+00:02:47,790 --> 00:02:50,970
+we would periodically pull
+the events store for new events.
+
+64
+00:02:51,450 --> 00:02:54,160
+We keep track of what
+events we already processed.
+
+65
+00:02:54,240 --> 00:02:57,780
+We would need to store at the
+last processed event or cursor
+
+66
+00:02:57,990 --> 00:02:59,560
+in a separate collection.
+
+67
+00:03:00,060 --> 00:03:00,960
+Back to our code
+
+68
+00:03:01,260 --> 00:03:03,990
+in the an application and
+shut down the life cycle hook
+
+69
+00:03:04,110 --> 00:03:07,660
+were disclosing the change
+stream to prevent memory leaks.
+
+70
+00:03:08,070 --> 00:03:10,320
+Inside the handle event
+store change method
+
+71
+00:03:10,620 --> 00:03:15,030
+we extract the inserted event from
+the chain stream insert document object
+
+72
+00:03:15,360 --> 00:03:16,990
+and were d serializing.
+
+73
+00:03:17,550 --> 00:03:22,830
+Note that the change true insert document
+object exposes the t x n number prob forty
+
+74
+00:03:23,070 --> 00:03:25,750
+which represents the
+transaction identifier.
+
+75
+00:03:26,730 --> 00:03:30,040
+If you need multi document
+transactions in your applications.
+
+76
+00:03:30,270 --> 00:03:32,800
+You can use this property
+to achieve atomicity.
+
+77
+00:03:33,150 --> 00:03:33,900
+For example
+
+78
+00:03:34,110 --> 00:03:38,440
+if we inserted multiple alarm related
+events as part of a single transaction.
+
+79
+00:03:38,730 --> 00:03:41,190
+All events would have the
+same transaction number
+
+80
+00:03:41,340 --> 00:03:43,661
+or txn accent number value.
+
+81
+00:03:44,460 --> 00:03:47,400
+Now before we can push
+the event to the event bus
+
+82
+00:03:47,520 --> 00:03:49,170
+we need to d serialize it.
+
+83
+00:03:49,530 --> 00:03:54,540
+So let's create a new file called event the
+serializer in the d serializer as folder
+
+84
+00:03:54,840 --> 00:03:57,130
+let's go ahead and
+add the fallen code.
+
+85
+00:03:57,600 --> 00:04:02,940
+This simple class takes an
+event and DC realizes it by
+
+86
+00:04:02,970 --> 00:04:05,200
+mapping the event data object
+to the corresponding of a class.
+
+87
+00:04:05,370 --> 00:04:06,090
+For example
+
+88
+00:04:06,360 --> 00:04:09,030
+if we have an event with
+the type alarm created event.
+
+89
+00:04:09,360 --> 00:04:13,750
+Will map it's data tribute to the
+alarm created event class instance.
+
+90
+00:04:14,310 --> 00:04:16,170
+Let's declared the
+first missing method.
+
+91
+00:04:16,560 --> 00:04:17,640
+Get event class by
+
+92
+00:04:17,790 --> 00:04:18,790
+type.
+
+93
+00:04:19,080 --> 00:04:19,920
+In this method
+
+94
+00:04:20,130 --> 00:04:24,400
+we return the corresponding class
+reference based on the event type.
+
+95
+00:04:24,540 --> 00:04:28,650
+As we can see this
+isn't the most scalable
+
+96
+00:04:28,650 --> 00:04:29,650
+approach but will show
+a better one later on.
+
+97
+00:04:29,940 --> 00:04:30,690
+And finally.
+
+98
+00:04:31,020 --> 00:04:33,150
+Lets declared the last
+missing method here
+
+99
+00:04:33,450 --> 00:04:36,016
+instantiate
+serialized the event.
+
+100
+00:04:37,050 --> 00:04:38,700
+This one might
+be a bit confusing
+
+101
+00:04:38,858 --> 00:04:40,930
+let's go ahead
+and break it down.
+
+102
+00:04:40,980 --> 00:04:42,660
+We have to input arguments here.
+
+103
+00:04:43,050 --> 00:04:47,100
+The first one is the
+event class reference
+
+104
+00:04:47,100 --> 00:04:48,100
+and the second one
+is the event data object.
+
+105
+00:04:48,180 --> 00:04:49,770
+The object are create method.
+
+106
+00:04:50,100 --> 00:04:53,230
+Creates a new object
+with the specified prototype.
+
+107
+00:04:53,460 --> 00:04:57,970
+In our case the prototype object
+is the event cls stop prototype.
+
+108
+00:04:58,710 --> 00:04:59,250
+Then
+
+109
+00:04:59,490 --> 00:05:01,590
+we're using the object
+out a sign method
+
+110
+00:05:01,800 --> 00:05:06,670
+to copy the properties from the data
+object to this newly created object.
+
+111
+00:05:07,020 --> 00:05:07,530
+Finally
+
+112
+00:05:07,800 --> 00:05:12,490
+were returning the new object which
+is an instance of the event cls class.
+
+113
+00:05:13,230 --> 00:05:16,830
+This is all required so that we
+can push the event to the event bus.
+
+114
+00:05:17,340 --> 00:05:22,230
+The event bus expects an instance of the
+event class not just the plain object to
+
+115
+00:05:22,230 --> 00:05:25,000
+recognize what
+event handlers to call.
+
+116
+00:05:25,290 --> 00:05:25,740
+Great
+
+117
+00:05:26,010 --> 00:05:29,640
+so let's save our changes head
+over to the events bridge t s file
+
+118
+00:05:29,940 --> 00:05:33,700
+and let's inject the newly
+created event d serializer class.
+
+119
+00:05:35,190 --> 00:05:36,690
+With this dependency injected.
+
+120
+00:05:37,140 --> 00:05:41,580
+Let's scroll down to handle
+events store change and
+
+121
+00:05:41,580 --> 00:05:43,150
+let's d serialized the event
+and push it to the stream.
+
+122
+00:05:43,860 --> 00:05:44,490
+And that's it.
+
+123
+00:05:45,090 --> 00:05:49,420
+We've successfully implemented the
+push strategy with collection watchers.
+
+124
+00:05:49,950 --> 00:05:51,240
+Before we test everything out.
+
+125
+00:05:51,570 --> 00:05:56,520
+Let's make sure we register our new events
+bridge and event d serializer classes in
+
+126
+00:05:56,520 --> 00:05:58,729
+the shared
+infrastructure module.
+
+127
+00:06:01,410 --> 00:06:02,640
+The last but not least
+
+128
+00:06:02,850 --> 00:06:05,250
+let's open up the alarm
+created event handler
+
+129
+00:06:05,370 --> 00:06:09,720
+and update the handle method signature
+to take the serialized event payload
+
+130
+00:06:09,990 --> 00:06:11,760
+of type alarm created event
+
+131
+00:06:12,030 --> 00:06:13,690
+as an input argument.
+
+132
+00:06:15,540 --> 00:06:18,330
+Let's also update the i
+event handler type argument
+
+133
+00:06:18,690 --> 00:06:20,560
+to use this same type.
+
+134
+00:06:21,060 --> 00:06:22,800
+The reason why we're
+doing this a simple.
+
+135
+00:06:23,250 --> 00:06:26,520
+Our event handlers received
+the serialized the vents now
+
+136
+00:06:26,700 --> 00:06:30,910
+but not real domain of and
+instances with value objects etc.
+
+137
+00:06:31,050 --> 00:06:34,590
+That's why we also have to tweak
+the execute method just the litter bit.
+
+138
+00:06:35,310 --> 00:06:36,030
+And voila
+
+139
+00:06:36,210 --> 00:06:38,700
+were done so let's go
+ahead and test everything out.
+
+140
+00:06:39,330 --> 00:06:41,970
+Let's head over to our
+terminal and in a separate tab
+
+141
+00:06:42,150 --> 00:06:43,990
+let's create a new alarm.
+
+142
+00:06:45,060 --> 00:06:47,070
+Let's switch to the
+other terminal window
+
+143
+00:06:47,310 --> 00:06:48,540
+and as we can see
+
+144
+00:06:48,780 --> 00:06:52,120
+the event handler has been
+successfully invoked fantastic.
+
+145
+00:06:52,920 --> 00:06:57,180
+Just a double check if
+our newly created event
+
+146
+00:06:57,180 --> 00:06:57,780
+is also reflected in
+the read side database.
+
+147
+00:06:58,170 --> 00:07:00,490
+Let's try and fetch all alarms.
+
+148
+00:07:02,010 --> 00:07:02,940
+And as we can see
+
+149
+00:07:03,120 --> 00:07:05,950
+our newly created
+alarm is they're great.
+
+150
+00:07:06,330 --> 00:07:07,950
+But now that we've
+come full circle
+
+151
+00:07:08,130 --> 00:07:10,650
+we fixed the missing
+link from the last lesson
+
+152
+00:07:10,890 --> 00:07:13,140
+we're now able to create
+events in our event store
+
+153
+00:07:13,440 --> 00:07:17,610
+but now we can also access that information
+on the read side of our application
+
+154
+00:07:17,910 --> 00:07:19,720
+are making great progress.
+

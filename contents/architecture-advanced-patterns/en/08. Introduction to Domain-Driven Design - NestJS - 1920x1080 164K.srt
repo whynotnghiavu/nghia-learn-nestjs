@@ -1,0 +1,481 @@
+﻿1
+00:00:00,900 --> 00:00:03,850
+Domain driven design
+also known as ddd.
+
+2
+00:00:04,200 --> 00:00:08,310
+As a software
+development technique that
+
+3
+00:00:08,310 --> 00:00:09,310
+concentrates on the domain
+model and domain larger.
+
+4
+00:00:09,840 --> 00:00:11,610
+As Eric Evans
+puts it in his book.
+
+5
+00:00:11,940 --> 00:00:14,880
+Domain driven design tackling
+complexity in the heart of software.
+
+6
+00:00:15,270 --> 00:00:19,780
+The structure in language of our code
+should match that of the business domain.
+
+7
+00:00:19,860 --> 00:00:22,630
+This concept is called
+the ubiquitous language.
+
+8
+00:00:23,340 --> 00:00:24,340
+Fundamentally.
+
+9
+00:00:24,540 --> 00:00:29,160
+Ddd is about creating a
+language that connects the
+
+10
+00:00:29,160 --> 00:00:30,540
+implementation to the business
+experts in there knowledge
+
+11
+00:00:30,780 --> 00:00:33,540
+so essentially words and
+phrases from the domain.
+
+12
+00:00:33,870 --> 00:00:36,100
+Are directly used in the codex.
+
+13
+00:00:36,420 --> 00:00:37,050
+Therefore
+
+14
+00:00:37,290 --> 00:00:40,710
+we could use this language to
+construct a rich model for our domain
+
+15
+00:00:40,950 --> 00:00:45,090
+describing all of the objects and interactions
+between them using a language that is
+
+16
+00:00:45,090 --> 00:00:47,070
+understood by both
+the business experts
+
+17
+00:00:47,310 --> 00:00:48,610
+and the developers.
+
+18
+00:00:49,320 --> 00:00:54,150
+For this week follow the strategic design
+process that may include several tools and
+
+19
+00:00:54,150 --> 00:00:56,530
+techniques such as
+domain storytelling.
+
+20
+00:00:56,700 --> 00:00:57,570
+Events storming
+
+21
+00:00:57,810 --> 00:00:59,439
+and context mapping.
+
+22
+00:00:59,520 --> 00:01:03,790
+Our goal with this process is to identify
+the core domain and the subdomains.
+
+23
+00:01:04,110 --> 00:01:08,440
+Into to find the bounded contexts
+and the context maps in her system.
+
+24
+00:01:09,030 --> 00:01:11,220
+To express the domain
+ma model in our code
+
+25
+00:01:11,400 --> 00:01:15,660
+we typically fall of the tactical
+design process that uses
+
+26
+00:01:15,660 --> 00:01:17,220
+a set of building blocks to
+construct the domain model.
+
+27
+00:01:17,700 --> 00:01:18,840
+These are entities
+
+28
+00:01:18,990 --> 00:01:20,100
+value objects.
+
+29
+00:01:20,460 --> 00:01:23,350
+Aggregates
+repositories services.
+
+30
+00:01:23,640 --> 00:01:24,300
+Factories
+
+31
+00:01:24,570 --> 00:01:26,110
+and domain events.
+
+32
+00:01:26,460 --> 00:01:29,680
+Let's take a look at each of
+these building blocks in more detail.
+
+33
+00:01:30,300 --> 00:01:34,050
+Entities are objects that have a
+unique identifier and a life cycle.
+
+34
+00:01:34,590 --> 00:01:37,720
+They are mutable and
+can be modified over time.
+
+35
+00:01:38,100 --> 00:01:42,360
+Entities have a conceptual
+identity meaning that even if
+
+36
+00:01:42,360 --> 00:01:44,200
+their attributes change
+they are still the same entity.
+
+37
+00:01:44,490 --> 00:01:45,490
+Also.
+
+38
+00:01:45,540 --> 00:01:49,450
+Entities are not equal to each other
+even if they have the same attributes.
+
+39
+00:01:49,950 --> 00:01:50,760
+For example
+
+40
+00:01:50,940 --> 00:01:54,510
+an alarm with the same name and
+severity is still not the same alarm
+
+41
+00:01:54,720 --> 00:01:57,940
+it's a different alarm entity
+with the same attributes.
+
+42
+00:01:58,590 --> 00:02:01,360
+Value objects on the
+other hand are immutable
+
+43
+00:02:01,470 --> 00:02:03,610
+and don't have a
+unique identifier.
+
+44
+00:02:03,900 --> 00:02:07,150
+They are equal to each other if
+they have the same attributes.
+
+45
+00:02:07,350 --> 00:02:08,340
+In our system
+
+46
+00:02:08,580 --> 00:02:12,280
+we used value objects to
+represent the severity of an alarm.
+
+47
+00:02:13,170 --> 00:02:17,650
+Aggregates are a cluster of objects
+that are treated as a single unit.
+
+48
+00:02:17,940 --> 00:02:21,690
+They ensure that all
+the objects within the
+
+49
+00:02:21,720 --> 00:02:23,530
+aggregate are always in
+a valid inconsistent state.
+
+50
+00:02:23,670 --> 00:02:27,090
+In aggregate represents a
+transactional consistency boundary
+
+51
+00:02:27,240 --> 00:02:30,060
+meaning that changes to the
+objects within the aggregate
+
+52
+00:02:30,360 --> 00:02:32,620
+should be made in
+a single transaction.
+
+53
+00:02:33,240 --> 00:02:37,800
+In other words any modifications to the
+state of one entity within the aggregate
+
+54
+00:02:38,100 --> 00:02:41,410
+should be done within the
+context of the aggregate itself.
+
+55
+00:02:42,300 --> 00:02:45,720
+Repositories are used to
+persist and retrieve aggregates
+
+56
+00:02:46,020 --> 00:02:48,930
+they provide an abstraction
+over the data access layer
+
+57
+00:02:49,050 --> 00:02:52,770
+and allow us to work with
+aggregates without having to
+
+58
+00:02:52,770 --> 00:02:54,550
+worry about the underlying
+data access implementation.
+
+59
+00:02:55,170 --> 00:03:00,340
+We actually already used repositories in or
+application to persist and retrieve alarms.
+
+60
+00:03:00,750 --> 00:03:01,530
+Services
+
+61
+00:03:01,740 --> 00:03:06,090
+are used to to encapsulate
+domain logic that doesn't
+
+62
+00:03:06,120 --> 00:03:07,690
+belong to any particular
+entity or value object.
+
+63
+00:03:08,070 --> 00:03:08,880
+Or example
+
+64
+00:03:09,150 --> 00:03:13,080
+we can have a service that is responsible
+for sending notifications to the users
+
+65
+00:03:13,260 --> 00:03:15,130
+when a new alarm has created.
+
+66
+00:03:16,080 --> 00:03:19,890
+We must be careful when using
+services because the heavy use of services
+
+67
+00:03:20,160 --> 00:03:23,050
+can be a sign of an
+anemic domain model.
+
+68
+00:03:23,670 --> 00:03:25,230
+And anemic domain model
+
+69
+00:03:25,440 --> 00:03:29,700
+is an anti pattern where the domain
+model doesn't contain any domain logic
+
+70
+00:03:30,000 --> 00:03:33,070
+and is essentially just a
+bunch of getters and setters.
+
+71
+00:03:34,350 --> 00:03:35,100
+Factories
+
+72
+00:03:35,370 --> 00:03:38,620
+are used to encapsulate the
+creation of complex objects.
+
+73
+00:03:38,820 --> 00:03:42,510
+They are particularly
+useful in scenarios where
+
+74
+00:03:42,510 --> 00:03:44,083
+the creation of objects
+involves complex validation
+
+75
+00:03:44,220 --> 00:03:45,220
+initialisation
+
+76
+00:03:45,480 --> 00:03:48,160
+or the coordination
+of multiple steps.
+
+77
+00:03:48,990 --> 00:03:51,480
+Factories help us to keep
+the domain model clean
+
+78
+00:03:51,780 --> 00:03:56,070
+and focused on business logic while offloading
+the responsibility of object creation
+
+79
+00:03:56,220 --> 00:03:58,420
+to dedicated factory classes.
+
+80
+00:03:59,010 --> 00:04:00,630
+And lastly we have events
+
+81
+00:04:00,810 --> 00:04:04,920
+which are used to communicate and capture
+domain specific information about actions
+
+82
+00:04:04,920 --> 00:04:08,260
+or domain model changes
+that have happened in the past.
+
+83
+00:04:08,760 --> 00:04:13,740
+Of events play a crucial role in enabling
+loose coupling scale ability and eventual
+
+84
+00:04:13,740 --> 00:04:16,300
+consistency and
+distributed systems.
+
+85
+00:04:16,980 --> 00:04:18,630
+We distinguish
+two types of events.
+
+86
+00:04:18,990 --> 00:04:21,330
+Domain events and
+integration events.
+
+87
+00:04:21,900 --> 00:04:24,611
+Will talk more about
+events in future lessons.
+
+88
+00:04:25,110 --> 00:04:27,900
+So we've covered quite a
+lot of broad concepts here
+
+89
+00:04:28,110 --> 00:04:28,950
+but to recap.
+
+90
+00:04:29,370 --> 00:04:32,680
+Ddd is not a technology
+or a methodology.
+
+91
+00:04:32,910 --> 00:04:36,840
+It's essentially a set of
+principles and patterns
+
+92
+00:04:36,870 --> 00:04:37,870
+that can be applied
+to any software project.
+
+93
+00:04:38,310 --> 00:04:40,170
+It's also not a silver bullet.
+
+94
+00:04:40,650 --> 00:04:42,600
+It's not going to solve
+all of our problems
+
+95
+00:04:42,960 --> 00:04:47,070
+but it can help us build
+better software and
+
+96
+00:04:47,070 --> 00:04:48,070
+tackle the complexity
+of solve our projects.
+
+97
+00:04:48,330 --> 00:04:51,810
+As we mentioned above
+have we actually already
+
+98
+00:04:51,810 --> 00:04:52,770
+applied some of these
+concepts and previous lessons
+
+99
+00:04:52,890 --> 00:04:56,100
+and will continue to implement
+and learn more about all of them
+
+100
+00:04:56,400 --> 00:04:57,870
+as we build our applications
+
+101
+00:04:58,020 --> 00:04:59,860
+throughout the
+rest of this course.
+

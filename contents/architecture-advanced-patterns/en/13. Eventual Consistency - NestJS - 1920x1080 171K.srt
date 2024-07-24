@@ -1,0 +1,236 @@
+﻿1
+00:00:00,871 --> 00:00:05,490
+Eventual consistency
+as a principal applied in
+
+2
+00:00:05,490 --> 00:00:06,120
+distributed computing
+and distributed systems.
+
+3
+00:00:06,450 --> 00:00:10,560
+Were different nodes within the system
+may exhibit temporary inconsistencies.
+
+4
+00:00:10,890 --> 00:00:14,680
+Allowing them to have varying
+views of the data at any given moment.
+
+5
+00:00:15,150 --> 00:00:18,390
+This consistency model allows
+the system to continue functioning.
+
+6
+00:00:18,720 --> 00:00:22,570
+Even during network partitions
+or delays in message delivered.
+
+7
+00:00:23,130 --> 00:00:27,690
+Whereas eventual consistency
+sacrifices consistency in the short term
+
+8
+00:00:27,900 --> 00:00:30,430
+it achieves consistency
+and the long-term.
+
+9
+00:00:30,840 --> 00:00:32,610
+Drunk consistency
+on the other hand.
+
+10
+00:00:32,940 --> 00:00:37,140
+As the safety guarantee that any to know
+roads that have received the same set of
+
+11
+00:00:37,140 --> 00:00:39,520
+updates will be
+in this same state.
+
+12
+00:00:40,411 --> 00:00:44,610
+Eventual consistency is a concept
+closely related to the cap theorem
+
+13
+00:00:44,790 --> 00:00:46,440
+also known as brewers they're.
+
+14
+00:00:47,010 --> 00:00:51,270
+The cap theorem described
+the tradeoffs that arise
+
+15
+00:00:51,270 --> 00:00:51,990
+when designing distributed
+systems and states
+
+16
+00:00:52,144 --> 00:00:57,030
+and it is impossible for
+a distributed system to
+
+17
+00:00:57,030 --> 00:00:58,570
+simultaneously provide all
+three of the following guarantees.
+
+18
+00:00:59,550 --> 00:01:01,210
+See for consistency.
+
+19
+00:01:01,410 --> 00:01:04,680
+Meaning that every read received
+the most recent right or an error.
+
+20
+00:01:05,340 --> 00:01:06,820
+A for availability.
+
+21
+00:01:07,050 --> 00:01:11,100
+Meaning that every request
+receives a response without
+
+22
+00:01:11,100 --> 00:01:12,790
+guarantee that it contains
+the most recent right.
+
+23
+00:01:13,740 --> 00:01:16,650
+And lastly p for
+partition tolerance
+
+24
+00:01:16,830 --> 00:01:20,970
+meaning that the system
+continues to function
+
+25
+00:01:20,970 --> 00:01:21,970
+and provide availability
+inconsistency guarantees
+
+26
+00:01:22,110 --> 00:01:24,270
+even in the presence
+of network partitions
+
+27
+00:01:24,510 --> 00:01:24,990
+i e
+
+28
+00:01:25,200 --> 00:01:29,170
+communication failures that prevent
+some notes from talking to others.
+
+29
+00:01:30,390 --> 00:01:34,710
+The cap theorem asserts that he distributed
+system can achieve any to of the three
+
+30
+00:01:34,710 --> 00:01:37,810
+guarantees but not
+all three simultaneous.
+
+31
+00:01:38,670 --> 00:01:43,560
+Eventual consistency is the outcome
+when a system prioritizes availability and
+
+32
+00:01:43,560 --> 00:01:46,750
+partition tolerance over
+immediate consistency.
+
+33
+00:01:47,160 --> 00:01:48,090
+C n p
+
+34
+00:01:48,210 --> 00:01:49,720
+and the cap theorem.
+
+35
+00:01:49,800 --> 00:01:53,050
+This means that notes may
+have temporary inconsistencies.
+
+36
+00:01:54,120 --> 00:01:59,130
+In the context of secure us
+eventual consistency is achieved
+
+37
+00:01:59,130 --> 00:02:01,210
+by separating the read
+and right sides of our system.
+
+38
+00:02:01,560 --> 00:02:05,250
+The right side is
+responsible for handling the
+
+39
+00:02:05,250 --> 00:02:06,250
+commands and updating
+the state of the system.
+
+40
+00:02:06,600 --> 00:02:10,890
+Meanwhile the read
+site is responsible for
+
+41
+00:02:10,890 --> 00:02:11,890
+handling the events and
+updating the read models.
+
+42
+00:02:12,600 --> 00:02:16,900
+The read models are eventually
+consistent with the right models.
+
+43
+00:02:17,040 --> 00:02:20,850
+This means that the
+read models are not
+
+44
+00:02:20,850 --> 00:02:21,850
+updated immediately
+but rather a synchronously
+
+45
+00:02:22,020 --> 00:02:23,250
+at some later time.
+
+46
+00:02:23,790 --> 00:02:28,290
+This is particularly useful for systems
+that have a lot of reads and few rights.
+
+47
+00:02:28,740 --> 00:02:29,100
+Be it
+
+48
+00:02:29,370 --> 00:02:30,750
+a flight boom booking system.
+
+49
+00:02:31,080 --> 00:02:34,750
+E-commerce system and even
+some social media platforms.
+

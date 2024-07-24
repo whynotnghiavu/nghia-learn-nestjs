@@ -1,0 +1,703 @@
+﻿1
+00:00:00,570 --> 00:00:01,530
+In this lesson
+
+2
+00:00:01,800 --> 00:00:05,611
+will be looking at how
+we can take advantage of
+
+3
+00:00:05,613 --> 00:00:06,850
+hexagonal architecture in
+our nest years applications.
+
+4
+00:00:06,930 --> 00:00:07,380
+So
+
+5
+00:00:07,650 --> 00:00:09,720
+what sort of by heading
+over to our ID he
+
+6
+00:00:10,080 --> 00:00:12,610
+and take a look at the
+code we have at the moment.
+
+7
+00:00:12,720 --> 00:00:16,020
+Inside of our alarms directory we
+can see that we have a controller
+
+8
+00:00:16,200 --> 00:00:17,790
+a service and a module class.
+
+9
+00:00:18,330 --> 00:00:22,230
+As we know the controller
+is responsible for handling
+
+10
+00:00:22,230 --> 00:00:24,250
+incoming requests and returning
+responses back to the client.
+
+11
+00:00:24,720 --> 00:00:28,380
+The services in our code base contained
+the business logic of our application
+
+12
+00:00:28,710 --> 00:00:31,260
+and the modules represent
+the bounded context
+
+13
+00:00:31,380 --> 00:00:34,710
+defining the dependencies and the
+components that belong to each module
+
+14
+00:00:35,010 --> 00:00:36,880
+so nothing new here safari.
+
+15
+00:00:37,260 --> 00:00:38,760
+All right so let's
+kick things off.
+
+16
+00:00:39,180 --> 00:00:42,420
+By creating for new folders
+inside of the alarms directory.
+
+17
+00:00:42,780 --> 00:00:44,230
+Named application.
+
+18
+00:00:44,580 --> 00:00:45,240
+Domain main.
+
+19
+00:00:45,600 --> 00:00:46,600
+Infrastructure
+
+20
+00:00:46,740 --> 00:00:47,730
+and presenters
+
+21
+00:00:47,940 --> 00:00:51,180
+and let's stop your
+for a second to explain
+
+22
+00:00:51,180 --> 00:00:52,180
+each of these folders
+and what they represent.
+
+23
+00:00:52,920 --> 00:00:56,820
+The application folder here will
+contained the application services
+
+24
+00:00:56,970 --> 00:01:00,540
+besides handlers and other
+application specific components
+
+25
+00:01:00,780 --> 00:01:03,490
+which all represent
+the application layer.
+
+26
+00:01:03,870 --> 00:01:07,920
+It will communicate with the data access
+components message brokers and other
+
+27
+00:01:07,920 --> 00:01:11,565
+external systems
+through interfaces alt ports.
+
+28
+00:01:12,570 --> 00:01:16,320
+The domain folder will contain
+the domain models value objects
+
+29
+00:01:16,440 --> 00:01:20,760
+domain events in
+other domain specific
+
+30
+00:01:20,760 --> 00:01:21,760
+components which all
+represent the domain layer.
+
+31
+00:01:22,020 --> 00:01:23,520
+The infrastructure folder
+
+32
+00:01:23,670 --> 00:01:26,820
+will contain the data access
+components message brokers
+
+33
+00:01:26,940 --> 00:01:30,640
+and other external systems which
+represent the infrastructure layer.
+
+34
+00:01:30,780 --> 00:01:33,480
+It will implement the
+interfaces aka a ports
+
+35
+00:01:33,750 --> 00:01:36,160
+defined by the
+application layer.
+
+36
+00:01:36,600 --> 00:01:38,550
+And the lastly the
+presenters folder
+
+37
+00:01:38,820 --> 00:01:43,980
+will contain the controllers gateways and
+other user facing components or a p eyes.
+
+38
+00:01:44,550 --> 00:01:45,180
+Sometimes
+
+39
+00:01:45,420 --> 00:01:48,420
+the presenters folder is also
+called the user interface folder.
+
+40
+00:01:48,750 --> 00:01:51,882
+Sometimes just interface
+all stick with presenters.
+
+41
+00:01:52,080 --> 00:01:54,520
+Since it seem to be a
+bit more self explanatory.
+
+42
+00:01:55,620 --> 00:01:58,439
+Note that this is just one way
+of structuring your application.
+
+43
+00:01:58,740 --> 00:02:02,380
+You could also structured differently
+depending on your needs and preferences.
+
+44
+00:02:02,820 --> 00:02:05,820
+A generally boils down to how
+granular you want everything to be
+
+45
+00:02:05,940 --> 00:02:07,450
+within your liars.
+
+46
+00:02:08,400 --> 00:02:10,380
+Okay so back to
+our task at hand.
+
+47
+00:02:10,890 --> 00:02:16,000
+Less move the alarm service and alarms
+module files to the application folder.
+
+48
+00:02:16,350 --> 00:02:16,950
+Next up.
+
+49
+00:02:17,460 --> 00:02:20,130
+Let's create a new
+directory called http
+
+50
+00:02:20,250 --> 00:02:21,840
+inside of the presenters folder
+
+51
+00:02:21,960 --> 00:02:23,820
+and let's move the
+alarms controller.
+
+52
+00:02:24,150 --> 00:02:26,220
+As well as the detail
+folder inside of it.
+
+53
+00:02:27,120 --> 00:02:28,680
+This http dirac lottery.
+
+54
+00:02:29,070 --> 00:02:31,440
+While now represent
+the http layer
+
+55
+00:02:31,560 --> 00:02:34,480
+of our bounded
+context called alarms.
+
+56
+00:02:35,370 --> 00:02:39,720
+All of the import statements should
+automatically be updated by our i do eat but if
+
+57
+00:02:39,720 --> 00:02:42,130
+they're not make sure
+to update them manual.
+
+58
+00:02:42,840 --> 00:02:44,190
+Also before we proceed.
+
+59
+00:02:44,580 --> 00:02:48,760
+Let's remove the entities folder
+as will be creating a new one soon.
+
+60
+00:02:49,860 --> 00:02:50,369
+Now.
+
+61
+00:02:50,670 --> 00:02:52,110
+Inside of the domain folder.
+
+62
+00:02:52,560 --> 00:02:56,860
+Will create a new file called alarmed
+at t s with the following content.
+
+63
+00:02:59,220 --> 00:03:01,650
+This class will represent
+our domain model.
+
+64
+00:03:02,040 --> 00:03:06,010
+Will be adding more logic here in the
+future but for now let's keep it simple.
+
+65
+00:03:06,510 --> 00:03:09,660
+So as we can see the alarm
+severity doesn't exist yet.
+
+66
+00:03:10,230 --> 00:03:14,340
+So let's go ahead and create a
+new file called alarm severity that ts.
+
+67
+00:03:14,760 --> 00:03:16,140
+Inside of the domain
+
+68
+00:03:16,380 --> 00:03:18,630
+slash value dash objects folder.
+
+69
+00:03:19,050 --> 00:03:20,590
+With the following content.
+
+70
+00:03:23,520 --> 00:03:24,520
+Great.
+
+71
+00:03:25,500 --> 00:03:25,800
+But
+
+72
+00:03:26,010 --> 00:03:28,560
+what does value objects
+been here in the first place.
+
+73
+00:03:28,980 --> 00:03:29,430
+Well
+
+74
+00:03:29,640 --> 00:03:33,180
+a value objects definition
+originates from domain driven design
+
+75
+00:03:33,390 --> 00:03:34,540
+or ddd.
+
+76
+00:03:35,160 --> 00:03:36,090
+A value object.
+
+77
+00:03:36,420 --> 00:03:40,260
+Is an immutable object that represents
+a descriptive aspect of the domain
+
+78
+00:03:40,440 --> 00:03:42,490
+with no conceptual identity.
+
+79
+00:03:42,960 --> 00:03:44,850
+To value objects are equal
+
+80
+00:03:45,120 --> 00:03:46,380
+when they are the same value
+
+81
+00:03:46,500 --> 00:03:48,970
+not necessarily
+being the same object.
+
+82
+00:03:49,140 --> 00:03:52,870
+Value objects should be
+immutable in side effect fruit.
+
+83
+00:03:53,310 --> 00:03:54,880
+Now at this and place.
+
+84
+00:03:54,930 --> 00:03:58,810
+We can add the missing import
+statement to the alarm t s file.
+
+85
+00:04:01,110 --> 00:04:01,680
+Also
+
+86
+00:04:01,860 --> 00:04:06,510
+inside of the factors
+directory let's create an
+
+87
+00:04:06,510 --> 00:04:07,510
+alarm factory file with
+the following content.
+
+88
+00:04:10,920 --> 00:04:11,920
+Perfect.
+
+89
+00:04:12,360 --> 00:04:13,440
+Now at this in place
+
+90
+00:04:13,680 --> 00:04:15,570
+it's navigate to the
+alarms controller
+
+91
+00:04:15,750 --> 00:04:18,240
+and remove all
+methods except for create
+
+92
+00:04:18,390 --> 00:04:19,110
+and find all.
+
+93
+00:04:19,440 --> 00:04:20,760
+Just to keep things simple.
+
+94
+00:04:21,180 --> 00:04:24,670
+As will only be using these two
+methods in the following lessons.
+
+95
+00:04:28,170 --> 00:04:30,990
+Similarly let's navigate
+to the alarms service
+
+96
+00:04:31,230 --> 00:04:34,390
+and remove all the unused
+methods there's well.
+
+97
+00:04:34,680 --> 00:04:37,572
+Let's stop here for a moment
+to discuss a few thanks.
+
+98
+00:04:37,830 --> 00:04:42,600
+So since our data
+transfer objects details
+
+99
+00:04:42,600 --> 00:04:43,020
+are now located inside
+the presenters folder
+
+100
+00:04:43,230 --> 00:04:45,210
+and belong to the
+presentation layer.
+
+101
+00:04:45,570 --> 00:04:47,550
+We can't really reference
+them and let's say
+
+102
+00:04:47,700 --> 00:04:48,930
+the application layer.
+
+103
+00:04:49,560 --> 00:04:51,630
+We could in theory
+move them here
+
+104
+00:04:51,750 --> 00:04:53,280
+to the application folder.
+
+105
+00:04:53,610 --> 00:04:55,830
+However they contain
+validation decorators
+
+106
+00:04:55,980 --> 00:04:58,860
+and they represent the shape of
+the data that is sent over the network.
+
+107
+00:04:59,220 --> 00:05:02,219
+Which is a shape
+specific to the http a p i.
+
+108
+00:05:02,550 --> 00:05:03,060
+So.
+
+109
+00:05:03,420 --> 00:05:04,290
+As purists
+
+110
+00:05:04,530 --> 00:05:07,060
+we should keep them
+and the presenters folder.
+
+111
+00:05:07,170 --> 00:05:10,780
+Otherwise other transport
+layers for example grpc.
+
+112
+00:05:11,100 --> 00:05:12,720
+Would have to
+referenced them as well.
+
+113
+00:05:13,050 --> 00:05:15,010
+Which will be even
+more confusing.
+
+114
+00:05:15,150 --> 00:05:16,620
+So what can we do here.
+
+115
+00:05:17,010 --> 00:05:19,950
+Well we can either use the
+any type for the time being.
+
+116
+00:05:20,430 --> 00:05:25,680
+Or create yet another
+class called for example
+
+117
+00:05:25,680 --> 00:05:26,680
+payload or command
+and use that here instead.
+
+118
+00:05:26,760 --> 00:05:27,690
+Since in this course.
+
+119
+00:05:27,991 --> 00:05:30,990
+Are going to eventually introduced
+command and query classes later.
+
+120
+00:05:31,380 --> 00:05:35,250
+Let's go ahead and create
+a new directory called
+
+121
+00:05:35,250 --> 00:05:36,250
+commands and side
+of the application layer.
+
+122
+00:05:36,391 --> 00:05:37,500
+And inside of this folder.
+
+123
+00:05:37,860 --> 00:05:40,800
+Let's create a new file
+called create alarm command.
+
+124
+00:05:41,160 --> 00:05:42,820
+With the following content.
+
+125
+00:05:43,590 --> 00:05:44,700
+Let's save our changes
+
+126
+00:05:44,850 --> 00:05:49,480
+and use this type instead of the
+create alarm detail in the alarm service.
+
+127
+00:05:53,520 --> 00:05:55,050
+Next let's make
+sure to update the
+
+128
+00:05:55,260 --> 00:06:00,000
+alarms controller to
+construct the create alarm
+
+129
+00:06:00,000 --> 00:06:00,870
+command object and
+pass it to the create method
+
+130
+00:06:01,170 --> 00:06:03,550
+instead of the
+create alarm d to you.
+
+131
+00:06:05,220 --> 00:06:10,860
+Also let's update the
+create alarm d t o to
+
+132
+00:06:10,860 --> 00:06:11,950
+contain two properties
+required to create an alarm.
+
+133
+00:06:12,060 --> 00:06:12,570
+Name.
+
+134
+00:06:12,900 --> 00:06:13,680
+In severity
+
+135
+00:06:13,860 --> 00:06:15,490
+both which are strings.
+
+136
+00:06:16,170 --> 00:06:17,490
+And last but not least
+
+137
+00:06:17,760 --> 00:06:22,260
+it's open up the alarms module and registered
+the new alarm factory as a provider.
+
+138
+00:06:22,590 --> 00:06:24,880
+As will be using it
+in future lessons.
+
+139
+00:06:29,760 --> 00:06:33,690
+Let's save our changes and if we head over
+to the terminal and run the application
+
+140
+00:06:33,900 --> 00:06:36,460
+we should see that
+everything's working as expected.
+
+141
+00:06:39,690 --> 00:06:41,200
+So far so good.
+
+142
+00:06:41,310 --> 00:06:45,450
+As we can see our application is now structured
+differently than before which was the
+
+143
+00:06:45,450 --> 00:06:48,430
+traditional set up we see
+industrious applications.
+
+144
+00:06:48,630 --> 00:06:51,420
+Were slowly heading towards
+the hexagonal architecture
+
+145
+00:06:51,660 --> 00:06:52,830
+or not quite there yet.
+
+146
+00:06:53,340 --> 00:06:55,830
+We still need to define
+the interfaces are ports
+
+147
+00:06:56,175 --> 00:06:58,390
+and implement them via adapters.
+
+148
+00:06:58,740 --> 00:07:02,160
+Don't worry of this all
+doesn't make much sense yet
+
+149
+00:07:02,160 --> 00:07:03,210
+it'll become clear clear
+and the following lessons
+
+150
+00:07:03,420 --> 00:07:04,680
+as we build everything out.
+
+151
+00:07:04,980 --> 00:07:06,310
+Piece by piece.
+

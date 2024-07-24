@@ -1,0 +1,238 @@
+﻿1
+00:00:00,780 --> 00:00:05,190
+Onion architecture and hexagonal architecture
+are both architectural patterns for
+
+2
+00:00:05,190 --> 00:00:08,400
+designing software applications
+with a focus on decoupling
+
+3
+00:00:08,640 --> 00:00:09,640
+maintainability
+
+4
+00:00:09,780 --> 00:00:12,820
+and putting the business logic
+at the center of the application.
+
+5
+00:00:13,590 --> 00:00:16,110
+Both patterns are
+technically almost identical
+
+6
+00:00:16,230 --> 00:00:19,290
+even though they have
+different names and are presented
+
+7
+00:00:19,290 --> 00:00:21,460
+by different visual
+representations the or diagrams.
+
+8
+00:00:22,350 --> 00:00:24,510
+If we look at an onion
+architectural diagram.
+
+9
+00:00:24,960 --> 00:00:27,430
+We can see the different
+layers of an application
+
+10
+00:00:27,570 --> 00:00:31,260
+and as you might have
+guessed the name of the
+
+11
+00:00:31,260 --> 00:00:32,830
+architecture actually originates
+from this diagram itself.
+
+12
+00:00:33,390 --> 00:00:34,470
+The innermost layer
+
+13
+00:00:34,680 --> 00:00:35,730
+is the domain layer
+
+14
+00:00:35,970 --> 00:00:39,130
+which contains the domain
+model and the domain logic.
+
+15
+00:00:39,390 --> 00:00:42,030
+This layer is surrounded
+by the application layer
+
+16
+00:00:42,210 --> 00:00:44,590
+which contains the
+application logic.
+
+17
+00:00:45,150 --> 00:00:48,150
+The flow of dependencies
+follows an inward direction.
+
+18
+00:00:48,540 --> 00:00:51,370
+With the use of the
+dependency inversion principal.
+
+19
+00:00:51,570 --> 00:00:54,270
+Were outer layers
+depend on inner layers
+
+20
+00:00:54,600 --> 00:00:58,210
+but the inner layers remain
+unaware of those outer layers.
+
+21
+00:00:59,010 --> 00:01:02,699
+That being said this
+diagram has led to a lot of
+
+22
+00:01:02,699 --> 00:01:03,660
+confusion and the software
+engineering community
+
+23
+00:01:03,810 --> 00:01:07,740
+because the user interface components
+as well as the data access components
+
+24
+00:01:08,040 --> 00:01:10,330
+are positioned
+in the same layer.
+
+25
+00:01:10,560 --> 00:01:13,750
+This made many engineers
+draw incorrect conclusions.
+
+26
+00:01:13,950 --> 00:01:15,460
+That the onion architecture.
+
+27
+00:01:15,510 --> 00:01:18,240
+Is an entirely secure
+because you are components
+
+28
+00:01:18,510 --> 00:01:20,880
+can direct lately interact
+with the data source
+
+29
+00:01:21,180 --> 00:01:23,080
+but that's simply not true.
+
+30
+00:01:23,280 --> 00:01:26,610
+The diagram here is just a visual
+representation of the architecture
+
+31
+00:01:26,790 --> 00:01:29,610
+and it doesn't mean that the
+components that are on the same level.
+
+32
+00:01:30,150 --> 00:01:32,610
+Or visually located in
+the same onion layer.
+
+33
+00:01:32,970 --> 00:01:34,860
+Are actually able to
+interact with each other.
+
+34
+00:01:35,460 --> 00:01:39,480
+Layers are not meant
+to group components but
+
+35
+00:01:39,480 --> 00:01:40,480
+rather emphasized the
+direction of dependencies.
+
+36
+00:01:41,160 --> 00:01:45,690
+If we look at a hexagonal
+architecture diagram an
+
+37
+00:01:45,690 --> 00:01:46,930
+start drawing concentric
+circles around components.
+
+38
+00:01:46,980 --> 00:01:50,820
+Will quickly notice that the
+diagram actually reminds
+
+39
+00:01:50,820 --> 00:01:51,570
+us of the onion architectural
+diagram doesn't it.
+
+40
+00:01:52,290 --> 00:01:53,800
+This means that conceptually
+
+41
+00:01:53,940 --> 00:01:55,800
+with architectures are
+essentially the same.
+
+42
+00:01:56,160 --> 00:01:59,320
+Although they may be applied
+slightly differently and practice.
+
+43
+00:01:59,580 --> 00:02:00,580
+Furthermore.
+
+44
+00:02:00,750 --> 00:02:04,290
+The naming conventions and some
+design decisions we made in this course
+
+45
+00:02:04,560 --> 00:02:07,680
+might vary from what you may have noticed
+another other projects and that's okay.
+
+46
+00:02:08,220 --> 00:02:10,830
+Important thing is that you
+understand the core concepts
+
+47
+00:02:11,070 --> 00:02:13,240
+and principles behind
+the architecture.
+
+48
+00:02:13,271 --> 00:02:15,030
+Now you're able to
+take advantage of them
+
+49
+00:02:15,180 --> 00:02:17,380
+in your future
+necessary as projects.
+

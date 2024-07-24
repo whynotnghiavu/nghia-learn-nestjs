@@ -1,0 +1,287 @@
+﻿1
+00:00:01,800 --> 00:00:03,030
+In the previous lesson.
+
+2
+00:00:03,360 --> 00:00:06,060
+We learned how to rehydrate
+in aggregate from history.
+
+3
+00:00:06,420 --> 00:00:09,130
+By replying all events
+from the stream.
+
+4
+00:00:09,660 --> 00:00:10,980
+This approach works well
+
+5
+00:00:11,190 --> 00:00:13,990
+for aggregates with a
+small number of events.
+
+6
+00:00:14,190 --> 00:00:14,760
+However
+
+7
+00:00:15,000 --> 00:00:20,280
+as the number of events grows the rehydration
+process can become time consuming and
+
+8
+00:00:20,280 --> 00:00:22,860
+quite inefficient to
+address this issue.
+
+9
+00:00:23,220 --> 00:00:26,130
+We can use a technique
+known as snapshots.
+
+10
+00:00:27,360 --> 00:00:31,950
+Snapshots are a way to reduce the need to
+replay the entire event log every time you
+
+11
+00:00:31,950 --> 00:00:34,870
+want to reconstruct the
+current state of an entity.
+
+12
+00:00:35,250 --> 00:00:36,340
+A snapshot.
+
+13
+00:00:36,420 --> 00:00:40,544
+Is essentially a point in time
+representation of an entity state.
+
+14
+00:00:40,710 --> 00:00:45,210
+It captures the relevant
+data that represents the
+
+15
+00:00:45,210 --> 00:00:46,600
+entity state at a certain
+event or event sequence.
+
+16
+00:00:47,550 --> 00:00:50,790
+Instead of replying all the
+events from the beginning of time.
+
+17
+00:00:51,300 --> 00:00:52,710
+You can use the snapshot
+
+18
+00:00:52,950 --> 00:00:57,270
+as a starting point
+and then apply only the
+
+19
+00:00:57,270 --> 00:00:58,630
+subsequent events to reach
+the desired current state.
+
+20
+00:00:59,610 --> 00:01:01,500
+Snapshots are
+particularly useful
+
+21
+00:01:01,620 --> 00:01:05,910
+when dealing with aggregates
+the have accumulated
+
+22
+00:01:05,910 --> 00:01:06,300
+a substantial number
+of events over time.
+
+23
+00:01:06,690 --> 00:01:09,240
+Making state
+reconstruction from scratch
+
+24
+00:01:09,510 --> 00:01:12,130
+a very resource
+intensive operation.
+
+25
+00:01:12,990 --> 00:01:16,500
+While this might not be the
+case in our application so far.
+
+26
+00:01:16,830 --> 00:01:21,100
+Snapshots are still a very useful
+technique to learn and understand.
+
+27
+00:01:21,510 --> 00:01:22,590
+As at some point
+
+28
+00:01:22,770 --> 00:01:25,990
+your system might
+benefit from utilizing them.
+
+29
+00:01:26,490 --> 00:01:27,610
+For example.
+
+30
+00:01:27,690 --> 00:01:31,560
+Imagine that we have
+an aggregate that has
+
+31
+00:01:31,560 --> 00:01:32,770
+accumulated more than one
+thousand events over time.
+
+32
+00:01:32,880 --> 00:01:34,620
+A good example of
+such an aggregate
+
+33
+00:01:34,920 --> 00:01:38,820
+would be a shared live document
+that is edited by multiple users.
+
+34
+00:01:39,270 --> 00:01:41,980
+Be at a Google doc
+or a Google sheet.
+
+35
+00:01:42,750 --> 00:01:46,890
+Each set of changes made by a
+user would be represented by an event
+
+36
+00:01:47,070 --> 00:01:50,610
+being an accumulation of
+all changes made by that user
+
+37
+00:01:50,820 --> 00:01:52,570
+with and a single session.
+
+38
+00:01:53,400 --> 00:01:57,510
+Long lived documents would have a
+substantial number of events over time
+
+39
+00:01:57,630 --> 00:02:01,960
+with additions deletions
+of text images tables etc.
+
+40
+00:02:02,880 --> 00:02:05,400
+If we wanted to rehydrate
+such an aggregate.
+
+41
+00:02:05,790 --> 00:02:08,350
+We would have
+to reply all events.
+
+42
+00:02:08,610 --> 00:02:09,120
+However
+
+43
+00:02:09,360 --> 00:02:13,470
+if we have a snapshot
+that captures the state of
+
+44
+00:02:13,470 --> 00:02:14,830
+the aggregate after let's
+say one thousand events.
+
+45
+00:02:15,120 --> 00:02:17,700
+We can use that
+snapshot as a starting point
+
+46
+00:02:17,820 --> 00:02:19,690
+instead of a base aggregate.
+
+47
+00:02:19,920 --> 00:02:22,740
+And then apply only the
+subsequent one thousand event it's
+
+48
+00:02:23,010 --> 00:02:25,510
+to reach the
+desired current state.
+
+49
+00:02:26,250 --> 00:02:30,206
+With this technique we
+can significantly reduce
+
+50
+00:02:30,270 --> 00:02:31,270
+the time it takes to
+rehydrate aggregate.
+
+51
+00:02:31,530 --> 00:02:32,370
+On the other hand.
+
+52
+00:02:32,730 --> 00:02:36,030
+Storing snapshots is yet another
+concern that we would have to take care of.
+
+53
+00:02:36,360 --> 00:02:37,320
+Making our system
+
+54
+00:02:37,440 --> 00:02:38,920
+even more complex.
+
+55
+00:02:39,180 --> 00:02:42,570
+So make sure to always keep that in
+mind and make sure that your application
+
+56
+00:02:42,840 --> 00:02:45,150
+really need snapshots
+before implementing them.
+
+57
+00:02:45,960 --> 00:02:49,350
+As adding snapshot in our
+application here would be overkill
+
+58
+00:02:49,680 --> 00:02:52,830
+but you might find
+them useful in your own
+
+59
+00:02:52,830 --> 00:02:53,580
+projects so we wanted to
+make sure dimension them
+
+60
+00:02:53,820 --> 00:02:56,830
+so that you keep them in
+mind for your future projects.
+

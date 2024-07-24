@@ -1,0 +1,100 @@
+﻿1
+00:00:00,990 --> 00:00:02,250
+Before we kicked things off.
+
+2
+00:00:02,640 --> 00:00:06,300
+Let's start by generating an empty nest
+Jess application just so we have something
+
+3
+00:00:06,300 --> 00:00:08,740
+that we can work with
+for the following lessons.
+
+4
+00:00:09,000 --> 00:00:10,572
+Etc to our terminals
+
+5
+00:00:10,680 --> 00:00:12,600
+and enter in the
+nest new command
+
+6
+00:00:12,750 --> 00:00:16,870
+calling our a project advanced
+architecture or whatever you wish.
+
+7
+00:00:17,640 --> 00:00:19,080
+Once everything
+finishes installing.
+
+8
+00:00:19,500 --> 00:00:24,000
+Let's cd or change directory
+into our newly created
+
+9
+00:00:24,060 --> 00:00:26,110
+application by entering cd
+advanced dash architecture.
+
+10
+00:00:26,490 --> 00:00:31,260
+With our initial start or and place let's
+generate a single resource with nest g
+
+11
+00:00:31,261 --> 00:00:35,010
+resource that we will
+call alarms just we have
+
+12
+00:00:35,010 --> 00:00:36,010
+something to operate
+on throughout the course.
+
+13
+00:00:36,420 --> 00:00:38,340
+Will use the autogen
+operated module
+
+14
+00:00:38,520 --> 00:00:41,320
+service and controller
+and future lessons.
+
+15
+00:00:42,660 --> 00:00:43,080
+Great.
+
+16
+00:00:43,470 --> 00:00:47,430
+While that in place we
+can now start our application
+
+17
+00:00:47,430 --> 00:00:49,696
+in development mode with
+n p m run start Colin deaf.
+
+18
+00:00:50,820 --> 00:00:51,870
+And as always
+
+19
+00:00:52,050 --> 00:00:54,660
+our application will now be
+available on port three thousand.
+
+20
+00:00:55,230 --> 00:00:56,040
+And so there we have it
+
+21
+00:00:56,310 --> 00:00:59,740
+now with our basic app set up we're
+ready to continue moving forward.
+
