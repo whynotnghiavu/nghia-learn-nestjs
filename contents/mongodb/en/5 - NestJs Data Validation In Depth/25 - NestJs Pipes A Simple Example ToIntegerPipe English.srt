@@ -1,0 +1,208 @@
+﻿1
+00:00:03,880 --> 00:00:06,100
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,100 --> 00:00:11,020
+‫In this new lesson, we are going to write as an example our two integer pipes.
+
+3
+00:00:11,020 --> 00:00:15,160
+‫So this is going to be an example of a nestjs custom pipe.
+
+4
+00:00:15,160 --> 00:00:20,610
+‫Let's open here the source folder and let's create here a new folder called Pipes.
+
+5
+00:00:20,620 --> 00:00:21,550
+‫Inside it.
+
+6
+00:00:21,550 --> 00:00:28,230
+‫We are going to be creating a new file that we are going to call to integer dot pipes.
+
+7
+00:00:28,240 --> 00:00:34,240
+‫And inside this file we are going to be defining a new class that we are simply going to call to integer
+
+8
+00:00:34,240 --> 00:00:34,930
+‫pipe.
+
+9
+00:00:34,930 --> 00:00:41,980
+‫Now, in order for this class to be a pipe, it needs to implement the pipe transform interface.
+
+10
+00:00:41,980 --> 00:00:49,030
+‫So make sure that you import the pipe, transform interface from nestjs common and not from angular
+
+11
+00:00:49,450 --> 00:00:49,990
+‫core.
+
+12
+00:00:49,990 --> 00:00:55,900
+‫Now we need to specify here as a parametric type, what is the input type that we are trying to transform?
+
+13
+00:00:55,900 --> 00:01:01,030
+‫In this case, we are trying to transform a string and we also need to implement here the transform
+
+14
+00:01:01,210 --> 00:01:02,020
+‫method.
+
+15
+00:01:02,020 --> 00:01:07,240
+‫So we are going to be providing here a number as the output of our transformation.
+
+16
+00:01:07,240 --> 00:01:09,550
+‫So the pipe works in the following way.
+
+17
+00:01:09,550 --> 00:01:15,490
+‫We are going to receive here as the input value, the input that gets passed to the pipe, in this case,
+
+18
+00:01:15,490 --> 00:01:18,100
+‫a string that we want to transform into an integer.
+
+19
+00:01:18,100 --> 00:01:23,770
+‫And here as the output we need to provide the result of the pipe transformation.
+
+20
+00:01:23,770 --> 00:01:30,370
+‫So let's go ahead and try to convert our value into a number we are going to be applying here the function
+
+21
+00:01:30,370 --> 00:01:33,550
+‫parse int and we are going to pass it the value.
+
+22
+00:01:33,550 --> 00:01:38,140
+‫So now we are going to test if this is a valid numeric value or not.
+
+23
+00:01:38,140 --> 00:01:39,190
+‫Let's use for that.
+
+24
+00:01:39,190 --> 00:01:45,040
+‫The is not a number function and pass it this value to check if it's actually numeric.
+
+25
+00:01:45,040 --> 00:01:51,640
+‫So if it's not numeric pass INT is going to return the value, not a number and assign it here to this
+
+26
+00:01:51,640 --> 00:01:52,900
+‫val constant.
+
+27
+00:01:52,900 --> 00:01:58,000
+‫So if this value is not a number, then we are going to throw here an exception.
+
+28
+00:01:58,000 --> 00:02:01,430
+‫Let's throw for example the bad request exception.
+
+29
+00:02:01,430 --> 00:02:08,030
+‫Let's create here a new instance of that exception and let's add here a message conversion to number
+
+30
+00:02:08,030 --> 00:02:13,970
+‫failed and let's pass in here the value that we did not manage to convert into a number.
+
+31
+00:02:13,970 --> 00:02:20,420
+‫So as you can see, pipes can be used not only for transforming inputs into outputs, but because that
+
+32
+00:02:20,420 --> 00:02:24,050
+‫operation can fail, they can also be used for validation.
+
+33
+00:02:24,050 --> 00:02:29,180
+‫Let's then return as the output of our transformation, the new numeric value.
+
+34
+00:02:29,180 --> 00:02:32,960
+‫And with this we have a two integer pipe ready to use.
+
+35
+00:02:32,960 --> 00:02:36,020
+‫So let's go ahead and plug it into our backend.
+
+36
+00:02:36,020 --> 00:02:43,550
+‫Let's apply the two integer pipe just to the update course operation and more specifically here only
+
+37
+00:02:43,550 --> 00:02:45,200
+‫to the sequential number field.
+
+38
+00:02:45,200 --> 00:02:50,480
+‫So we are going to add here the constructor function of two integer pipe.
+
+39
+00:02:50,480 --> 00:02:53,570
+‫Let's now try this new version of our backend.
+
+40
+00:02:53,600 --> 00:02:57,320
+‫We are going to switch here to the Restlet API interface.
+
+41
+00:02:57,320 --> 00:02:59,600
+‫We are going to send a new test request.
+
+42
+00:02:59,630 --> 00:03:01,400
+‫It went through successfully.
+
+43
+00:03:01,430 --> 00:03:08,090
+‫Now let's go back here to our terminal and notice that the warning that we had here before is gone.
+
+44
+00:03:08,090 --> 00:03:14,720
+‫And we have here the sequential number value is ten and the type at runtime is now a number.
+
+45
+00:03:14,720 --> 00:03:23,030
+‫So the two integer pipe converted the string that we had on our Json payload into a number as expected.
+
+46
+00:03:23,030 --> 00:03:28,700
+‫Now, because this operation is very common, converting a string into a number nestjs already comes
+
+47
+00:03:28,700 --> 00:03:30,320
+‫with a built in pipe for that.
+
+48
+00:03:30,320 --> 00:03:36,980
+‫So if instead here we apply the parse int pipe from nestjs common, we are going to get the same result.
+
+49
+00:03:37,010 --> 00:03:43,820
+‫Now what is important to retain about pipes is that they can be both used for transformation and validation
+
+50
+00:03:43,820 --> 00:03:46,670
+‫because the transformation operation might go wrong.
+
+51
+00:03:46,670 --> 00:03:52,850
+‫So we are going to see next how to use a pipe, a built in pipe that is already available in Nestjs
+
+52
+00:03:52,880 --> 00:03:59,840
+‫in order to validate the data in a course object using this decorators here from class validator.
+

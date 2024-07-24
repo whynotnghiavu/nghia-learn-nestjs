@@ -1,0 +1,348 @@
+﻿1
+00:00:03,820 --> 00:00:05,860
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,860 --> 00:00:11,350
+‫In this new lesson we are going to implement here, the login logic in our authentication controller.
+
+3
+00:00:11,350 --> 00:00:18,610
+‫So at this point we have received in our backend an Http post call that targets the slash API slash
+
+4
+00:00:18,610 --> 00:00:19,960
+‫login endpoint.
+
+5
+00:00:19,990 --> 00:00:26,980
+‫The request contains in its body a Json payload that contains two properties the email and the password.
+
+6
+00:00:26,980 --> 00:00:30,790
+‫So we need to grab them here in our login method.
+
+7
+00:00:30,790 --> 00:00:36,280
+‫For that, Let's start by defining here two parameters the email and the password.
+
+8
+00:00:36,280 --> 00:00:42,850
+‫And to make it clear that this is not the hashed version of the password, let's rename this variable
+
+9
+00:00:42,880 --> 00:00:45,430
+‫to plaintext password.
+
+10
+00:00:45,430 --> 00:00:51,730
+‫So this is the password exactly as the user has typed it in the password input box.
+
+11
+00:00:51,730 --> 00:00:55,600
+‫Now how to retrieve this from the Http body?
+
+12
+00:00:55,630 --> 00:00:59,680
+‫We are going to be using the nestjs body decorator.
+
+13
+00:00:59,680 --> 00:01:07,370
+‫So the body decorator is meant to fetch either the full body into a property or only properties of our
+
+14
+00:01:07,370 --> 00:01:08,480
+‫Json payloads.
+
+15
+00:01:08,480 --> 00:01:16,070
+‫So in this case we want to fetch in here the email property and here in the case of the plain text password,
+
+16
+00:01:16,070 --> 00:01:19,370
+‫we want to grab the password property.
+
+17
+00:01:19,400 --> 00:01:26,030
+‫So as you can see, we can give a different name to our input variable then the one that we have used
+
+18
+00:01:26,030 --> 00:01:27,770
+‫in our Json payload.
+
+19
+00:01:27,770 --> 00:01:32,990
+‫So here at this point in our program, we have both the email and the password.
+
+20
+00:01:32,990 --> 00:01:37,850
+‫So we are ready to start validating the email and password combination.
+
+21
+00:01:37,850 --> 00:01:44,570
+‫For that, we are going to be needing to query the database and fetch the password hash from the database
+
+22
+00:01:44,600 --> 00:01:46,250
+‫in order to query the database.
+
+23
+00:01:46,250 --> 00:01:50,420
+‫We are going to need a new entity which is going to be the user entity.
+
+24
+00:01:50,450 --> 00:01:54,530
+‫Let's add it directly here to our authentication module.
+
+25
+00:01:54,530 --> 00:02:00,800
+‫We are going to be adding here a new schema file that we are going to be calling users dot schema,
+
+26
+00:02:00,800 --> 00:02:02,110
+‫dot ts.
+
+27
+00:02:02,110 --> 00:02:09,340
+‫Going back here to our MongoDB database, this user schema is going to correspond to the users collection
+
+28
+00:02:09,340 --> 00:02:10,300
+‫that we see here.
+
+29
+00:02:10,300 --> 00:02:13,090
+‫So as you can see, we have here a couple of properties.
+
+30
+00:02:13,090 --> 00:02:21,340
+‫We have the email, we have a list of roles that if we open we can see that the student user has only
+
+31
+00:02:21,340 --> 00:02:26,260
+‫the role student while the admin user has the admin role.
+
+32
+00:02:26,260 --> 00:02:33,550
+‫So each user might have multiple roles, each role with different permissions, and each user also has
+
+33
+00:02:33,550 --> 00:02:35,500
+‫a unique password hash.
+
+34
+00:02:35,500 --> 00:02:39,610
+‫So this is the entity that we want to read from the database.
+
+35
+00:02:39,610 --> 00:02:45,040
+‫Let's then go back to our program and add here a schema for this entity.
+
+36
+00:02:45,070 --> 00:02:50,800
+‫We are going to be defining here a new variable that we are going to call users schema and we are going
+
+37
+00:02:50,800 --> 00:02:53,620
+‫to make this a new Mongoose schema.
+
+38
+00:02:53,620 --> 00:02:59,740
+‫Let's pass it a configuration object and here we are going to be adding three properties.
+
+39
+00:02:59,740 --> 00:03:03,020
+‫We are going to be adding the email as a string.
+
+40
+00:03:03,020 --> 00:03:08,750
+‫We are going to be adding the roles as an array and we are going to be adding the password hash as a
+
+41
+00:03:08,750 --> 00:03:09,170
+‫string.
+
+42
+00:03:09,170 --> 00:03:14,360
+‫So as you can see, this corresponds to the three properties that we saw on the user's collection on
+
+43
+00:03:14,360 --> 00:03:15,290
+‫the database.
+
+44
+00:03:15,290 --> 00:03:19,370
+‫Let's now plug in this schema into our authentication module.
+
+45
+00:03:19,370 --> 00:03:23,240
+‫For that, we are going to be using a Mongoose module as usual.
+
+46
+00:03:23,240 --> 00:03:25,760
+‫Let's add it here to our imports.
+
+47
+00:03:25,760 --> 00:03:31,940
+‫We are going to add here a call to Mongoose module for feature because the authentication feature is
+
+48
+00:03:31,940 --> 00:03:33,710
+‫also a feature module.
+
+49
+00:03:33,710 --> 00:03:37,430
+‫And in here we are going to be passing an array of schemas.
+
+50
+00:03:37,430 --> 00:03:40,460
+‫So let's add here a configuration property.
+
+51
+00:03:40,460 --> 00:03:42,890
+‫We are going to be specifying here a name.
+
+52
+00:03:42,890 --> 00:03:50,030
+‫So the name that we need to give here is the name of our entity, which will be user and the schema
+
+53
+00:03:50,030 --> 00:03:54,860
+‫property needs to be our user schema that we have just defined.
+
+54
+00:03:54,860 --> 00:04:00,410
+‫And with this we are now able to read users here from our authentication controller.
+
+55
+00:04:00,410 --> 00:04:06,160
+‫Now we could create here a separate repository service, but in the case of this particular controller,
+
+56
+00:04:06,160 --> 00:04:11,560
+‫because we want to focus on the authentication aspects and because the controller is going to be very
+
+57
+00:04:11,560 --> 00:04:16,630
+‫simple, we are going to go ahead and inject directly here the user model.
+
+58
+00:04:16,630 --> 00:04:19,150
+‫Let's define here a new property.
+
+59
+00:04:19,150 --> 00:04:25,660
+‫We are going to call it user model and let's apply it with the inject model decorator.
+
+60
+00:04:25,660 --> 00:04:31,960
+‫So to the decorator, we need to pass in here the name of the entity that we want to inject here.
+
+61
+00:04:31,960 --> 00:04:35,860
+‫So let's inject here the model for the user entity.
+
+62
+00:04:35,860 --> 00:04:41,890
+‫And with this we are now able to query the users collection from the authentication controller.
+
+63
+00:04:41,890 --> 00:04:46,270
+‫Let's then go ahead and do that here at the beginning of our method.
+
+64
+00:04:46,270 --> 00:04:53,050
+‫So the first thing that we need to do in order to validate if the login is correct or not is to fetch
+
+65
+00:04:53,050 --> 00:04:54,850
+‫the user from the database.
+
+66
+00:04:54,850 --> 00:05:00,490
+‫Let's access here the user model and let's use the find one method to.
+
+67
+00:05:00,730 --> 00:05:02,470
+‫Fetch the user from the database.
+
+68
+00:05:02,470 --> 00:05:06,790
+‫So the user is going to be found by using the email property.
+
+69
+00:05:06,820 --> 00:05:13,180
+‫We are going to await for the evaluation of this promise to go through and in order to be able to use
+
+70
+00:05:13,180 --> 00:05:18,790
+‫the async await syntax, we need to annotate this method with the async keyword.
+
+71
+00:05:18,790 --> 00:05:25,870
+‫So now at this point in the program, we should have here a valid user that does exist in our database.
+
+72
+00:05:25,900 --> 00:05:28,090
+‫Let's check if that is the case.
+
+73
+00:05:28,090 --> 00:05:34,450
+‫So if there is no user that corresponds to this email, this means that the user has not been created
+
+74
+00:05:34,450 --> 00:05:34,690
+‫yet.
+
+75
+00:05:34,690 --> 00:05:36,790
+‫So we can't login the user.
+
+76
+00:05:36,790 --> 00:05:42,910
+‫Let's add here some logging so that we can see on the console log that the error did occur.
+
+77
+00:05:42,910 --> 00:05:50,860
+‫And let's throw back to the client an error saying that this user is not authorized to access the application.
+
+78
+00:05:50,860 --> 00:05:57,760
+‫In order to do that, we are going to be throwing here a new Http exception that already exists in the
+
+79
+00:05:57,760 --> 00:05:59,530
+‫Nestjs common package.
+
+80
+00:05:59,530 --> 00:06:02,570
+‫This is going to be the unauthorized exception.
+
+81
+00:06:02,570 --> 00:06:09,170
+‫So this is going to send back to the client an Http status code of 401 unauthorized.
+
+82
+00:06:09,170 --> 00:06:15,050
+‫So with this, we are sure that there is indeed a user in the database that corresponds to this email.
+
+83
+00:06:15,050 --> 00:06:21,290
+‫So all it's left to do is to validate if the password that we got here is correct.
+
+84
+00:06:21,290 --> 00:06:27,620
+‫If the password is correct, we need to be able to create a new Json web token that is going to uniquely
+
+85
+00:06:27,620 --> 00:06:29,090
+‫identify this user.
+
+86
+00:06:29,090 --> 00:06:34,640
+‫For that, we are going to be using a couple of NPM packages that we are going to be introducing in
+
+87
+00:06:34,640 --> 00:06:35,660
+‫the next lesson.
+

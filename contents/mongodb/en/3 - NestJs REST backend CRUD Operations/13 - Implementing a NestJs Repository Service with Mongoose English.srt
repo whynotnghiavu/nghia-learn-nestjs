@@ -1,0 +1,444 @@
+﻿1
+00:00:03,760 --> 00:00:06,070
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,070 --> 00:00:12,130
+‫In this new lesson, we are going to learn how to use Mongoose to fetch data from our MongoDB database
+
+3
+00:00:12,130 --> 00:00:15,730
+‫and return it here in this call to this rest endpoint.
+
+4
+00:00:15,760 --> 00:00:22,420
+‫Now, one way of doing it would be to simply inject here the Mongoose module for the courses entity
+
+5
+00:00:22,420 --> 00:00:24,700
+‫and use it to query the database.
+
+6
+00:00:24,700 --> 00:00:26,770
+‫However, we are not going to do that.
+
+7
+00:00:26,770 --> 00:00:32,800
+‫Instead, we are going to write all our queries for the courses entity in a separate class called a
+
+8
+00:00:32,800 --> 00:00:36,490
+‫repository, and we are going to name it the courses repository.
+
+9
+00:00:36,520 --> 00:00:42,820
+‫The reason why we are doing that is because any query that we might write here inside the courses controller
+
+10
+00:00:42,820 --> 00:00:45,730
+‫might also be needed elsewhere in the application.
+
+11
+00:00:45,730 --> 00:00:51,790
+‫So we want to write the query only once and reuse the query code whenever we need it.
+
+12
+00:00:51,790 --> 00:00:58,570
+‫Elsewhere in the application, the repository pattern is a very commonly used pattern in other frameworks.
+
+13
+00:00:58,570 --> 00:01:02,120
+‫So let's see how this pattern looks like in Nestjs.
+
+14
+00:01:02,150 --> 00:01:08,090
+‫We are going to start by heading over here to our courses module and here we are going to be defining
+
+15
+00:01:08,090 --> 00:01:09,740
+‫a new type of service.
+
+16
+00:01:09,740 --> 00:01:14,600
+‫So we are going to create here a new folder that we are going to call repositories.
+
+17
+00:01:14,600 --> 00:01:21,440
+‫So this is going to contain the multiple repositories of our Nestjs module, typically one per entity.
+
+18
+00:01:21,440 --> 00:01:27,170
+‫So at the end of the course we should have here a courses repository and a lessons repository.
+
+19
+00:01:27,170 --> 00:01:29,480
+‫Let's then create here a new file.
+
+20
+00:01:29,480 --> 00:01:33,290
+‫We are going to call it courses dot repository, dot TS.
+
+21
+00:01:33,320 --> 00:01:38,630
+‫Now this file is a plain injectable service just like any other.
+
+22
+00:01:38,630 --> 00:01:43,430
+‫Let's go ahead and define here a new class called Courses Repository.
+
+23
+00:01:43,430 --> 00:01:47,660
+‫And let's add it the injectable decorator from Nestjs.
+
+24
+00:01:47,690 --> 00:01:54,080
+‫Now, before implementing the code for this repository service, let's configure it here in our courses
+
+25
+00:01:54,080 --> 00:01:54,680
+‫module.
+
+26
+00:01:54,680 --> 00:02:01,220
+‫So here in our courses module we are going to be using here the providers property to which we are going
+
+27
+00:02:01,220 --> 00:02:06,260
+‫to assign an array and here we are going to add our courses repository service.
+
+28
+00:02:06,260 --> 00:02:10,910
+‫So this way the courses module knows about the courses repository.
+
+29
+00:02:10,910 --> 00:02:15,650
+‫So what type of methods do we find typically in the repository service?
+
+30
+00:02:15,650 --> 00:02:21,980
+‫Well, we are going to find the typical Crud operations for a given entity or a set of related entities.
+
+31
+00:02:22,010 --> 00:02:29,030
+‫For example, our courses controller would need here a way of querying a list of courses from our MongoDB
+
+32
+00:02:29,030 --> 00:02:29,810
+‫database.
+
+33
+00:02:29,810 --> 00:02:36,560
+‫So we should expect to find here in the courses repository a new method called find all, for example,
+
+34
+00:02:36,560 --> 00:02:39,980
+‫that would provide as a value A courses array.
+
+35
+00:02:39,980 --> 00:02:43,430
+‫And let's import here the correct course class.
+
+36
+00:02:43,430 --> 00:02:45,740
+‫Again from the shared folder.
+
+37
+00:02:45,740 --> 00:02:51,950
+‫Let's annotate this method with the async keyword meaning that we are going to be supporting in the
+
+38
+00:02:51,950 --> 00:02:52,940
+‫method body.
+
+39
+00:02:52,940 --> 00:02:54,980
+‫The async await syntax.
+
+40
+00:02:54,980 --> 00:02:58,280
+‫Now, what other type of methods should we find here?
+
+41
+00:02:58,280 --> 00:03:04,100
+‫In the typical repository class, we would find methods for for example, updating an existing course,
+
+42
+00:03:04,100 --> 00:03:06,800
+‫deleting a course or adding a new course.
+
+43
+00:03:06,800 --> 00:03:13,610
+‫So the typical Crud operations for this entity, let's then in this lesson implement here, find all
+
+44
+00:03:13,610 --> 00:03:15,020
+‫using mongoose.
+
+45
+00:03:15,020 --> 00:03:22,100
+‫For that we are going to be injecting here via the constructor the Mongoose model for the course entity.
+
+46
+00:03:22,130 --> 00:03:24,350
+‫Let's define here a constructor.
+
+47
+00:03:24,350 --> 00:03:31,040
+‫And just like in the case of our front end, our back end also works using dependency injection.
+
+48
+00:03:31,040 --> 00:03:38,120
+‫So we are going to be able to inject here a course model service that is of type model.
+
+49
+00:03:38,150 --> 00:03:42,320
+‫Of course, now this model is going to be a mongoose model.
+
+50
+00:03:42,320 --> 00:03:47,630
+‫So let's make sure that we import from the mongoose package, the model type.
+
+51
+00:03:47,630 --> 00:03:53,540
+‫So this course model service that is getting injected here has been created here by mongoose.
+
+52
+00:03:53,540 --> 00:03:59,870
+‫So whenever we configured here using forfeiture, the course entity with the courses schema, we have
+
+53
+00:03:59,870 --> 00:04:06,920
+‫implicitly created a model service specific to this entity that we are now injecting in our repository
+
+54
+00:04:06,950 --> 00:04:11,330
+‫via the constructor using dependency injection, just like in the front end.
+
+55
+00:04:11,330 --> 00:04:16,100
+‫Let's now have a look at what type of functionality we have available via the model.
+
+56
+00:04:16,100 --> 00:04:19,640
+‫Using the model, we have multiple find operations.
+
+57
+00:04:19,640 --> 00:04:24,350
+‫We can do a find here using the find method, using a series of optional parameters.
+
+58
+00:04:24,350 --> 00:04:29,330
+‫We can do a find by ID and we can even do things such as find and remove.
+
+59
+00:04:29,360 --> 00:04:36,020
+‫We also have other methods available such as, for example, update or update one update many for modifying
+
+60
+00:04:36,020 --> 00:04:36,740
+‫data.
+
+61
+00:04:36,740 --> 00:04:43,280
+‫And we have all the typical Crud functionalities such as, for example, the ability of deleting courses
+
+62
+00:04:43,280 --> 00:04:46,400
+‫from the database and of creating new ones.
+
+63
+00:04:46,400 --> 00:04:53,090
+‫So in the case of our find all method, what we want to do is do a call here to find and because we
+
+64
+00:04:53,090 --> 00:04:59,510
+‫are finding all the documents in the collection, we don't need to specify here any extra parameters
+
+65
+00:04:59,510 --> 00:05:00,650
+‫later on in the course.
+
+66
+00:05:00,670 --> 00:05:05,470
+‫We are going to show how to do a find by adding here some extra conditions.
+
+67
+00:05:05,470 --> 00:05:13,180
+‫But in this case, because the Mongoose API is promise based, we already have here a promise that emits
+
+68
+00:05:13,210 --> 00:05:15,460
+‫values which are courses arrays.
+
+69
+00:05:15,490 --> 00:05:20,980
+‫This means that we have completed here the implementation of our find all query method.
+
+70
+00:05:20,980 --> 00:05:26,650
+‫So by injecting the courses repository anywhere on the application, we are going to be able to use
+
+71
+00:05:26,650 --> 00:05:32,050
+‫this query whenever we need it without using directly the Mongoose model.
+
+72
+00:05:32,050 --> 00:05:39,010
+‫Now, in this case, the benefit of refactoring this query here to the find all method is not large,
+
+73
+00:05:39,010 --> 00:05:42,490
+‫but in more complex queries with a lot of parameters.
+
+74
+00:05:42,490 --> 00:05:48,820
+‫This is going to save us a lot of code in order to be able to use the find all method in our courses
+
+75
+00:05:48,820 --> 00:05:53,560
+‫controller we're going to have to inject here in the constructor the repository.
+
+76
+00:05:53,560 --> 00:05:59,770
+‫Let's then add here a constructor and we're going to create here a new member variable that we are going
+
+77
+00:05:59,770 --> 00:06:01,040
+‫to call courses.
+
+78
+00:06:01,040 --> 00:06:05,480
+‫DB And to wit, we are going to assign the courses repository.
+
+79
+00:06:05,480 --> 00:06:09,380
+‫So with this we have here the course repository ready to be used.
+
+80
+00:06:09,380 --> 00:06:14,270
+‫So we can now use it here and call the find all method.
+
+81
+00:06:14,270 --> 00:06:21,920
+‫So this is going to return a promise of course array that we can return here as the output of find all
+
+82
+00:06:21,920 --> 00:06:22,700
+‫courses.
+
+83
+00:06:22,700 --> 00:06:28,430
+‫We are going to explain further on in this course the exact difference between separating our logic
+
+84
+00:06:28,430 --> 00:06:32,000
+‫between repository classes and controller classes.
+
+85
+00:06:32,000 --> 00:06:37,760
+‫Right now we want to go ahead and test this new implementation and confirm that the data is now indeed
+
+86
+00:06:37,760 --> 00:06:40,130
+‫coming from the database as expected.
+
+87
+00:06:40,130 --> 00:06:46,040
+‫Now, before trying this out, let's fix here a small problem in the implementation of our repository,
+
+88
+00:06:46,040 --> 00:06:49,580
+‫which has to do with injection here of the course model.
+
+89
+00:06:49,580 --> 00:06:55,850
+‫So specifying here that this is a model of course would not be enough for the dependency injection system
+
+90
+00:06:55,850 --> 00:06:59,660
+‫to identify exactly which mongoose model to inject.
+
+91
+00:06:59,660 --> 00:07:06,290
+‫So besides providing here this type definition, we also need to add here a decorator called inject
+
+92
+00:07:06,290 --> 00:07:06,890
+‫model.
+
+93
+00:07:06,890 --> 00:07:12,440
+‫So inject model needs to be imported from nestjs slash mongoose.
+
+94
+00:07:12,440 --> 00:07:17,690
+‫And we need to provide here the name of the mongoose model that we want to inject.
+
+95
+00:07:17,690 --> 00:07:25,220
+‫So the dependency injection system is going to be able to determine then that it's this model here linked
+
+96
+00:07:25,220 --> 00:07:32,060
+‫to the course entity using this particular schema that we want to inject here in our repository.
+
+97
+00:07:32,060 --> 00:07:36,800
+‫So it's this string course that makes the link between the two things.
+
+98
+00:07:36,800 --> 00:07:40,370
+‫And with this, we are now ready to test our database query.
+
+99
+00:07:40,370 --> 00:07:47,150
+‫Let's then open here the terminal and from inside the rest folder we are going to run the command NPM
+
+100
+00:07:47,150 --> 00:07:48,260
+‫run server.
+
+101
+00:07:48,290 --> 00:07:51,560
+‫This is going to start the server in hot reload mode.
+
+102
+00:07:51,560 --> 00:07:57,380
+‫Now we are going to go ahead and open a second terminal and we are going to access the endpoint slash
+
+103
+00:07:57,380 --> 00:08:02,270
+‫API slash courses which corresponds here to our courses Controller.
+
+104
+00:08:02,270 --> 00:08:07,550
+‫If we do that, we are going to see here on the screen that indeed we are fetching the data from the
+
+105
+00:08:07,550 --> 00:08:09,800
+‫MongoDB database as expected.
+
+106
+00:08:09,800 --> 00:08:15,650
+‫So this data is no longer coming from an in-memory object that we had here in the server at the level
+
+107
+00:08:15,650 --> 00:08:17,180
+‫of our courses controller.
+
+108
+00:08:17,180 --> 00:08:22,610
+‫Instead, we are querying the MongoDB database and we are sending back the results to the front end.
+
+109
+00:08:22,610 --> 00:08:26,240
+‫Let's now continue the implementation of our courses Controller.
+
+110
+00:08:26,240 --> 00:08:31,520
+‫We are going to be adding the remaining Crud operations and we are also going to be adding common features
+
+111
+00:08:31,520 --> 00:08:36,470
+‫such as, for example, input parameter validation and error handling in general.
+

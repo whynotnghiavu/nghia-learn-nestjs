@@ -1,0 +1,432 @@
+﻿1
+00:00:03,610 --> 00:00:05,860
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,860 --> 00:00:10,930
+‫In this new lesson, we are going to set up the Mongoose object data modeling tool that we are going
+
+3
+00:00:10,930 --> 00:00:12,790
+‫to be using to interact with MongoDB.
+
+4
+00:00:13,000 --> 00:00:16,960
+‫We are going to learn how to set it up in our nestjs backend.
+
+5
+00:00:16,960 --> 00:00:23,170
+‫So the first thing that we are going to do is to define a mongoose schema for our courses entity.
+
+6
+00:00:23,170 --> 00:00:30,310
+‫So here in our shared folder we are going to see code that is shared between our backend and our front
+
+7
+00:00:30,310 --> 00:00:30,730
+‫end.
+
+8
+00:00:30,730 --> 00:00:35,440
+‫And typically this will include data structures such as the course entity.
+
+9
+00:00:35,470 --> 00:00:42,430
+‫We can see that we have here an ID which contains the underscore ID identifier, which is typical of
+
+10
+00:00:42,430 --> 00:00:43,180
+‫MongoDB.
+
+11
+00:00:43,180 --> 00:00:45,970
+‫And we have here a series of other fields.
+
+12
+00:00:45,970 --> 00:00:52,090
+‫So this type of entity definitions allows us to write our programs in a type safe way.
+
+13
+00:00:52,090 --> 00:00:58,570
+‫If we want to add a field to an entity, we can easily do so here and the compiler will tell us all
+
+14
+00:00:58,570 --> 00:01:01,910
+‫the places in our application that we need to refactor.
+
+15
+00:01:01,940 --> 00:01:09,020
+‫Now we want to make sure that our backend server does not accidentally add any field to a course object.
+
+16
+00:01:09,020 --> 00:01:11,930
+‫That is not part of this list here.
+
+17
+00:01:11,930 --> 00:01:18,800
+‫So we want to add a way of adding some sort of schema validation functionality to our backend and that's
+
+18
+00:01:18,800 --> 00:01:20,870
+‫what Mongoose is going to bring us.
+
+19
+00:01:20,870 --> 00:01:23,960
+‫So let's then introduce Mongoose in our application.
+
+20
+00:01:23,960 --> 00:01:29,900
+‫We are going to go to the rest API folder and here inside the courses module we are going to create
+
+21
+00:01:29,900 --> 00:01:31,550
+‫here a new folder.
+
+22
+00:01:31,550 --> 00:01:37,190
+‫This folder is going to be called Schemas and it's going to contain all our mongoose schemas.
+
+23
+00:01:37,190 --> 00:01:39,200
+‫Let's create here a new file.
+
+24
+00:01:39,200 --> 00:01:42,920
+‫We are going to call it courses, dot schema, dot ts.
+
+25
+00:01:42,950 --> 00:01:48,260
+‫Now inside it we are going to define the Mongoose schema for the course entity.
+
+26
+00:01:48,290 --> 00:01:50,390
+‫Let's start by importing Mongoose.
+
+27
+00:01:50,390 --> 00:01:54,470
+‫We are going to import star as mongoose from Mongoose.
+
+28
+00:01:54,500 --> 00:01:58,160
+‫Now using Mongoose, we are going to define our first schema.
+
+29
+00:01:58,160 --> 00:02:06,050
+‫Let's call it the course schema and let's create it by calling new Mongoose dot schema to the schema
+
+30
+00:02:06,050 --> 00:02:06,680
+‫constructor.
+
+31
+00:02:06,680 --> 00:02:09,350
+‫We need to pass in a configuration object.
+
+32
+00:02:09,350 --> 00:02:14,030
+‫This configuration object is going to contain all the fields of this entity.
+
+33
+00:02:14,030 --> 00:02:17,690
+‫So here we should not add an ID field.
+
+34
+00:02:17,690 --> 00:02:23,660
+‫That field is going to be implicitly added by mongoose, but there are other fields here that we need
+
+35
+00:02:23,660 --> 00:02:26,720
+‫to define, such as, for example, the sequential number.
+
+36
+00:02:26,720 --> 00:02:29,660
+‫We can see that the sequential number should be a number.
+
+37
+00:02:29,660 --> 00:02:31,520
+‫So let's see how can we define it.
+
+38
+00:02:31,550 --> 00:02:37,130
+‫We need to define here a property called Segno, which should be of type number.
+
+39
+00:02:37,130 --> 00:02:45,200
+‫So it's important to use here the capital form of the number type and not the lowercase TypeScript type.
+
+40
+00:02:45,200 --> 00:02:46,400
+‫So this will not work.
+
+41
+00:02:46,400 --> 00:02:52,550
+‫You need to use the number type, which is the number constructor of the JavaScript runtime.
+
+42
+00:02:52,550 --> 00:02:57,500
+‫This is being used by Mongoose to assign a given type to this variable.
+
+43
+00:02:57,500 --> 00:03:02,540
+‫In the same way that we have defined the sequential number field as being a number, we can also define,
+
+44
+00:03:02,540 --> 00:03:05,660
+‫for example, the URL field as being a string.
+
+45
+00:03:05,660 --> 00:03:11,630
+‫And again, it's important to use the capital string type, which is the type provided by the JavaScript
+
+46
+00:03:11,630 --> 00:03:12,320
+‫runtime.
+
+47
+00:03:12,320 --> 00:03:17,750
+‫So this is different than the lowercase string type, which is TypeScript specific.
+
+48
+00:03:17,750 --> 00:03:22,820
+‫We need to use this particular constructor function, otherwise mongoose will not work.
+
+49
+00:03:22,820 --> 00:03:28,310
+‫And in a similar way to how we have defined these two fields, we can also define the remaining fields
+
+50
+00:03:28,310 --> 00:03:33,350
+‫of the course entity I have just pasted in here a few more fields.
+
+51
+00:03:33,350 --> 00:03:39,020
+‫So with these fields defined we are going to make sure that our program does not accidentally insert
+
+52
+00:03:39,050 --> 00:03:41,230
+‫on the database invalid data.
+
+53
+00:03:41,240 --> 00:03:49,340
+‫Let's now see how can we take this mongoose schema and plug it into our nestjs backend in order to integrate
+
+54
+00:03:49,340 --> 00:03:53,480
+‫Mongoose with Nestjs, we are going to be using the Mongoose module.
+
+55
+00:03:53,480 --> 00:04:00,890
+‫So let's head over here to our application root module from our backend under the rest folder and let's
+
+56
+00:04:00,890 --> 00:04:02,900
+‫import here a new module.
+
+57
+00:04:02,900 --> 00:04:06,620
+‫This module is simply called mongoose dot module.
+
+58
+00:04:06,620 --> 00:04:12,920
+‫So if you check here the import this comes from the Nestjs slash Mongoose scoped package.
+
+59
+00:04:12,920 --> 00:04:15,170
+‫So this is the correct module that we need.
+
+60
+00:04:15,200 --> 00:04:15,680
+‫Now.
+
+61
+00:04:15,680 --> 00:04:16,880
+‫This is the root module.
+
+62
+00:04:16,880 --> 00:04:21,050
+‫So we are going to be configuring here the root application services.
+
+63
+00:04:21,080 --> 00:04:23,690
+‫Let's then call here for root.
+
+64
+00:04:23,690 --> 00:04:30,860
+‫And now we need to pass in here the connection string so that mongoose can connect to our database using
+
+65
+00:04:30,860 --> 00:04:32,750
+‫the MongoDB package.
+
+66
+00:04:32,750 --> 00:04:39,560
+‫Now you can grab the connection string here from the populate DB script that you have prepared before.
+
+67
+00:04:39,560 --> 00:04:45,410
+‫So if you remember here in this constant, you have defined here a connection string that you needed
+
+68
+00:04:45,410 --> 00:04:47,750
+‫for connecting to the MongoDB database.
+
+69
+00:04:47,750 --> 00:04:50,900
+‫So that is the same string that we need to use here.
+
+70
+00:04:50,900 --> 00:04:53,330
+‫I'm going to define it via a constant.
+
+71
+00:04:53,330 --> 00:04:59,270
+‫I'm going to call it Mongo connection and I'm going to be defining this constant here in a separate
+
+72
+00:04:59,270 --> 00:05:00,650
+‫file called Constants.
+
+73
+00:05:00,860 --> 00:05:07,670
+‫Let's create this new file here and inside it, we are going to be defining a new constant called Mongo
+
+74
+00:05:07,670 --> 00:05:09,170
+‫underscore connection.
+
+75
+00:05:09,170 --> 00:05:12,680
+‫And here we are going to paste our connection string.
+
+76
+00:05:12,680 --> 00:05:17,480
+‫Now, at this point, please notice one thing, and this is very important.
+
+77
+00:05:17,510 --> 00:05:23,480
+‫Notice that the connection string that we copied is currently linking us here to the test database.
+
+78
+00:05:23,480 --> 00:05:30,440
+‫So this is a special database in MongoDB that is used for testing purposes, but this is not the database
+
+79
+00:05:30,440 --> 00:05:31,460
+‫that we want to use.
+
+80
+00:05:31,460 --> 00:05:38,600
+‫Instead, we want to use the database called Nestjs course, if you remember, this is the name of the
+
+81
+00:05:38,600 --> 00:05:43,100
+‫database under which we have stored the courses and lessons collections.
+
+82
+00:05:43,100 --> 00:05:49,730
+‫So if you don't edit this and put in here the correct name of the database later on in the course,
+
+83
+00:05:49,730 --> 00:05:55,730
+‫whenever you are doing database queries, you might be surprised that you are not finding any values
+
+84
+00:05:55,730 --> 00:05:58,100
+‫even though your database is populated.
+
+85
+00:05:58,100 --> 00:05:59,600
+‫So we want to avoid that.
+
+86
+00:05:59,600 --> 00:06:05,430
+‫Please make sure that you replace here the word test by the correct name of the database.
+
+87
+00:06:05,430 --> 00:06:08,580
+‫That should be Nestjs Dash course.
+
+88
+00:06:08,580 --> 00:06:14,520
+‫Now we are going to go back here to the application module and we are going to import our constant.
+
+89
+00:06:14,520 --> 00:06:19,590
+‫So this is a simple way of configuring the connection string in our program.
+
+90
+00:06:19,590 --> 00:06:24,810
+‫A better way of doing this that you would usually use in a production application would be to fetch
+
+91
+00:06:24,810 --> 00:06:27,570
+‫this connection string from an environment variable.
+
+92
+00:06:27,600 --> 00:06:33,180
+‫But here, just for simplicity purposes, I'm going to define it using this constants file.
+
+93
+00:06:33,180 --> 00:06:37,740
+‫So now we have defined here the root services of the Mongoose module.
+
+94
+00:06:37,740 --> 00:06:44,310
+‫We now need to go to the courses module, which is a feature module of our Nestjs backend application
+
+95
+00:06:44,310 --> 00:06:47,850
+‫and we need to configure here the course schema.
+
+96
+00:06:47,850 --> 00:06:55,230
+‫We can do so by importing here again the Mongoose module, but this time by calling here for feature
+
+97
+00:06:55,230 --> 00:07:00,120
+‫inside for feature, we are going to be passing in an array of schema definitions.
+
+98
+00:07:00,120 --> 00:07:06,420
+‫So each schema definition is an object that contains a name which is going to be the name of the entity
+
+99
+00:07:06,420 --> 00:07:09,960
+‫to which we want to add the schema, in this case, the course entity.
+
+100
+00:07:09,960 --> 00:07:12,960
+‫And we also need to define here the schema.
+
+101
+00:07:12,960 --> 00:07:18,090
+‫So the schema is going to be the courses schema constant that we have defined here.
+
+102
+00:07:18,090 --> 00:07:20,250
+‫Let's then import it here.
+
+103
+00:07:20,250 --> 00:07:24,900
+‫And with this we have included the courses schema in our database.
+
+104
+00:07:24,900 --> 00:07:30,150
+‫So with this, the Mongoose module is going to make available a series of services that is going to
+
+105
+00:07:30,150 --> 00:07:34,650
+‫make it very simple to interact with the course collection using Mongoose.
+
+106
+00:07:34,680 --> 00:07:40,860
+‫Let's now see how can we use Mongoose to implement a complete Crud example for the course entity?
+
+107
+00:07:40,890 --> 00:07:44,670
+‫We are going to see how to use Mongoose to query courses from the database.
+
+108
+00:07:44,670 --> 00:07:50,310
+‫We are going to see how to create new courses, update existing ones and delete them as well.
+

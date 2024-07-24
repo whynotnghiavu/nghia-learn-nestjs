@@ -1,0 +1,244 @@
+﻿1
+00:00:03,580 --> 00:00:05,920
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,920 --> 00:00:10,380
+‫In this new lesson, we are going to set up our new MongoDB database.
+
+3
+00:00:10,390 --> 00:00:15,490
+‫Now, we could install MongoDB locally in your development machine, but I think it's going to be a
+
+4
+00:00:15,490 --> 00:00:19,240
+‫lot easier if you use instead a cloud service.
+
+5
+00:00:19,240 --> 00:00:26,260
+‫So for that we are going to switch here to Mongodb.com and we are going to register to its cloud service.
+
+6
+00:00:26,260 --> 00:00:31,270
+‫So this will give you access to a free database that you can use for learning purposes.
+
+7
+00:00:31,270 --> 00:00:36,910
+‫Let's then hit here the sign in button and let's register with a new account.
+
+8
+00:00:36,910 --> 00:00:40,060
+‫If you already have a username, you can go ahead and log in.
+
+9
+00:00:40,060 --> 00:00:43,210
+‫Otherwise we are going to click here on register.
+
+10
+00:00:43,210 --> 00:00:47,590
+‫Now you need to fill in these details and then click here on Continue.
+
+11
+00:00:47,620 --> 00:00:52,990
+‫Once you have set up your account, you are going to be asked what type of database cluster do you need?
+
+12
+00:00:53,020 --> 00:00:58,360
+‫You are going to choose the free cluster that we are going to be using for learning purposes.
+
+13
+00:00:58,360 --> 00:01:04,520
+‫From here you are going to be choosing your cloud provider and region and you can use the defaults as
+
+14
+00:01:04,520 --> 00:01:06,440
+‫they will work well for the course.
+
+15
+00:01:06,440 --> 00:01:10,190
+‫Once you have selected the defaults, let's click on Create Cluster.
+
+16
+00:01:10,190 --> 00:01:12,860
+‫Notice that your cluster is still being created.
+
+17
+00:01:12,860 --> 00:01:17,810
+‫We can see that this should take around ten minutes while the cluster is being created.
+
+18
+00:01:17,810 --> 00:01:20,300
+‫We are going to create a database user.
+
+19
+00:01:20,300 --> 00:01:25,070
+‫We are going to grant access to our development machine while the cluster is building.
+
+20
+00:01:25,070 --> 00:01:26,990
+‫Let's go ahead and continue here.
+
+21
+00:01:26,990 --> 00:01:28,580
+‫The initialization process.
+
+22
+00:01:28,580 --> 00:01:31,580
+‫We are going to create our first database user.
+
+23
+00:01:31,580 --> 00:01:35,900
+‫We can do so by clicking here on security database access.
+
+24
+00:01:35,900 --> 00:01:39,530
+‫And from here we are going to create our first database user.
+
+25
+00:01:39,530 --> 00:01:45,440
+‫Notice that this is not an end user like, for example, a person that connects to your application
+
+26
+00:01:45,440 --> 00:01:46,220
+‫and uses it.
+
+27
+00:01:46,220 --> 00:01:48,560
+‫This is an administrative user.
+
+28
+00:01:48,560 --> 00:01:55,010
+‫So these users are typically either database administrators or applications that need to access the
+
+29
+00:01:55,010 --> 00:01:57,050
+‫database in write mode.
+
+30
+00:01:57,050 --> 00:02:02,150
+‫Let's then create a new administrative user, let's call it Nestjs dash admin.
+
+31
+00:02:02,150 --> 00:02:03,770
+‫So that is the user name.
+
+32
+00:02:03,770 --> 00:02:08,360
+‫And let's enter a password by clicking on Autogenerate secure password.
+
+33
+00:02:08,360 --> 00:02:11,690
+‫We are going to make this user a Atlas admin.
+
+34
+00:02:11,690 --> 00:02:14,780
+‫So Atlas is the MongoDB Cloud service.
+
+35
+00:02:14,780 --> 00:02:20,560
+‫Let's click now on Add User and this has created here our first user.
+
+36
+00:02:20,570 --> 00:02:24,020
+‫The next step is to whitelist our IP address.
+
+37
+00:02:24,020 --> 00:02:25,430
+‫So what is this?
+
+38
+00:02:25,430 --> 00:02:29,000
+‫Our server is going to be running in a given address.
+
+39
+00:02:29,030 --> 00:02:34,880
+‫We want to make sure that the database accepts queries incoming from this address.
+
+40
+00:02:34,880 --> 00:02:40,250
+‫So it's an extra security protection that the database offers us in production.
+
+41
+00:02:40,250 --> 00:02:46,220
+‫You not only want to authenticate the username and password of the administrative user, but you also
+
+42
+00:02:46,250 --> 00:02:52,730
+‫want to whitelist the address from which the query is coming from in case that the password gets lost.
+
+43
+00:02:52,730 --> 00:03:00,200
+‫Let's then click here on Whitelist IP address and let's now click on Security Network Access.
+
+44
+00:03:00,200 --> 00:03:06,770
+‫We are now going to click here on Add IP address and we are going to choose the option for the particular
+
+45
+00:03:06,770 --> 00:03:10,670
+‫case of our course because we are simply using this for learning purposes.
+
+46
+00:03:10,670 --> 00:03:14,270
+‫We are going to choose the option, allow access from anywhere.
+
+47
+00:03:14,270 --> 00:03:17,150
+‫So this is not recommended in production.
+
+48
+00:03:17,150 --> 00:03:23,060
+‫In production, you should have a static IP address for your production server and you should add only
+
+49
+00:03:23,060 --> 00:03:25,730
+‫that specific IP address to the white list.
+
+50
+00:03:25,730 --> 00:03:31,580
+‫Let's click here on confirm and we are going to see that this white list request is still on status
+
+51
+00:03:31,580 --> 00:03:38,210
+‫pending, so we are going to wait for a few minutes while MongoDB sets up our database cluster.
+
+52
+00:03:38,210 --> 00:03:42,410
+‫After a moment, the white listing of the IP address should be completed.
+
+53
+00:03:42,410 --> 00:03:48,020
+‫So if we now click here for example, on clusters, we are going to see what is the current state of
+
+54
+00:03:48,020 --> 00:03:48,950
+‫our cluster.
+
+55
+00:03:48,950 --> 00:03:50,600
+‫It seems to be up and running.
+
+56
+00:03:50,600 --> 00:03:52,550
+‫Let's click here on collections.
+
+57
+00:03:52,550 --> 00:03:59,990
+‫Collections are like database tables in SQL databases, so collections are going to be groups of related
+
+58
+00:03:59,990 --> 00:04:01,520
+‫documents in MongoDB.
+
+59
+00:04:01,520 --> 00:04:04,550
+‫So MongoDB is a document database.
+
+60
+00:04:04,550 --> 00:04:08,960
+‫We are going to be talking a lot more about collections and documents throughout the course.
+
+61
+00:04:08,960 --> 00:04:13,580
+‫Right now, let's simply add some data to the database and see what it looks like.
+

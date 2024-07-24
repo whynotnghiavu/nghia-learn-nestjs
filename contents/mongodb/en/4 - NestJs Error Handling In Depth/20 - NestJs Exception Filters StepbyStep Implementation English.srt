@@ -1,0 +1,616 @@
+﻿1
+00:00:03,700 --> 00:00:05,920
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,920 --> 00:00:11,020
+‫In this new lesson, we are going to introduce the notion of Nestjs exception filters.
+
+3
+00:00:11,020 --> 00:00:13,180
+‫So what is exactly an exception?
+
+4
+00:00:13,180 --> 00:00:13,810
+‫Filter?
+
+5
+00:00:13,840 --> 00:00:16,480
+‫A filter is a nestjs construct.
+
+6
+00:00:16,480 --> 00:00:22,090
+‫It's a class that we can write ourselves that it's going to allow us to handle an error thrown.
+
+7
+00:00:22,090 --> 00:00:29,530
+‫For example, at the level of this update course method that handles a put request in a course entity.
+
+8
+00:00:29,560 --> 00:00:35,680
+‫If any error is thrown inside the body of this method, such as, for example, this bad request exception
+
+9
+00:00:35,680 --> 00:00:41,800
+‫that we have coded in one of the last few lessons, then our exception filter is going to catch the
+
+10
+00:00:41,800 --> 00:00:45,910
+‫error and it's going to allow us to define the error response.
+
+11
+00:00:45,910 --> 00:00:50,710
+‫There is already a default exception filter that is catching this error.
+
+12
+00:00:50,710 --> 00:00:58,210
+‫And so with Nestjs in general, we don't have hanging Http requests that were not caught by any error
+
+13
+00:00:58,210 --> 00:00:58,780
+‫handler.
+
+14
+00:00:58,780 --> 00:01:03,860
+‫Worst case scenario, we are going to get the default error handler that is already there.
+
+15
+00:01:03,860 --> 00:01:08,870
+‫But let's say that we would not want to use that default error handler, but instead we would like to
+
+16
+00:01:08,870 --> 00:01:12,650
+‫have full control over the format of the error response.
+
+17
+00:01:12,650 --> 00:01:14,900
+‫For that, we are going to need a filter.
+
+18
+00:01:14,900 --> 00:01:21,770
+‫Let's then go ahead and write one we're going to add here inside our rest folder, not at the level
+
+19
+00:01:21,770 --> 00:01:25,190
+‫of the courses module, but at the level of the whole application.
+
+20
+00:01:25,190 --> 00:01:29,060
+‫We're going to add here a new folder that we are going to call filters.
+
+21
+00:01:29,060 --> 00:01:34,040
+‫And inside it we are going to create here a new Http filter.
+
+22
+00:01:34,040 --> 00:01:41,480
+‫So this is going to allow us to process any Http errors thrown from inside our controller or repository
+
+23
+00:01:41,480 --> 00:01:42,170
+‫logic.
+
+24
+00:01:42,170 --> 00:01:44,600
+‫Let's then create here a new filter.
+
+25
+00:01:44,600 --> 00:01:48,260
+‫We are going to call it Http filter dot ts.
+
+26
+00:01:48,290 --> 00:01:50,870
+‫Let's now see what a filter looks like.
+
+27
+00:01:50,870 --> 00:01:57,680
+‫This is going to be a plain TypeScript class that we are going to call simply Http exception filter.
+
+28
+00:01:57,680 --> 00:02:04,490
+‫Now this class, in order to be a filter, is going to have to implement the exception filter nestjs
+
+29
+00:02:04,490 --> 00:02:05,510
+‫interface.
+
+30
+00:02:05,510 --> 00:02:13,250
+‫And it also needs to be annotated with the Nestjs catch decorator to the catch decorator we need to
+
+31
+00:02:13,250 --> 00:02:13,670
+‫pass.
+
+32
+00:02:13,670 --> 00:02:17,870
+‫What exceptions are we exactly handling with this filter?
+
+33
+00:02:17,870 --> 00:02:23,780
+‫So in our case we are going to be handling the Http exception from Nestjs.
+
+34
+00:02:23,780 --> 00:02:28,730
+‫So this is the base exception from which we will be inheriting our business.
+
+35
+00:02:28,730 --> 00:02:31,580
+‫Exceptions thrown at the level of our controllers.
+
+36
+00:02:31,580 --> 00:02:38,090
+‫And by adding here the Http exception, this is going to catch not only instances of the Http exception
+
+37
+00:02:38,090 --> 00:02:40,930
+‫itself, but also its subclasses.
+
+38
+00:02:40,940 --> 00:02:44,420
+‫Let's then implement the exception filter interface.
+
+39
+00:02:44,420 --> 00:02:47,810
+‫This only has one method which is called catch.
+
+40
+00:02:47,810 --> 00:02:49,850
+‫Let's then go ahead and implement it.
+
+41
+00:02:49,880 --> 00:02:55,970
+‫We are going to pass in here the exception argument which is going to be of type Http exception.
+
+42
+00:02:55,970 --> 00:03:00,320
+‫So this must be the type of the exception that we are catching here.
+
+43
+00:03:00,320 --> 00:03:03,080
+‫And let's go ahead and import here the arguments.
+
+44
+00:03:03,080 --> 00:03:04,040
+‫Host type.
+
+45
+00:03:04,040 --> 00:03:09,560
+‫We are going to see exactly how can we use here this host variable that we are receiving via the catch
+
+46
+00:03:09,560 --> 00:03:10,310
+‫method.
+
+47
+00:03:10,310 --> 00:03:15,560
+‫So here is where we are going to add our error handling for learning purposes.
+
+48
+00:03:15,560 --> 00:03:22,070
+‫Let's just add here some logging so that we can see visually on the log that this catch method is getting
+
+49
+00:03:22,100 --> 00:03:22,820
+‫triggered.
+
+50
+00:03:22,820 --> 00:03:29,120
+‫We are going to output to the log http exception handler triggered and we are going to output also the
+
+51
+00:03:29,120 --> 00:03:31,850
+‫exception object that we received here.
+
+52
+00:03:31,850 --> 00:03:36,200
+‫Next, we are going to add here our error handling logic.
+
+53
+00:03:36,200 --> 00:03:42,650
+‫So here what we want to do is to be able to define the content of the Http response that gets sent back
+
+54
+00:03:42,650 --> 00:03:45,440
+‫to the client whenever this error got thrown.
+
+55
+00:03:45,440 --> 00:03:51,260
+‫In order to define the response, we are going to be needing the request and response object linked
+
+56
+00:03:51,260 --> 00:03:57,830
+‫to this Http request which is currently being processed and we can access those two objects by using
+
+57
+00:03:57,830 --> 00:04:04,340
+‫the Http context that we can obtain here from the host variable that we received here.
+
+58
+00:04:04,340 --> 00:04:10,430
+‫As the argument of the catch method, we are going to call here, switch to Http and this is going to
+
+59
+00:04:10,430 --> 00:04:12,860
+‫give us back the Http context.
+
+60
+00:04:12,860 --> 00:04:18,290
+‫So from here we are going to be able to access, for example, the Http response.
+
+61
+00:04:18,290 --> 00:04:20,840
+‫We can do so by calling get response.
+
+62
+00:04:20,840 --> 00:04:26,990
+‫And as we can see, we can also access here the request itself in a similar way.
+
+63
+00:04:26,990 --> 00:04:32,090
+‫So with this, we have everything that we need in order to build our response.
+
+64
+00:04:32,090 --> 00:04:37,880
+‫The response is going to be returned here as the result of calling catch.
+
+65
+00:04:37,880 --> 00:04:40,520
+‫Let's then go ahead and build a response.
+
+66
+00:04:40,520 --> 00:04:41,870
+‫We are going to return it.
+
+67
+00:04:41,870 --> 00:04:43,010
+‫This is very important.
+
+68
+00:04:43,020 --> 00:04:45,770
+‫Otherwise the catch implementation is not correct.
+
+69
+00:04:45,800 --> 00:04:51,470
+‫We are going to base ourselves on the response object that we have here, and we are going to start
+
+70
+00:04:51,470 --> 00:04:55,640
+‫by defining here a status code for the response.
+
+71
+00:04:55,640 --> 00:05:00,620
+‫In the particular case of the Http exception, we don't want to hard code here.
+
+72
+00:05:00,630 --> 00:05:05,710
+‫A specific Http status such as, for example, 500 internal server error.
+
+73
+00:05:05,710 --> 00:05:09,580
+‫Instead, we want to grab the status code here.
+
+74
+00:05:09,580 --> 00:05:15,520
+‫From the exception itself, let's remember that whenever we define the Http exception, we also need
+
+75
+00:05:15,520 --> 00:05:17,440
+‫to define a status code.
+
+76
+00:05:17,440 --> 00:05:23,680
+‫So accessing the exception we are going to call, get status and obtain here the status code that we
+
+77
+00:05:23,680 --> 00:05:26,890
+‫are going to use to build our error response.
+
+78
+00:05:26,890 --> 00:05:32,770
+‫Now, besides specifying the status code, we are also going to specify the body of the response that
+
+79
+00:05:32,770 --> 00:05:34,990
+‫we are going to be building by calling here.
+
+80
+00:05:34,990 --> 00:05:39,220
+‫Jason So we are going to send back an error payload.
+
+81
+00:05:39,220 --> 00:05:46,420
+‫One of the things that we can do is to add here a status variable and add the status code also here
+
+82
+00:05:46,420 --> 00:05:49,210
+‫directly on the body of the returned payload.
+
+83
+00:05:49,210 --> 00:05:51,130
+‫This might be useful for the client.
+
+84
+00:05:51,130 --> 00:05:56,590
+‫And another thing that would be useful for the client would be a property called error message.
+
+85
+00:05:56,590 --> 00:06:03,200
+‫We can obtain the error message also from the exception we are going to access here the message property,
+
+86
+00:06:03,200 --> 00:06:07,130
+‫which is actually a Json object that was passed on to the Http exception.
+
+87
+00:06:07,130 --> 00:06:13,340
+‫And from there we can access, for example, the message property again to retrieve the text.
+
+88
+00:06:13,340 --> 00:06:17,000
+‫So this second message property is going to be a string.
+
+89
+00:06:17,000 --> 00:06:24,200
+‫And with this we have specified here a simple error payload to send back to the client if any Http exception
+
+90
+00:06:24,200 --> 00:06:31,280
+‫gets thrown in order to make it clear that this error message is being created here by our Http exception
+
+91
+00:06:31,280 --> 00:06:38,660
+‫filter, let's add here an extra property called created by and let's add here as a string the source
+
+92
+00:06:38,660 --> 00:06:40,190
+‫of this error response.
+
+93
+00:06:40,190 --> 00:06:45,260
+‫This is going to be useful for troubleshooting purposes in case that you have a series of different
+
+94
+00:06:45,260 --> 00:06:50,660
+‫exception filters for different types of errors that produce similar output results.
+
+95
+00:06:50,660 --> 00:06:55,100
+‫And with this we have completed the implementation of our Http exception filter.
+
+96
+00:06:55,100 --> 00:06:58,850
+‫So now we simply have to tell Nestjs about it.
+
+97
+00:06:58,850 --> 00:07:04,760
+‫Right now, Nestjs does not know that this class can be used for handling errors.
+
+98
+00:07:04,760 --> 00:07:11,810
+‫In order to plug this into the Nestjs framework, we can use, for example, the use filters decorator.
+
+99
+00:07:11,810 --> 00:07:15,920
+‫We can apply this decorator at multiple parts of our application.
+
+100
+00:07:15,920 --> 00:07:20,330
+‫Let's start by applying it here directly to this particular method.
+
+101
+00:07:20,330 --> 00:07:28,550
+‫So this decorator used filters is going to take in here as an input parameter, an array of filter instances.
+
+102
+00:07:28,550 --> 00:07:35,510
+‫So I'm going to be calling here new on the Http exception filter class that we have just created.
+
+103
+00:07:35,510 --> 00:07:42,680
+‫And with this I have added this filter as an error handler to this specific update course method and
+
+104
+00:07:42,680 --> 00:07:44,660
+‫nowhere else on the application.
+
+105
+00:07:44,660 --> 00:07:50,510
+‫Let's then trigger again our bad request exception and see the new exception filter in action.
+
+106
+00:07:50,510 --> 00:07:55,910
+‫We are going to switch again to the Restlet interface and we're going to click on Send and notice that
+
+107
+00:07:55,910 --> 00:08:02,030
+‫whenever we scroll down, we are getting here not a response generated by our exception filter, but
+
+108
+00:08:02,030 --> 00:08:05,960
+‫this is still the default Nestjs exception filter.
+
+109
+00:08:05,960 --> 00:08:07,460
+‫So what's going on here?
+
+110
+00:08:07,460 --> 00:08:14,180
+‫I simply submitted here a payload with invalid Json and that caused the default exception filter to
+
+111
+00:08:14,180 --> 00:08:17,990
+‫get caught so the error was not thrown from inside the controller.
+
+112
+00:08:18,020 --> 00:08:24,680
+‫The error happened instead, whenever Nestjs was still trying to process the inbound request by taking
+
+113
+00:08:24,680 --> 00:08:27,890
+‫the content of the body and converting it into Json.
+
+114
+00:08:27,890 --> 00:08:35,210
+‫So we need to turn this body into valid Json by adding here the commas in order to avoid the error message
+
+115
+00:08:35,210 --> 00:08:37,700
+‫that we saw here in the error response.
+
+116
+00:08:37,700 --> 00:08:43,940
+‫And notice the specific error message and expected token see in Json at position three.
+
+117
+00:08:43,970 --> 00:08:50,210
+‫This is because we are passing in here the category name without wrapping it in commas.
+
+118
+00:08:50,210 --> 00:08:54,290
+‫So without this we won't have valid Json.
+
+119
+00:08:54,290 --> 00:09:01,130
+‫Let's go ahead and fix all the fields so that we can submit this request to our back end.
+
+120
+00:09:01,130 --> 00:09:04,550
+‫So now here we have a payload with valid Json.
+
+121
+00:09:04,550 --> 00:09:06,740
+‫Let's then go ahead and click send.
+
+122
+00:09:06,770 --> 00:09:11,840
+‫We're going to scroll down and we are going to see that this time around because it's valid.
+
+123
+00:09:11,840 --> 00:09:19,940
+‫Json Nestjs managed to process the body of the incoming Http request and it tried to pass this payload
+
+124
+00:09:19,940 --> 00:09:21,560
+‫body to our controller.
+
+125
+00:09:21,560 --> 00:09:28,730
+‫Our controller then triggered the bad request exception which ended up being handled by our custom Http
+
+126
+00:09:28,730 --> 00:09:30,020
+‫exception filter.
+
+127
+00:09:30,020 --> 00:09:36,890
+‫So as you can see using exception filters, we can customize easily The error response is sent to our
+
+128
+00:09:36,890 --> 00:09:39,830
+‫clients going back here to our code base.
+
+129
+00:09:39,860 --> 00:09:46,070
+‫Notice that this type of exception handling is very common and there is really no good reason to apply
+
+130
+00:09:46,070 --> 00:09:48,650
+‫it only to the update course method.
+
+131
+00:09:48,650 --> 00:09:54,590
+‫So the other methods here in our controller would also benefit from the same error logic.
+
+132
+00:09:54,590 --> 00:10:00,170
+‫So if we want to apply this to all the Http methods of our controller, we can apply.
+
+133
+00:10:00,210 --> 00:10:04,950
+‫Use filters instead here at the level of the courses controller class.
+
+134
+00:10:04,980 --> 00:10:10,350
+‫This way the exception filter is going to be valid for create course final courses.
+
+135
+00:10:10,380 --> 00:10:12,970
+‫Update course and delete course.
+
+136
+00:10:12,990 --> 00:10:14,490
+‫Let's see this in action.
+
+137
+00:10:14,490 --> 00:10:17,220
+‫We are going to switch here to the Restlet client.
+
+138
+00:10:17,220 --> 00:10:23,200
+‫Let's click Send and we're going to see that still the exception filter is working as expected.
+
+139
+00:10:23,220 --> 00:10:30,480
+‫Now we might want to go one step further and make this a global exception filter that would be applied
+
+140
+00:10:30,480 --> 00:10:37,070
+‫not only to the courses controller but to any controller in general in our whole rest backend.
+
+141
+00:10:37,080 --> 00:10:43,080
+‫In order to make this a global exception filter, we are going to remove the use here of the use filters
+
+142
+00:10:43,080 --> 00:10:50,430
+‫annotation and instead here in our main.ts whenever we are initializing our nestjs backend, we are
+
+143
+00:10:50,430 --> 00:10:56,040
+‫going to use here our application instance and we're going to call here use global filters.
+
+144
+00:10:56,040 --> 00:10:58,670
+‫So to this we need to pass in an array.
+
+145
+00:10:58,680 --> 00:11:05,530
+‫Let's go ahead and pass in only one element, which is going to be our Http exception filter.
+
+146
+00:11:05,530 --> 00:11:12,790
+‫So as usual, we need to pass in here an instance of the filter built using the new operator and not
+
+147
+00:11:12,790 --> 00:11:14,110
+‫the name of the class.
+
+148
+00:11:14,110 --> 00:11:16,810
+‫Let's then try out this new configuration.
+
+149
+00:11:16,810 --> 00:11:19,120
+‫We are going to switch to the Restlet interface.
+
+150
+00:11:19,120 --> 00:11:25,540
+‫Let's hit on send and as you can see, our Http exception filter is now active globally.
+
+151
+00:11:25,540 --> 00:11:29,110
+‫Let's now continue exploring error handling in Nestjs.
+
+152
+00:11:29,140 --> 00:11:36,040
+‫Let's learn what would happen if we would try to submit a payload to the server containing a Json payload
+
+153
+00:11:36,040 --> 00:11:41,380
+‫with the correct property names, but an invalid type for a given property.
+
+154
+00:11:41,410 --> 00:11:46,810
+‫Let's see what type of error this would trigger in our backend and how to best handle it.
+

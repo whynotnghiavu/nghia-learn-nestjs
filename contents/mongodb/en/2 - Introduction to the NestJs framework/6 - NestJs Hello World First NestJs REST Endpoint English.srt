@@ -1,0 +1,396 @@
+﻿1
+00:00:03,700 --> 00:00:06,040
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,040 --> 00:00:10,420
+‫In this new lesson, we are going to complete our Nestjs Hello world example.
+
+3
+00:00:10,420 --> 00:00:14,230
+‫We are going to be writing here our first nestjs controller.
+
+4
+00:00:14,230 --> 00:00:17,080
+‫So we already have here a server up and running.
+
+5
+00:00:17,080 --> 00:00:20,290
+‫So we now just need to define our rest endpoint.
+
+6
+00:00:20,320 --> 00:00:26,860
+‫Now our Nestjs application, just like an angular application, can be subdivided into multiple modules
+
+7
+00:00:26,860 --> 00:00:29,170
+‫that are isolated from one another.
+
+8
+00:00:29,170 --> 00:00:35,410
+‫So each module might have its own set of services and functionality that is not necessarily publicly
+
+9
+00:00:35,410 --> 00:00:38,350
+‫visible to other modules of the application.
+
+10
+00:00:38,350 --> 00:00:41,170
+‫Let's then structure our application like that.
+
+11
+00:00:41,170 --> 00:00:47,860
+‫We are going to be defining here a new module that is going to be containing all the functionality related
+
+12
+00:00:47,860 --> 00:00:50,380
+‫to courses in our application.
+
+13
+00:00:50,380 --> 00:00:57,040
+‫Let's then define here a new folder and inside it we are going to be defining a new feature module that
+
+14
+00:00:57,040 --> 00:00:59,710
+‫we are going to be calling the courses module.
+
+15
+00:00:59,710 --> 00:01:04,940
+‫For that, let's create a new file with the name courses App.module.ts.
+
+16
+00:01:04,970 --> 00:01:05,960
+‫Inside it.
+
+17
+00:01:05,960 --> 00:01:10,880
+‫We are going to be defining here a new class that we are going to be calling courses module.
+
+18
+00:01:10,880 --> 00:01:18,410
+‫And just like before, we are going to annotate this with the module decorator of Nestjs, we are going
+
+19
+00:01:18,410 --> 00:01:21,890
+‫to be defining the configuration of the courses module later.
+
+20
+00:01:21,890 --> 00:01:28,850
+‫Right now let's take this new feature module and let's import it here in our application root module.
+
+21
+00:01:28,850 --> 00:01:34,550
+‫We can do so by using here the import property of the module configuration.
+
+22
+00:01:34,550 --> 00:01:41,120
+‫Here we are going to be providing an array with all the modules that we are importing into the application
+
+23
+00:01:41,120 --> 00:01:42,050
+‫root module.
+
+24
+00:01:42,050 --> 00:01:44,330
+‫So let's go ahead and import here.
+
+25
+00:01:44,330 --> 00:01:46,760
+‫The courses feature module.
+
+26
+00:01:46,760 --> 00:01:50,150
+‫Again, please make sure that you import the correct file.
+
+27
+00:01:50,150 --> 00:01:55,940
+‫As you can see, there are two files with similar name one on the front end corresponding to the front
+
+28
+00:01:55,940 --> 00:02:01,550
+‫end functionality of courses containing a series of angular components and services and on the back
+
+29
+00:02:01,550 --> 00:02:06,620
+‫end we have the corresponding module, which has the rest end points that we are going to be calling
+
+30
+00:02:06,620 --> 00:02:08,060
+‫from those same screens.
+
+31
+00:02:08,060 --> 00:02:15,140
+‫So let's import here the correct module from this specific path with the courses module in place.
+
+32
+00:02:15,140 --> 00:02:19,010
+‫Let's now go ahead and define our first rest controller.
+
+33
+00:02:19,010 --> 00:02:26,630
+‫So a controller is responsible for receiving an Http request on the server and for providing the corresponding
+
+34
+00:02:26,660 --> 00:02:28,310
+‫Http response.
+
+35
+00:02:28,310 --> 00:02:32,630
+‫The name controller comes from the terminology model view controller.
+
+36
+00:02:32,630 --> 00:02:35,150
+‫So the model is going to be our data.
+
+37
+00:02:35,180 --> 00:02:38,090
+‫The view is going to be the response returned to the client.
+
+38
+00:02:38,090 --> 00:02:44,270
+‫In this case, typically a Json payload and the controller is what glues the two things together by
+
+39
+00:02:44,270 --> 00:02:50,690
+‫processing the incoming request and providing an outgoing response, let's then define here our first
+
+40
+00:02:50,690 --> 00:02:54,020
+‫controller inside here, the courses folder.
+
+41
+00:02:54,020 --> 00:03:00,410
+‫We are going to define a new folder called Controllers where we are going to be writing the multiple
+
+42
+00:03:00,410 --> 00:03:02,480
+‫controllers of our module.
+
+43
+00:03:02,480 --> 00:03:08,180
+‫Now, in our first example, we are going to be providing here a list of courses.
+
+44
+00:03:08,180 --> 00:03:14,480
+‫So let's go ahead and define here a controller for that specific courses entity, which is going to
+
+45
+00:03:14,480 --> 00:03:17,990
+‫be called courses, dot controller, dot TS.
+
+46
+00:03:18,020 --> 00:03:25,280
+‫Inside this file, let's go ahead and define a class with the same name courses controller and let's
+
+47
+00:03:25,280 --> 00:03:29,900
+‫decorate it with the controller decorator from Nestjs.
+
+48
+00:03:29,930 --> 00:03:34,910
+‫Now, before implementing this class, let's go ahead and plug it into Nestjs.
+
+49
+00:03:34,940 --> 00:03:37,490
+‫We need to define it as being a controller.
+
+50
+00:03:37,490 --> 00:03:43,040
+‫So here in our courses module we are going to use here the controllers property.
+
+51
+00:03:43,040 --> 00:03:48,680
+‫We are going to be providing here an array containing all the controllers of our application.
+
+52
+00:03:48,680 --> 00:03:52,310
+‫And with this we can now specify our first endpoint.
+
+53
+00:03:52,310 --> 00:03:59,120
+‫So our endpoint is going to be receiving an incoming request and providing the Hello World string as
+
+54
+00:03:59,120 --> 00:03:59,840
+‫a response.
+
+55
+00:03:59,840 --> 00:04:02,540
+‫So let's define here a new function.
+
+56
+00:04:02,540 --> 00:04:08,110
+‫We are simply going to call it Hello World, and we are going to annotate this function with the add
+
+57
+00:04:08,120 --> 00:04:11,450
+‫get decorator from Nestjs Common.
+
+58
+00:04:11,450 --> 00:04:18,500
+‫So this is going to mark this function as the handler of a particular incoming Http request.
+
+59
+00:04:18,500 --> 00:04:23,990
+‫So in order to specify the path of the incoming Http request, let's say that, for example, we want
+
+60
+00:04:23,990 --> 00:04:26,090
+‫to handle the requests slash API.
+
+61
+00:04:26,210 --> 00:04:27,860
+‫Hello dash world.
+
+62
+00:04:27,860 --> 00:04:34,250
+‫So an incoming get Http request with this URL would be handled by this function.
+
+63
+00:04:34,250 --> 00:04:38,390
+‫Now, typically the processing of an Http request happens asynchronously.
+
+64
+00:04:38,390 --> 00:04:41,990
+‫We want to, for example, query a database and get back a response.
+
+65
+00:04:41,990 --> 00:04:46,520
+‫So let's go ahead and mark this function as being an asynchronous function.
+
+66
+00:04:46,520 --> 00:04:52,700
+‫This means that the function will either explicitly or implicitly always return a promise.
+
+67
+00:04:52,700 --> 00:04:54,080
+‫Let's return here.
+
+68
+00:04:54,080 --> 00:04:56,480
+‫Our result we are going to be returning.
+
+69
+00:04:56,480 --> 00:04:57,680
+‫Hello world.
+
+70
+00:04:57,680 --> 00:05:00,290
+‫Now notice that even though we are returning.
+
+71
+00:05:00,380 --> 00:05:03,570
+‫Here's a plain string and not a promise.
+
+72
+00:05:03,590 --> 00:05:09,920
+‫The async functionality is going to take this plain string and it's going to automatically wrap it in
+
+73
+00:05:09,920 --> 00:05:17,600
+‫a promise for us so we don't necessarily have to return here a promise each time the return type of
+
+74
+00:05:17,600 --> 00:05:22,130
+‫this function is going to be implicitly promise of string.
+
+75
+00:05:22,130 --> 00:05:29,690
+‫And with this we have specified here our first controller with the slash Hello world rest endpoint.
+
+76
+00:05:29,690 --> 00:05:31,010
+‫Let's see this in action.
+
+77
+00:05:31,010 --> 00:05:36,020
+‫We are going to switch over here to the terminal and we are going to build again our backend.
+
+78
+00:05:36,020 --> 00:05:42,230
+‫So here from inside the rest API folder, we are going to run the command NPM run build.
+
+79
+00:05:42,230 --> 00:05:47,930
+‫This is simply going to compile our code and output it into the dist folder.
+
+80
+00:05:47,930 --> 00:05:53,180
+‫In a moment we are going to show you how to automate these steps so that you can run your back end server
+
+81
+00:05:53,210 --> 00:05:55,610
+‫on hot reload mode in development.
+
+82
+00:05:55,610 --> 00:06:00,240
+‫But right now let's simply run again the new version of the server using Node.
+
+83
+00:06:00,240 --> 00:06:05,700
+‫So we want to run node and access inside the dist folder, the source directory.
+
+84
+00:06:05,700 --> 00:06:12,360
+‫And here we want to run the file main.js that contains the new version of our server.
+
+85
+00:06:12,360 --> 00:06:17,730
+‫If we now start Node, we are going to see that this time around we have here a bit more of output in
+
+86
+00:06:17,730 --> 00:06:18,810
+‫our console.
+
+87
+00:06:18,810 --> 00:06:25,200
+‫We can see that we have started the Nestjs application and that we have mapped here the slash api slash
+
+88
+00:06:25,200 --> 00:06:30,120
+‫hello world URL for get requests into the courses controller.
+
+89
+00:06:30,120 --> 00:06:34,050
+‫Let's now see our new rest endpoint in action.
+
+90
+00:06:34,050 --> 00:06:41,460
+‫We are going to open here a second tab and instead of trying to access the root path of our server,
+
+91
+00:06:41,460 --> 00:06:44,580
+‫we are going to instead be accessing slash API.
+
+92
+00:06:44,790 --> 00:06:47,070
+‫Hello dash world.
+
+93
+00:06:47,070 --> 00:06:51,930
+‫Let's then try this new URL and as you can see we get here the output.
+
+94
+00:06:51,960 --> 00:06:53,010
+‫Hello world.
+
+95
+00:06:53,010 --> 00:06:58,500
+‫So we have now just built our first rest endpoint using nestjs.
+
+96
+00:06:58,500 --> 00:07:05,160
+‫So now that we have here our Hello world example up and running, let's now turn this controller into
+
+97
+00:07:05,160 --> 00:07:10,710
+‫the controller for the courses entity and let's return instead here a list of courses.
+
+98
+00:07:10,710 --> 00:07:17,160
+‫We are also going to show you how to run our back end in hot reload mode so that you can easily deploy
+
+99
+00:07:17,160 --> 00:07:20,400
+‫new versions of our back end in development.
+

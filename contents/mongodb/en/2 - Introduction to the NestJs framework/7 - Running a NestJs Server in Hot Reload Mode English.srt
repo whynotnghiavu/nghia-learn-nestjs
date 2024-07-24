@@ -1,0 +1,596 @@
+﻿1
+00:00:03,820 --> 00:00:06,040
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,040 --> 00:00:10,870
+‫In this new lesson, we are going to implement the first rest endpoint of our application.
+
+3
+00:00:10,870 --> 00:00:17,020
+‫We are going to implement our endpoint using some data that we have here available in a TypeScript file,
+
+4
+00:00:17,020 --> 00:00:22,060
+‫and we are going to serve the data to our application and see it displayed on the screen.
+
+5
+00:00:22,060 --> 00:00:27,820
+‫Let's go ahead and start by removing this Hello world example that we built in our last lesson.
+
+6
+00:00:27,820 --> 00:00:33,820
+‫So as we have seen in this class, we are going to be managing the courses entity which corresponds
+
+7
+00:00:33,820 --> 00:00:36,970
+‫to this list of courses that we see here on the screen.
+
+8
+00:00:36,970 --> 00:00:41,440
+‫Let's then define here a new method that we are going to call, find all courses.
+
+9
+00:00:41,440 --> 00:00:46,990
+‫This is going to be returning an array of courses that will be displayed here in our home screen.
+
+10
+00:00:46,990 --> 00:00:51,550
+‫Now let's add here a type annotation for the return of this function.
+
+11
+00:00:51,550 --> 00:00:55,900
+‫This is going to be returning a promise of course, array.
+
+12
+00:00:55,930 --> 00:01:02,750
+‫We are going to be importing here the course entity from the shared folder in our application.
+
+13
+00:01:02,750 --> 00:01:09,320
+‫So if you notice here at the root of our application, we have here a shared folder containing a couple
+
+14
+00:01:09,320 --> 00:01:10,190
+‫of entities.
+
+15
+00:01:10,190 --> 00:01:14,870
+‫We have the course entity and we also have the lesson entity.
+
+16
+00:01:14,870 --> 00:01:19,040
+‫So these are the entities that we will be using throughout this course.
+
+17
+00:01:19,070 --> 00:01:24,740
+‫Now going back here to the course controller, we are going to be annotating this function with the
+
+18
+00:01:24,740 --> 00:01:29,450
+‫async keyword, meaning that this is expected to return a promise.
+
+19
+00:01:29,450 --> 00:01:34,550
+‫Notice that the course entity is going to be shared between the front end and the back end.
+
+20
+00:01:34,550 --> 00:01:37,910
+‫So that's why we put it here on this particular folder.
+
+21
+00:01:37,910 --> 00:01:44,120
+‫Let's now define this as being a rest endpoint by adding here the get annotation, just like we did
+
+22
+00:01:44,120 --> 00:01:44,720
+‫before.
+
+23
+00:01:44,720 --> 00:01:51,410
+‫And let's say that this endpoint is going to be available under the URL slash API slash courses which
+
+24
+00:01:51,410 --> 00:01:54,200
+‫corresponds to common rest conventions.
+
+25
+00:01:54,230 --> 00:01:57,710
+‫Now all we have to do is to return here some data.
+
+26
+00:01:57,710 --> 00:02:04,160
+‫We are going to be getting our data here from the rest API folder from the DB data file.
+
+27
+00:02:04,160 --> 00:02:08,570
+‫Later on in this course we are going to be fetching the data from a MongoDB database.
+
+28
+00:02:08,570 --> 00:02:13,610
+‫But right now we just want to quickly return some data for test purposes.
+
+29
+00:02:13,610 --> 00:02:19,880
+‫As we can see in this file, we have several types of data defined we have here users, we have courses
+
+30
+00:02:19,880 --> 00:02:21,740
+‫and we also have lessons.
+
+31
+00:02:21,740 --> 00:02:24,770
+‫And the data is available under the form of these maps.
+
+32
+00:02:24,770 --> 00:02:31,370
+‫So as you can see, the test data has here an ID, which is the ID of the entity, and the value here
+
+33
+00:02:31,370 --> 00:02:35,000
+‫is going to be the entity itself for the corresponding ID.
+
+34
+00:02:35,030 --> 00:02:41,630
+‫So we have courses, lessons and we also have here a series of utility functions to quickly manipulate
+
+35
+00:02:41,630 --> 00:02:42,350
+‫the data.
+
+36
+00:02:42,350 --> 00:02:49,010
+‫So let's go ahead and use this, find all courses function and let's quickly use it here inside our
+
+37
+00:02:49,010 --> 00:02:52,430
+‫courses controller in order to return here some data.
+
+38
+00:02:52,430 --> 00:02:56,150
+‫So let's return this as the output of this function.
+
+39
+00:02:56,150 --> 00:03:01,160
+‫And with this we have implemented here our first courses endpoint.
+
+40
+00:03:01,190 --> 00:03:06,590
+‫We are returning here a full list of courses from our test file DB data.
+
+41
+00:03:06,590 --> 00:03:11,240
+‫Now before trying this out, let's find a better way of building our application.
+
+42
+00:03:11,240 --> 00:03:17,570
+‫So far we are running the compiler manually and restarting our node process again each time.
+
+43
+00:03:17,570 --> 00:03:22,460
+‫So let's find a better way of running our code using a hot reload mode.
+
+44
+00:03:22,460 --> 00:03:24,260
+‫Let's see how we are going to do that.
+
+45
+00:03:24,290 --> 00:03:28,220
+‫We're going to head over to the terminal and we are going to be stopping our server.
+
+46
+00:03:28,220 --> 00:03:32,780
+‫Now make sure that you are on the rest folder from here.
+
+47
+00:03:32,780 --> 00:03:36,530
+‫We are going to clear the content of the dist directory.
+
+48
+00:03:36,530 --> 00:03:44,030
+‫So in order to do that we are going to run the command NPM run clean and this will delete the dist folder.
+
+49
+00:03:44,030 --> 00:03:49,580
+‫Now in order to build our application and restart our node server with each code change, we are going
+
+50
+00:03:49,580 --> 00:03:53,090
+‫to be using the following utility TSC watch.
+
+51
+00:03:53,090 --> 00:04:00,200
+‫So this is a dependency that we have installed in our Package.json that is going to allow us to recompile
+
+52
+00:04:00,200 --> 00:04:03,080
+‫our code each time that we make a code change.
+
+53
+00:04:03,080 --> 00:04:07,940
+‫And it will also allow us to restart our server whenever the compilation finishes.
+
+54
+00:04:07,940 --> 00:04:10,220
+‫Let's have a look at how we are going to do this.
+
+55
+00:04:10,250 --> 00:04:17,030
+‫We are going to open here the package.json that we have available here inside the rest folder.
+
+56
+00:04:17,030 --> 00:04:25,340
+‫So it's this one here under rest API and not the package.json that you have here in your angular application.
+
+57
+00:04:25,340 --> 00:04:31,310
+‫So in the correct package.json we are going to find here a couple of tasks that are going to make our
+
+58
+00:04:31,310 --> 00:04:36,020
+‫lives easier throughout the course and that you can also implement in your own project.
+
+59
+00:04:36,020 --> 00:04:43,010
+‫You can clear here the content of the folder using NPM run clean and you can also start your server
+
+60
+00:04:43,010 --> 00:04:47,300
+‫locally using the TSC watch command to this command.
+
+61
+00:04:47,300 --> 00:04:53,660
+‫We simply have to pass in the option minus P and using this option we are going to pass in the configuration
+
+62
+00:04:53,660 --> 00:04:57,860
+‫of the TypeScript compiler which is available under this file.
+
+63
+00:04:57,860 --> 00:05:00,500
+‫With this command highlighted in blue, we would be.
+
+64
+00:05:00,530 --> 00:05:04,100
+‫Running our compilation each time that we make a code change.
+
+65
+00:05:04,100 --> 00:05:11,090
+‫So TSC watch is going to wait for our changes to stabilize and using it each time that we hit command
+
+66
+00:05:11,360 --> 00:05:12,110
+‫or control.
+
+67
+00:05:12,110 --> 00:05:18,300
+‫S in order to save our file in the file system, that is going to trigger a new compilation of our code.
+
+68
+00:05:18,320 --> 00:05:24,050
+‫Now, after the compilation completes successfully, we want to then start our server.
+
+69
+00:05:24,050 --> 00:05:28,220
+‫So we are using this option here minus minus on success.
+
+70
+00:05:28,220 --> 00:05:33,400
+‫So whenever the compilation ends successfully, we are then going to be running this command.
+
+71
+00:05:33,410 --> 00:05:39,170
+‫We are going to be calling Node that we have installed globally in our command line and from there we
+
+72
+00:05:39,170 --> 00:05:44,030
+‫are going to be running the Main.js file inside the Dist folder.
+
+73
+00:05:44,030 --> 00:05:49,670
+‫If you have been following along the course and you have imported here the course class inside your
+
+74
+00:05:49,670 --> 00:05:54,590
+‫courses controller, this is going to be the path where you find your main.js file.
+
+75
+00:05:54,590 --> 00:06:01,000
+‫So make sure that you are using the correct path which is already filled in by default to avoid errors.
+
+76
+00:06:01,000 --> 00:06:07,560
+‫So with this command here, start local, we will be able to start our server in hot reloading mode.
+
+77
+00:06:07,570 --> 00:06:12,370
+‫Now we want to combine this task, start local with the clean task.
+
+78
+00:06:12,370 --> 00:06:17,740
+‫What we want to do is whenever we start our server the first time, we want to make sure that we clear
+
+79
+00:06:17,740 --> 00:06:23,020
+‫the dist folder and from there we want to listen to new changes as we go along.
+
+80
+00:06:23,020 --> 00:06:26,790
+‫So in order to achieve that, we are going to be using the server task.
+
+81
+00:06:26,800 --> 00:06:29,800
+‫This is using a utility called NPM Run.
+
+82
+00:06:29,800 --> 00:06:36,160
+‫All that provides a couple of command line utilities such as, for example, Run S, which allows us
+
+83
+00:06:36,160 --> 00:06:39,390
+‫to run tasks sequentially one after the other.
+
+84
+00:06:39,400 --> 00:06:45,400
+‫This is unlike Run P, which is another utility that you have available that allows us to run tasks
+
+85
+00:06:45,400 --> 00:06:46,210
+‫in parallel.
+
+86
+00:06:46,210 --> 00:06:50,650
+‫So here we want to use run s for running tasks sequentially.
+
+87
+00:06:50,650 --> 00:06:57,400
+‫We want to clean the content of the dist folder first and once the directory is cleaned then we want
+
+88
+00:06:57,400 --> 00:07:00,520
+‫to start our server in hot reload mode.
+
+89
+00:07:00,520 --> 00:07:06,140
+‫So from now on and until the end of the course, each time that you want to start your server in development
+
+90
+00:07:06,140 --> 00:07:10,430
+‫mode, you are going to run from inside the rest folder.
+
+91
+00:07:10,430 --> 00:07:13,730
+‫The following command NPM run server.
+
+92
+00:07:13,730 --> 00:07:19,340
+‫This is going to clear the dist folder and it's going to start your back end in watch mode.
+
+93
+00:07:19,340 --> 00:07:20,870
+‫Let's then try this out.
+
+94
+00:07:20,900 --> 00:07:26,960
+‫We are going to open here a second window and see if the new version of our controller is up and running.
+
+95
+00:07:26,960 --> 00:07:31,670
+‫So the URL that we want to access is slash API slash courses.
+
+96
+00:07:31,700 --> 00:07:36,320
+‫Let's then head over to Port 9000 and access this URL.
+
+97
+00:07:36,320 --> 00:07:43,160
+‫So after a moment we should see that we have here all our data getting served via this get request as
+
+98
+00:07:43,160 --> 00:07:43,820
+‫expected.
+
+99
+00:07:43,820 --> 00:07:50,090
+‫So we have here a course with an ID, a description, a long description, etcetera, all the data that
+
+100
+00:07:50,090 --> 00:07:53,870
+‫we need in order to display here, this list of courses.
+
+101
+00:07:53,870 --> 00:07:59,660
+‫Now let's confirm that our application is at this moment already fetching the data from the backend.
+
+102
+00:07:59,660 --> 00:08:04,760
+‫We are going to open here a second terminal while our backend is still running.
+
+103
+00:08:04,760 --> 00:08:11,750
+‫And from the Nestjs course folder we are going to run the following command NPM start and it's important
+
+104
+00:08:11,750 --> 00:08:19,640
+‫that you use NPM start and not NG serve in order to configure NG serve with the correct proxy settings.
+
+105
+00:08:19,640 --> 00:08:24,620
+‫After a moment our application is going to be running on port 4200.
+
+106
+00:08:24,620 --> 00:08:29,870
+‫So let's head over there and reload the application we have here, the login page.
+
+107
+00:08:29,870 --> 00:08:33,320
+‫Let's use the side menu and go to the courses component.
+
+108
+00:08:33,320 --> 00:08:38,240
+‫So as we can see, we have here the component that is correctly displaying the data.
+
+109
+00:08:38,240 --> 00:08:44,240
+‫If we open here, the chrome dev tools and we head over here to the network tab and we reload again,
+
+110
+00:08:44,240 --> 00:08:48,050
+‫the application we are going to see here in the network log.
+
+111
+00:08:48,050 --> 00:08:53,840
+‫If we filter by slash API a call to slash API slash courses.
+
+112
+00:08:53,840 --> 00:08:57,380
+‫So this is hitting our backend server as expected.
+
+113
+00:08:57,380 --> 00:08:59,450
+‫So the angular CLI is proxying.
+
+114
+00:08:59,450 --> 00:09:06,140
+‫Everything that starts with slash API to our backend server via the configuration that we have here
+
+115
+00:09:06,140 --> 00:09:08,930
+‫on this file proxy dot Json.
+
+116
+00:09:08,930 --> 00:09:15,770
+‫So as you can see, the angular CLI is sending any Http requests starting with slash API to our backend
+
+117
+00:09:15,770 --> 00:09:16,430
+‫server.
+
+118
+00:09:16,430 --> 00:09:22,700
+‫So in order for all of this to work, it's essential that in your main.ts file you are listening here
+
+119
+00:09:22,700 --> 00:09:29,930
+‫on Port 9000, so your backend server needs to be running in this port and it's important that you start
+
+120
+00:09:29,930 --> 00:09:34,160
+‫your application with NPM start and not NG serve.
+
+121
+00:09:34,190 --> 00:09:41,930
+‫Otherwise the proxy configuration will not be in place and you will get here a 404 not found or another
+
+122
+00:09:41,930 --> 00:09:42,920
+‫similar error.
+
+123
+00:09:42,920 --> 00:09:48,350
+‫If you are curious to know what is the component in the Angular application that is displaying this
+
+124
+00:09:48,350 --> 00:09:51,080
+‫list of courses, we are now going to have a look at it.
+
+125
+00:09:51,080 --> 00:09:53,360
+‫This is called the home component.
+
+126
+00:09:53,360 --> 00:09:59,030
+‫So the home component corresponds to this component here that you see on the screen that gets displayed
+
+127
+00:09:59,030 --> 00:10:00,440
+‫by the angular router whenever.
+
+128
+00:10:00,560 --> 00:10:03,080
+‫We access the slash courses URL.
+
+129
+00:10:03,080 --> 00:10:09,620
+‫So as you can see, this component is loading the data from our backend at component initialization
+
+130
+00:10:09,620 --> 00:10:12,700
+‫time via the NG on init lifecycle hook.
+
+131
+00:10:12,710 --> 00:10:19,190
+‫Here we are using an Http service that is getting injected here via dependency injection that we will
+
+132
+00:10:19,190 --> 00:10:21,950
+‫also be using in our nestjs backend.
+
+133
+00:10:21,950 --> 00:10:28,370
+‫And here we are calling our courses via the find all courses method from the Http service.
+
+134
+00:10:28,400 --> 00:10:33,440
+‫If we have a look at this implementation, we are going to see that we are using simply the Http client
+
+135
+00:10:33,440 --> 00:10:40,040
+‫in order to access slash API slash courses, which is the endpoint that we have just built here.
+
+136
+00:10:40,040 --> 00:10:47,660
+‫Using the courses controller, we have defined how to handle the slash API slash courses get request.
+
+137
+00:10:47,660 --> 00:10:53,480
+‫And with this we have implemented the first version of our rest controller and we have shown that this
+
+138
+00:10:53,480 --> 00:10:57,020
+‫is indeed correctly integrated with our front end application.
+
+139
+00:10:57,020 --> 00:10:59,720
+‫We have a way of hot reloading our code.
+
+140
+00:10:59,720 --> 00:11:06,030
+‫So what we are going to do next is we are going to implement this endpoint, not using here some dummy
+
+141
+00:11:06,060 --> 00:11:09,750
+‫data that we have retrieved from our data file.
+
+142
+00:11:09,750 --> 00:11:13,500
+‫We are going to instead be serving the data from a database.
+
+143
+00:11:13,500 --> 00:11:16,500
+‫We are going to be using MongoDB in this course.
+
+144
+00:11:16,500 --> 00:11:22,800
+‫So our next few steps are going to be we are going to learn how to debug this code if we need to.
+
+145
+00:11:22,830 --> 00:11:28,290
+‫Then we are going to set up our MongoDB database and we are going to populate it with some data.
+
+146
+00:11:28,320 --> 00:11:33,900
+‫After that, when we have our database ready, we are going to come back to this controller and we are
+
+147
+00:11:33,900 --> 00:11:39,060
+‫going to read the data from the database instead of from our test file.
+
+148
+00:11:39,060 --> 00:11:42,210
+‫This is all coming right up in the next few lessons.
+
+149
+00:11:42,210 --> 00:11:47,910
+‫Let's now first start by learning how to debug our Nestjs code if needed.
+

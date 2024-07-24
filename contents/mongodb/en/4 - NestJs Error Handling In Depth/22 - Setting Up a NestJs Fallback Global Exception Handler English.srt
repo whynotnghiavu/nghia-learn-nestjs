@@ -1,0 +1,320 @@
+﻿1
+00:00:03,910 --> 00:00:06,080
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,100 --> 00:00:09,100
+‫In the last lesson we saw what happened in our back end.
+
+3
+00:00:09,100 --> 00:00:13,300
+‫Whenever we cause a schema validation error triggered by mongoose.
+
+4
+00:00:13,330 --> 00:00:19,030
+‫Now, the reason why the Http exception filter did not catch the schema validation error is because
+
+5
+00:00:19,030 --> 00:00:23,020
+‫the error thrown by mongoose is not an Http exception.
+
+6
+00:00:23,020 --> 00:00:29,560
+‫So we would like to add to our application a global exception filter that catches everything that was
+
+7
+00:00:29,560 --> 00:00:36,030
+‫not caught by more specific exception filters such as, for example, the Http exception filter.
+
+8
+00:00:36,040 --> 00:00:42,130
+‫This is going to be sort of a catch all exception filter that is going to be our fallback exception
+
+9
+00:00:42,130 --> 00:00:42,520
+‫filter.
+
+10
+00:00:42,520 --> 00:00:50,110
+‫So only if all the other exception filters did not match the thrown error will then this global default
+
+11
+00:00:50,110 --> 00:00:52,360
+‫exception filter then be triggered.
+
+12
+00:00:52,360 --> 00:00:59,590
+‫So this global exception filter is going to override the existing global catch all exception filter
+
+13
+00:00:59,590 --> 00:01:03,260
+‫that is already installed by default by Nestjs.
+
+14
+00:01:03,290 --> 00:01:05,930
+‫Let's then implement our fallback filter.
+
+15
+00:01:05,930 --> 00:01:11,690
+‫We are going to go here to the courses folder and here inside the filters folder we are going to add
+
+16
+00:01:11,690 --> 00:01:16,450
+‫a new file that we're going to call fallback dot filter, dot ts.
+
+17
+00:01:16,490 --> 00:01:22,580
+‫Inside it, we are going to be creating a new class that we are going to be calling fallback exception
+
+18
+00:01:22,580 --> 00:01:29,690
+‫filter as usual with a Nestjs filter we are going to be implementing here the exception filter interface.
+
+19
+00:01:29,720 --> 00:01:35,570
+‫We are also going to be annotating this class with the catch decorator, but this time around we are
+
+20
+00:01:35,570 --> 00:01:39,270
+‫not going to add any type here inside parenthesis.
+
+21
+00:01:39,320 --> 00:01:41,090
+‫We are going to leave this empty.
+
+22
+00:01:41,090 --> 00:01:46,070
+‫So this will indicate to nestjs that this filter is meant to catch any error.
+
+23
+00:01:46,070 --> 00:01:49,010
+‫Let's then implement here the catch function.
+
+24
+00:01:49,010 --> 00:01:56,120
+‫And because we are handling here any exception type, let's add here the type any and let's handle here
+
+25
+00:01:56,120 --> 00:01:58,460
+‫the error response first.
+
+26
+00:01:58,460 --> 00:02:03,710
+‫In order to make it easy to see that the exception filter is being correctly triggered, we are just
+
+27
+00:02:03,710 --> 00:02:05,990
+‫going to add here some simple logging.
+
+28
+00:02:05,990 --> 00:02:12,230
+‫So we are going to log to our server console that the fallback exception filter has been triggered and
+
+29
+00:02:12,230 --> 00:02:13,850
+‫we are going to output here.
+
+30
+00:02:13,850 --> 00:02:15,950
+‫Also the value of the exception.
+
+31
+00:02:15,950 --> 00:02:20,720
+‫Now all we have to do is to prepare the response that we are going to send back to the client.
+
+32
+00:02:20,720 --> 00:02:28,550
+‫So first let's grab here the Http context by calling here, switch to Http and let's also grab the Http
+
+33
+00:02:28,550 --> 00:02:30,650
+‫response from the context.
+
+34
+00:02:30,680 --> 00:02:33,920
+‫With this, we are now ready to build our response.
+
+35
+00:02:33,920 --> 00:02:37,160
+‫So let's call here response dot status.
+
+36
+00:02:37,160 --> 00:02:45,590
+‫Let's pass in the status 500 internal server error and let's pass a Json payload as usual with exception
+
+37
+00:02:45,590 --> 00:02:46,040
+‫filters.
+
+38
+00:02:46,040 --> 00:02:47,780
+‫We are going to be returning here.
+
+39
+00:02:47,780 --> 00:02:52,370
+‫The response that we have created and let's also fill in here a couple of useful properties.
+
+40
+00:02:52,370 --> 00:02:58,580
+‫We are going to add here a status code property of 500 and we're going to add here, just like we did
+
+41
+00:02:58,610 --> 00:03:00,860
+‫before a created by property.
+
+42
+00:03:00,860 --> 00:03:04,280
+‫And we're going to fill this in with fallback exception filter.
+
+43
+00:03:04,310 --> 00:03:09,980
+‫This way, if we see this exception in a log in the network devtools, we know where it came from in
+
+44
+00:03:09,980 --> 00:03:10,820
+‫the back end.
+
+45
+00:03:10,820 --> 00:03:16,640
+‫Now, we are also going to add here an error message property that we are going to try to fill in from
+
+46
+00:03:16,640 --> 00:03:17,630
+‫the exception.
+
+47
+00:03:17,630 --> 00:03:21,350
+‫So let's see if the exception has a message property.
+
+48
+00:03:21,380 --> 00:03:24,770
+‫If so, we are going to be using this message property.
+
+49
+00:03:24,800 --> 00:03:28,610
+‫Otherwise we are going to be providing here a default error message.
+
+50
+00:03:28,610 --> 00:03:35,180
+‫Let's say an expected error occurred and with this we have completed the implementation of our fallback
+
+51
+00:03:35,180 --> 00:03:36,200
+‫exception filter.
+
+52
+00:03:36,200 --> 00:03:38,750
+‫Let's then add it to our back end.
+
+53
+00:03:38,750 --> 00:03:42,680
+‫So we are going to pass it here using use global filters.
+
+54
+00:03:42,680 --> 00:03:44,600
+‫So this takes in an array.
+
+55
+00:03:44,600 --> 00:03:50,390
+‫So the first element of our array is going to be our new fallback exception filter.
+
+56
+00:03:50,390 --> 00:03:55,790
+‫As usual, we need to pass in an instance of the filter and not the name of the class.
+
+57
+00:03:55,790 --> 00:04:00,650
+‫And also, please bear in mind that the order of the filters is important.
+
+58
+00:04:00,650 --> 00:04:06,470
+‫The filters here should be specified from the most generic, such as the fallback exception filter to
+
+59
+00:04:06,470 --> 00:04:10,400
+‫the most specific, such as the Http exception filter.
+
+60
+00:04:10,400 --> 00:04:16,430
+‫We are going to see in the next lesson an example of when the order of the filters that are specified
+
+61
+00:04:16,430 --> 00:04:18,080
+‫here becomes important.
+
+62
+00:04:18,080 --> 00:04:25,250
+‫Right now let's run the new version of our backend and see how it handles our schema validation error.
+
+63
+00:04:25,250 --> 00:04:32,240
+‫Let's switch again to our Restlet client and let's trigger again the same error that we were triggering
+
+64
+00:04:32,240 --> 00:04:32,690
+‫before.
+
+65
+00:04:32,690 --> 00:04:37,730
+‫So let's remember this payload here on our post call is valid.
+
+66
+00:04:37,730 --> 00:04:44,450
+‫Jason But as we can see, the sequence number property, which should be numeric as here a string.
+
+67
+00:04:44,450 --> 00:04:47,240
+‫So this should trigger an error in our backend.
+
+68
+00:04:47,240 --> 00:04:50,660
+‫Let's see the new behavior we are going to click on send.
+
+69
+00:04:50,690 --> 00:04:56,750
+‫The request has been sent and if we scroll down we are going to see that we got again a 500 internal
+
+70
+00:04:56,750 --> 00:04:57,560
+‫server error.
+
+71
+00:04:57,560 --> 00:05:00,660
+‫But this time around we got here a response that was created by.
+
+72
+00:05:00,730 --> 00:05:02,530
+‫A fallback exception filter.
+
+73
+00:05:02,530 --> 00:05:06,940
+‫So as you can see, we got here an error message cross validation failed.
+
+74
+00:05:06,940 --> 00:05:13,510
+‫The sequential number field was not valid because the cast to number operation failed for value error.
+
+75
+00:05:13,510 --> 00:05:18,760
+‫So as you can see, this is a very specific message that is going to help us a lot to troubleshoot the
+
+76
+00:05:18,760 --> 00:05:19,510
+‫problem.
+
+77
+00:05:19,510 --> 00:05:24,100
+‫Now this way of handling schema errors is already much better than before.
+
+78
+00:05:24,100 --> 00:05:30,880
+‫And also this is going to work to any error thrown by our backend in general, not just for mongoose
+
+79
+00:05:30,880 --> 00:05:33,970
+‫exceptions for the case of schema validation exceptions.
+
+80
+00:05:33,970 --> 00:05:39,730
+‫In the next lesson, we're going to see an even better way of handling this specific type of errors.
+

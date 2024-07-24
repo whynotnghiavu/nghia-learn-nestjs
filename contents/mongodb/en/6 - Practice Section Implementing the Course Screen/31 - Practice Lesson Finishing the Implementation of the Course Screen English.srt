@@ -1,0 +1,456 @@
+﻿1
+00:00:03,460 --> 00:00:05,740
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,740 --> 00:00:10,180
+‫In this new lesson, we are going to finish the implementation of our Lessons controller.
+
+3
+00:00:10,180 --> 00:00:12,880
+‫We are going to query our MongoDB database.
+
+4
+00:00:12,910 --> 00:00:18,430
+‫We're going to be querying the lessons collection and we're going to be fetching a page of lessons and
+
+5
+00:00:18,430 --> 00:00:20,530
+‫sending it back to our client.
+
+6
+00:00:20,530 --> 00:00:26,920
+‫So for that, we are going to be needing to query the database with a new repository service specific
+
+7
+00:00:26,920 --> 00:00:28,590
+‫to the lessons entity.
+
+8
+00:00:28,600 --> 00:00:34,570
+‫Let's create here then in the Repositories folder, a new file that we are going to be calling lessons
+
+9
+00:00:34,570 --> 00:00:39,850
+‫dot repository, dot TS, and inside it we are going to be adding our repository.
+
+10
+00:00:39,850 --> 00:00:47,020
+‫Let's start by defining here a new class and let's go ahead and annotate it with the injectable decorator
+
+11
+00:00:47,020 --> 00:00:48,580
+‫from Nestjs.
+
+12
+00:00:48,610 --> 00:00:55,300
+‫Now this class at this moment is only going to have one method which is going to be called search.
+
+13
+00:00:55,300 --> 00:00:58,630
+‫And this search method is going to take several parameters.
+
+14
+00:00:58,630 --> 00:01:04,340
+‫So the first parameter is going to be the course ID and the other parameters are going to be the sort
+
+15
+00:01:04,370 --> 00:01:11,090
+‫order, the page number and the page size that I'm going to simply paste in here as they are the same
+
+16
+00:01:11,090 --> 00:01:14,240
+‫parameters as we have used here in our controller.
+
+17
+00:01:14,240 --> 00:01:20,540
+‫So all of these parameters we want to be able to pass to the repository so that we can query our MongoDB
+
+18
+00:01:20,540 --> 00:01:21,440
+‫database.
+
+19
+00:01:21,470 --> 00:01:26,120
+‫Now, in order to query the database, we are going to be needing the lessons model.
+
+20
+00:01:26,120 --> 00:01:29,810
+‫Let's go ahead and inject it here in our constructor.
+
+21
+00:01:29,810 --> 00:01:34,820
+‫Let's define here a new private property that we are going to call lessons model.
+
+22
+00:01:34,820 --> 00:01:37,820
+‫And let's make this a model of lesson.
+
+23
+00:01:37,820 --> 00:01:41,420
+‫Let's now add here the inject model annotation.
+
+24
+00:01:41,420 --> 00:01:45,860
+‫Otherwise we won't be able to inject the lessons model to the inject model decorator.
+
+25
+00:01:45,860 --> 00:01:51,740
+‫We are going to be passing here the name of the entity that we want to inject in this case, the lesson
+
+26
+00:01:51,740 --> 00:01:52,520
+‫entity.
+
+27
+00:01:52,520 --> 00:01:56,210
+‫Let's now go ahead and implement the body of the search method.
+
+28
+00:01:56,210 --> 00:02:01,550
+‫Let's start by adding here some logging so that we can see on the console log that this method has been
+
+29
+00:02:01,550 --> 00:02:02,660
+‫correctly called.
+
+30
+00:02:02,660 --> 00:02:08,540
+‫So here we are going to be using the lessons model to query the database, and for that we are going
+
+31
+00:02:08,540 --> 00:02:10,730
+‫to be calling here the find method.
+
+32
+00:02:10,730 --> 00:02:16,610
+‫And the find method is going to return us a promise so we can go ahead and return this as the output
+
+33
+00:02:16,610 --> 00:02:17,960
+‫of the search method.
+
+34
+00:02:17,990 --> 00:02:23,510
+‫Now to the find method, we are going to be needing to pass a series of search parameters.
+
+35
+00:02:23,510 --> 00:02:30,200
+‫In our case, we need to find the courses that belong to a given course ID, So let's use here the course
+
+36
+00:02:30,200 --> 00:02:37,160
+‫property and let's fill it in with the course ID parameter that we got here in our call to search.
+
+37
+00:02:37,160 --> 00:02:41,450
+‫Now all we have to do is to add the pagination logic to our query.
+
+38
+00:02:41,450 --> 00:02:47,240
+‫The find method takes three parameters, so the first contains the filter criteria that we want to apply
+
+39
+00:02:47,240 --> 00:02:48,500
+‫to the result set.
+
+40
+00:02:48,500 --> 00:02:54,080
+‫The second parameter defines what type of fields do we want to get from the response?
+
+41
+00:02:54,080 --> 00:03:00,740
+‫So let's say that we would like to do a query that only gets back a couple of fields from all the available
+
+42
+00:03:00,740 --> 00:03:02,810
+‫fields on the lesson entity.
+
+43
+00:03:02,810 --> 00:03:08,660
+‫Then in that case we could specify here using the second parameter exactly what fields do we want.
+
+44
+00:03:08,660 --> 00:03:12,560
+‫But in our case we want to get back the full lesson entity.
+
+45
+00:03:12,560 --> 00:03:14,720
+‫So let's fill this in with Null.
+
+46
+00:03:14,720 --> 00:03:21,050
+‫And now we only have to fill in the last parameter that we are passing to find and this is where we
+
+47
+00:03:21,050 --> 00:03:24,320
+‫are going to be specifying our pagination logic.
+
+48
+00:03:24,320 --> 00:03:28,310
+‫Let's start by specifying how many results do we want to get back.
+
+49
+00:03:28,310 --> 00:03:33,410
+‫We are going to be using here the limit property and we are going to say that we only want a certain
+
+50
+00:03:33,410 --> 00:03:36,470
+‫number of results in our result set.
+
+51
+00:03:36,500 --> 00:03:39,440
+‫Now we are going to specify the page that we want.
+
+52
+00:03:39,440 --> 00:03:45,800
+‫So for that we are going to be using the skip property which specifies how many items from the beginning
+
+53
+00:03:45,800 --> 00:03:52,610
+‫of our collection are we going to skip until we get to the beginning of our result data set?
+
+54
+00:03:52,610 --> 00:03:58,550
+‫So we are going to be taking here our page number and we are going to be multiplying it by our page
+
+55
+00:03:58,550 --> 00:03:59,180
+‫size.
+
+56
+00:03:59,180 --> 00:04:03,200
+‫So this will identify the beginning of our result, set.
+
+57
+00:04:03,200 --> 00:04:09,110
+‫Let's say that for example, we are at page zero, then Skip will have the value zero, meaning that
+
+58
+00:04:09,110 --> 00:04:12,110
+‫we want to start at the beginning of our data set.
+
+59
+00:04:12,110 --> 00:04:18,020
+‫If the page number would be one multiplied by the page, size of three would mean that we would skip
+
+60
+00:04:18,020 --> 00:04:24,800
+‫the first three results and start our data set with the fourth entry in all the lessons available on
+
+61
+00:04:24,800 --> 00:04:25,630
+‫the database.
+
+62
+00:04:25,640 --> 00:04:31,670
+‫Now, in order to complete our query, we are only missing here another property which is the sort property.
+
+63
+00:04:31,670 --> 00:04:37,820
+‫So this will tell us how do we want to sort our result set before starting to extract pages?
+
+64
+00:04:37,820 --> 00:04:44,570
+‫So in our particular case, we want to sort this by the sequential number field of the lesson entity
+
+65
+00:04:44,570 --> 00:04:50,690
+‫and we want to specify that the sort order corresponds to this parameter that we got here in the call
+
+66
+00:04:50,690 --> 00:04:51,560
+‫to search.
+
+67
+00:04:51,560 --> 00:04:56,660
+‫And with this we have finished the implementation of the search method so we can now use it to implement
+
+68
+00:04:56,660 --> 00:04:57,800
+‫our controller.
+
+69
+00:04:57,800 --> 00:05:00,350
+‫So here we want to inject the.
+
+70
+00:05:00,380 --> 00:05:01,670
+‫The lessons repository.
+
+71
+00:05:01,670 --> 00:05:06,140
+‫So let's go ahead and plug it into our Nestjs application.
+
+72
+00:05:06,140 --> 00:05:11,900
+‫We are going to first go here to our courses module and here in our providers.
+
+73
+00:05:11,900 --> 00:05:15,380
+‫We are going to be adding here the lessons repository.
+
+74
+00:05:15,380 --> 00:05:21,260
+‫And since we are here, let's also take the opportunity to add here the lessons controller.
+
+75
+00:05:21,260 --> 00:05:27,920
+‫So now we have configured our repository and our controller, so we are ready to finish the implementation
+
+76
+00:05:27,920 --> 00:05:29,540
+‫of our lessons controller.
+
+77
+00:05:29,540 --> 00:05:33,680
+‫We are going to start by injecting here the repository service.
+
+78
+00:05:33,680 --> 00:05:38,030
+‫Let's create here a new property that we are going to call, for example, lessons.
+
+79
+00:05:38,030 --> 00:05:41,780
+‫DB And let's make this a lessons repository.
+
+80
+00:05:41,780 --> 00:05:47,510
+‫With the repository we can now call the search method and we are going to be passing all the parameters
+
+81
+00:05:47,510 --> 00:05:48,980
+‫that we have validated here.
+
+82
+00:05:48,980 --> 00:05:55,310
+‫So this will be the course ID, the sort order, the page number and the page size.
+
+83
+00:05:55,310 --> 00:06:02,460
+‫So this call is going to return a promise so we can go ahead and return this promise directly here as
+
+84
+00:06:02,460 --> 00:06:04,860
+‫the result of the search lesson method.
+
+85
+00:06:04,860 --> 00:06:10,680
+‫And notice that because we are returning a promise here, we don't even have to make this function async
+
+86
+00:06:10,680 --> 00:06:12,570
+‫because this is already a promise.
+
+87
+00:06:12,570 --> 00:06:18,480
+‫And so because we are not using here, the async await syntax in the body of the search lesson method.
+
+88
+00:06:18,480 --> 00:06:20,930
+‫Then we don't need the async keyword.
+
+89
+00:06:20,940 --> 00:06:24,810
+‫Now before trying things out, let's quickly fix here a small problem.
+
+90
+00:06:24,810 --> 00:06:29,250
+‫So as you can see, we have used here the page number parameter two times accidentally.
+
+91
+00:06:29,250 --> 00:06:30,270
+‫Let's fix this.
+
+92
+00:06:30,270 --> 00:06:33,660
+‫So this last parameter should be the page size.
+
+93
+00:06:33,660 --> 00:06:38,070
+‫And with this, we are now ready to try out this new version of our controller.
+
+94
+00:06:38,070 --> 00:06:42,630
+‫Let's then select here the View Course page by clicking on the View button.
+
+95
+00:06:42,630 --> 00:06:47,190
+‫And as we can see, we have printed here that the current page is indeed page zero.
+
+96
+00:06:47,190 --> 00:06:51,240
+‫And we have here the first three results of our lessons dataset.
+
+97
+00:06:51,270 --> 00:06:57,090
+‫Notice that the results are indeed for the Nestjs in practice course, and if we click here on the next
+
+98
+00:06:57,090 --> 00:07:01,470
+‫page button, we are going to see that we have here the next page of results.
+
+99
+00:07:01,470 --> 00:07:06,080
+‫And if we click here back we can paginate back to the previous page.
+
+100
+00:07:06,080 --> 00:07:11,030
+‫So as you can see, our back end service is working correctly as expected.
+
+101
+00:07:11,030 --> 00:07:15,140
+‫And with this we have implemented the View course page in our application.
+
+102
+00:07:15,140 --> 00:07:19,610
+‫So as you can see, this was a nice little exercise to put in practice.
+
+103
+00:07:19,610 --> 00:07:25,670
+‫Again, all the concepts that we have learned on previous lessons and we even saw here some new functionality
+
+104
+00:07:25,670 --> 00:07:27,500
+‫which was the query decorator.
+
+105
+00:07:27,500 --> 00:07:31,820
+‫And we have also learned how to create one to many relationships in MongoDB.
+
+106
+00:07:32,030 --> 00:07:35,600
+‫Let's now move on to more advanced nestjs concepts.
+
+107
+00:07:35,600 --> 00:07:41,120
+‫In the next few lessons we are going to be talking about Nestjs authentication and authorization.
+
+108
+00:07:41,120 --> 00:07:44,840
+‫We are going to protect these endpoints from a security standpoint.
+
+109
+00:07:44,870 --> 00:07:51,320
+‫We are going to make sure that only administrators can edit the data, but every logged in user can
+
+110
+00:07:51,350 --> 00:07:52,510
+‫see the data.
+
+111
+00:07:52,520 --> 00:07:58,700
+‫We are also going to learn how to authenticate each request by linking a certain request to a certain
+
+112
+00:07:58,700 --> 00:07:59,210
+‫user.
+
+113
+00:07:59,240 --> 00:08:03,320
+‫Our solution is going to be based around Json web tokens.
+
+114
+00:08:03,330 --> 00:08:06,540
+‫This is coming right up in the next section of the course.
+

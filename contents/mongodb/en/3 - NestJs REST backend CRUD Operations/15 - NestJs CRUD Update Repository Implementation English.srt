@@ -1,0 +1,388 @@
+﻿1
+00:00:03,610 --> 00:00:05,860
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,890 --> 00:00:12,460
+‫In the last lesson we have implemented the controller part of our update course, Crud Operation Logic.
+
+3
+00:00:12,490 --> 00:00:17,800
+‫Now let's implement the repository part and see the whole Crud operation in action.
+
+4
+00:00:17,800 --> 00:00:23,290
+‫So now that we have here everything that we need from the request in order to update the course, we
+
+5
+00:00:23,290 --> 00:00:30,100
+‫need to call here our courses repository and trigger a data modification at the level of the database.
+
+6
+00:00:30,100 --> 00:00:37,120
+‫So let's go ahead and call here the courses DB service and here we are going to be creating a new method
+
+7
+00:00:37,120 --> 00:00:38,950
+‫called Update course.
+
+8
+00:00:38,950 --> 00:00:43,530
+‫Let's define here what the API of this method is going to look like.
+
+9
+00:00:43,540 --> 00:00:49,540
+‫We are going to be passing here as the first parameter, the ID of the entity that we want to update.
+
+10
+00:00:49,540 --> 00:00:55,240
+‫And as the second parameter, we are going to be passing the changes that we want to save on the database.
+
+11
+00:00:55,240 --> 00:01:01,130
+‫Let's then create a new method on our courses repository with this signature.
+
+12
+00:01:01,130 --> 00:01:06,500
+‫So the first parameter is going to be a course ID string, and the second parameter is going to be a
+
+13
+00:01:06,500 --> 00:01:07,910
+‫partial course.
+
+14
+00:01:07,910 --> 00:01:11,480
+‫Let's also define the return type of this new method.
+
+15
+00:01:11,480 --> 00:01:18,710
+‫So we are receiving here the course and its changes and we are going to send back a promise of a course.
+
+16
+00:01:18,710 --> 00:01:24,530
+‫So we are going to emit here in this promise the new version of the course entity.
+
+17
+00:01:24,560 --> 00:01:29,930
+‫This should contain a course with all the fields, just like they are in the database.
+
+18
+00:01:29,930 --> 00:01:37,010
+‫So the course that we emit here is going to be the new version of the course in the database after the
+
+19
+00:01:37,010 --> 00:01:37,760
+‫update.
+
+20
+00:01:37,760 --> 00:01:42,770
+‫So let's see, how can we get the new version of the course using Mongoose?
+
+21
+00:01:42,800 --> 00:01:48,050
+‫Let's first perform the update we're going to access here the course model service.
+
+22
+00:01:48,050 --> 00:01:54,110
+‫And in order to trigger the update of a single entity, we are going to be using the method, find one
+
+23
+00:01:54,110 --> 00:01:55,520
+‫and update.
+
+24
+00:01:55,520 --> 00:02:00,410
+‫So it's just one of several methods available via the Mongoose API.
+
+25
+00:02:00,500 --> 00:02:06,590
+‫So the first thing that we need to pass to this method is going to be the ID of the course that we want
+
+26
+00:02:06,590 --> 00:02:07,370
+‫to update.
+
+27
+00:02:07,400 --> 00:02:13,730
+‫We are going to do a lookup by ID and we are going to say that the MongoDB underscore ID property is
+
+28
+00:02:13,730 --> 00:02:18,920
+‫going to be identical to the course ID that we got here from the Http request.
+
+29
+00:02:18,950 --> 00:02:25,520
+‫Now the second thing that we need to pass here are the changes that we want to apply to the MongoDB
+
+30
+00:02:25,550 --> 00:02:27,110
+‫version of this object.
+
+31
+00:02:27,110 --> 00:02:33,890
+‫So let's pass in here the partial changes that we received from the body of the Http put request.
+
+32
+00:02:33,920 --> 00:02:40,500
+‫Now the last thing that we need to do is to pass in here a configuration object to this Mongoose API
+
+33
+00:02:40,550 --> 00:02:47,990
+‫call that is going to say that we want to receive back as the result of this method a promise that when
+
+34
+00:02:48,020 --> 00:02:54,440
+‫evaluated is going to emit the new version of the course as it exists on the database after the update
+
+35
+00:02:54,470 --> 00:02:55,550
+‫has completed.
+
+36
+00:02:55,550 --> 00:03:00,770
+‫So in order to say that we need here the new version of the course, we are going to set the new flag
+
+37
+00:03:00,770 --> 00:03:01,520
+‫to true.
+
+38
+00:03:01,520 --> 00:03:07,040
+‫And this is going to get us back the new version of the course in the database After the update.
+
+39
+00:03:07,040 --> 00:03:11,420
+‫Let's return this as the output of this update course method.
+
+40
+00:03:11,420 --> 00:03:16,940
+‫And with this, we have completed the repository part of our Crud update operation.
+
+41
+00:03:16,940 --> 00:03:23,540
+‫Going back here to our controller, we are now receiving here a promise that is currently being ignored.
+
+42
+00:03:23,540 --> 00:03:28,280
+‫So we should return this promise to Nestjs as a promise.
+
+43
+00:03:28,280 --> 00:03:29,390
+‫Of course.
+
+44
+00:03:29,390 --> 00:03:35,210
+‫This way Nestjs knows that when this promise is evaluated, the request is completed.
+
+45
+00:03:35,210 --> 00:03:40,040
+‫Let's annotate here this method and specify that we are returning here.
+
+46
+00:03:40,070 --> 00:03:42,140
+‫A promise, of course.
+
+47
+00:03:42,140 --> 00:03:47,000
+‫And with this we have completed the crud update operation for the course entity.
+
+48
+00:03:47,000 --> 00:03:48,890
+‫Let's now try everything out.
+
+49
+00:03:48,920 --> 00:03:54,260
+‫Let's switch here to a larger window and let's trigger the Http put request.
+
+50
+00:03:54,260 --> 00:03:59,060
+‫So we're going to select here the first course of our list, the Nestjs course.
+
+51
+00:03:59,060 --> 00:04:00,230
+‫And let's change here.
+
+52
+00:04:00,230 --> 00:04:01,610
+‫For example, the title.
+
+53
+00:04:01,610 --> 00:04:05,480
+‫Let's rename the title to simply Nestjs in practice.
+
+54
+00:04:05,480 --> 00:04:08,210
+‫Now let's keep an eye here on the network log.
+
+55
+00:04:08,210 --> 00:04:13,340
+‫Let's filter here on slash API and let's click here on Save.
+
+56
+00:04:13,340 --> 00:04:18,170
+‫So as you can see, an Http put request was issued to the back end.
+
+57
+00:04:18,200 --> 00:04:25,730
+‫We can see here on the request URL that this is indeed hitting here, the slash API slash courses,
+
+58
+00:04:25,730 --> 00:04:31,220
+‫endpoint and appending here at the end of the URL, the ID of the course.
+
+59
+00:04:31,220 --> 00:04:36,770
+‫If we scroll down, we are going to see here that in the request payload we have here the new version
+
+60
+00:04:36,800 --> 00:04:39,530
+‫of the course object that we send to the back end.
+
+61
+00:04:39,560 --> 00:04:46,340
+‫Now the back end has saved the data in the database and when the dialog got closed, we reloaded the
+
+62
+00:04:46,340 --> 00:04:49,700
+‫data from the back end and we get here the new title.
+
+63
+00:04:49,700 --> 00:04:56,060
+‫So let's switch here to the MongoDB database console and confirm that the new data is indeed in the
+
+64
+00:04:56,060 --> 00:04:56,810
+‫database.
+
+65
+00:04:56,810 --> 00:05:00,350
+‫Let's hit here refresh and on the courses.
+
+66
+00:05:00,440 --> 00:05:01,100
+‫Election.
+
+67
+00:05:01,100 --> 00:05:04,430
+‫Let's scroll down and look for the correct course.
+
+68
+00:05:04,430 --> 00:05:10,220
+‫So here at the bottom, we are going to see that the data is now correctly saved on the database as
+
+69
+00:05:10,220 --> 00:05:11,030
+‫expected.
+
+70
+00:05:11,030 --> 00:05:15,920
+‫Now, before continuing with the other two Crud operations, delete and create.
+
+71
+00:05:15,920 --> 00:05:19,340
+‫Let's first remove here some repetition from our controller.
+
+72
+00:05:19,340 --> 00:05:25,070
+‫You can see that all the requests on the controller are going to start with slash API and in fact any
+
+73
+00:05:25,070 --> 00:05:28,730
+‫other controller in our application is going to use this prefix.
+
+74
+00:05:28,730 --> 00:05:34,550
+‫So instead of repeating the prefix here for each of the requests, we are going to remove it and we
+
+75
+00:05:34,550 --> 00:05:36,920
+‫are going to define it in only one place.
+
+76
+00:05:36,920 --> 00:05:42,770
+‫So switching here to our back end Main.ts file containing the bootstrap method.
+
+77
+00:05:42,770 --> 00:05:46,670
+‫And remember there is a similarly named file for the front end.
+
+78
+00:05:46,670 --> 00:05:50,630
+‫So we want here the main.ts file for the back end.
+
+79
+00:05:50,630 --> 00:05:58,730
+‫And here using the app instance, we want to set here our global prefix and let's set this to API.
+
+80
+00:05:58,820 --> 00:06:05,780
+‫So any controller that runs for this application is going to have its end points available under slash
+
+81
+00:06:05,810 --> 00:06:06,260
+‫API.
+
+82
+00:06:06,530 --> 00:06:13,160
+‫Next, we need to specify here at the level of our controller that we are handling the courses entity.
+
+83
+00:06:13,160 --> 00:06:18,020
+‫So we don't want to repeat here the name of the entity each time.
+
+84
+00:06:18,020 --> 00:06:24,200
+‫Let's remove this then here from the get and the put annotations and let's add it here at the level
+
+85
+00:06:24,200 --> 00:06:25,190
+‫of the controller.
+
+86
+00:06:25,190 --> 00:06:28,940
+‫So this controller should handle the courses entity.
+
+87
+00:06:28,970 --> 00:06:32,870
+‫Let's now try this out and confirm that everything is still working.
+
+88
+00:06:32,870 --> 00:06:38,300
+‫So if we reload here, our front end, we are going to see that we are still getting back here.
+
+89
+00:06:38,300 --> 00:06:39,020
+‫The data.
+
+90
+00:06:39,020 --> 00:06:43,880
+‫Now let's rename the course again to Nestjs in practice course.
+
+91
+00:06:43,880 --> 00:06:45,140
+‫Let's click Save.
+
+92
+00:06:45,140 --> 00:06:52,130
+‫And as we can see, we are now getting back the new title again from the database as expected.
+
+93
+00:06:52,130 --> 00:06:58,970
+‫So as you can see, this way of annotating our controllers, it's a bit more concise and avoids repetition
+
+94
+00:06:58,970 --> 00:07:02,870
+‫and makes it easier to refactor our URLs if needed.
+
+95
+00:07:02,870 --> 00:07:06,350
+‫Let's now continue to implement our complete Crud example.
+
+96
+00:07:06,350 --> 00:07:11,810
+‫We are going to cover the delete and create operations and after that we are going to be adding common
+
+97
+00:07:11,810 --> 00:07:16,700
+‫features to our endpoints such as error handling, authentication and more.
+

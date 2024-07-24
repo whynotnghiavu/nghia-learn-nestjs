@@ -1,0 +1,364 @@
+﻿1
+00:00:03,580 --> 00:00:05,920
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,920 --> 00:00:08,830
+‫In this new lesson, we are going to introduce a new notion.
+
+3
+00:00:08,830 --> 00:00:12,220
+‫We are going to talk about Nestjs middleware.
+
+4
+00:00:12,220 --> 00:00:17,920
+‫So we are going to learn exactly what is a middleware, when to use it and why we are going to be using
+
+5
+00:00:17,920 --> 00:00:22,060
+‫it in the context of authenticating a user request.
+
+6
+00:00:22,060 --> 00:00:29,470
+‫So if you remember in our previous lessons we have built here in our backend a login endpoint that after
+
+7
+00:00:29,470 --> 00:00:35,230
+‫validating the user password sends back to the client an authentication Json web token that can be used
+
+8
+00:00:35,230 --> 00:00:38,110
+‫to prove that a request belongs to a user.
+
+9
+00:00:38,140 --> 00:00:43,690
+‫Now the client application is going to store the authentication Json web token in local storage and
+
+10
+00:00:43,690 --> 00:00:51,130
+‫it's going to make sure to attach it to any other subsequent Http requests made by our client to our
+
+11
+00:00:51,130 --> 00:00:51,910
+‫backend.
+
+12
+00:00:51,910 --> 00:00:58,900
+‫Using the Json web token, our backend is going to be able to validate incoming Http requests and enforce
+
+13
+00:00:58,900 --> 00:01:05,180
+‫functionality such as, for example, making sure that only authenticated users can view here the list
+
+14
+00:01:05,180 --> 00:01:06,020
+‫of courses.
+
+15
+00:01:06,020 --> 00:01:11,060
+‫So this is a very common functionality that we are going to be implementing in the next few lessons.
+
+16
+00:01:11,060 --> 00:01:18,110
+‫Let's start by opening here, our root application module in our backend and seeing what services exactly
+
+17
+00:01:18,110 --> 00:01:19,610
+‫do we want to protect.
+
+18
+00:01:19,610 --> 00:01:24,560
+‫So we have here two different modules the courses module and the authentication module.
+
+19
+00:01:24,560 --> 00:01:31,130
+‫The authentication module only contains the authentication controller, which only contains the login
+
+20
+00:01:31,130 --> 00:01:31,760
+‫method.
+
+21
+00:01:31,760 --> 00:01:38,000
+‫Now this method we want to make sure that it's available to unauthenticated users because we want them
+
+22
+00:01:38,000 --> 00:01:39,320
+‫to be able to log in.
+
+23
+00:01:39,320 --> 00:01:46,010
+‫So for the particular case of the login endpoint, we don't want to add any logic that validates if
+
+24
+00:01:46,010 --> 00:01:48,550
+‫the Json web token is present or not.
+
+25
+00:01:48,560 --> 00:01:54,860
+‫On the other hand, for our courses module, we have here a series of services under the form of the
+
+26
+00:01:54,860 --> 00:01:57,320
+‫courses controller and the lessons controller.
+
+27
+00:01:57,320 --> 00:02:03,440
+‫For example, the courses controller has here a find all courses method that corresponds to this list
+
+28
+00:02:03,440 --> 00:02:05,600
+‫of courses that we see here on the screen.
+
+29
+00:02:05,600 --> 00:02:11,210
+‫And this is a good example of a rest endpoint that we want to be able to secure.
+
+30
+00:02:11,210 --> 00:02:16,550
+‫So in the particular case of this get endpoint, we want to make sure that only authenticated users
+
+31
+00:02:16,550 --> 00:02:20,030
+‫can perform this get operation further on in the course.
+
+32
+00:02:20,030 --> 00:02:26,450
+‫We are going to learn also how to ensure that the data modification operations in this controller,
+
+33
+00:02:26,450 --> 00:02:33,500
+‫such as, for example, create course can only be done by a certain type of users, administrative users
+
+34
+00:02:33,500 --> 00:02:37,490
+‫that have the admin role for all these use cases.
+
+35
+00:02:37,490 --> 00:02:44,510
+‫The first thing that we want to do whenever a request gets to our backend is to check if it contains
+
+36
+00:02:44,540 --> 00:02:46,820
+‫a valid Json web token or not.
+
+37
+00:02:46,820 --> 00:02:51,020
+‫So we are going to be doing that using a Nestjs middleware.
+
+38
+00:02:51,050 --> 00:02:58,490
+‫A middleware is a function that can be executed before our rest endpoint code gets executed.
+
+39
+00:02:58,490 --> 00:03:03,500
+‫So the middleware is going to get executed from the moment that the request hits the back end.
+
+40
+00:03:03,500 --> 00:03:09,920
+‫And before calling here the controller logic, this middleware function is going to have access to the
+
+41
+00:03:09,920 --> 00:03:17,120
+‫request and response objects and it will be able to change both of these objects before the controller
+
+42
+00:03:17,120 --> 00:03:18,860
+‫code gets executed.
+
+43
+00:03:18,860 --> 00:03:22,970
+‫So middlewares are applied in a chain one after the other.
+
+44
+00:03:22,970 --> 00:03:28,700
+‫So if you have multiple middlewares in your application, the order is going to be important in our
+
+45
+00:03:28,700 --> 00:03:33,140
+‫particular case to protect here the all courses endpoint.
+
+46
+00:03:33,170 --> 00:03:38,090
+‫We want to write a middleware that retrieves the user information from the request.
+
+47
+00:03:38,090 --> 00:03:40,130
+‫So let's see how we are going to do that.
+
+48
+00:03:40,130 --> 00:03:46,580
+‫We are going to go here to our root folder and from here we are going to create here a new folder called
+
+49
+00:03:46,580 --> 00:03:47,510
+‫Middleware.
+
+50
+00:03:47,510 --> 00:03:52,370
+‫We are going to be creating here a new file called Get User Middleware.
+
+51
+00:03:52,370 --> 00:03:59,000
+‫So this middleware is going to decode the Json web token attached to the request and it's going to save
+
+52
+00:03:59,000 --> 00:04:05,060
+‫the user information from the Json web token into the request object so that it can be used further
+
+53
+00:04:05,090 --> 00:04:06,560
+‫on in our application.
+
+54
+00:04:06,560 --> 00:04:12,710
+‫For example, to allow or deny access to a given endpoint, let's then implement our middleware.
+
+55
+00:04:12,740 --> 00:04:18,920
+‫This is going to be a plain TypeScript class, let's call it get user middleware and let's go ahead
+
+56
+00:04:18,920 --> 00:04:23,330
+‫and annotate it with the injectable decorator from Nestjs.
+
+57
+00:04:23,360 --> 00:04:29,330
+‫In order to make this a nestjs middleware, we need to implement the Nest middleware interface.
+
+58
+00:04:29,330 --> 00:04:33,050
+‫This interface needs to implement one method called use.
+
+59
+00:04:33,050 --> 00:04:39,950
+‫So use is going to receive here the request object and this is the express request object we are going
+
+60
+00:04:39,950 --> 00:04:43,460
+‫to receive here also the response express object.
+
+61
+00:04:43,460 --> 00:04:49,910
+‫And we also have here a function called Next that we need to call in order to allow the request to be
+
+62
+00:04:49,910 --> 00:04:56,360
+‫processed by further middlewares up the middleware chain or by the rest endpoint itself.
+
+63
+00:04:56,360 --> 00:05:00,410
+‫If this is the last middleware in our chain, it's here in the.
+
+64
+00:05:00,410 --> 00:05:05,810
+‫Worthy of the use method that we are going to decode our Json web token and we are going to retrieve
+
+65
+00:05:05,810 --> 00:05:09,140
+‫the user information and store it in the request object.
+
+66
+00:05:09,140 --> 00:05:11,330
+‫We are going to do that in the next lesson.
+
+67
+00:05:11,330 --> 00:05:16,580
+‫Right now in this lesson, we are going to see how to plug this middleware into our backend.
+
+68
+00:05:16,610 --> 00:05:22,820
+‫To configure these middleware, we need to go to our application root module, the app module, and
+
+69
+00:05:22,820 --> 00:05:29,030
+‫we need to have the application module class implement the Nest module interface.
+
+70
+00:05:29,030 --> 00:05:34,310
+‫This interface is going to have one method, which is going to be the configure method.
+
+71
+00:05:34,310 --> 00:05:40,670
+‫The configure method takes here as an input argument, a middleware consumer that we are going to see
+
+72
+00:05:40,670 --> 00:05:45,980
+‫how to use in a moment and returns one of two types either a middleware, consumer or void.
+
+73
+00:05:45,980 --> 00:05:48,770
+‫Let's have it return void in our example.
+
+74
+00:05:48,770 --> 00:05:54,530
+‫So here inside the configure method is where we are going to configure our middleware chain.
+
+75
+00:05:54,530 --> 00:06:01,610
+‫We want to make sure that the get user middleware only gets applied to certain endpoints of our application.
+
+76
+00:06:01,610 --> 00:06:07,370
+‫Let's say that, for example, we want to make sure that the get user middleware is only applied to
+
+77
+00:06:07,370 --> 00:06:09,560
+‫the controllers in the courses module.
+
+78
+00:06:09,560 --> 00:06:16,100
+‫Then in that case we can define the following configuration consumer dot apply and here we are going
+
+79
+00:06:16,100 --> 00:06:19,070
+‫to specify what middleware do we want to apply.
+
+80
+00:06:19,070 --> 00:06:22,100
+‫In this case it's going to be the get user middleware.
+
+81
+00:06:22,100 --> 00:06:27,500
+‫And now we need to specify to which controllers do we want to apply these middleware to.
+
+82
+00:06:27,500 --> 00:06:32,810
+‫So we are going to use here the method for routes and we are going to pass it here.
+
+83
+00:06:32,810 --> 00:06:38,690
+‫An array of controllers, let's say for example, that we want to use here, the courses controller
+
+84
+00:06:38,690 --> 00:06:41,390
+‫and also the lessons controller.
+
+85
+00:06:41,390 --> 00:06:46,910
+‫With this configuration in place, we are sure that this middleware is only going to get applied to
+
+86
+00:06:46,910 --> 00:06:53,390
+‫the endpoints defined in these two controllers and nowhere else in our application and more specifically
+
+87
+00:06:53,390 --> 00:06:55,280
+‫our authentication module.
+
+88
+00:06:55,280 --> 00:07:01,610
+‫For example, with this configuration, we are sure that our authentication controller containing our
+
+89
+00:07:01,610 --> 00:07:07,130
+‫login endpoint is not going to have the get user middleware applied to it.
+
+90
+00:07:07,130 --> 00:07:13,760
+‫This is only going to be targeting these two controllers specifically now that we have plugged our get
+
+91
+00:07:13,760 --> 00:07:18,380
+‫user middleware in our application, it's now time to implement the use method.
+

@@ -1,0 +1,320 @@
+﻿1
+00:00:03,730 --> 00:00:04,840
+‫Hello everyone.
+
+2
+00:00:04,840 --> 00:00:10,180
+‫Welcome and congratulations on completing the Nestjs in practice course.
+
+3
+00:00:10,210 --> 00:00:15,660
+‫In this lesson we are going to highlight some of the key takeaways of this course.
+
+4
+00:00:15,670 --> 00:00:18,820
+‫First, let's summarize what Nestjs is.
+
+5
+00:00:18,820 --> 00:00:26,470
+‫So Nestjs is a node based backend development framework with an object oriented API, which is decorator
+
+6
+00:00:26,470 --> 00:00:33,310
+‫based and that is very similar to other popular backend development solutions with the difference that
+
+7
+00:00:33,310 --> 00:00:40,870
+‫many of the concepts in Nestjs are also the same concepts used for building our angular front end.
+
+8
+00:00:40,870 --> 00:00:48,070
+‫So if we work in a project that uses an angular front end, Nestjs is a very natural fit for building
+
+9
+00:00:48,070 --> 00:00:49,690
+‫our backend as well.
+
+10
+00:00:49,690 --> 00:00:56,020
+‫With Nestjs, we can very easily split up our backend into controllers and repositories, which is a
+
+11
+00:00:56,020 --> 00:00:57,850
+‫very common design pattern.
+
+12
+00:00:57,850 --> 00:01:04,400
+‫So controllers are responsible for parsing the incoming Http requests and extracting everything that
+
+13
+00:01:04,400 --> 00:01:08,690
+‫we need from the Http request in order to process the request.
+
+14
+00:01:08,720 --> 00:01:16,880
+‫Controllers are also responsible for data business validation and for building the Http response.
+
+15
+00:01:16,910 --> 00:01:24,590
+‫On the other hand, repositories are separate services that encapsulate only the database access logic,
+
+16
+00:01:24,590 --> 00:01:28,400
+‫meaning both queries and data modification operations.
+
+17
+00:01:28,400 --> 00:01:36,410
+‫So these operations can typically be reused across multiple related controllers With Nestjs, we can
+
+18
+00:01:36,410 --> 00:01:43,430
+‫also do decorator based data validation, which is also a very popular pattern in other backend development
+
+19
+00:01:43,430 --> 00:01:44,360
+‫frameworks.
+
+20
+00:01:44,360 --> 00:01:51,140
+‫So with decorator based validation, we can define via the use of decorators certain business constraints
+
+21
+00:01:51,140 --> 00:01:57,440
+‫for our data, such as, for example, a given string field must have the format of a phone number.
+
+22
+00:01:57,470 --> 00:02:04,970
+‫Now the best place in our program to apply these business validation is, is just when the request arrives
+
+23
+00:02:04,970 --> 00:02:09,020
+‫at the backend and before triggering the controller logic.
+
+24
+00:02:09,020 --> 00:02:15,080
+‫So before triggering any logic, we are going to perform all our validations and we're going to send
+
+25
+00:02:15,080 --> 00:02:20,600
+‫back to the client in case of an error the list of fields that need to modify.
+
+26
+00:02:20,600 --> 00:02:24,710
+‫And what was the problem in each of the fields with an error.
+
+27
+00:02:24,740 --> 00:02:31,100
+‫So this is going to allow us in our client to display the necessary error information to the user for
+
+28
+00:02:31,100 --> 00:02:35,090
+‫it to correct the request and send it again back to the server.
+
+29
+00:02:35,090 --> 00:02:41,630
+‫This approach of validating our data upfront using controllers also has the benefit that it simplifies
+
+30
+00:02:41,630 --> 00:02:43,520
+‫the code in our controllers.
+
+31
+00:02:43,520 --> 00:02:49,490
+‫For example, we can avoid certain conditions like checking for null or undefined values.
+
+32
+00:02:49,520 --> 00:02:56,330
+‫All of those checks have already been done upfront by the data validation solution for the database
+
+33
+00:02:56,330 --> 00:02:57,590
+‫layer of our solution.
+
+34
+00:02:57,590 --> 00:03:04,850
+‫We have used MongoDB, which is a NoSQL schema less database like the name says, this type of database
+
+35
+00:03:04,850 --> 00:03:10,250
+‫does not have the built in notion of a schema, unlike SQL databases, for example.
+
+36
+00:03:10,250 --> 00:03:15,260
+‫So how do we ensure the data integrity of what we store in the database?
+
+37
+00:03:15,290 --> 00:03:22,820
+‫Well, in our case, we have opted by defining a schema at the level of our backend and not at the level
+
+38
+00:03:22,820 --> 00:03:24,170
+‫of our database.
+
+39
+00:03:24,170 --> 00:03:32,000
+‫So our schema was defined using Mongoose, which is an ODM library or an object to document mapping
+
+40
+00:03:32,000 --> 00:03:32,870
+‫library.
+
+41
+00:03:32,870 --> 00:03:39,710
+‫With Mongoose, we can create objects in memory in our backend server that are directly linked to database
+
+42
+00:03:39,710 --> 00:03:40,580
+‫documents.
+
+43
+00:03:40,580 --> 00:03:46,610
+‫We can create these new object, we can edit its properties, we can link it to other documents.
+
+44
+00:03:46,610 --> 00:03:53,000
+‫And in the end, by calling Save, we are going to have everything persisted transparently to the database
+
+45
+00:03:53,000 --> 00:03:55,280
+‫by following the schema rules.
+
+46
+00:03:55,280 --> 00:04:01,400
+‫So if some of the properties do not respect the schema that we have defined in our backend, we are
+
+47
+00:04:01,400 --> 00:04:03,400
+‫going to get an error in.
+
+48
+00:04:03,400 --> 00:04:05,680
+‫We can also do custom error handling.
+
+49
+00:04:05,680 --> 00:04:12,370
+‫We can define more generic catch all mechanisms that handle all sorts of errors by default, but we
+
+50
+00:04:12,370 --> 00:04:19,030
+‫can also define next to those more specific error handling mechanisms that target only certain types
+
+51
+00:04:19,030 --> 00:04:24,340
+‫of errors, such as, for example, data validation errors for securing our backend.
+
+52
+00:04:24,340 --> 00:04:27,760
+‫We have used the solution based on Json web tokens.
+
+53
+00:04:27,760 --> 00:04:34,840
+‫So a Json web token is a small Json payload, which is cryptographically signed, and it's usually used
+
+54
+00:04:34,840 --> 00:04:40,630
+‫to prove that the bearer of a given token is a well identified user.
+
+55
+00:04:40,630 --> 00:04:47,020
+‫So whenever our backend receives a request, it will find a Json web token attached to it.
+
+56
+00:04:47,020 --> 00:04:54,850
+‫By using a Nestjs middleware, we can then validate the signature of the Json web token and retrieve
+
+57
+00:04:54,850 --> 00:04:56,110
+‫its payload.
+
+58
+00:04:56,110 --> 00:05:00,520
+‫So if the signature is correct, then we know that that request comes from.
+
+59
+00:05:00,700 --> 00:05:07,420
+‫That user and that user Only when we have extracted the user profile from the Json web token, we can
+
+60
+00:05:07,450 --> 00:05:14,770
+‫then attach it to the Http request and make the user profile information available to the rest controller
+
+61
+00:05:14,770 --> 00:05:16,150
+‫endpoint layer.
+
+62
+00:05:16,240 --> 00:05:23,860
+‫Now, whenever we want to protect an endpoint from unauthenticated use, we can use a nestjs guard.
+
+63
+00:05:23,890 --> 00:05:30,700
+‫The guard can check for the presence or absence of the user profile in the request and decide if it
+
+64
+00:05:30,700 --> 00:05:34,240
+‫should grant or deny access to the endpoint.
+
+65
+00:05:34,280 --> 00:05:39,510
+‫In a very similar way, we can also implement authorization for our backend.
+
+66
+00:05:39,520 --> 00:05:46,840
+‫So together with the user ID information, we also have available the list of authorization roles that
+
+67
+00:05:46,840 --> 00:05:49,990
+‫the user has assigned in the Json web token.
+
+68
+00:05:50,020 --> 00:05:54,160
+‫A user can be, for example, a student user, an admin user.
+
+69
+00:05:54,160 --> 00:05:54,820
+‫ET cetera.
+
+70
+00:05:54,820 --> 00:05:58,910
+‫So each different type of user has a different set of roles.
+
+71
+00:05:58,930 --> 00:06:01,850
+‫Those roles are present in the Json web token.
+
+72
+00:06:01,850 --> 00:06:08,960
+‫So if we want to grant or deny access to certain functionality in our backend according to different
+
+73
+00:06:08,960 --> 00:06:13,620
+‫roles, we can do so also by using a nestjs guard.
+
+74
+00:06:13,640 --> 00:06:18,710
+‫In summary, in this course we have covered everything that you need to know in practice in order to
+
+75
+00:06:18,710 --> 00:06:25,700
+‫use Nestjs effectively in a real production application so you now know how to build a complete Crud
+
+76
+00:06:25,700 --> 00:06:32,050
+‫example using nestjs and you know how to add authentication and authorization to your backend.
+
+77
+00:06:32,060 --> 00:06:34,840
+‫So I hope that you have enjoyed the course.
+
+78
+00:06:34,850 --> 00:06:41,690
+‫Let me know in the comment section below if you have any questions about the course or suggestions for
+
+79
+00:06:41,690 --> 00:06:43,280
+‫future courses.
+
+80
+00:06:43,310 --> 00:06:47,030
+‫I want to thank you for watching and I will see you next time.
+

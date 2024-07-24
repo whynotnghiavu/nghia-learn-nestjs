@@ -1,0 +1,220 @@
+﻿1
+00:00:03,610 --> 00:00:05,880
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,890 --> 00:00:09,820
+‫In this lesson, we are going to introduce a new Nestjs concept.
+
+3
+00:00:09,820 --> 00:00:12,370
+‫We are going to introduce the notion of pipe.
+
+4
+00:00:12,370 --> 00:00:19,870
+‫So a pipe is a transformation construct that takes an input and produces an output like the name indicates.
+
+5
+00:00:19,900 --> 00:00:20,650
+‫Nestjs.
+
+6
+00:00:20,650 --> 00:00:26,710
+‫Pipes work a bit in a similar way as Unix pipes in the sense that we can chain them together in order
+
+7
+00:00:26,710 --> 00:00:28,560
+‫to produce a final output.
+
+8
+00:00:28,570 --> 00:00:32,620
+‫Let's give a simple example of a use case for a nestjs pipe.
+
+9
+00:00:32,620 --> 00:00:38,740
+‫So going back here to our Restlet API, let's take here for example, the sequential number field.
+
+10
+00:00:38,740 --> 00:00:45,190
+‫So the sequential number field is supposed to be numeric, but let's say that accidentally we fill in
+
+11
+00:00:45,190 --> 00:00:47,680
+‫here a string instead of a number.
+
+12
+00:00:47,680 --> 00:00:52,630
+‫We would like to make sure that our code always receives a number instead of a string.
+
+13
+00:00:52,630 --> 00:01:00,220
+‫So for that we would like to apply a pipe only to this property of the Http body and transform any string
+
+14
+00:01:00,220 --> 00:01:02,690
+‫value that we have here into a number.
+
+15
+00:01:02,690 --> 00:01:08,780
+‫First, let's grab this value in our backend and confirm that indeed it's type is a string.
+
+16
+00:01:08,780 --> 00:01:13,850
+‫Let's take for example, the update crud operation for the course entity.
+
+17
+00:01:13,850 --> 00:01:16,340
+‫So we are going to do here a put call.
+
+18
+00:01:16,340 --> 00:01:22,970
+‫We are going to access here slash API slash courses and we are going to add here the ID of one of the
+
+19
+00:01:22,970 --> 00:01:23,540
+‫courses.
+
+20
+00:01:23,540 --> 00:01:27,800
+‫So this is the mongo ID identifier of a particular course object.
+
+21
+00:01:27,800 --> 00:01:32,540
+‫And let's say that we would like to update here the sequential number property.
+
+22
+00:01:32,540 --> 00:01:38,000
+‫Let's now switch back to our program and see that indeed we receive this as a string.
+
+23
+00:01:38,000 --> 00:01:41,000
+‫We are going to go here to the update course operation.
+
+24
+00:01:41,000 --> 00:01:46,130
+‫And let's, as an example, add here a new parameter which we are going to call sequential number.
+
+25
+00:01:46,130 --> 00:01:51,620
+‫Let's say that this is a number and let's fill this in by using the body decorator.
+
+26
+00:01:51,620 --> 00:01:55,160
+‫We're going to pass in here the name Segno.
+
+27
+00:01:55,160 --> 00:02:01,790
+‫So this is going to come from a property in the Http body of the incoming request called Segno.
+
+28
+00:02:01,790 --> 00:02:05,600
+‫And we have annotated it here as a type as being a number.
+
+29
+00:02:05,600 --> 00:02:12,200
+‫This is the TypeScript type for a number, but this is not the number type of the JavaScript runtime.
+
+30
+00:02:12,200 --> 00:02:14,360
+‫So let's check at runtime.
+
+31
+00:02:14,360 --> 00:02:20,930
+‫What is the actual type of Segno We are going to add here a little bit of logging where we are printing
+
+32
+00:02:20,930 --> 00:02:27,350
+‫the sequential number value, but we are also printing the actual type of this variable using the type
+
+33
+00:02:27,350 --> 00:02:28,550
+‫of operator.
+
+34
+00:02:28,550 --> 00:02:33,380
+‫Let's now trigger the update operation and let's see what we get on the log.
+
+35
+00:02:33,380 --> 00:02:35,660
+‫So we are going to click here on Send.
+
+36
+00:02:35,690 --> 00:02:38,090
+‫As we can see, we got here a 200.
+
+37
+00:02:38,090 --> 00:02:39,290
+‫Okay response.
+
+38
+00:02:39,290 --> 00:02:45,740
+‫We got back here, the new version of the updated course as it exists after the update on the database
+
+39
+00:02:45,740 --> 00:02:51,650
+‫and going back here to our terminal, we are going to see that indeed the sequential number value is
+
+40
+00:02:51,650 --> 00:02:56,990
+‫ten, but the runtime type is actually a string and not a number.
+
+41
+00:02:56,990 --> 00:03:03,860
+‫So what we want to do now is apply a transformation operation only to this field to turn it from a string
+
+42
+00:03:03,860 --> 00:03:04,910
+‫into a number.
+
+43
+00:03:04,910 --> 00:03:11,930
+‫Notice that we also got here, a small notification here, a deprecation warning from Mongoose that
+
+44
+00:03:11,930 --> 00:03:18,080
+‫this operation find one and update is internally using an operation available at the level of the MongoDB
+
+45
+00:03:18,080 --> 00:03:20,720
+‫driver that has been recently deprecated.
+
+46
+00:03:20,720 --> 00:03:27,890
+‫So if we want to fix this warning, we need to go to our Main.ts file and let's add here some mongoose
+
+47
+00:03:27,890 --> 00:03:28,790
+‫configuration.
+
+48
+00:03:28,790 --> 00:03:34,010
+‫We are going to configure Mongoose to not use the use, find and modify operation at the level of the
+
+49
+00:03:34,010 --> 00:03:34,640
+‫driver.
+
+50
+00:03:34,640 --> 00:03:36,860
+‫This is the operation that got deprecated.
+
+51
+00:03:36,860 --> 00:03:42,710
+‫So Mongoose will use a new alternative that is available at the level of the MongoDB driver.
+
+52
+00:03:42,710 --> 00:03:46,550
+‫Let's then import here star as mongoose from Mongoose.
+
+53
+00:03:46,550 --> 00:03:51,230
+‫And with this we will have fixed the issue that we saw in the console at runtime.
+
+54
+00:03:51,230 --> 00:03:57,530
+‫Now that we have introduced the notion of pipe and we know what it's used for, let's then in the next
+
+55
+00:03:57,530 --> 00:04:03,830
+‫lesson, implement a custom two integer pipe that takes a string and converts it into a number.
+

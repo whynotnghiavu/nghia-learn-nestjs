@@ -1,0 +1,388 @@
+﻿1
+00:00:03,550 --> 00:00:05,770
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,770 --> 00:00:12,310
+‫In this new lesson, we are going to learn exactly how should our front end application handle the authentication
+
+3
+00:00:12,310 --> 00:00:16,240
+‫Json web token that it receives after a successful login.
+
+4
+00:00:16,240 --> 00:00:22,090
+‫So whenever we trigger a login to the server using the login component, this is the controller that
+
+5
+00:00:22,090 --> 00:00:27,610
+‫is going to get triggered in our backend if the login is successful, meaning that the user and password
+
+6
+00:00:27,610 --> 00:00:33,160
+‫combination was correct and matched the content of our database, then we are going to send back to
+
+7
+00:00:33,160 --> 00:00:38,890
+‫the client application and Json payload containing our authentication Json web token.
+
+8
+00:00:38,890 --> 00:00:45,970
+‫Now somehow we need in our front end application to find a way to store this token somewhere where it
+
+9
+00:00:45,970 --> 00:00:51,880
+‫can be reused whenever subsequent Http requests are made to the same backend.
+
+10
+00:00:51,880 --> 00:00:59,080
+‫So whenever we do a second backend request after a successful login, we want to somehow attach to each
+
+11
+00:00:59,080 --> 00:01:00,040
+‫new request.
+
+12
+00:01:00,040 --> 00:01:01,730
+‫The Json web token.
+
+13
+00:01:01,730 --> 00:01:07,760
+‫This way whenever the request hits the backend, our backend is going to be able to inspect the content
+
+14
+00:01:07,760 --> 00:01:09,170
+‫of the Http request.
+
+15
+00:01:09,200 --> 00:01:15,290
+‫Look for the authentication token, validate its cryptographic signature and confirm that indeed the
+
+16
+00:01:15,290 --> 00:01:19,430
+‫request belongs to a particular user and no one else.
+
+17
+00:01:19,430 --> 00:01:25,130
+‫Let's then start by determining where the authentication token should be stored in our front end.
+
+18
+00:01:25,130 --> 00:01:32,270
+‫So whenever we do a login request from our login component using the login method of the authentication
+
+19
+00:01:32,270 --> 00:01:38,810
+‫service, we are going to then do a back end request to slash API slash login and we are going to get
+
+20
+00:01:38,810 --> 00:01:42,920
+‫back a payload containing the authentication token.
+
+21
+00:01:42,920 --> 00:01:46,010
+‫Now we are going to receive here the payload.
+
+22
+00:01:46,010 --> 00:01:47,210
+‫Let's give this a name.
+
+23
+00:01:47,210 --> 00:01:50,330
+‫We are going to say that this is the reply that we got from the backend.
+
+24
+00:01:50,330 --> 00:01:51,620
+‫Let's add it a type.
+
+25
+00:01:51,620 --> 00:01:54,200
+‫In this case we are going to use the type any.
+
+26
+00:01:54,200 --> 00:02:02,300
+‫And here under this Json reply, we are going to have here a property called off JWT token and this
+
+27
+00:02:02,300 --> 00:02:06,590
+‫is going to contain a string which is our Json web token.
+
+28
+00:02:06,590 --> 00:02:12,140
+‫Now we need to somehow store this string in our front end so that we can use it later on.
+
+29
+00:02:12,140 --> 00:02:17,240
+‫Now in our case, we are going to be storing our string in local storage.
+
+30
+00:02:17,240 --> 00:02:23,810
+‫So this is a great place to store data if we want the data to survive browser refreshes, which is our
+
+31
+00:02:23,810 --> 00:02:30,140
+‫case, we want to make sure that if the user refreshes the browser, it can still be correctly authenticated.
+
+32
+00:02:30,140 --> 00:02:34,130
+‫So we don't want just to store the Json web token in memory.
+
+33
+00:02:34,130 --> 00:02:36,890
+‫Instead, let's place it in local storage.
+
+34
+00:02:36,890 --> 00:02:43,190
+‫So local storage is a key value pair that only takes strings as stored values.
+
+35
+00:02:43,190 --> 00:02:48,950
+‫Let's define here the key under which we want to store our authentication Json web token.
+
+36
+00:02:48,950 --> 00:02:57,260
+‫Let's give it the exact same name as we have here of JWT token and let's pass in as the second argument
+
+37
+00:02:57,260 --> 00:03:02,570
+‫to set item the value of the Json web token taken from the reply.
+
+38
+00:03:02,570 --> 00:03:10,220
+‫So now the JWT will be stored in local storage and it will be available to get attached later on to
+
+39
+00:03:10,250 --> 00:03:14,720
+‫subsequent Http requests that our application might make.
+
+40
+00:03:14,750 --> 00:03:20,750
+‫Besides storing the authentication Json web token after a successful login, it's also important to
+
+41
+00:03:20,750 --> 00:03:27,080
+‫delete it after a log out, so the log out in our application is performed using here the log out button
+
+42
+00:03:27,080 --> 00:03:30,830
+‫that is implemented here using the application component.
+
+43
+00:03:30,830 --> 00:03:37,400
+‫So here the log out method is going to get called Whenever we click on the log out button, let's then
+
+44
+00:03:37,400 --> 00:03:39,530
+‫implement our log out logic.
+
+45
+00:03:39,530 --> 00:03:45,290
+‫So the first thing that we are going to do is access local storage and we are going to remove from local
+
+46
+00:03:45,290 --> 00:03:48,380
+‫storage our authentication Json web token.
+
+47
+00:03:48,380 --> 00:03:53,900
+‫Also to give some visual indication to the user that the log out happened correctly.
+
+48
+00:03:53,900 --> 00:03:57,350
+‫Let's go ahead and navigate here to the login page.
+
+49
+00:03:57,350 --> 00:04:00,140
+‫So for that we are going to be needing here the router.
+
+50
+00:04:00,140 --> 00:04:06,410
+‫Let's go ahead and inject it here in our construct here and with the router we can call here, navigate
+
+51
+00:04:06,410 --> 00:04:10,100
+‫by URL and redirect the user to the login page.
+
+52
+00:04:10,100 --> 00:04:13,400
+‫So with this we have our log out logic implemented.
+
+53
+00:04:13,400 --> 00:04:20,690
+‫So now the only thing that we need to do is to attach our authentication Json web token to every Http
+
+54
+00:04:20,690 --> 00:04:23,690
+‫request made after the successful login.
+
+55
+00:04:23,690 --> 00:04:27,950
+‫We are going to be doing that using an angular Http interceptor.
+
+56
+00:04:27,950 --> 00:04:34,640
+‫So if we open here, our route application module, we are going to notice that here we have configured
+
+57
+00:04:34,640 --> 00:04:37,730
+‫a class called an authentication interceptor.
+
+58
+00:04:37,730 --> 00:04:44,360
+‫This class is going to contain some logic that is going to get called with every Http request that we
+
+59
+00:04:44,360 --> 00:04:46,040
+‫make to our backend.
+
+60
+00:04:46,040 --> 00:04:53,480
+‫So this logic here is going to intercept the outgoing request and it's going to potentially modify it.
+
+61
+00:04:53,510 --> 00:04:59,720
+‫We can see that our authentication interceptor, what it's doing here is checking in local storage if
+
+62
+00:04:59,720 --> 00:05:00,560
+‫the authentication.
+
+63
+00:05:00,600 --> 00:05:02,790
+‫Json web token is present or not.
+
+64
+00:05:02,820 --> 00:05:09,990
+‫If it's present, then we are going to clone the outgoing request and we are going to add an extra Http
+
+65
+00:05:10,020 --> 00:05:16,630
+‫header called authorization and we are going to set as its value the Json web token itself.
+
+66
+00:05:16,650 --> 00:05:23,430
+‫On the other hand, if the authentication Json web token is not present in local storage, then we are
+
+67
+00:05:23,430 --> 00:05:28,260
+‫going to let the request go through without any further modification.
+
+68
+00:05:28,260 --> 00:05:35,790
+‫So we only clone the Http request and add the extra authorization header if we have a Json web token
+
+69
+00:05:35,790 --> 00:05:37,050
+‫to attach to it.
+
+70
+00:05:37,050 --> 00:05:44,880
+‫And in this way every request that is done after the initial login request will now contain a new header
+
+71
+00:05:44,880 --> 00:05:48,150
+‫containing our authentication Json web token.
+
+72
+00:05:48,150 --> 00:05:49,890
+‫Let's have a look at this in action.
+
+73
+00:05:49,890 --> 00:05:54,000
+‫We are going to switch to a larger window and we are going to perform a login.
+
+74
+00:05:54,000 --> 00:05:59,670
+‫So if we just reload the application and use the default values here, we should get the correct login
+
+75
+00:05:59,670 --> 00:06:01,420
+‫using the student user.
+
+76
+00:06:01,420 --> 00:06:03,790
+‫Let's keep an eye here on the network log.
+
+77
+00:06:03,790 --> 00:06:10,300
+‫So our login happened and as we can see here, as the result of the login request in the response we
+
+78
+00:06:10,300 --> 00:06:12,730
+‫got back here, a Json web token.
+
+79
+00:06:12,730 --> 00:06:18,370
+‫And now let's confirm that indeed this Json web token was stored in local storage.
+
+80
+00:06:18,370 --> 00:06:23,980
+‫We are going to open here the application tab and we are going to click here under the storage section
+
+81
+00:06:23,980 --> 00:06:25,690
+‫on local storage.
+
+82
+00:06:25,690 --> 00:06:31,210
+‫Let's click here, the Arrow dropdown, and let's click on the local host domain.
+
+83
+00:06:31,210 --> 00:06:35,500
+‫As we can see, we only have here one key stored in local storage.
+
+84
+00:06:35,500 --> 00:06:41,200
+‫It's our authentication Json web token, and we can see here that this indeed corresponds to the value
+
+85
+00:06:41,200 --> 00:06:42,640
+‫of our JWT.
+
+86
+00:06:42,670 --> 00:06:49,690
+‫Next in our network log, we have the request that was done after the successful login, which is the
+
+87
+00:06:49,690 --> 00:06:52,690
+‫request here to slash API slash courses.
+
+88
+00:06:52,690 --> 00:06:58,810
+‫So this is the request done here by the courses screen in order to fetch this list of courses from the
+
+89
+00:06:58,810 --> 00:06:59,470
+‫backend.
+
+90
+00:06:59,500 --> 00:07:06,220
+‫If we click here on this Http request and we select here the headers section, we are going to scroll
+
+91
+00:07:06,220 --> 00:07:10,450
+‫down and we are going to see that here in the request header section.
+
+92
+00:07:10,450 --> 00:07:17,680
+‫We have here an authorization header containing the Json web token attached to it as expected.
+
+93
+00:07:17,680 --> 00:07:24,700
+‫So as we can see, our interceptor already took care of attaching the JWT to the request that was done
+
+94
+00:07:24,700 --> 00:07:26,530
+‫immediately after the login.
+
+95
+00:07:26,530 --> 00:07:28,750
+‫So everything is working as expected.
+
+96
+00:07:28,750 --> 00:07:36,880
+‫So our next step now is to go to the backend and verify that the user is indeed correctly authenticated
+
+97
+00:07:36,910 --> 00:07:39,940
+‫by inspecting the authorization header.
+

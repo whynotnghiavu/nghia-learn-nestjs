@@ -1,0 +1,492 @@
+﻿1
+00:00:03,820 --> 00:00:05,980
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,980 --> 00:00:11,500
+‫In this new lesson, we are going to see how our Nestjs backend is going to react if we try to pass
+
+3
+00:00:11,500 --> 00:00:11,680
+‫it.
+
+4
+00:00:11,680 --> 00:00:16,510
+‫Some invalid data from the point of view of the Mongoose schema definition.
+
+5
+00:00:16,510 --> 00:00:23,110
+‫So if we open here our courses schema, we are going to see that for each property of a course object
+
+6
+00:00:23,110 --> 00:00:25,570
+‫we are defining here an expected type.
+
+7
+00:00:25,570 --> 00:00:31,780
+‫So if we pass in to Mongoose an object that does not follow this particular schema, mongoose is going
+
+8
+00:00:31,780 --> 00:00:32,650
+‫to throw an error.
+
+9
+00:00:32,650 --> 00:00:38,560
+‫However, this schema validation done by Mongoose works in a different way than what you are probably
+
+10
+00:00:38,560 --> 00:00:40,600
+‫used to with SQL databases.
+
+11
+00:00:40,600 --> 00:00:47,410
+‫For example, in Mongoose, if the type of the sequential number variable is a string instead of a number,
+
+12
+00:00:47,410 --> 00:00:51,040
+‫mongoose is not going to automatically throw an error due to that.
+
+13
+00:00:51,040 --> 00:00:55,510
+‫Instead, Mongoose is going to try to cast the string into a number.
+
+14
+00:00:55,510 --> 00:01:01,670
+‫If the cast is successful, the result is still going to be written in the database only if the cast
+
+15
+00:01:01,670 --> 00:01:05,820
+‫between the string and the number fails will then mongoose throw an error.
+
+16
+00:01:05,840 --> 00:01:12,560
+‫Another important difference is what happens if we provide to Mongoose an extra property that is not
+
+17
+00:01:12,560 --> 00:01:14,540
+‫specified here on this list?
+
+18
+00:01:14,540 --> 00:01:20,540
+‫So in the case of a SQL database, if we try to save to a column that does not exist, we are going
+
+19
+00:01:20,540 --> 00:01:21,500
+‫to get an error.
+
+20
+00:01:21,500 --> 00:01:27,590
+‫However, with Mongoose, what will happen is that any properties that are not specified here on this
+
+21
+00:01:27,590 --> 00:01:29,480
+‫schema are going to be ignored.
+
+22
+00:01:29,480 --> 00:01:35,360
+‫But the save is still going to go through and the data is still going to get persisted on the database.
+
+23
+00:01:35,360 --> 00:01:41,930
+‫And those are the two main differences between Mongoose schema validation and the schema validation
+
+24
+00:01:41,930 --> 00:01:43,700
+‫performed by a SQL database.
+
+25
+00:01:43,700 --> 00:01:44,570
+‫For example.
+
+26
+00:01:44,570 --> 00:01:50,090
+‫Let's then try to trigger some schema validation errors and see what is the current behavior of our
+
+27
+00:01:50,090 --> 00:01:50,750
+‫backend.
+
+28
+00:01:50,750 --> 00:01:55,700
+‫We are going to go here to the courses controller and instead of using the update course method that
+
+29
+00:01:55,700 --> 00:01:59,690
+‫we have been using so far, let's instead use create course.
+
+30
+00:01:59,690 --> 00:02:05,870
+‫So here we are going to do an Http post and we're going to be providing a list of properties for a course.
+
+31
+00:02:05,870 --> 00:02:13,550
+‫Let's switch then to our Restlet interface and here I have already selected here the Http post method.
+
+32
+00:02:13,550 --> 00:02:19,790
+‫I'm going to hit here slash api slash courses without an ID appended to the end.
+
+33
+00:02:19,790 --> 00:02:26,450
+‫Now here on the body of the payload, we need to provide some valid Json for a course object.
+
+34
+00:02:26,450 --> 00:02:31,460
+‫Remember the URL property needs to be unique every time that we are creating a course.
+
+35
+00:02:31,460 --> 00:02:37,160
+‫So make sure that you append here some sequential number, for example, in case that you try out this
+
+36
+00:02:37,160 --> 00:02:38,780
+‫request multiple times.
+
+37
+00:02:38,780 --> 00:02:40,850
+‫Let's remember this is a creation request.
+
+38
+00:02:40,850 --> 00:02:46,220
+‫So a new document is going to be inserted in the database if the request is successful.
+
+39
+00:02:46,220 --> 00:02:51,440
+‫Now, notice that in the payload of this course creation request, we have here a series of properties
+
+40
+00:02:51,440 --> 00:02:55,310
+‫that are known to the schema and have a valid type.
+
+41
+00:02:55,310 --> 00:03:00,950
+‫But we also have here a property called Unknown, which is not part of the course schema.
+
+42
+00:03:00,950 --> 00:03:04,880
+‫So let's see what happens whenever we submit this payload.
+
+43
+00:03:04,880 --> 00:03:07,820
+‫Let's also add here an extra modification.
+
+44
+00:03:07,820 --> 00:03:14,990
+‫Let's say that this promotion Boolean field, instead of having here a valid false Boolean value, let's
+
+45
+00:03:14,990 --> 00:03:18,950
+‫instead put in here, for example, the zero value instead.
+
+46
+00:03:18,950 --> 00:03:22,370
+‫So to small issues here on this payload.
+
+47
+00:03:22,370 --> 00:03:25,010
+‫Let's see how Mongoose handles this.
+
+48
+00:03:25,040 --> 00:03:31,490
+‫We're going to click on Send and we are going to see a bit to our surprise maybe, that the request
+
+49
+00:03:31,490 --> 00:03:32,360
+‫went through.
+
+50
+00:03:32,360 --> 00:03:36,650
+‫And we have here a new course that was created on the database.
+
+51
+00:03:36,650 --> 00:03:41,090
+‫Let's go to the database and first confirm that indeed the course is there.
+
+52
+00:03:41,090 --> 00:03:46,490
+‫We are going to grab this URL and we are going to use it to query the courses collection.
+
+53
+00:03:46,490 --> 00:03:53,450
+‫We're going to switch here to the user interface of our cloud database and using here the filter.
+
+54
+00:03:53,450 --> 00:03:59,210
+‫We are going to provide here a filter that tries to find the URL that we have just inserted.
+
+55
+00:03:59,210 --> 00:04:06,410
+‫So the URL with test course dash ten, let's run this query by clicking here on Find and we're going
+
+56
+00:04:06,410 --> 00:04:12,890
+‫to see that indeed our object was inserted in the database and we might not have expected that.
+
+57
+00:04:12,890 --> 00:04:17,390
+‫So first of all, notice that Mongoose ignored the unknown property.
+
+58
+00:04:17,390 --> 00:04:23,780
+‫So if a property is not whitelisted in our schema, then that property is going to be ignored and it's
+
+59
+00:04:23,780 --> 00:04:26,120
+‫not going to be persisted on the database.
+
+60
+00:04:26,120 --> 00:04:30,920
+‫Now, for the case here of the promo field, what happened is a bit different.
+
+61
+00:04:30,920 --> 00:04:38,300
+‫So we took the input value, which was a numeric value zero, and we have casted it into a Boolean.
+
+62
+00:04:38,300 --> 00:04:40,670
+‫So zero is a falsy value.
+
+63
+00:04:40,670 --> 00:04:46,280
+‫So it was casted to false and we ended up having the value false on the database.
+
+64
+00:04:46,280 --> 00:04:53,330
+‫So if the value can still be successfully casted to the target type, Mongoose is still going to save
+
+65
+00:04:53,330 --> 00:04:54,920
+‫the data on the database.
+
+66
+00:04:54,950 --> 00:05:00,320
+‫Notice also that some of the fields are missing, for example, the sequential number type, which we
+
+67
+00:05:00,320 --> 00:05:00,630
+‫would expect.
+
+68
+00:05:00,830 --> 00:05:07,250
+‫To be mandatory is not present, and we end up inserting a course on the database without a sequential
+
+69
+00:05:07,250 --> 00:05:07,640
+‫number.
+
+70
+00:05:07,640 --> 00:05:13,460
+‫So if we want to avoid that here in our schema definition, we are going to go here to the sequential
+
+71
+00:05:13,460 --> 00:05:17,540
+‫number field and we are going to add here a configuration object.
+
+72
+00:05:17,570 --> 00:05:22,460
+‫We are going to define the type of the sequential number field as being a number.
+
+73
+00:05:22,460 --> 00:05:27,260
+‫But besides that, we are also going to mark it here as required.
+
+74
+00:05:27,260 --> 00:05:34,610
+‫So fields in Mongoose by definition are not required now that the sequential number field is required.
+
+75
+00:05:34,610 --> 00:05:40,070
+‫Let's go back here to Restlet and let's try to create here a new course with a different URL, which
+
+76
+00:05:40,070 --> 00:05:46,340
+‫is a unique property in the database, and let's try to create it again without the sequential number
+
+77
+00:05:46,340 --> 00:05:46,700
+‫field.
+
+78
+00:05:46,700 --> 00:05:51,770
+‫So if we click here on Send this time around, we are going to receive here an error.
+
+79
+00:05:51,770 --> 00:05:56,810
+‫And if we inspect here the content of the error response, we are going to see that this is the default
+
+80
+00:05:56,810 --> 00:06:01,290
+‫error response from the fallback Nestjs built in error handler.
+
+81
+00:06:01,290 --> 00:06:06,810
+‫So if we go back here to our workspace and we check the server log, we are going to see that we now
+
+82
+00:06:06,810 --> 00:06:13,650
+‫have here a stack trace in our server saying that the sequential number field is required.
+
+83
+00:06:13,650 --> 00:06:19,650
+‫Now to further understand how schema validation works in Mongoose, let's add here the sequential number
+
+84
+00:06:19,650 --> 00:06:23,640
+‫field, but let's add it as a string instead of a number.
+
+85
+00:06:23,640 --> 00:06:29,670
+‫So let's add here the sequential number property and make sure to add here the comma so that you get
+
+86
+00:06:29,670 --> 00:06:31,530
+‫a valid Json payload.
+
+87
+00:06:31,530 --> 00:06:38,730
+‫And let's add here, for example, the sequential number 20, but under the form of a string and not
+
+88
+00:06:38,730 --> 00:06:39,480
+‫a number.
+
+89
+00:06:39,480 --> 00:06:41,220
+‫Let's now click on Send.
+
+90
+00:06:41,220 --> 00:06:46,380
+‫And this time around the request went through and the document was created on the database.
+
+91
+00:06:46,410 --> 00:06:51,450
+‫Now let's see, what type does this sequence number field have on the database?
+
+92
+00:06:51,450 --> 00:06:56,790
+‫Switching back here to the database console, let's search for the course with this URL.
+
+93
+00:06:56,790 --> 00:07:03,120
+‫Let's hit find and we are going to see that our sequential number field was indeed correctly inserted
+
+94
+00:07:03,120 --> 00:07:04,140
+‫into the database.
+
+95
+00:07:04,140 --> 00:07:08,100
+‫But as you can see, this has been cast into a number.
+
+96
+00:07:08,100 --> 00:07:10,860
+‫So this is no longer under the form of a string.
+
+97
+00:07:10,860 --> 00:07:15,630
+‫So let's remember Mongoose tries to cast the fields to the target types.
+
+98
+00:07:15,630 --> 00:07:18,330
+‫Only if the cast fails, we are going to get an error.
+
+99
+00:07:18,330 --> 00:07:22,920
+‫Let's then try to provide a value that would trigger the cast error.
+
+100
+00:07:22,920 --> 00:07:28,860
+‫Let's say that we try to add here a new course course 12 and this time around, instead of adding here
+
+101
+00:07:28,860 --> 00:07:36,660
+‫as a string, a valid numeric value, let's instead add here some string that cannot be casted into
+
+102
+00:07:36,660 --> 00:07:37,290
+‫a number.
+
+103
+00:07:37,290 --> 00:07:39,420
+‫Let's see what would happen this time around.
+
+104
+00:07:39,420 --> 00:07:44,220
+‫We are going to click on Send and this time around we do get an error.
+
+105
+00:07:44,220 --> 00:07:49,080
+‫So going back here to our workspace and checking the log, we can see that again.
+
+106
+00:07:49,080 --> 00:07:56,610
+‫We have a long stack trace and we have the message cast to number failed for value error for the field
+
+107
+00:07:56,610 --> 00:07:57,840
+‫sequential number.
+
+108
+00:07:57,840 --> 00:08:04,620
+‫So as you can see, Mongoose is validating the schema of the new course object, but is doing it in
+
+109
+00:08:04,620 --> 00:08:07,530
+‫a slightly different way than you might be used to.
+
+110
+00:08:07,530 --> 00:08:13,860
+‫Let's then summarize and keep in mind for this lesson the following points All mongoose fields are optional
+
+111
+00:08:13,890 --> 00:08:17,520
+‫by default, so we need to specifically mark them as required.
+
+112
+00:08:17,550 --> 00:08:23,160
+‫Mongoose will try to cast the value of the fields to the target type that we are defining here.
+
+113
+00:08:23,160 --> 00:08:26,370
+‫And only if the cast fails will Mongoose throw an error.
+
+114
+00:08:26,370 --> 00:08:30,930
+‫Mongoose will also ignore any fields that are not part of this list.
+
+115
+00:08:30,930 --> 00:08:35,910
+‫So a field that is not part of this list is not going to trigger a mongoose error.
+
+116
+00:08:35,910 --> 00:08:39,000
+‫Instead, that property is simply going to be ignored.
+
+117
+00:08:39,030 --> 00:08:44,550
+‫Now that we understand how Mongoose schema validation works, let's then catch these type of errors
+
+118
+00:08:44,550 --> 00:08:50,190
+‫with a new exception filter and let's send a more useful response back to the client.
+
+119
+00:08:50,190 --> 00:08:56,910
+‫Let's remember that so far we have been sending this generic error message status code 500 internal
+
+120
+00:08:56,910 --> 00:08:57,840
+‫server error.
+
+121
+00:08:57,870 --> 00:09:03,480
+‫Let's learn how can we catch this type of mongoose schema, validation errors and any other type of
+
+122
+00:09:03,480 --> 00:09:08,070
+‫similar backend errors that were not explicitly thrown via code?
+
+123
+00:09:08,070 --> 00:09:12,930
+‫And let's see, how can we send back to the client a better error response?
+

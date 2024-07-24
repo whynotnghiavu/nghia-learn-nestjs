@@ -1,0 +1,312 @@
+﻿1
+00:00:03,490 --> 00:00:05,770
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,770 --> 00:00:12,430
+‫In this new lesson, we are going to learn how to use class validator in order to validate an incoming
+
+3
+00:00:12,430 --> 00:00:16,770
+‫Http payload body that contains, for example, a course entity.
+
+4
+00:00:16,780 --> 00:00:22,300
+‫So as you can see, the course entity contains these properties which have been decorated here with
+
+5
+00:00:22,300 --> 00:00:25,750
+‫decorators such as is int, is string, etcetera.
+
+6
+00:00:25,750 --> 00:00:30,880
+‫So these are the decorators that are going to be used to validate an instance of a course.
+
+7
+00:00:30,880 --> 00:00:37,240
+‫We would like that a course object whenever it arrives here, for example at update course or even create
+
+8
+00:00:37,240 --> 00:00:37,720
+‫course.
+
+9
+00:00:37,720 --> 00:00:44,410
+‫We would like that this data here to have been already validated at this point before applying any of
+
+10
+00:00:44,410 --> 00:00:45,850
+‫our controller logic.
+
+11
+00:00:45,850 --> 00:00:51,790
+‫So if there is a validation problem with that data, we are not even going to apply any of the controller
+
+12
+00:00:51,790 --> 00:00:52,180
+‫logic.
+
+13
+00:00:52,180 --> 00:00:57,400
+‫Instead, we are going to immediately send back to the front end an error message that is going to help
+
+14
+00:00:57,400 --> 00:00:59,920
+‫the user understand what went wrong.
+
+15
+00:00:59,920 --> 00:01:05,810
+‫So in order to validate this course input here, what we are going to do is we are going to apply a
+
+16
+00:01:05,810 --> 00:01:12,140
+‫built in nestjs type similar to the two integer type that we built here manually, which is called the
+
+17
+00:01:12,140 --> 00:01:13,430
+‫validation pipe.
+
+18
+00:01:13,430 --> 00:01:18,650
+‫And because we want to apply this to every controller in our application, we are going to declare it
+
+19
+00:01:18,650 --> 00:01:20,030
+‫as a global pipe.
+
+20
+00:01:20,030 --> 00:01:27,170
+‫So we are going to use here app dot use global pipes and here we are going to configure a new instance
+
+21
+00:01:27,170 --> 00:01:29,510
+‫of the built in validation pipe.
+
+22
+00:01:29,510 --> 00:01:36,680
+‫So with this global pipe in place, any inputs in our controllers that are annotated with any of these
+
+23
+00:01:36,680 --> 00:01:43,310
+‫decorators from the class validator package are going to be used to validate the Http request payload.
+
+24
+00:01:43,310 --> 00:01:49,490
+‫However, in order for this to work, we need to make these types not partial instances of a course,
+
+25
+00:01:49,490 --> 00:01:53,060
+‫but we need to make them actual instances of a course.
+
+26
+00:01:53,060 --> 00:01:55,820
+‫Otherwise class validator is not going to work.
+
+27
+00:01:55,820 --> 00:02:00,380
+‫So for example, here in our update course, the same thing applies.
+
+28
+00:02:00,380 --> 00:02:06,950
+‫We need to remove here the use of partial and instead we need to consider this as a complete instance
+
+29
+00:02:06,950 --> 00:02:07,820
+‫of a course.
+
+30
+00:02:07,850 --> 00:02:09,320
+‫Of course at runtime.
+
+31
+00:02:09,320 --> 00:02:11,300
+‫That is not going to be the case here.
+
+32
+00:02:11,300 --> 00:02:16,370
+‫In the case of an update, we are only going to receive the properties that we need to modify on the
+
+33
+00:02:16,370 --> 00:02:17,150
+‫database.
+
+34
+00:02:17,180 --> 00:02:23,000
+‫We can also go ahead and remove the sequential number parameter because it's not being used here in
+
+35
+00:02:23,000 --> 00:02:25,280
+‫the body of our update course method.
+
+36
+00:02:25,280 --> 00:02:29,330
+‫We simply use it to demonstrate the use of the parse int pipe.
+
+37
+00:02:29,330 --> 00:02:35,390
+‫Now we would expect that this changes object should be validated according to this decorators.
+
+38
+00:02:35,390 --> 00:02:36,770
+‫So let's try this out.
+
+39
+00:02:36,770 --> 00:02:43,340
+‫Let's switch here to our Restlet client and let's use here a payload that contains a couple of errors.
+
+40
+00:02:43,340 --> 00:02:49,130
+‫For example, we are going to be using here the sequential number field, which has a non-numeric value.
+
+41
+00:02:49,130 --> 00:02:54,140
+‫And we are also going to use here the promo field with a non boolean value.
+
+42
+00:02:54,170 --> 00:02:59,210
+‫We are also using here the description field which contains a valid string value.
+
+43
+00:02:59,210 --> 00:03:02,330
+‫So let's submit this request and see what happens.
+
+44
+00:03:02,330 --> 00:03:07,280
+‫So as you can see, the response that we got back was a 400 bad request.
+
+45
+00:03:07,280 --> 00:03:14,060
+‫It was created by the Http exception filter, and we have here a series of error messages.
+
+46
+00:03:14,060 --> 00:03:15,290
+‫So let's open one.
+
+47
+00:03:15,290 --> 00:03:20,990
+‫We can see that it's targeting the field sequence number and we have here the constraint that this should
+
+48
+00:03:20,990 --> 00:03:22,580
+‫be a mongo ID.
+
+49
+00:03:22,760 --> 00:03:24,740
+‫Let's have a look at the second message.
+
+50
+00:03:24,740 --> 00:03:27,230
+‫It's targeting property sequential number.
+
+51
+00:03:27,230 --> 00:03:31,580
+‫Here we are targeting the URL, the icon URL and so forth.
+
+52
+00:03:31,580 --> 00:03:38,510
+‫So all of the decorators have been used in order to validate our input payload and that resulted in
+
+53
+00:03:38,510 --> 00:03:43,670
+‫our validation pipe to throw an error, which is a subclass of Http exception.
+
+54
+00:03:43,670 --> 00:03:50,960
+‫So that causes our Http exception filter to get triggered and build this error response for us.
+
+55
+00:03:50,990 --> 00:03:56,330
+‫Now, this payload here, it's still not very useful for our frontend client, so we are going to see
+
+56
+00:03:56,330 --> 00:03:59,000
+‫how to build a better response in a moment.
+
+57
+00:03:59,000 --> 00:04:01,310
+‫Right now let's focus on the following.
+
+58
+00:04:01,340 --> 00:04:07,850
+‫As we can see, all the properties are getting validated and this is because we have not made the properties
+
+59
+00:04:07,850 --> 00:04:08,630
+‫optional.
+
+60
+00:04:08,630 --> 00:04:15,110
+‫So instead of making every single property optional here in the definition of our schema, let's instead
+
+61
+00:04:15,110 --> 00:04:19,190
+‫configure our validation pipe to ignore any missing properties.
+
+62
+00:04:19,190 --> 00:04:25,670
+‫So let's pass in here a configuration object and we are going to set the skip missing properties property
+
+63
+00:04:25,670 --> 00:04:26,510
+‫to true.
+
+64
+00:04:26,510 --> 00:04:28,070
+‫Let's now try this out.
+
+65
+00:04:28,070 --> 00:04:32,420
+‫So going back here to our Restlet client, let's submit again the request.
+
+66
+00:04:32,420 --> 00:04:36,350
+‫It's still in error, but this time around we only get two errors.
+
+67
+00:04:36,350 --> 00:04:41,600
+‫One targeting the sequential number field and the other targeting the promotional field.
+
+68
+00:04:41,600 --> 00:04:47,660
+‫So this means that these two fields were correctly marked as in error, but the description field went
+
+69
+00:04:47,660 --> 00:04:53,930
+‫through without any problem and the other missing properties in our request did not trigger an error.
+
+70
+00:04:53,960 --> 00:04:57,200
+‫As we can see, our validation pipe is working correctly.
+
+71
+00:04:57,200 --> 00:05:00,710
+‫But the error response that we get here is not exactly what.
+
+72
+00:05:00,840 --> 00:05:01,400
+‫We want.
+
+73
+00:05:01,410 --> 00:05:07,110
+‫So again, we are going to customize the error response for the specific case of validation errors.
+
+74
+00:05:07,110 --> 00:05:11,970
+‫So just like before, we are going to customize the error response for validation errors and we are
+
+75
+00:05:11,970 --> 00:05:13,860
+‫going to do this in three steps.
+
+76
+00:05:13,860 --> 00:05:17,640
+‫We are going to have the validation pipe, throw a custom exception.
+
+77
+00:05:17,640 --> 00:05:23,280
+‫We are going to define that exception ourselves as a subclass of Http exception, and we are going to
+
+78
+00:05:23,280 --> 00:05:29,490
+‫create a specific validation exception filter to properly format this type of messages.
+

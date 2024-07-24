@@ -1,0 +1,384 @@
+﻿1
+00:00:03,970 --> 00:00:06,280
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,280 --> 00:00:12,370
+‫In this new lesson, we are going to take an existing Nestjs rest endpoint and we are going to secure
+
+3
+00:00:12,370 --> 00:00:16,600
+‫it by making it only available to authenticated users.
+
+4
+00:00:16,600 --> 00:00:21,970
+‫We are going to take this particular rest endpoint, which is part of the courses controller.
+
+5
+00:00:22,000 --> 00:00:27,160
+‫The find all courses endpoint, which is an Http get endpoint.
+
+6
+00:00:27,160 --> 00:00:31,450
+‫So this is the endpoint that gets triggered whenever we load here.
+
+7
+00:00:31,450 --> 00:00:38,470
+‫The all courses screen In the previous lesson we have added to our back end a get user middleware that
+
+8
+00:00:38,470 --> 00:00:45,040
+‫is going to extract the user profile from the Json web token attached to the request if the user is
+
+9
+00:00:45,040 --> 00:00:45,880
+‫authenticated.
+
+10
+00:00:45,880 --> 00:00:53,050
+‫So now all that we need to do is to add the logic to our back end that denies access to this endpoint
+
+11
+00:00:53,050 --> 00:00:56,590
+‫in case that the user profile is not present.
+
+12
+00:00:56,620 --> 00:01:03,470
+‫We are not going to add this logic directly here in the get user middleware because there could be different
+
+13
+00:01:03,470 --> 00:01:10,430
+‫types of back end endpoints in our application that might need the user information while still being
+
+14
+00:01:10,430 --> 00:01:13,850
+‫publicly accessible by unauthenticated users.
+
+15
+00:01:13,850 --> 00:01:20,720
+‫So we want to separate the functionality of allowing or denying access to an endpoint from the functionality
+
+16
+00:01:20,720 --> 00:01:28,280
+‫of extracting the user profile from the Http request in order to allow or deny access to a rest endpoint,
+
+17
+00:01:28,310 --> 00:01:31,580
+‫we are going to be introducing a new Nestjs concept.
+
+18
+00:01:31,580 --> 00:01:34,100
+‫We are going to use the notion of a guard.
+
+19
+00:01:34,100 --> 00:01:42,620
+‫So a guard is a service that has only one responsibility, which is to allow or deny access to a particular
+
+20
+00:01:42,620 --> 00:01:43,430
+‫endpoint.
+
+21
+00:01:43,430 --> 00:01:46,550
+‫So guards in our system are going to get executed.
+
+22
+00:01:46,550 --> 00:01:55,070
+‫After all, the middleware chain has completed and before the code of the endpoint gets executed, let's
+
+23
+00:01:55,070 --> 00:01:58,880
+‫then write our first guard, which is going to be the authentication guard.
+
+24
+00:01:58,880 --> 00:02:04,400
+‫And because this is generic functionality that might be used in any module of our application, we are
+
+25
+00:02:04,400 --> 00:02:09,230
+‫going to add our guards here directly on the root folder of our backend.
+
+26
+00:02:09,230 --> 00:02:16,910
+‫Let's create a new directory called Guards and let's create here a new file called Authentication Guards.
+
+27
+00:02:16,940 --> 00:02:23,450
+‫Let's now define our guard service, which as usual is going to be a plain TypeScript class annotated
+
+28
+00:02:23,450 --> 00:02:27,080
+‫with the injectable decorator from Nestjs.
+
+29
+00:02:27,110 --> 00:02:31,430
+‫A guard needs to implement the Can activate interface.
+
+30
+00:02:31,430 --> 00:02:37,730
+‫Let's go ahead and import this interface and make sure that you import the correct can activate interface
+
+31
+00:02:37,730 --> 00:02:41,600
+‫from Nestjs common and not from the angular router.
+
+32
+00:02:41,600 --> 00:02:47,600
+‫So again, this is a similar concept to what we have in the angular front end, but this time around
+
+33
+00:02:47,600 --> 00:02:49,910
+‫we are reusing it in our back end.
+
+34
+00:02:49,940 --> 00:02:55,220
+‫The can activate guard only has one method which is called can activate.
+
+35
+00:02:55,220 --> 00:03:01,310
+‫It's going to receive here as an input parameter and execution context and we are going to be returning
+
+36
+00:03:01,310 --> 00:03:03,590
+‫here several types of values.
+
+37
+00:03:03,590 --> 00:03:07,670
+‫We can return a promise, we can return a Boolean, we can return an observable.
+
+38
+00:03:07,670 --> 00:03:11,930
+‫In our case, we are simply going to be returning a boolean value.
+
+39
+00:03:11,930 --> 00:03:17,720
+‫That is going to be true if the endpoint can be reached by a given Http request.
+
+40
+00:03:17,720 --> 00:03:23,540
+‫If the access to the endpoint is denied, then we need to return here the value false.
+
+41
+00:03:23,570 --> 00:03:28,550
+‫Now this guard is not going to be applied to all the endpoints in our application.
+
+42
+00:03:28,550 --> 00:03:34,460
+‫We are going to learn further on how to selectively apply it to only certain endpoints that we want
+
+43
+00:03:34,460 --> 00:03:35,330
+‫to protect.
+
+44
+00:03:35,330 --> 00:03:38,270
+‫Let's then implement our authentication logic.
+
+45
+00:03:38,270 --> 00:03:43,550
+‫We are going to start by retrieving here the host from the execution context.
+
+46
+00:03:43,550 --> 00:03:49,190
+‫And from here we are going to grab a reference to the ongoing Http request.
+
+47
+00:03:49,220 --> 00:03:55,640
+‫Now, with the request, we can go ahead and see if we have a user profile attached to the request or
+
+48
+00:03:55,640 --> 00:03:56,060
+‫not.
+
+49
+00:03:56,090 --> 00:04:02,090
+‫We are going to define here a constant named user and we are going to access the request object.
+
+50
+00:04:02,090 --> 00:04:05,360
+‫And from there we are going to grab the user property.
+
+51
+00:04:05,390 --> 00:04:12,710
+‫Now, if there is no user property defined, then this means that this is an anonymous Http request
+
+52
+00:04:12,740 --> 00:04:16,310
+‫with no authentication information attached to it.
+
+53
+00:04:16,340 --> 00:04:23,000
+‫We cannot know from which user this request is coming from now because the authentication guard should
+
+54
+00:04:23,000 --> 00:04:29,690
+‫only grant access if the user is correctly authenticated, then in this case we are going to prevent
+
+55
+00:04:29,690 --> 00:04:35,780
+‫access to the protected endpoint by throwing here a new unauthorized exception.
+
+56
+00:04:35,780 --> 00:04:40,820
+‫Let's also add here some logging so that we can see in the console what is going on.
+
+57
+00:04:40,820 --> 00:04:47,780
+‫Notice that here in the authentication guard we are not again validating the JWT checking the signature.
+
+58
+00:04:47,780 --> 00:04:48,470
+‫ET cetera.
+
+59
+00:04:48,470 --> 00:04:53,720
+‫That was already done here in our implementation of the get user middleware.
+
+60
+00:04:53,720 --> 00:04:57,380
+‫So the middleware is going to run before the authentication guard.
+
+61
+00:04:57,380 --> 00:05:00,680
+‫So if we got here and there is a user property.
+
+62
+00:05:00,710 --> 00:05:07,910
+‫Present, then we are sure that this is a valid user profile coming from a correctly signed JWT token
+
+63
+00:05:07,910 --> 00:05:14,270
+‫that could only have been granted to the user if the user provided the correct password to our login
+
+64
+00:05:14,270 --> 00:05:15,230
+‫endpoint.
+
+65
+00:05:15,260 --> 00:05:21,710
+‫At this point in the program, after this if condition, we know that the user is correctly authenticated
+
+66
+00:05:21,710 --> 00:05:24,980
+‫and that it can access the protected endpoints.
+
+67
+00:05:24,980 --> 00:05:30,020
+‫So let's go ahead and add here some logging saying that the user is authenticated and we are going to
+
+68
+00:05:30,020 --> 00:05:34,370
+‫allow access and to allow the access we need to return here.
+
+69
+00:05:34,370 --> 00:05:40,100
+‫The value true now that we have our authentication guard in place, we just have to apply it here to
+
+70
+00:05:40,100 --> 00:05:41,360
+‫our endpoint.
+
+71
+00:05:41,360 --> 00:05:49,790
+‫So one way of doing it is to use the use guard's decorator from Nestjs and to it we can pass several
+
+72
+00:05:49,790 --> 00:05:50,360
+‫guards.
+
+73
+00:05:50,360 --> 00:05:55,970
+‫Let's go ahead and pass here the constructor function of our authentication guard.
+
+74
+00:05:55,970 --> 00:06:02,280
+‫If we use the decorator here at the level of the method, then this guard is going to get applied specifically
+
+75
+00:06:02,280 --> 00:06:09,480
+‫only to this endpoint If we want instead to apply this guard to the whole controller, then we can apply
+
+76
+00:06:09,480 --> 00:06:12,210
+‫it here at the level of the class instead.
+
+77
+00:06:12,210 --> 00:06:14,970
+‫Let's now have a look at this guard in action.
+
+78
+00:06:14,970 --> 00:06:19,560
+‫So we're going to switch here to a larger window and we are going to log out our user.
+
+79
+00:06:19,560 --> 00:06:25,560
+‫So this is going to remove the Json web token from local storage and we will now have to log in again.
+
+80
+00:06:25,590 --> 00:06:32,490
+‫Now, before logging in, let's go ahead and confirm that our endpoint is protected and only accessible
+
+81
+00:06:32,490 --> 00:06:34,080
+‫to authenticated users.
+
+82
+00:06:34,080 --> 00:06:39,270
+‫So we are going to click here on the courses screen and let's keep an eye here on the network log.
+
+83
+00:06:39,270 --> 00:06:43,410
+‫We can see that a loading indicator is still spinning, so that's a good sign.
+
+84
+00:06:43,410 --> 00:06:45,420
+‫It means that something went wrong.
+
+85
+00:06:45,420 --> 00:06:51,570
+‫We can see here that the slash API slash course is get request got back a 401.
+
+86
+00:06:51,600 --> 00:06:53,520
+‫Unauthorized as expected.
+
+87
+00:06:53,520 --> 00:06:58,950
+‫So as we can see, the access to this endpoint is denied to an unauthenticated user.
+
+88
+00:06:58,950 --> 00:07:03,000
+‫Now let's confirm that this is still visible for logged in users.
+
+89
+00:07:03,000 --> 00:07:06,930
+‫We are going to go to the login screen and we are going to click here on login.
+
+90
+00:07:06,930 --> 00:07:13,950
+‫So as we can see after the login, we got back a new Json web token that got attached to this request
+
+91
+00:07:13,950 --> 00:07:15,090
+‫sent to the backend.
+
+92
+00:07:15,090 --> 00:07:20,250
+‫And this time around our request went through and we have here the list of courses.
+
+93
+00:07:20,250 --> 00:07:25,530
+‫So as you can see, our authentication guard is working correctly as expected.
+
+94
+00:07:25,530 --> 00:07:29,070
+‫Next we are going to learn how to take this a step further.
+
+95
+00:07:29,070 --> 00:07:33,450
+‫Besides handling authentication, let's also handle authorization.
+
+96
+00:07:33,450 --> 00:07:39,510
+‫We want to make sure that certain endpoints are only accessible to users with certain roles.
+

@@ -1,0 +1,472 @@
+﻿1
+00:00:03,760 --> 00:00:06,190
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,190 --> 00:00:11,260
+‫In this new lesson, we are going to quickly create our first Nestjs endpoint.
+
+3
+00:00:11,260 --> 00:00:16,240
+‫So we are going to be doing the typical Hello world example in Nestjs.
+
+4
+00:00:16,240 --> 00:00:22,120
+‫So for that we are going to be doing our development always inside the rest API folder.
+
+5
+00:00:22,120 --> 00:00:24,520
+‫So here is where everything happens.
+
+6
+00:00:24,520 --> 00:00:29,140
+‫We are going to be defining our multiple endpoints inside this folder.
+
+7
+00:00:29,140 --> 00:00:35,110
+‫Now the rest of the application that you see here, for example, the source folder here at the root
+
+8
+00:00:35,110 --> 00:00:40,450
+‫of our repository is going to contain the front end application that we are using here.
+
+9
+00:00:40,450 --> 00:00:47,050
+‫On the right part of our screen, we will be querying our Rest API using the sample application.
+
+10
+00:00:47,050 --> 00:00:54,100
+‫But the Nestjs part that we are focusing on in this course is going to always be inside the rest API
+
+11
+00:00:54,190 --> 00:00:54,850
+‫folder.
+
+12
+00:00:54,850 --> 00:00:58,600
+‫So it's here that we need to do our Hello world example.
+
+13
+00:00:58,600 --> 00:01:04,190
+‫Let's then start by creating here a new sub folder which is going to be the source folder.
+
+14
+00:01:04,190 --> 00:01:05,090
+‫Inside it.
+
+15
+00:01:05,090 --> 00:01:11,960
+‫We are going to write the entry point of our application, which is going to be the file called Main.ts.
+
+16
+00:01:11,990 --> 00:01:18,620
+‫And it's important that you use this exact name inside here we are going to bootstrap our rest back
+
+17
+00:01:18,620 --> 00:01:20,810
+‫end server using Nestjs.
+
+18
+00:01:20,810 --> 00:01:25,700
+‫For that we are going to be needing here a new function that is going to return a promise.
+
+19
+00:01:25,700 --> 00:01:31,220
+‫So we are going to mark it as an async function and we are going to be calling this function simply
+
+20
+00:01:31,220 --> 00:01:32,210
+‫bootstrap.
+
+21
+00:01:32,210 --> 00:01:35,060
+‫Let's go ahead and call it here directly.
+
+22
+00:01:35,060 --> 00:01:41,270
+‫So whenever our program starts up, we are sure that the bootstrap function is going to get executed.
+
+23
+00:01:41,270 --> 00:01:44,330
+‫Now here is how we are going to initialize our application.
+
+24
+00:01:44,330 --> 00:01:51,200
+‫We are going to call the class nest factory and from here we are going to call the static method create.
+
+25
+00:01:51,230 --> 00:01:57,170
+‫Here we are going to be providing the root module of our Nestjs application.
+
+26
+00:01:57,170 --> 00:01:59,300
+‫Now what is the root module?
+
+27
+00:01:59,300 --> 00:02:03,710
+‫It's something very similar to the root module of our front end application.
+
+28
+00:02:03,710 --> 00:02:08,000
+‫So going here to the front end part of our application, we are going to see that.
+
+29
+00:02:08,000 --> 00:02:13,220
+‫We also have here an application root module called app module.
+
+30
+00:02:13,220 --> 00:02:18,230
+‫So our backend is going to follow a similar structure as our front end.
+
+31
+00:02:18,260 --> 00:02:24,920
+‫It's also going to be using dependency injection just like we are doing here with the Angular framework
+
+32
+00:02:24,920 --> 00:02:27,710
+‫and it's also going to have a root module.
+
+33
+00:02:27,710 --> 00:02:34,730
+‫We are also going to be able to split up our backend into multiple feature modules like we usually do
+
+34
+00:02:34,730 --> 00:02:36,220
+‫in our front end.
+
+35
+00:02:36,230 --> 00:02:42,530
+‫Going back here to our rest API folder, this means that next to the Main.ts file we are going to be
+
+36
+00:02:42,530 --> 00:02:47,990
+‫creating here a new file that we are also going to call App.module.ts.
+
+37
+00:02:47,990 --> 00:02:53,780
+‫So this file is going to contain the root module of our Nestjs application.
+
+38
+00:02:53,780 --> 00:03:00,050
+‫Let's then define here a new class and we are going to call it app module, just like we did in the
+
+39
+00:03:00,050 --> 00:03:00,860
+‫front end.
+
+40
+00:03:00,890 --> 00:03:06,070
+‫Now we need to annotate this class and mark it as a nestjs module.
+
+41
+00:03:06,070 --> 00:03:14,020
+‫Now it's very important that when you import the module decorator that you import it here from the Nestjs
+
+42
+00:03:14,440 --> 00:03:15,580
+‫common package.
+
+43
+00:03:15,580 --> 00:03:21,040
+‫So if you apply here, the module decorator from Angular, this will not work.
+
+44
+00:03:21,040 --> 00:03:28,690
+‫So the module decorator from Nestjs implements a similar concept to the module decorator in Angular.
+
+45
+00:03:28,690 --> 00:03:35,920
+‫It allows us to define units of our application that are self-contained, but it's a different decorator
+
+46
+00:03:35,920 --> 00:03:37,630
+‫coming from a different package.
+
+47
+00:03:37,630 --> 00:03:42,250
+‫It just happens to have the same name because it implements the same concept.
+
+48
+00:03:42,250 --> 00:03:43,810
+‫But on the backend.
+
+49
+00:03:43,840 --> 00:03:49,540
+‫Now here we are going to be providing a configuration object that we're going to be populating later
+
+50
+00:03:49,540 --> 00:03:50,800
+‫on in the course.
+
+51
+00:03:50,800 --> 00:03:56,710
+‫This configuration object takes the same properties as an angular frontend module such as imports,
+
+52
+00:03:56,710 --> 00:03:58,840
+‫exports, providers, etcetera.
+
+53
+00:03:58,840 --> 00:04:04,400
+‫And we also have here a special property named controllers that we are going to be using in a moment.
+
+54
+00:04:04,400 --> 00:04:10,730
+‫Right now we want to take this application module and we want to use it to bootstrap our application.
+
+55
+00:04:10,730 --> 00:04:15,200
+‫So we are going to pass this root module here to the call to create.
+
+56
+00:04:15,230 --> 00:04:20,960
+‫Now notice this because there are similarly named files both on the front end and on the back end.
+
+57
+00:04:20,990 --> 00:04:24,860
+‫It's important that you always import the correct file.
+
+58
+00:04:24,860 --> 00:04:32,330
+‫So I want to import the app module file from the same directory where I have here my main dot ts file.
+
+59
+00:04:32,330 --> 00:04:37,610
+‫If we would import the module from the angular front end, our program would not work.
+
+60
+00:04:37,610 --> 00:04:41,480
+‫So please always double check your imports throughout the course.
+
+61
+00:04:41,480 --> 00:04:49,130
+‫Now here in the return from the create call we are going to receive here the express instance of our
+
+62
+00:04:49,130 --> 00:04:49,790
+‫application.
+
+63
+00:04:49,790 --> 00:04:52,670
+‫Let's assign it here to the app variable.
+
+64
+00:04:52,670 --> 00:04:59,480
+‫So if you don't know express, it's a web framework that is used under the hood by nestjs.
+
+65
+00:04:59,510 --> 00:05:00,470
+‫Notice that you.
+
+66
+00:05:00,530 --> 00:05:03,740
+‫Don't need to know express in order to use nestjs.
+
+67
+00:05:03,770 --> 00:05:07,940
+‫Now, the return here of the Create call is going to return a promise.
+
+68
+00:05:07,940 --> 00:05:14,750
+‫So in order to get here, the app reference we need to await here for the result of this promise.
+
+69
+00:05:14,780 --> 00:05:20,030
+‫If we have a look here at what we have available under the app variable, we are going to see that we
+
+70
+00:05:20,030 --> 00:05:24,550
+‫have, for example, app dot use, which is an express specific API.
+
+71
+00:05:24,560 --> 00:05:28,430
+‫We could use it here, for example, for defining custom express Middlewares.
+
+72
+00:05:28,430 --> 00:05:29,180
+‫ET cetera.
+
+73
+00:05:29,180 --> 00:05:31,460
+‫So this is just something to bear in mind.
+
+74
+00:05:31,460 --> 00:05:35,330
+‫But in this course we are not going to be using express APIs.
+
+75
+00:05:35,330 --> 00:05:40,230
+‫We are going to do everything using the Nestjs object oriented APIs.
+
+76
+00:05:40,250 --> 00:05:46,910
+‫Now that we have here a reference to our application, we just need to start our rest backend server.
+
+77
+00:05:46,910 --> 00:05:52,340
+‫So here we are going to be calling app Dot Listen and we are going to specify a port number.
+
+78
+00:05:52,340 --> 00:05:58,340
+‫We are going to be using port 9000 and it's important that you use this specific port number.
+
+79
+00:05:58,340 --> 00:06:05,460
+‫We are going to await for the result of this promise to resolve to make sure that our server is running
+
+80
+00:06:05,460 --> 00:06:08,100
+‫whenever the bootstrap function returns.
+
+81
+00:06:08,100 --> 00:06:14,250
+‫So this means that here at this point in the program we are going to be listening here for Http requests
+
+82
+00:06:14,250 --> 00:06:16,620
+‫incoming on Port 9000.
+
+83
+00:06:16,620 --> 00:06:20,070
+‫And with this we have the initial version of our server.
+
+84
+00:06:20,070 --> 00:06:26,160
+‫We have not yet implemented the Hello World functionality, but we are now going to compile our server
+
+85
+00:06:26,160 --> 00:06:30,870
+‫and we are going to run it just to make sure that the setup on your machine is correct.
+
+86
+00:06:30,870 --> 00:06:36,270
+‫So let's head over here to the terminal and we are going to make sure that we are in the correct directory.
+
+87
+00:06:36,270 --> 00:06:42,330
+‫So everything in this course is happening inside the rest API directory.
+
+88
+00:06:42,330 --> 00:06:46,410
+‫So make sure that you are inside this specific directory.
+
+89
+00:06:46,410 --> 00:06:53,940
+‫So here we are going to be compiling our server code by running the command NPM run build.
+
+90
+00:06:53,940 --> 00:06:59,520
+‫When we run this command, we are going to be running this build configuration file which is going to
+
+91
+00:06:59,520 --> 00:07:04,920
+‫output the result of the compilation happen inside this dist folder here.
+
+92
+00:07:04,920 --> 00:07:08,550
+‫So it's the dist folder inside the rest API.
+
+93
+00:07:08,730 --> 00:07:15,390
+‫Inside this specific folder we are going to find here, the result of the compilation of our server.
+
+94
+00:07:15,390 --> 00:07:21,360
+‫We can see here that we have a source directory and inside it we have a main.js file.
+
+95
+00:07:21,360 --> 00:07:24,330
+‫So this is the entry point of our program.
+
+96
+00:07:24,330 --> 00:07:32,190
+‫If we now see the into the this directory and from here, if we do a CD into source directory, we are
+
+97
+00:07:32,190 --> 00:07:35,310
+‫going to get here a main.js file.
+
+98
+00:07:35,310 --> 00:07:40,950
+‫You can see that we also have here the source maps and the TypeScript type definitions for the files.
+
+99
+00:07:40,950 --> 00:07:42,930
+‫This is normal and expected.
+
+100
+00:07:42,930 --> 00:07:48,780
+‫So what we want to do here in this folder is to run the main dot JS file.
+
+101
+00:07:48,780 --> 00:07:52,650
+‫Let's use Node and let's run main dot JS.
+
+102
+00:07:52,650 --> 00:07:57,810
+‫So once we run this command, we are going to see that our server is now running.
+
+103
+00:07:57,810 --> 00:08:02,340
+‫We have here a Nest application running on port 9000.
+
+104
+00:08:02,430 --> 00:08:04,950
+‫Let's see if indeed we have here something running.
+
+105
+00:08:04,950 --> 00:08:10,290
+‫We are going to open here a second tab and we are going to access port 9000.
+
+106
+00:08:10,290 --> 00:08:14,580
+‫So as we can see, we have indeed here an Http server running.
+
+107
+00:08:14,580 --> 00:08:20,970
+‫We are now getting the default reply from Nestjs whenever something is not found, which is a status
+
+108
+00:08:20,970 --> 00:08:26,640
+‫code of 404 not found and the default message cannot get the root URL.
+
+109
+00:08:26,670 --> 00:08:32,670
+‫This is normal because we have not yet defined any controllers for our application and we're going to
+
+110
+00:08:32,670 --> 00:08:34,380
+‫do that in the next lesson.
+
+111
+00:08:34,380 --> 00:08:41,760
+‫Notice that if you don't have a plugin in your browser in order to display Json in a nicely formatted
+
+112
+00:08:41,760 --> 00:08:44,010
+‫way, you are going to receive this response.
+
+113
+00:08:44,010 --> 00:08:50,550
+‫Instead, in plain text I advise you to install the same plugin as I have installed here for viewing
+
+114
+00:08:50,550 --> 00:08:52,050
+‫Json in your browser.
+
+115
+00:08:52,050 --> 00:08:58,320
+‫It's this plugin, the Json formatter Chrome plugin, and with this we have confirmed that the initial
+
+116
+00:08:58,320 --> 00:09:01,260
+‫version of our server is indeed working correctly.
+
+117
+00:09:01,260 --> 00:09:06,630
+‫Let's for the moment stop it and start implementing our first rest endpoint.
+
+118
+00:09:06,660 --> 00:09:10,200
+‫We are going to be writing our first Nestjs controller.
+

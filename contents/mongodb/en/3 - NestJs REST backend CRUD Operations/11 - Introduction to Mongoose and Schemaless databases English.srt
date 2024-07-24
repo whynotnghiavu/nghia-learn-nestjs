@@ -1,0 +1,276 @@
+﻿1
+00:00:03,790 --> 00:00:05,900
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,920 --> 00:00:11,500
+‫In the last few lessons, we have set up our MongoDB database and we have populated it with some data
+
+3
+00:00:11,500 --> 00:00:13,990
+‫that we will be displaying here on the screen.
+
+4
+00:00:13,990 --> 00:00:21,400
+‫So the data is coming from this DB data file that contains here some test data with courses and lessons.
+
+5
+00:00:21,430 --> 00:00:27,970
+‫Now in our courses controller, instead of fetching our data directly from the test file, we are now
+
+6
+00:00:27,970 --> 00:00:30,770
+‫going to query the MongoDB database.
+
+7
+00:00:30,790 --> 00:00:36,010
+‫Now we could do this using the MongoDB package that you already have installed.
+
+8
+00:00:36,010 --> 00:00:42,230
+‫So this is the MongoDB official driver package that allows us to query the database.
+
+9
+00:00:42,250 --> 00:00:47,890
+‫Now, instead of using the MongoDB package directly, we are going to use a more convenient API.
+
+10
+00:00:47,920 --> 00:00:52,960
+‫We are going to be using mongoose that you can see at Mongoose Wjz.com.
+
+11
+00:00:52,960 --> 00:00:57,910
+‫So this is an object modeling package for MongoDB and Node.
+
+12
+00:00:57,910 --> 00:01:00,430
+‫So what does this do exactly?
+
+13
+00:01:00,430 --> 00:01:06,020
+‫This is a way of interacting with MongoDB that is closer to what you are used to.
+
+14
+00:01:06,050 --> 00:01:13,100
+‫If you have been using something such as, for example, an ORM or an object relational mapping library.
+
+15
+00:01:13,100 --> 00:01:14,600
+‫So this is the equivalent.
+
+16
+00:01:14,600 --> 00:01:19,280
+‫But for MongoDB, so MongoDB is not a relational database.
+
+17
+00:01:19,280 --> 00:01:21,410
+‫Instead it's a document database.
+
+18
+00:01:21,410 --> 00:01:28,310
+‫So the documents that we have here in our collections don't have a fixed structure, unlike typical
+
+19
+00:01:28,790 --> 00:01:29,330
+‫tables.
+
+20
+00:01:29,330 --> 00:01:37,760
+‫So if I edit here a document, I could potentially add here a new field that is not any of these fields
+
+21
+00:01:37,760 --> 00:01:38,300
+‫here.
+
+22
+00:01:38,300 --> 00:01:44,210
+‫So let's create here a new field called Test Field and let's fill it in with some data.
+
+23
+00:01:44,210 --> 00:01:50,630
+‫So as we can see, if we click now on update, this particular document in the MongoDB database has
+
+24
+00:01:50,630 --> 00:01:53,450
+‫a field that no other document contains.
+
+25
+00:01:53,450 --> 00:01:56,840
+‫So the MongoDB database is schemaless.
+
+26
+00:01:56,840 --> 00:02:04,040
+‫There is nothing at the level of the database itself ensuring that a given collection only has documents
+
+27
+00:02:04,040 --> 00:02:06,800
+‫with a certain predefined number of fields.
+
+28
+00:02:06,800 --> 00:02:09,950
+‫So this has advantages and disadvantages.
+
+29
+00:02:09,950 --> 00:02:16,310
+‫One of the advantages compared to SQL databases is that we will never run into the problem of having
+
+30
+00:02:16,310 --> 00:02:22,730
+‫to bring our production database down in order to run, for example, an altar colon statement to add
+
+31
+00:02:22,730 --> 00:02:29,690
+‫a new column that in a table with, let's say, 70 or 100 million records could take several hours with
+
+32
+00:02:29,690 --> 00:02:30,920
+‫the MongoDB database.
+
+33
+00:02:30,920 --> 00:02:32,360
+‫This will never happen.
+
+34
+00:02:32,390 --> 00:02:38,930
+‫On the other hand, there is the trade off that potentially our program could insert data into the database
+
+35
+00:02:38,930 --> 00:02:41,690
+‫that is an intended, for example, due to a bug.
+
+36
+00:02:41,690 --> 00:02:47,210
+‫So let's edit here again this field and let's remove this test field.
+
+37
+00:02:47,210 --> 00:02:48,890
+‫This is actually quite important.
+
+38
+00:02:48,890 --> 00:02:54,680
+‫If you don't do this, your program might crash later on because we are going to be adding some schema
+
+39
+00:02:54,680 --> 00:02:59,420
+‫like capability on the client by using the Mongoose library.
+
+40
+00:02:59,420 --> 00:03:06,470
+‫So the Mongoose library is going to allow us to write our program, ensuring that objects belonging
+
+41
+00:03:06,500 --> 00:03:12,920
+‫to a certain category such as, for example, courses or lessons, always follow a given schema so we
+
+42
+00:03:12,920 --> 00:03:15,620
+‫can get some sort of equivalent schema functionality.
+
+43
+00:03:15,620 --> 00:03:20,600
+‫But on the client that is querying the database and not on the database itself.
+
+44
+00:03:20,600 --> 00:03:26,690
+‫Now implementing this on the client does not ensure the security of the data, but it's a great way
+
+45
+00:03:26,690 --> 00:03:27,740
+‫for avoiding that.
+
+46
+00:03:27,740 --> 00:03:30,650
+‫Unintended bugs corrupt our database.
+
+47
+00:03:30,650 --> 00:03:33,560
+‫So let's have a look here at the Mongoose API.
+
+48
+00:03:33,770 --> 00:03:38,330
+‫When we initialize here the Mongoose package, we need to pass it a connection string.
+
+49
+00:03:38,360 --> 00:03:44,180
+‫As you can see, it's a promise based API and we can use it for defining data models.
+
+50
+00:03:44,180 --> 00:03:50,240
+‫For example, here we are defining the cat model, which only has one field, which is a string.
+
+51
+00:03:50,240 --> 00:03:52,490
+‫So as you can see, we can be very specific.
+
+52
+00:03:52,490 --> 00:04:00,320
+‫We can say that this field has this given name and this given type and that the cat model only has this
+
+53
+00:04:00,320 --> 00:04:03,260
+‫field called name and no other fields.
+
+54
+00:04:03,260 --> 00:04:10,490
+‫This means that if we would try to use the cat model to create here a cat that has any other field besides
+
+55
+00:04:10,490 --> 00:04:14,420
+‫the name, let's say that we would try to add here a second field called age.
+
+56
+00:04:14,450 --> 00:04:15,800
+‫This would not be possible.
+
+57
+00:04:15,800 --> 00:04:19,760
+‫Mongoose would throw us an error here in this code line.
+
+58
+00:04:19,760 --> 00:04:27,440
+‫Now, Mongoose also follows the active record pattern so we can edit here our kitty variable by changing,
+
+59
+00:04:27,440 --> 00:04:28,610
+‫for example, the name.
+
+60
+00:04:28,610 --> 00:04:35,360
+‫And when we are ready to save this back to the database, we can call the dot save method, which will
+
+61
+00:04:35,360 --> 00:04:41,620
+‫return us a promise that will be successfully evaluated whenever the data has been saved to the database.
+
+62
+00:04:41,630 --> 00:04:48,470
+‫Mongoose also supports relations between colons such as one to many relations, so it's a very good
+
+63
+00:04:48,500 --> 00:04:55,520
+‫tool to have in order to interact with the MongoDB database without using its low level API provided
+
+64
+00:04:55,520 --> 00:04:57,530
+‫by the MongoDB package.
+
+65
+00:04:57,530 --> 00:05:00,650
+‫So in our program we are going to be accessing our.
+
+66
+00:05:00,680 --> 00:05:05,360
+‫It was always with the Mongoose object modeling library.
+
+67
+00:05:05,360 --> 00:05:11,030
+‫In your local workspace, you have already installed mongoose at the beginning of the course, so everything
+
+68
+00:05:11,030 --> 00:05:11,860
+‫is ready to go.
+
+69
+00:05:11,870 --> 00:05:17,000
+‫Let's now learn how can we use Mongoose to define the schema of the course entity?
+

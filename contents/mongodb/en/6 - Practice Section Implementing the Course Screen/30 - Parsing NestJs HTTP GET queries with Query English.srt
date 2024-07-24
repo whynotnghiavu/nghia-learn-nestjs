@@ -1,0 +1,328 @@
+﻿1
+00:00:03,520 --> 00:00:05,680
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,680 --> 00:00:10,990
+‫In this new practice lesson, we are going to be implementing the search lessons, back end service.
+
+3
+00:00:10,990 --> 00:00:17,350
+‫So if you remember, the search lesson service is used here by the course page in order to load here
+
+4
+00:00:17,350 --> 00:00:19,150
+‫a list of lessons from the back end.
+
+5
+00:00:19,150 --> 00:00:22,840
+‫And we are going to be showing how to add pagination logic to this table.
+
+6
+00:00:22,840 --> 00:00:27,820
+‫Now we are trying to fetch the lessons from the back end via this rest call.
+
+7
+00:00:27,820 --> 00:00:33,670
+‫We have here a get request that has failed because the service is not yet implemented and we are hitting
+
+8
+00:00:33,670 --> 00:00:38,980
+‫here the service slash API slash lessons and we are passing here a series of parameters.
+
+9
+00:00:38,980 --> 00:00:44,140
+‫If you can see here in the URL we have here the course ID as one of the parameters.
+
+10
+00:00:44,140 --> 00:00:46,960
+‫We have the sort order which is ascending.
+
+11
+00:00:46,960 --> 00:00:52,480
+‫We have the page number which is zero, which is the first page of lessons that we want to load and
+
+12
+00:00:52,480 --> 00:00:54,970
+‫we have a page size of three.
+
+13
+00:00:54,970 --> 00:01:01,130
+‫So we want to implement a back end request using Nestjs that handles this type of request.
+
+14
+00:01:01,130 --> 00:01:02,780
+‫So let's see, how can we do that?
+
+15
+00:01:02,780 --> 00:01:08,510
+‫So we are going to need a second controller for the lessons entity, the same way that we had here,
+
+16
+00:01:08,510 --> 00:01:12,290
+‫a controller that was responsible only for the courses entity.
+
+17
+00:01:12,290 --> 00:01:16,730
+‫Let's then add here a new file in our controllers folder.
+
+18
+00:01:16,730 --> 00:01:21,770
+‫We are going to be creating here a file called Lessons Dot Controller, Dot TS.
+
+19
+00:01:21,800 --> 00:01:25,190
+‫Inside it, we are going to start writing our controller.
+
+20
+00:01:25,190 --> 00:01:32,000
+‫Let's start by defining here a class and let's go ahead and let's annotate this class with the controller
+
+21
+00:01:32,000 --> 00:01:34,040
+‫decorator from Nestjs.
+
+22
+00:01:34,040 --> 00:01:37,910
+‫Let's specify that this is going to handle the lessons entity.
+
+23
+00:01:37,940 --> 00:01:44,960
+‫Now we are going to be adding here a new method that is going to handle our Http get request and return
+
+24
+00:01:44,960 --> 00:01:46,100
+‫a list of lessons.
+
+25
+00:01:46,100 --> 00:01:51,980
+‫Let's make this an async method so that it's easy to use the async await syntax if we need it.
+
+26
+00:01:51,980 --> 00:01:54,800
+‫And let's call this method search lessons.
+
+27
+00:01:54,800 --> 00:01:59,960
+‫We are going to start by annotating this with the get decorator from Nestjs.
+
+28
+00:01:59,960 --> 00:02:07,400
+‫So this get method is going to be called if we try to hit an API endpoint, starting with slash API
+
+29
+00:02:07,520 --> 00:02:14,540
+‫just like any other controller in our application and hitting the slash API slash lessons endpoint.
+
+30
+00:02:14,540 --> 00:02:19,070
+‫This is the method that is going to be invoked in order to produce an Http response.
+
+31
+00:02:19,070 --> 00:02:22,280
+‫Let's add here the input parameters of this method.
+
+32
+00:02:22,280 --> 00:02:27,890
+‫We are going to be needing a course ID which will be a string and we are going to be needing a couple
+
+33
+00:02:27,890 --> 00:02:33,560
+‫of other parameters as we have seen in the request that was being made by the course screen.
+
+34
+00:02:33,560 --> 00:02:38,570
+‫We are also going to be specifying here the sort order which will be a string.
+
+35
+00:02:38,570 --> 00:02:43,610
+‫We are going to be specifying here the page number which we are going to make sure that at this point
+
+36
+00:02:43,610 --> 00:02:49,310
+‫in the program it's already a number and we are going to be specifying the page size as well.
+
+37
+00:02:49,310 --> 00:02:50,450
+‫Also a number.
+
+38
+00:02:50,450 --> 00:02:57,110
+‫Now let's see how we are going to grab these values from the Http request going back here to the Http
+
+39
+00:02:57,110 --> 00:03:02,360
+‫request that we are trying to handle in our back end, we can see that all these parameters are coming
+
+40
+00:03:02,360 --> 00:03:04,790
+‫here from the query part of the URL.
+
+41
+00:03:04,790 --> 00:03:10,730
+‫So after the question mark we have here these parameters that we need to retrieve as the input of our
+
+42
+00:03:10,730 --> 00:03:11,300
+‫function.
+
+43
+00:03:11,300 --> 00:03:18,440
+‫So in order to grab this type of Http, get parameters from the query part of the URL, we can use the
+
+44
+00:03:18,440 --> 00:03:21,080
+‫query decorator from Nestjs.
+
+45
+00:03:21,110 --> 00:03:22,880
+‫Let's then add it here.
+
+46
+00:03:22,880 --> 00:03:28,820
+‫Inside the query decorator, we need to specify the name of the parameter that we want to grab.
+
+47
+00:03:28,820 --> 00:03:31,010
+‫In this case it's the course ID.
+
+48
+00:03:31,100 --> 00:03:38,300
+‫We can then apply here a similar decorator to all the remaining parameters and we need only to specify
+
+49
+00:03:38,300 --> 00:03:43,880
+‫the name of the parameter that we want to read, which is identical to the variable name.
+
+50
+00:03:43,880 --> 00:03:47,840
+‫So the last one that we are going to be adding is going to be the page size.
+
+51
+00:03:47,870 --> 00:03:54,590
+‫Now certain parameters we need to transform further before using them here in the body of search lessons.
+
+52
+00:03:54,590 --> 00:04:00,260
+‫For example, the page number is going to come from the URL as a string, but we want to transform this
+
+53
+00:04:00,290 --> 00:04:01,250
+‫into a number.
+
+54
+00:04:01,250 --> 00:04:05,570
+‫So as we have seen, we can do that using the parse int pipe.
+
+55
+00:04:05,570 --> 00:04:10,160
+‫Let's then apply this pipe here in these two numeric parameters.
+
+56
+00:04:10,160 --> 00:04:16,010
+‫We would also like to define here a default value in case that some of the parameters are not filled
+
+57
+00:04:16,010 --> 00:04:17,570
+‫in by our client.
+
+58
+00:04:17,570 --> 00:04:22,700
+‫So for example, the sort order we would like to make it by default ascending.
+
+59
+00:04:22,700 --> 00:04:25,160
+‫So we have added here this default parameter.
+
+60
+00:04:25,160 --> 00:04:31,070
+‫And notice that because we have added here a default parameter, which is a string, this implicitly
+
+61
+00:04:31,070 --> 00:04:37,250
+‫assigns to sort order the string type so we can remove that and make our program a bit more readable.
+
+62
+00:04:37,250 --> 00:04:40,490
+‫Here on the page number parameter, we are going to do the same.
+
+63
+00:04:40,490 --> 00:04:46,220
+‫We are going to say that the default page is going to be page zero, the first page, and let's make
+
+64
+00:04:46,220 --> 00:04:50,090
+‫the default page size to have the small size of three.
+
+65
+00:04:50,090 --> 00:04:54,470
+‫And with this in place, we have set up the input parameters of our function.
+
+66
+00:04:54,470 --> 00:04:57,320
+‫So we are ready to implement our business logic.
+
+67
+00:04:57,320 --> 00:05:00,480
+‫Let's start by testing that the course ID has indeed.
+
+68
+00:05:00,770 --> 00:05:01,790
+‫Been defined.
+
+69
+00:05:01,790 --> 00:05:07,460
+‫So if there is no course ID, then we cannot provide any meaningful result to the client.
+
+70
+00:05:07,460 --> 00:05:14,420
+‫So let's throw here a bad request exception and we are going to add here the message course ID must
+
+71
+00:05:14,420 --> 00:05:15,440
+‫be defined.
+
+72
+00:05:15,440 --> 00:05:18,140
+‫Let's also add here some extra validation.
+
+73
+00:05:18,140 --> 00:05:24,380
+‫For example, for the sort order, we are going to make sure that the sort order is either the ask or
+
+74
+00:05:24,380 --> 00:05:25,610
+‫desk values.
+
+75
+00:05:25,610 --> 00:05:27,860
+‫So let's test for that here.
+
+76
+00:05:27,860 --> 00:05:35,150
+‫So if the sort order is different than the ask value standing for ascending and the same parameter,
+
+77
+00:05:35,150 --> 00:05:42,470
+‫the sort order is also different from the desk value for descending order, then we are going to throw
+
+78
+00:05:42,470 --> 00:05:48,590
+‫a new bad request exception saying that the sort order parameter must be one of these two values.
+
+79
+00:05:48,590 --> 00:05:55,460
+‫So with this we did here some business validation on our input parameters and we are now ready to implement
+
+80
+00:05:55,460 --> 00:05:58,490
+‫the database querying part of our application.
+
+81
+00:05:58,490 --> 00:06:04,200
+‫We are going to do that by using a new repository service that we are going to be building in the next
+
+82
+00:06:04,200 --> 00:06:04,770
+‫lesson.
+

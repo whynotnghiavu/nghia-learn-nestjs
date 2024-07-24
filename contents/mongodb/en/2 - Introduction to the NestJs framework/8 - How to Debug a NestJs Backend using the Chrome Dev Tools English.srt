@@ -1,0 +1,360 @@
+﻿1
+00:00:03,970 --> 00:00:06,190
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,190 --> 00:00:11,140
+‫In this new lesson, we are going to quickly learn how to debug our Nestjs backend.
+
+3
+00:00:11,170 --> 00:00:16,720
+‫We are going to do this using the same debugger that we usually use for the front end the chrome dev
+
+4
+00:00:16,750 --> 00:00:17,320
+‫tools.
+
+5
+00:00:17,320 --> 00:00:24,580
+‫Now your IDE could also have a custom built debugger such as, for example, Webstorm or even Visual
+
+6
+00:00:24,580 --> 00:00:25,360
+‫Studio code.
+
+7
+00:00:25,360 --> 00:00:30,970
+‫But I would recommend that you always use the Chrome debugger because this way you can use the same
+
+8
+00:00:30,970 --> 00:00:33,760
+‫debugger for your front end and your back end.
+
+9
+00:00:33,760 --> 00:00:37,660
+‫It's the same tool independently of the debugger that you choose.
+
+10
+00:00:37,660 --> 00:00:43,600
+‫What you want to do is the ability of triggering, for example, programmatic debug breakpoints such
+
+11
+00:00:43,600 --> 00:00:46,810
+‫as, for example, the ones triggered by the debugger keyword.
+
+12
+00:00:46,810 --> 00:00:53,410
+‫You also want the ability of setting a breakpoint by clicking here on the lateral bar of the debugger.
+
+13
+00:00:53,410 --> 00:00:57,070
+‫So let's see how can we do that in our nestjs backend?
+
+14
+00:00:57,070 --> 00:01:03,830
+‫So we are going to open here a terminal and we are going to see that for debugging our nestjs process.
+
+15
+00:01:03,830 --> 00:01:06,770
+‫We simply need to call the node executable.
+
+16
+00:01:06,770 --> 00:01:11,750
+‫We need to pass in this special parameter minus minus inspect broker.
+
+17
+00:01:11,750 --> 00:01:15,140
+‫So this is going to run node in debug mode.
+
+18
+00:01:15,140 --> 00:01:19,790
+‫And after that we simply have to pass in the path to the file that we want to run.
+
+19
+00:01:19,790 --> 00:01:26,390
+‫In this case we want to run the dist slash rest API slash source main.js file.
+
+20
+00:01:26,390 --> 00:01:30,830
+‫So this command here would start our node process in debug mode.
+
+21
+00:01:30,830 --> 00:01:38,540
+‫Now, in order to avoid typing this each time, we already have here a task ready for you in your package.json.
+
+22
+00:01:38,540 --> 00:01:44,990
+‫So here you have a task right below the task that you used for running the server in normal development
+
+23
+00:01:44,990 --> 00:01:48,290
+‫mode, which is the start colon debug task.
+
+24
+00:01:48,290 --> 00:01:56,960
+‫So this is also going to use TSC watch to run our TypeScript, build in watch mode, reloading the server
+
+25
+00:01:56,960 --> 00:02:00,080
+‫each time that we complete a successful compilation.
+
+26
+00:02:00,080 --> 00:02:06,380
+‫But here in Onsuccess, yes, we are passing this extra option here to the node process.
+
+27
+00:02:06,380 --> 00:02:13,010
+‫So this means that if we go here to our command line and from here the rest slash API folder, we are
+
+28
+00:02:13,010 --> 00:02:17,930
+‫going to run the following command NPM run, start colon debug.
+
+29
+00:02:17,930 --> 00:02:24,140
+‫If we run this command this time around, we are going to be starting our back end in debug mode and
+
+30
+00:02:24,140 --> 00:02:27,140
+‫also in a hot reload mode as usual.
+
+31
+00:02:27,140 --> 00:02:32,930
+‫So whenever our process starts up, you are going to see this special message saying that the debugger
+
+32
+00:02:32,930 --> 00:02:35,000
+‫is listening on this port.
+
+33
+00:02:35,030 --> 00:02:42,260
+‫Now if you try to load now some data from the backend using, for example, this slash API slash courses,
+
+34
+00:02:42,260 --> 00:02:48,410
+‫you are going to get here, an error like the server is not yet running and that's because we have started
+
+35
+00:02:48,410 --> 00:02:50,090
+‫the process in debug mode.
+
+36
+00:02:50,090 --> 00:02:57,230
+‫So the process is currently frozen and waiting for us to attach a debugger to it before we attach the
+
+37
+00:02:57,230 --> 00:02:57,830
+‫debugger.
+
+38
+00:02:57,860 --> 00:02:59,240
+‫Nothing will happen.
+
+39
+00:02:59,240 --> 00:03:04,910
+‫Now what we need to do is to attach the Chrome debugger dev tools to this running process.
+
+40
+00:03:04,910 --> 00:03:11,120
+‫So the chrome dev Tools debugger is the one that you can access here by inspecting the page and accessing
+
+41
+00:03:11,120 --> 00:03:12,500
+‫here the sources tab.
+
+42
+00:03:12,500 --> 00:03:15,950
+‫Here we have a full JavaScript debugger ready to use.
+
+43
+00:03:15,950 --> 00:03:19,550
+‫So that's the debugger that we want to attach to this process.
+
+44
+00:03:19,550 --> 00:03:25,280
+‫In order to do that, we are going to open here a new chrome tab and from here we are going to type
+
+45
+00:03:25,280 --> 00:03:28,430
+‫the chrome colon inspect.
+
+46
+00:03:28,430 --> 00:03:35,330
+‫So this is going to attach the chrome debugger dev tools to this particular running process running
+
+47
+00:03:35,330 --> 00:03:36,170
+‫on this port.
+
+48
+00:03:36,200 --> 00:03:38,750
+‫9299.
+
+49
+00:03:38,750 --> 00:03:43,340
+‫Let's enter this URL and as you can see, the process has already been detected.
+
+50
+00:03:43,340 --> 00:03:48,500
+‫So you could have here multiple remote targets and configure here the correct ports.
+
+51
+00:03:48,500 --> 00:03:51,320
+‫But in this case, it's not necessary.
+
+52
+00:03:51,320 --> 00:03:58,850
+‫We are simply going to click here on this inspect link and this is going to open our debugger dev tools.
+
+53
+00:03:58,850 --> 00:04:03,650
+‫So as you can see, we get here a message saying that the debugger is currently paused.
+
+54
+00:04:03,650 --> 00:04:08,720
+‫So this means that our program is not yet running and the process is still frozen.
+
+55
+00:04:08,720 --> 00:04:12,320
+‫So in order to initialize the process, we are going to click here on play.
+
+56
+00:04:12,320 --> 00:04:16,100
+‫And this is going to allow our backend process to actually start.
+
+57
+00:04:16,100 --> 00:04:23,300
+‫So if we switch back to our workspace, we are going to see that now our process has indeed started.
+
+58
+00:04:23,300 --> 00:04:29,900
+‫So we have here below the debugger initialization message, the usual nestjs specific messages that
+
+59
+00:04:29,900 --> 00:04:36,230
+‫we get, such as, for example, that our slash API slash courses URL is mapped to the courses controller.
+
+60
+00:04:36,230 --> 00:04:37,100
+‫ET cetera.
+
+61
+00:04:37,100 --> 00:04:43,070
+‫So this means that if we now hit this endpoint, our controller is going to get triggered and we should
+
+62
+00:04:43,070 --> 00:04:45,110
+‫see this breakpoint get triggered.
+
+63
+00:04:45,110 --> 00:04:46,820
+‫Let's see if that's the case.
+
+64
+00:04:46,850 --> 00:04:53,090
+‫We are going to go back here to this window that previously was not working because we had not yet attached
+
+65
+00:04:53,090 --> 00:04:55,520
+‫the debugger to this running process.
+
+66
+00:04:55,520 --> 00:05:00,650
+‫We are going to refresh this call here to slash API slash courses and.
+
+67
+00:05:00,680 --> 00:05:05,750
+‫This time around, we are going to see that this immediately triggers our debugger breakpoint.
+
+68
+00:05:05,750 --> 00:05:09,620
+‫So from here we can inspect the content of any variables.
+
+69
+00:05:09,620 --> 00:05:11,600
+‫We can add extra endpoints.
+
+70
+00:05:11,600 --> 00:05:12,350
+‫ET cetera.
+
+71
+00:05:12,350 --> 00:05:15,020
+‫Just like you usually do with your front end.
+
+72
+00:05:15,050 --> 00:05:17,210
+‫You can also add here a second breakpoint.
+
+73
+00:05:17,210 --> 00:05:22,460
+‫For example, we are going to click here to resume the script execution, and we can see that the second
+
+74
+00:05:22,460 --> 00:05:23,990
+‫breakpoint has been hit.
+
+75
+00:05:23,990 --> 00:05:28,790
+‫So we don't need to use programmatic breakpoints in order to debug our code.
+
+76
+00:05:28,790 --> 00:05:31,580
+‫We can simply define them here using the dev tools.
+
+77
+00:05:31,580 --> 00:05:33,920
+‫Let's release the second breakpoint.
+
+78
+00:05:33,920 --> 00:05:39,920
+‫And now if we go back to our workspace, we are going to see that we get the data as usual.
+
+79
+00:05:39,920 --> 00:05:47,060
+‫So as you can see, it's very simple to debug our process using the chrome dev tools if necessary.
+
+80
+00:05:47,090 --> 00:05:52,340
+‫Now I would recommend throughout the course that you only run the process in debug mode whenever you
+
+81
+00:05:52,340 --> 00:05:53,990
+‫are troubleshooting something.
+
+82
+00:05:53,990 --> 00:06:00,710
+‫So right now we are going to stop here our process and we are going to be using NPM run server throughout
+
+83
+00:06:00,810 --> 00:06:01,950
+‫the rest of the course.
+
+84
+00:06:01,950 --> 00:06:08,340
+‫Let's now also quickly clear here this debugger breakpoint that was only there for demonstration purposes
+
+85
+00:06:08,340 --> 00:06:10,290
+‫and let's now continue the course.
+
+86
+00:06:10,290 --> 00:06:16,740
+‫So here we were retrieving our data from a file that we have here on the file system, just containing
+
+87
+00:06:16,740 --> 00:06:19,830
+‫here some test data with some courses and lessons.
+
+88
+00:06:19,830 --> 00:06:23,580
+‫Let's now instead get our data from a database.
+
+89
+00:06:23,580 --> 00:06:25,380
+‫We are going to be using MongoDB.
+
+90
+00:06:25,590 --> 00:06:30,540
+‫So in the next few lessons, we are going to be setting up our MongoDB database.
+

@@ -1,0 +1,324 @@
+﻿1
+00:00:03,370 --> 00:00:08,440
+‫Hello, everyone, and welcome back to this new section of our course here.
+
+2
+00:00:08,440 --> 00:00:13,720
+‫We are going to give a couple more examples of how to apply some of the concepts that we have learned
+
+3
+00:00:13,720 --> 00:00:15,100
+‫earlier in the course.
+
+4
+00:00:15,100 --> 00:00:19,330
+‫We are going to be building here a new screen, which is going to be the course screen.
+
+5
+00:00:19,330 --> 00:00:22,090
+‫Let's have a look at the screen in the larger window.
+
+6
+00:00:22,090 --> 00:00:26,620
+‫We are going to click here in the View button in one of the course cards.
+
+7
+00:00:26,620 --> 00:00:32,380
+‫Let's say that, for example, we click on the Nestjs in practice course we hit view and we are going
+
+8
+00:00:32,380 --> 00:00:39,610
+‫to be sent to a new screen that contains here a URL segment that is specific to the course that we clicked.
+
+9
+00:00:39,660 --> 00:00:41,590
+‫Under the courses path.
+
+10
+00:00:41,620 --> 00:00:47,830
+‫We can see that this new screen, which corresponds to the course component in our front end, is trying
+
+11
+00:00:47,830 --> 00:00:55,120
+‫to make here an Http request hitting the endpoint slash API slash courses slash nestjs course.
+
+12
+00:00:55,120 --> 00:01:02,720
+‫So the URL segment that we see here on our browser bar is being used to try to fetch some data for this
+
+13
+00:01:02,720 --> 00:01:03,950
+‫course from the back end.
+
+14
+00:01:03,950 --> 00:01:10,490
+‫But we are getting here 404 not found and this is because our back end does not implement this endpoint
+
+15
+00:01:10,490 --> 00:01:11,090
+‫yet.
+
+16
+00:01:11,090 --> 00:01:18,290
+‫So let's go ahead and add the controller that is going to handle this request in our back end.
+
+17
+00:01:18,320 --> 00:01:24,890
+‫Switching back here to our courses controller, we are going to need to add here a new method which
+
+18
+00:01:24,890 --> 00:01:31,580
+‫also handles a get request, but with a different target path in order to handle the request that the
+
+19
+00:01:31,580 --> 00:01:33,650
+‫View Course Page is making.
+
+20
+00:01:33,650 --> 00:01:36,920
+‫So in order to do that, let's create here a new method.
+
+21
+00:01:36,920 --> 00:01:40,210
+‫We're going to call it Find Course by URL.
+
+22
+00:01:40,220 --> 00:01:44,180
+‫Now let's see what type of parameters does this method take?
+
+23
+00:01:44,180 --> 00:01:51,050
+‫First, we are going to annotate this with the get decorator and we are going to specify here what is
+
+24
+00:01:51,050 --> 00:01:52,850
+‫the path that we are targeting.
+
+25
+00:01:52,850 --> 00:01:59,660
+‫So we want to target the path slash API slash courses, slash course URL.
+
+26
+00:01:59,660 --> 00:02:05,360
+‫So we are going to need to add here a new path variable that we are going to call course URL.
+
+27
+00:02:05,390 --> 00:02:11,660
+‫Let's then inject here the course from the path into a function variable.
+
+28
+00:02:11,660 --> 00:02:14,750
+‫We are going to define here a variable named course URL.
+
+29
+00:02:14,780 --> 00:02:16,520
+‫Let's make it a string.
+
+30
+00:02:16,520 --> 00:02:25,040
+‫And just like before, let's use the param decorator from Nestjs to inject this path variable into the
+
+31
+00:02:25,040 --> 00:02:26,780
+‫course argument.
+
+32
+00:02:26,780 --> 00:02:29,120
+‫So now we have here the course URL.
+
+33
+00:02:29,150 --> 00:02:35,360
+‫Let's now quickly add here some logging to the find course by method so that we can see on the server
+
+34
+00:02:35,360 --> 00:02:41,060
+‫log that this was called correctly and that we managed to get a handle to the course URL.
+
+35
+00:02:41,060 --> 00:02:46,370
+‫Now, in order to use this course URL to fetch a course from the MongoDB database, we are going to
+
+36
+00:02:46,370 --> 00:02:49,030
+‫need a new method in our repository.
+
+37
+00:02:49,040 --> 00:02:56,060
+‫Let's open here the courses repository file and here we are going to be adding a new method which is
+
+38
+00:02:56,060 --> 00:02:58,760
+‫also called Find Course by URL.
+
+39
+00:02:58,760 --> 00:03:04,670
+‫This method is only going to take one argument, which is going to be the course URL, which is a string,
+
+40
+00:03:04,670 --> 00:03:07,760
+‫and with the course URL we can now query the database.
+
+41
+00:03:07,760 --> 00:03:10,220
+‫So let's access here the course model.
+
+42
+00:03:10,220 --> 00:03:16,040
+‫Let's call find here and let's pass in here the parameters for our query.
+
+43
+00:03:16,040 --> 00:03:22,880
+‫So we are targeting here the URL field from the course entity and we are going to be searching for a
+
+44
+00:03:22,880 --> 00:03:27,830
+‫URL with this particular value that we got from the Http request.
+
+45
+00:03:27,860 --> 00:03:33,200
+‫Let's return the output of the call to find because this is going to be a promise.
+
+46
+00:03:33,200 --> 00:03:39,320
+‫And in order to make it clearer that this method is returning a promise, let's declare it here in the
+
+47
+00:03:39,320 --> 00:03:40,820
+‫signature of the method.
+
+48
+00:03:40,820 --> 00:03:47,720
+‫So this returns a promise, of course, before using this method, let's quickly fix here a small problem.
+
+49
+00:03:47,720 --> 00:03:52,490
+‫We want to find only one model from the database and not several.
+
+50
+00:03:52,490 --> 00:03:53,750
+‫So let's use here.
+
+51
+00:03:53,750 --> 00:03:56,030
+‫Find one instead of find.
+
+52
+00:03:56,060 --> 00:04:00,830
+‫We can now use the find course by URL method here in our controller.
+
+53
+00:04:00,830 --> 00:04:06,520
+‫Let's define here a new constant called course and let's call the courses DB.
+
+54
+00:04:06,680 --> 00:04:08,810
+‫Find course by URL method.
+
+55
+00:04:08,810 --> 00:04:14,630
+‫Let's pass it the course URL and let's await for the resolution of this promise.
+
+56
+00:04:14,630 --> 00:04:19,760
+‫So now here at this point in our program, we have the instance of the course.
+
+57
+00:04:19,760 --> 00:04:24,890
+‫So we expect to be able to retrieve a course with this URL from the database.
+
+58
+00:04:24,890 --> 00:04:27,500
+‫If that's not the case, we are going to be throwing an error.
+
+59
+00:04:27,500 --> 00:04:31,340
+‫Let's test then for the truthiness of the course variable.
+
+60
+00:04:31,340 --> 00:04:36,860
+‫And if we did not manage to find the course in the database, we are going to be throwing a 404 not
+
+61
+00:04:36,860 --> 00:04:38,210
+‫found exception.
+
+62
+00:04:38,210 --> 00:04:43,760
+‫So let's go ahead and use the already existing exception from the Nestjs common package.
+
+63
+00:04:43,760 --> 00:04:51,710
+‫And let's add here an error message to the end user could not find course for URL and let's append here
+
+64
+00:04:51,710 --> 00:04:56,810
+‫the URL segment that we did not manage to associate to a given course.
+
+65
+00:04:56,810 --> 00:05:00,710
+‫Now, at this point in the program we are sure that we have here a course.
+
+66
+00:05:00,760 --> 00:05:07,120
+‫That we got from the database so we can go ahead and return it here as the output of this method.
+
+67
+00:05:07,120 --> 00:05:13,120
+‫Remember, we are returning here a primitive type, but the async await syntax is going to automatically
+
+68
+00:05:13,120 --> 00:05:14,980
+‫wrap this value in the promise.
+
+69
+00:05:14,980 --> 00:05:21,460
+‫So the output of this method is going to be a promise that Nestjs is going to use to populate the response
+
+70
+00:05:21,460 --> 00:05:23,200
+‫sent back to the client.
+
+71
+00:05:23,200 --> 00:05:28,630
+‫And with this in place, we have finished the implementation of our find course by URL endpoint.
+
+72
+00:05:28,630 --> 00:05:30,460
+‫Let's have a look at this in action.
+
+73
+00:05:30,460 --> 00:05:35,260
+‫We are going to switch to a larger window and we're going to click here on the View Course button.
+
+74
+00:05:35,260 --> 00:05:39,190
+‫And as we can see, we are now fetching here some data from the backend.
+
+75
+00:05:39,220 --> 00:05:45,430
+‫We can see here the correct title and thumbnail from the course, but we still have here some functionality
+
+76
+00:05:45,430 --> 00:05:46,780
+‫missing on this page.
+
+77
+00:05:46,780 --> 00:05:53,380
+‫We have not yet filled in this list of lessons, so that's why we have here a get request to the slash
+
+78
+00:05:53,410 --> 00:05:56,860
+‫API slash lessons endpoint, which does not exist yet.
+
+79
+00:05:56,860 --> 00:06:01,490
+‫So we are getting here a 404 not found in the next few lessons.
+
+80
+00:06:01,490 --> 00:06:08,120
+‫We are going to be implementing this endpoint which involves the use of a new entity, the lessons entity.
+
+81
+00:06:08,120 --> 00:06:13,730
+‫And we are going to be filling in this lessons table and adding some pagination functionality.
+

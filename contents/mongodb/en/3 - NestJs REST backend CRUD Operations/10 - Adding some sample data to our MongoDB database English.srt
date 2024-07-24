@@ -1,0 +1,360 @@
+﻿1
+00:00:03,700 --> 00:00:05,880
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,890 --> 00:00:09,520
+‫In the last lesson, we have set up our MongoDB database.
+
+3
+00:00:09,520 --> 00:00:14,410
+‫What we're going to do now is we are going to fill it in with some sample data that we are then going
+
+4
+00:00:14,410 --> 00:00:17,680
+‫to be querying from our Nestjs endpoint.
+
+5
+00:00:17,680 --> 00:00:23,260
+‫So for populating the database, we are going to be using a small script that we already have prepared
+
+6
+00:00:23,260 --> 00:00:28,300
+‫and we are going to be inserting this same data that we have been displaying here on the screen, which
+
+7
+00:00:28,300 --> 00:00:31,000
+‫is coming from the DB data file.
+
+8
+00:00:31,000 --> 00:00:37,300
+‫So in order to upload this data directly to MongoDB, we are going to need the script that is available
+
+9
+00:00:37,300 --> 00:00:39,790
+‫here under the rest API folder.
+
+10
+00:00:39,790 --> 00:00:43,960
+‫We will see here a file called Populate DB Dot TS.
+
+11
+00:00:43,990 --> 00:00:50,800
+‫This is going to contain our database population script that we will need to insert our data into the
+
+12
+00:00:50,800 --> 00:00:51,610
+‫database.
+
+13
+00:00:51,610 --> 00:00:59,170
+‫Now this is a very simple script that uses the MongoDB client API for inserting the data in the database.
+
+14
+00:00:59,170 --> 00:01:04,700
+‫You will find here some instructions on how to use this script, but it's actually very simple.
+
+15
+00:01:04,700 --> 00:01:10,580
+‫You are going to need to build here a connection URL string and you are going to replace it here on
+
+16
+00:01:10,580 --> 00:01:11,510
+‫this constant.
+
+17
+00:01:11,510 --> 00:01:13,880
+‫Let's see how we are going to build this string.
+
+18
+00:01:13,880 --> 00:01:20,060
+‫We are going to switch over here to the MongoDB console and we are going to click here on clusters.
+
+19
+00:01:20,060 --> 00:01:25,850
+‫From here we are going to click on the button Connect and here we are going to choose one of multiple
+
+20
+00:01:25,850 --> 00:01:28,280
+‫methods for connecting to the database.
+
+21
+00:01:28,280 --> 00:01:33,830
+‫Let's click here on Connect Your Application and from here we are going to see the connection string
+
+22
+00:01:33,830 --> 00:01:34,820
+‫that we are going to need.
+
+23
+00:01:34,820 --> 00:01:41,870
+‫So as you can see, we have here a URL that has the username that we want to use in this case Nestjs
+
+24
+00:01:41,870 --> 00:01:45,320
+‫Dash admin, which is our only administrator user.
+
+25
+00:01:45,320 --> 00:01:47,720
+‫We need to put in here our password.
+
+26
+00:01:47,720 --> 00:01:53,900
+‫So we need to put the password after the colon sign and before the at sign.
+
+27
+00:01:53,900 --> 00:01:56,570
+‫So we need to delete this angle brackets.
+
+28
+00:01:56,570 --> 00:01:58,040
+‫Otherwise this will not work.
+
+29
+00:01:58,040 --> 00:02:02,180
+‫And here we have the cluster name and a couple more options.
+
+30
+00:02:02,180 --> 00:02:05,840
+‫So let's copy this string and let's paste it here.
+
+31
+00:02:05,840 --> 00:02:13,220
+‫In our workspace, we are going to replace this MongoDB connection with the string that we got here
+
+32
+00:02:13,220 --> 00:02:14,960
+‫from the MongoDB console.
+
+33
+00:02:14,960 --> 00:02:19,070
+‫So we have here the correct username Nestjs dash admin.
+
+34
+00:02:19,100 --> 00:02:27,020
+‫We now need to delete here the password and the angle brackets that we saw there and fill in here the
+
+35
+00:02:27,020 --> 00:02:30,920
+‫password between the colon and the at sign.
+
+36
+00:02:30,920 --> 00:02:35,000
+‫So you can see here an example of how to fill this in.
+
+37
+00:02:35,000 --> 00:02:43,430
+‫And as you can see, the password is here between the colon and the at sign without any further characters
+
+38
+00:02:43,430 --> 00:02:44,270
+‫in between.
+
+39
+00:02:44,270 --> 00:02:47,150
+‫So please go ahead and fill in your password here.
+
+40
+00:02:47,150 --> 00:02:50,750
+‫Let's say that your password would be test one, two, three.
+
+41
+00:02:50,780 --> 00:02:54,650
+‫Then this is how your connection string would look like.
+
+42
+00:02:54,680 --> 00:03:00,140
+‫If by some reason you forgot your password, you can always change it by switching here to the MongoDB
+
+43
+00:03:00,140 --> 00:03:00,770
+‫console.
+
+44
+00:03:00,770 --> 00:03:06,380
+‫We are going to go ahead and click here on database Access and we can select here the user that we have
+
+45
+00:03:06,380 --> 00:03:08,540
+‫created, Nestjs Dash Admin.
+
+46
+00:03:08,540 --> 00:03:12,620
+‫We click here on edit and we can change the password using here.
+
+47
+00:03:12,620 --> 00:03:13,760
+‫Edit Password.
+
+48
+00:03:13,760 --> 00:03:19,730
+‫Notice that when you click edit password, you can autogenerate here a secure password and if you want
+
+49
+00:03:19,730 --> 00:03:22,400
+‫to see it, you need to click here on show.
+
+50
+00:03:22,400 --> 00:03:26,240
+‫So this is not the password that I will be using throughout the course.
+
+51
+00:03:26,240 --> 00:03:27,830
+‫It's just an example.
+
+52
+00:03:27,830 --> 00:03:33,500
+‫Once you have your password set up, we are going to click now on Cancel and we are now going to go
+
+53
+00:03:33,500 --> 00:03:38,960
+‫back to our workspace and we are going to run the database population script.
+
+54
+00:03:38,960 --> 00:03:40,550
+‫Everything is ready to go.
+
+55
+00:03:40,550 --> 00:03:46,490
+‫So from the rest API folder that you need to make sure that you are in, you are going to be running
+
+56
+00:03:46,490 --> 00:03:50,690
+‫the following command NPM run populate dash DB.
+
+57
+00:03:50,780 --> 00:03:52,250
+‫Let's hit enter.
+
+58
+00:03:52,250 --> 00:03:57,050
+‫After a while this command is going to start inserting some data on the database.
+
+59
+00:03:57,080 --> 00:04:00,950
+‫We can see here the different type of data that is getting inserted.
+
+60
+00:04:00,950 --> 00:04:03,050
+‫We can see the courses and the lessons.
+
+61
+00:04:03,050 --> 00:04:05,810
+‫We see some of the IDs getting generated.
+
+62
+00:04:05,810 --> 00:04:08,900
+‫And this should only take a moment at the end.
+
+63
+00:04:08,900 --> 00:04:14,090
+‫We are going to be creating here some indexes and the process will exit successfully.
+
+64
+00:04:14,090 --> 00:04:19,280
+‫So if we now switch back here to the MongoDB console, we are going to see the data by clicking here
+
+65
+00:04:19,280 --> 00:04:20,300
+‫on clusters.
+
+66
+00:04:20,300 --> 00:04:23,510
+‫And from there we are going to click on collections.
+
+67
+00:04:23,510 --> 00:04:28,910
+‫As we can see now, we have here a Nestjs course database with two collections in it.
+
+68
+00:04:28,940 --> 00:04:32,930
+‫We have here the courses collection and we have the lessons collection.
+
+69
+00:04:32,930 --> 00:04:37,100
+‫So a collection is a group of related documents.
+
+70
+00:04:37,100 --> 00:04:38,720
+‫We can see here the courses.
+
+71
+00:04:38,720 --> 00:04:42,170
+‫So as you can see, they all have more or less the same fields.
+
+72
+00:04:42,170 --> 00:04:45,320
+‫We have an ID for each course, which is unique.
+
+73
+00:04:45,350 --> 00:04:47,690
+‫We have the description, a long description.
+
+74
+00:04:47,690 --> 00:04:48,410
+‫ET cetera.
+
+75
+00:04:48,410 --> 00:04:51,050
+‫And the same thing goes for lessons.
+
+76
+00:04:51,050 --> 00:04:57,440
+‫So each lesson has its own unique identifier, which is this object ID that we will be talking more
+
+77
+00:04:57,440 --> 00:04:58,820
+‫throughout the course.
+
+78
+00:04:58,820 --> 00:05:00,500
+‫We have also here some data.
+
+79
+00:05:00,580 --> 00:05:03,880
+‫Fields such as the description, the duration, etcetera.
+
+80
+00:05:03,880 --> 00:05:07,480
+‫And we have the course to which the lesson belongs to.
+
+81
+00:05:07,510 --> 00:05:13,810
+‫We can see here, for example, that this lesson document belongs to the course with this particular
+
+82
+00:05:13,810 --> 00:05:14,260
+‫ID.
+
+83
+00:05:14,290 --> 00:05:18,490
+‫So this is how in mongodb we do a one to many relation.
+
+84
+00:05:18,490 --> 00:05:22,120
+‫Its by using this object identifiers that we see here.
+
+85
+00:05:22,120 --> 00:05:24,010
+‫Again, more on this later.
+
+86
+00:05:24,010 --> 00:05:31,030
+‫Right now as we have data here ready to go in our database, we are now going to see how can we query
+
+87
+00:05:31,030 --> 00:05:34,300
+‫this data from our nestjs process.
+
+88
+00:05:34,330 --> 00:05:39,970
+‫Again, throughout the course we are going to be talking about documents, collections, how they relate
+
+89
+00:05:39,970 --> 00:05:44,050
+‫together, how can we link a document to another collection, etcetera.
+
+90
+00:05:44,080 --> 00:05:47,230
+‫All of that will be covered later on during the course.
+

@@ -1,0 +1,228 @@
+﻿1
+00:00:03,880 --> 00:00:06,100
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,100 --> 00:00:11,560
+‫In this new lesson, we are going to apply our authorization guard only to certain endpoints of our
+
+3
+00:00:11,560 --> 00:00:12,370
+‫application.
+
+4
+00:00:12,370 --> 00:00:18,040
+‫Let's say that, for example, we would like to apply this guard only to the data modification endpoints
+
+5
+00:00:18,040 --> 00:00:19,240
+‫of this controller.
+
+6
+00:00:19,240 --> 00:00:25,750
+‫Well, for that we could try to pass in here just like we did with the authentication guard, the constructor
+
+7
+00:00:25,750 --> 00:00:27,490
+‫for the authorization guard.
+
+8
+00:00:27,520 --> 00:00:34,090
+‫However, this would not work because our constructor needs one argument containing the list of allowed
+
+9
+00:00:34,090 --> 00:00:34,990
+‫roles.
+
+10
+00:00:34,990 --> 00:00:40,510
+‫So a simple way of solving this is to create a subclass of this authorization guard.
+
+11
+00:00:40,510 --> 00:00:47,590
+‫Let's call it the admin guard because it's meant to guard endpoints only accessible by admin users.
+
+12
+00:00:47,590 --> 00:00:51,520
+‫We are going to call this new file admin dot guards.
+
+13
+00:00:51,550 --> 00:00:53,590
+‫Let's then implement our guard.
+
+14
+00:00:53,590 --> 00:00:56,440
+‫We are going to define here the TypeScript class.
+
+15
+00:00:56,440 --> 00:01:03,950
+‫We are going to make this a nestjs service and we are going to have this extend the authorization guard.
+
+16
+00:01:03,950 --> 00:01:11,360
+‫Now here in the constructor of our admin guard, we are going to be calling here the super constructor
+
+17
+00:01:11,360 --> 00:01:17,120
+‫of authorization guard and we are going to be passing here an array of allowed roles.
+
+18
+00:01:17,120 --> 00:01:24,080
+‫So in this case the admin guard is guarding routes that are only supposed to be accessed by administrators
+
+19
+00:01:24,080 --> 00:01:25,610
+‫with the admin role.
+
+20
+00:01:25,610 --> 00:01:31,640
+‫And with this we have defined here a guard that we can now apply here, for example, to our courses
+
+21
+00:01:31,640 --> 00:01:32,510
+‫controller.
+
+22
+00:01:32,510 --> 00:01:37,130
+‫Let's say that, for example, we would like the create course to be protected by this guard.
+
+23
+00:01:37,130 --> 00:01:42,890
+‫Let's then apply here the decorator, use guards and let's apply it, the admin guard.
+
+24
+00:01:42,890 --> 00:01:48,920
+‫We are now going to apply this same guard to the other data modification operations of our controller.
+
+25
+00:01:48,920 --> 00:01:53,930
+‫We are going to apply this to update course and also to delete course.
+
+26
+00:01:53,930 --> 00:01:59,810
+‫So to summarize, all the endpoints of this controller are being protected by the authentication guard,
+
+27
+00:01:59,810 --> 00:02:05,210
+‫but only certain endpoints are protected by the admin guard.
+
+28
+00:02:05,210 --> 00:02:09,380
+‫Let's now have a look at this new version of our backend in action.
+
+29
+00:02:09,380 --> 00:02:15,320
+‫So we are going to log in using the student role and we are going to be redirected here to the courses
+
+30
+00:02:15,320 --> 00:02:19,820
+‫page where we can see that we can still access here the list of courses.
+
+31
+00:02:19,820 --> 00:02:22,970
+‫So this endpoint is still reachable by us.
+
+32
+00:02:22,970 --> 00:02:29,360
+‫But let's, for example, scroll down here in our course list and let's try to delete one of the courses.
+
+33
+00:02:29,360 --> 00:02:33,740
+‫So this is a data modification operation protected by the admin guard.
+
+34
+00:02:33,740 --> 00:02:37,250
+‫So we would expect this to fail and that is indeed the case.
+
+35
+00:02:37,250 --> 00:02:41,300
+‫We have here a 403 forbidden in our network log.
+
+36
+00:02:41,300 --> 00:02:47,600
+‫If we go back here to our application and we open the terminal, we are going to open here the backend
+
+37
+00:02:47,600 --> 00:02:54,200
+‫terminal and we can see that even though we managed to retrieve the student role from the user profile,
+
+38
+00:02:54,200 --> 00:03:00,140
+‫whenever we were comparing the roles, we got the conclusion that the user should not be authorized
+
+39
+00:03:00,140 --> 00:03:02,780
+‫to access this endpoint, which is correct.
+
+40
+00:03:02,810 --> 00:03:08,480
+‫Now let's switch back to our application and let's log out after log out.
+
+41
+00:03:08,480 --> 00:03:12,530
+‫Our user profile is going to be deleted and now we are going to log in.
+
+42
+00:03:12,530 --> 00:03:16,940
+‫But this time around with the admin user, let's switch here.
+
+43
+00:03:16,940 --> 00:03:23,450
+‫The username and the password remains the same and it's the word password for simplicity.
+
+44
+00:03:23,450 --> 00:03:27,980
+‫So it's the value that is filled in by default in this password field.
+
+45
+00:03:27,980 --> 00:03:29,870
+‫Let's click here on login.
+
+46
+00:03:29,870 --> 00:03:35,630
+‫So we are now logged in with the admin user that also exists in our MongoDB database.
+
+47
+00:03:35,630 --> 00:03:41,870
+‫But this time around, if we try to do a data modification operation of one of these courses, let's
+
+48
+00:03:41,870 --> 00:03:48,140
+‫say that for example, we would like to change the name of this course to simply rxjs course.
+
+49
+00:03:48,140 --> 00:03:49,490
+‫Let's click Save.
+
+50
+00:03:49,520 --> 00:03:52,790
+‫This is going to reload here our list of courses.
+
+51
+00:03:52,790 --> 00:03:57,290
+‫And as we can see, the data was correctly updated in the database.
+
+52
+00:03:57,320 --> 00:04:03,080
+‫And if we now click here on delete, this is going to trigger the deletion of this course that no longer
+
+53
+00:04:03,080 --> 00:04:05,660
+‫shows here in our refreshed list.
+
+54
+00:04:05,660 --> 00:04:11,000
+‫And with this we have finished the implementation of our backend and we have also reached the end of
+
+55
+00:04:11,000 --> 00:04:11,630
+‫our course.
+
+56
+00:04:11,630 --> 00:04:15,800
+‫So congratulations for finishing the Nestjs in practice course.
+
+57
+00:04:15,800 --> 00:04:19,760
+‫Let's now run the some key conclusions and takeaways.
+

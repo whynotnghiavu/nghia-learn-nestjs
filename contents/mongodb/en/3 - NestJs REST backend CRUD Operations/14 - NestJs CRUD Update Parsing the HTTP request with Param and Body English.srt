@@ -1,0 +1,380 @@
+﻿1
+00:00:04,060 --> 00:00:06,340
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,340 --> 00:00:11,890
+‫In this new lesson, we are going to continue our complete grid example for the courses entity.
+
+3
+00:00:11,920 --> 00:00:17,530
+‫On the previous lessons we have shown how to handle, get requests and retrieve data from the MongoDB
+
+4
+00:00:17,530 --> 00:00:18,250
+‫database.
+
+5
+00:00:18,280 --> 00:00:22,000
+‫In this lesson, we are going to show how to update existing data.
+
+6
+00:00:22,000 --> 00:00:27,640
+‫So whenever we click here on the edit button and edit course dialog is going to show up.
+
+7
+00:00:27,640 --> 00:00:33,910
+‫Whenever we click on the save button of that dialog, we are going to be triggering an Http post request
+
+8
+00:00:33,910 --> 00:00:34,880
+‫to the backend.
+
+9
+00:00:34,900 --> 00:00:38,080
+‫Let's have a look at the code of the edit course dialog.
+
+10
+00:00:38,080 --> 00:00:42,160
+‫We can find it here on this folder under the courses module.
+
+11
+00:00:42,160 --> 00:00:45,670
+‫So this is front end code and not back end code.
+
+12
+00:00:45,670 --> 00:00:51,340
+‫So as you can see in this implementation of this angular component, we are going to be editing the
+
+13
+00:00:51,340 --> 00:00:52,990
+‫course using a simple form.
+
+14
+00:00:52,990 --> 00:00:58,300
+‫So if we have a look here at the HTML template of the edit course component, we can see here that we
+
+15
+00:00:58,300 --> 00:01:04,250
+‫have a form with a couple of fields that correspond to the multiple properties of the course entity
+
+16
+00:01:04,280 --> 00:01:05,630
+‫at the bottom of the form.
+
+17
+00:01:05,630 --> 00:01:10,130
+‫We are going to have here a button that is going to trigger the on save method.
+
+18
+00:01:10,130 --> 00:01:15,440
+‫And if we have a look here at the implementation of On Save, we are going to see that the dialog does
+
+19
+00:01:15,440 --> 00:01:16,520
+‫have two modes.
+
+20
+00:01:16,520 --> 00:01:22,940
+‫It can be in update mode or in creation mode, and each of the modes is going to trigger here a different
+
+21
+00:01:22,940 --> 00:01:25,670
+‫method of the courses Http service.
+
+22
+00:01:25,700 --> 00:01:32,300
+‫If we have a look at this service, it's a plain angular service that uses the angular Http client for
+
+23
+00:01:32,300 --> 00:01:36,590
+‫implementing common Crud operations such as, for example, find all courses.
+
+24
+00:01:36,590 --> 00:01:43,490
+‫So this is, for example, where our application is calling our slash API slash courses get endpoint
+
+25
+00:01:43,490 --> 00:01:49,790
+‫which corresponds to this find all courses method here in the Nestjs courses controller.
+
+26
+00:01:49,790 --> 00:01:56,090
+‫Now, in a similar way, our application is also going to contact the backend by calling here update
+
+27
+00:01:56,090 --> 00:01:56,720
+‫course.
+
+28
+00:01:56,720 --> 00:02:03,950
+‫So as you can see, this is doing an Http put request to the backend to slash API slash courses and
+
+29
+00:02:03,950 --> 00:02:07,940
+‫we are going to be appending the course ID at the end of this URL.
+
+30
+00:02:07,970 --> 00:02:12,350
+‫We are also going to pass as the body of the put http request.
+
+31
+00:02:12,350 --> 00:02:18,530
+‫What is the changes that we want to perform on the course entity and we are going to get back from the
+
+32
+00:02:18,530 --> 00:02:20,960
+‫server, the new version of this entity.
+
+33
+00:02:20,990 --> 00:02:25,520
+‫We are going to see this Http put request in the network console in a moment.
+
+34
+00:02:25,520 --> 00:02:31,580
+‫Right now this request would not work because our controller is not yet handling put requests.
+
+35
+00:02:31,580 --> 00:02:35,090
+‫Let's then implement the logic that would handle such a request.
+
+36
+00:02:35,090 --> 00:02:40,550
+‫Here in our courses controller, we are going to be defining a new method that we are going to be calling
+
+37
+00:02:40,550 --> 00:02:42,440
+‫simply update course.
+
+38
+00:02:42,440 --> 00:02:48,950
+‫Let's start by annotating this method with the put decorator that comes from Nestjs.
+
+39
+00:02:48,950 --> 00:02:53,480
+‫So here we are going to be specifying what is the URL that we want to update.
+
+40
+00:02:53,480 --> 00:03:00,650
+‫So in our case, the URL would look something like slash API slash courses and then here we would have
+
+41
+00:03:00,650 --> 00:03:03,880
+‫the course ID appended at the end of the URL.
+
+42
+00:03:03,880 --> 00:03:07,300
+‫Now we are going to need to retrieve this value from the URL.
+
+43
+00:03:07,300 --> 00:03:13,480
+‫So let's use here the colon syntax and let's define here a new variable.
+
+44
+00:03:13,480 --> 00:03:21,010
+‫So this variable here is going to be filled in from this value here at the end of the URL in order that
+
+45
+00:03:21,010 --> 00:03:26,530
+‫we see that the update course method is getting called, Let's add here some logging as well.
+
+46
+00:03:26,530 --> 00:03:33,010
+‫Now we are going to be using the Nestjs API to retrieve everything that we need out of the Http request
+
+47
+00:03:33,010 --> 00:03:34,090
+‫that we got here.
+
+48
+00:03:34,090 --> 00:03:39,010
+‫So the first thing that we are going to need is to identify which course do we want to update and we
+
+49
+00:03:39,010 --> 00:03:45,940
+‫are going to be retrieving that from this variable in order to inject the course ID here in our update
+
+50
+00:03:45,940 --> 00:03:49,660
+‫course method, let's define here a course ID variable.
+
+51
+00:03:49,660 --> 00:03:51,250
+‫This is going to be a string.
+
+52
+00:03:51,250 --> 00:03:55,720
+‫And let's tell to Nestjs that this needs to be retrieved from the URL.
+
+53
+00:03:55,720 --> 00:04:01,270
+‫So for that we are going to be using the param decorator now to the param decorator.
+
+54
+00:04:01,270 --> 00:04:06,500
+‫We need to pass in here as a string the name of the variable that we need.
+
+55
+00:04:06,500 --> 00:04:12,740
+‫So in this case we are going to be retrieving here the course ID variable that was identified here using
+
+56
+00:04:12,740 --> 00:04:14,390
+‫the colon syntax.
+
+57
+00:04:14,390 --> 00:04:20,150
+‫Now, besides the ID of the course that we need to update, we also need to get the changes that we
+
+58
+00:04:20,150 --> 00:04:26,090
+‫want to perform on the database and we are going to get that as a Json payload from the body of the
+
+59
+00:04:26,090 --> 00:04:27,890
+‫Http put request.
+
+60
+00:04:27,890 --> 00:04:33,170
+‫So let's for that define here a new variable we are going to call it changes and we are going to say
+
+61
+00:04:33,170 --> 00:04:40,520
+‫that this is a partial course, so not all the properties will be updated each time for the course entity
+
+62
+00:04:40,550 --> 00:04:45,110
+‫we might receive here only some properties of this course entity.
+
+63
+00:04:45,110 --> 00:04:50,870
+‫Let's say that for example, we would get only these two properties updated and the others would remain
+
+64
+00:04:50,870 --> 00:04:51,620
+‫unchanged.
+
+65
+00:04:51,620 --> 00:04:56,750
+‫So we could potentially receive here a partial version of the course entity.
+
+66
+00:04:56,750 --> 00:05:00,290
+‫And that's why we are using here the partial class.
+
+67
+00:05:00,520 --> 00:05:07,000
+‫Now we need to tell to nestjs that the changes variable should come from the body of the Http request.
+
+68
+00:05:07,000 --> 00:05:11,950
+‫So for that we are going to be adding here the nestjs body decorator.
+
+69
+00:05:11,980 --> 00:05:17,950
+‫As we can see with Nestjs using these decorators, it's very simple to get everything that we need from
+
+70
+00:05:17,950 --> 00:05:19,180
+‫the Http request.
+
+71
+00:05:19,210 --> 00:05:25,220
+‫We can easily inject values in our methods from the URL, from the body of the request.
+
+72
+00:05:25,240 --> 00:05:32,050
+‫We can even get values directly from Http headers using, for example, the headers decorator that will
+
+73
+00:05:32,050 --> 00:05:35,800
+‫take here the name of the Http header that we want to read from.
+
+74
+00:05:35,800 --> 00:05:42,610
+‫We can get values also from URL query parameters using the query decorator as we will see later on in
+
+75
+00:05:42,610 --> 00:05:43,270
+‫this course.
+
+76
+00:05:43,270 --> 00:05:48,910
+‫So as you can see, it's really simple to parse the Http request using Nestjs.
+
+77
+00:05:48,940 --> 00:05:55,330
+‫Notice that under the hood Nestjs is using express, so if by some reason you would need access to the
+
+78
+00:05:55,330 --> 00:06:00,650
+‫complete express request object, you can also inject it here very easily.
+
+79
+00:06:00,650 --> 00:06:06,440
+‫So you just have to define here a variable request and then you need to annotate this variable with
+
+80
+00:06:06,440 --> 00:06:08,570
+‫the decorator at req.
+
+81
+00:06:08,570 --> 00:06:15,860
+‫So it's an abbreviated name meaning request so that it doesn't conflict with the request type from Express
+
+82
+00:06:15,860 --> 00:06:21,080
+‫and the similarly named type from many other libraries as it's a very common name.
+
+83
+00:06:21,080 --> 00:06:28,370
+‫You can also get here the response using the add res decorator from Nestjs and you would get injected
+
+84
+00:06:28,370 --> 00:06:31,760
+‫here the response express object.
+
+85
+00:06:31,760 --> 00:06:37,100
+‫So you can even annotate these two variables with the corresponding express types.
+
+86
+00:06:37,100 --> 00:06:41,870
+‫If you have the express types installed, like in the case of the sample project.
+
+87
+00:06:41,870 --> 00:06:48,350
+‫So you can annotate the request variable using this type request from Express.
+
+88
+00:06:48,380 --> 00:06:54,320
+‫You can also annotate here the response using the response from Express as well.
+
+89
+00:06:54,320 --> 00:06:58,820
+‫And you can now use here Autocompletion for example, to see what we have available.
+
+90
+00:06:58,820 --> 00:07:04,820
+‫So for example, here we have available request dot body, we have request dot query.
+
+91
+00:07:04,820 --> 00:07:11,810
+‫So we have all the usual properties of an express request and response object available if we need to.
+
+92
+00:07:11,810 --> 00:07:18,050
+‫But if we don't need direct access to these objects, then in that case we can use these decorators
+
+93
+00:07:18,050 --> 00:07:23,900
+‫here to get directly only the parameters that we need from the request in a more declarative way.
+
+94
+00:07:23,900 --> 00:07:28,880
+‫So here, final courses is not going to be using the request and the response directly.
+
+95
+00:07:28,880 --> 00:07:35,990
+‫So let's go ahead and delete this and continue the implementation of our update course endpoint.
+

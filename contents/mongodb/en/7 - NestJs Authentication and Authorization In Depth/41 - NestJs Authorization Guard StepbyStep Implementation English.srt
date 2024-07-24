@@ -1,0 +1,336 @@
+﻿1
+00:00:03,310 --> 00:00:05,500
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,500 --> 00:00:10,330
+‫In this new lesson, we are going to take the security of our backend one step further.
+
+3
+00:00:10,330 --> 00:00:14,980
+‫Besides handling authentication, we are also going to take care of authorization.
+
+4
+00:00:14,980 --> 00:00:21,250
+‫So authentication is about identifying a user and making sure that a request belongs to a given user.
+
+5
+00:00:21,280 --> 00:00:27,100
+‫Authorization, on the other hand, is about ensuring that the user has the right security privileges
+
+6
+00:00:27,100 --> 00:00:29,920
+‫to perform the operation that it's trying to perform.
+
+7
+00:00:29,920 --> 00:00:34,510
+‫So attached here to the Json web token, we also have the user roles.
+
+8
+00:00:34,510 --> 00:00:41,140
+‫This could be the student role for accessing the data in our application in a read only way, But the
+
+9
+00:00:41,140 --> 00:00:46,840
+‫user could also have, for example, the admin role, which means that the user is an administrator,
+
+10
+00:00:46,840 --> 00:00:50,050
+‫which has the ability of editing the data.
+
+11
+00:00:50,050 --> 00:00:55,450
+‫In order to implement these authorization features, we are going to be building an authorization guard.
+
+12
+00:00:55,450 --> 00:01:01,880
+‫So the guard will allow access to the endpoint if the user has the right set of roles and it's going
+
+13
+00:01:01,880 --> 00:01:03,170
+‫to deny access.
+
+14
+00:01:03,170 --> 00:01:09,890
+‫Otherwise let's then open here our guards folder and let's create a new file that we are going to call
+
+15
+00:01:09,920 --> 00:01:12,860
+‫authorization dot guards.
+
+16
+00:01:12,890 --> 00:01:16,580
+‫Let's now start the implementation of our authorization guard.
+
+17
+00:01:16,610 --> 00:01:21,260
+‫As usual, this is going to be an injectable nestjs service.
+
+18
+00:01:21,260 --> 00:01:26,750
+‫Let's have this class implement the can, activate Nestjs interface.
+
+19
+00:01:26,780 --> 00:01:32,870
+‫Let's now override the can activate method and let's have this return a boolean value.
+
+20
+00:01:32,900 --> 00:01:37,550
+‫Just like in the case of the authentication guard, we are going to start here at the beginning of the
+
+21
+00:01:37,550 --> 00:01:43,190
+‫can activate method by retrieving a reference here to the request object.
+
+22
+00:01:43,220 --> 00:01:49,610
+‫Next, we are going to be retrieving here a reference to the user profile which is currently attached
+
+23
+00:01:49,610 --> 00:01:52,220
+‫to the request under the user property.
+
+24
+00:01:52,220 --> 00:01:58,940
+‫So this user property was filled in by the get user middleware in case that the user is logged in to
+
+25
+00:01:58,940 --> 00:01:59,630
+‫the system.
+
+26
+00:01:59,630 --> 00:02:05,330
+‫Now, with the user profile, if we access the property user dot roles, we are going to get access
+
+27
+00:02:05,330 --> 00:02:09,710
+‫to all the roles associated to this user, such as a student admin.
+
+28
+00:02:09,710 --> 00:02:10,460
+‫ET cetera.
+
+29
+00:02:10,460 --> 00:02:16,610
+‫In order to determine if the user has access to the endpoint, we need to then compare the user roles
+
+30
+00:02:16,610 --> 00:02:22,130
+‫with the allowed roles that are authorized to get access to the endpoint.
+
+31
+00:02:22,130 --> 00:02:28,790
+‫So we need somehow to configure this authorization guard class with a list of allowed roles for which
+
+32
+00:02:28,820 --> 00:02:30,860
+‫access to the endpoint is allowed.
+
+33
+00:02:30,860 --> 00:02:36,740
+‫Let's then pass in here in the constructor of the authorization guard, a property that we are simply
+
+34
+00:02:36,740 --> 00:02:38,840
+‫going to call allowed roles.
+
+35
+00:02:38,840 --> 00:02:46,040
+‫This is going to be an array of strings, so each string being a role that is authorized to access the
+
+36
+00:02:46,040 --> 00:02:51,830
+‫endpoint protected by this instance of the authorization guard, we are going to have multiple instances
+
+37
+00:02:51,830 --> 00:02:56,750
+‫of an authorization guard, each one with its different set of allowed roles.
+
+38
+00:02:56,750 --> 00:03:03,260
+‫Now, in order to determine if the user can access the endpoint, we just need to compare the user roles
+
+39
+00:03:03,260 --> 00:03:05,000
+‫with the authorized roles.
+
+40
+00:03:05,000 --> 00:03:09,950
+‫And in order to do that, we are going to be creating here a new function that we are going to call
+
+41
+00:03:09,950 --> 00:03:11,120
+‫is allowed.
+
+42
+00:03:11,120 --> 00:03:17,780
+‫This function is going to take here as input a list of user roles, which is going to be an array of
+
+43
+00:03:17,780 --> 00:03:18,650
+‫strings.
+
+44
+00:03:18,680 --> 00:03:26,300
+‫Now this method needs to return true if the access is granted and false if the access is denied so that
+
+45
+00:03:26,300 --> 00:03:31,850
+‫we understand better what is going on, we are going to be adding here some logging to the console.
+
+46
+00:03:31,850 --> 00:03:37,100
+‫We are going to list here the allowed roles first and the user roles next.
+
+47
+00:03:37,100 --> 00:03:43,460
+‫Let's assume to start our implementation that the user is not allowed to access the endpoint.
+
+48
+00:03:43,460 --> 00:03:49,520
+‫So this is a safe default We are going to be defining here a Boolean flag allow that we are going to
+
+49
+00:03:49,520 --> 00:03:55,040
+‫initialize to false and we need to return this as the output of this method.
+
+50
+00:03:55,040 --> 00:04:00,680
+‫Now we are going to compare the allowed roles with user roles and see if the user should be allowed
+
+51
+00:04:00,680 --> 00:04:02,180
+‫access to the endpoint.
+
+52
+00:04:02,210 --> 00:04:06,500
+‫Let's start by looping through the list of roles we're going to call here.
+
+53
+00:04:06,500 --> 00:04:12,740
+‫User roles for each and each of the elements of this array is going to be a user role.
+
+54
+00:04:12,740 --> 00:04:19,940
+‫Now let's quickly add here some logging so that we can see what is the user role being checked for access.
+
+55
+00:04:19,940 --> 00:04:22,640
+‫Now let's add here an if condition.
+
+56
+00:04:22,640 --> 00:04:30,110
+‫We are going to see if the allowed roles that were passed in here to the constructor of the Guard include
+
+57
+00:04:30,110 --> 00:04:32,150
+‫this particular user role.
+
+58
+00:04:32,150 --> 00:04:37,100
+‫So if that is the case, then the user should be allowed to access the endpoint.
+
+59
+00:04:37,100 --> 00:04:39,560
+‫So let's set allowed to true.
+
+60
+00:04:39,560 --> 00:04:42,410
+‫Now, at this point, we would like to break here.
+
+61
+00:04:42,410 --> 00:04:47,930
+‫This loop now for each is going to continue to loop through the user roles, even though we might have
+
+62
+00:04:47,930 --> 00:04:50,270
+‫already determined that the access is allowed.
+
+63
+00:04:50,270 --> 00:04:56,390
+‫So we are only going to do this check here if the access has not yet been allowed.
+
+64
+00:04:56,390 --> 00:05:00,290
+‫And with this we will have the allowed flags set to true if at.
+
+65
+00:05:00,410 --> 00:05:07,180
+‫Least one of the user roles is listed here as being an allowed role for the authorization guard.
+
+66
+00:05:07,190 --> 00:05:09,890
+‫Let's then now use the Is allowed method.
+
+67
+00:05:09,890 --> 00:05:15,020
+‫We are going to create here a new constant that we're going to call allowed and we are going to assign
+
+68
+00:05:15,020 --> 00:05:15,200
+‫it.
+
+69
+00:05:15,200 --> 00:05:18,110
+‫The output value of calling is allowed.
+
+70
+00:05:18,110 --> 00:05:23,150
+‫Let's pass here the user roles that we can retrieve from the user profile.
+
+71
+00:05:23,150 --> 00:05:27,950
+‫Let's now add here some logging so that we can see if the user was allowed or not.
+
+72
+00:05:27,950 --> 00:05:31,160
+‫And let's now implement our authorization logic.
+
+73
+00:05:31,160 --> 00:05:38,150
+‫So if the user is not allowed, then we are going to add here some logging so that we can see that the
+
+74
+00:05:38,150 --> 00:05:44,690
+‫user was denied the access in the log and we are going to throw a new forbidden exception.
+
+75
+00:05:44,690 --> 00:05:47,570
+‫So this will give us a different status code.
+
+76
+00:05:47,570 --> 00:05:51,710
+‫We are going to get in the client, the status code 403 forbidden.
+
+77
+00:05:51,710 --> 00:05:53,960
+‫So this means that the user is authenticated.
+
+78
+00:05:53,960 --> 00:06:00,140
+‫But despite the fact that it's authenticated, it still does not have access to the endpoint because
+
+79
+00:06:00,140 --> 00:06:03,300
+‫it does not have the proper authorization role.
+
+80
+00:06:03,330 --> 00:06:08,640
+‫On the other hand, if the user was allowed to access the endpoint, then we're going to add here some
+
+81
+00:06:08,640 --> 00:06:14,760
+‫logging and we are going to return the value true, meaning that the endpoint code can then be executed
+
+82
+00:06:14,760 --> 00:06:16,110
+‫for this request.
+
+83
+00:06:16,110 --> 00:06:20,160
+‫And with this we have completed the implementation of our authorization guard.
+
+84
+00:06:20,160 --> 00:06:25,200
+‫So we are now going to plug it into our backend and apply it only to certain endpoints.
+

@@ -1,0 +1,188 @@
+﻿1
+00:00:03,460 --> 00:00:05,740
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,740 --> 00:00:11,710
+‫In this new lesson, we are going to learn how to customize the error response of nestjs whenever something
+
+3
+00:00:11,710 --> 00:00:14,080
+‫goes wrong in one of our controllers.
+
+4
+00:00:14,080 --> 00:00:20,530
+‫So we can define different error responses at the level of a given method of a given controller or even
+
+5
+00:00:20,530 --> 00:00:24,400
+‫globally at the level of all controllers of our backend.
+
+6
+00:00:24,400 --> 00:00:30,970
+‫So first, before showing how to do this using a nestjs filter, let's first switch to a better way
+
+7
+00:00:30,970 --> 00:00:33,580
+‫of testing error handling in our application.
+
+8
+00:00:33,580 --> 00:00:40,540
+‫So far we were simulating here a bug by intentionally modifying here the code of the edit course dialog
+
+9
+00:00:40,540 --> 00:00:41,710
+‫of our frontend.
+
+10
+00:00:41,740 --> 00:00:48,130
+‫We are going to instead be using a small http rest client that runs from the browser in order to test
+
+11
+00:00:48,130 --> 00:00:48,940
+‫our backend.
+
+12
+00:00:48,970 --> 00:00:54,100
+‫In this part of the course, the browser client that we are going to be using is called Restlet.
+
+13
+00:00:54,130 --> 00:00:57,370
+‫It's free and it's a chrome extension.
+
+14
+00:00:57,370 --> 00:01:04,400
+‫So once you install it, you are going to see an icon here in your top bar to open the Restlet client,
+
+15
+00:01:04,400 --> 00:01:05,810
+‫which looks like this.
+
+16
+00:01:05,810 --> 00:01:11,180
+‫Let's then see how can we use Restlet in order to simulate the same error as before?
+
+17
+00:01:11,180 --> 00:01:20,660
+‫So we were doing here a put call and we were accessing here the URL localhost 9000 slash api slash courses
+
+18
+00:01:20,660 --> 00:01:24,710
+‫and then we need to pass in here the course ID that we want to update.
+
+19
+00:01:24,710 --> 00:01:27,740
+‫Let's grab this here directly from our front end.
+
+20
+00:01:27,740 --> 00:01:32,990
+‫We are going to open here the edit course dialog and we are going to trigger again the same error that
+
+21
+00:01:32,990 --> 00:01:35,270
+‫we triggered before in our last lesson.
+
+22
+00:01:35,270 --> 00:01:37,850
+‫So this is the error that we are trying to simulate.
+
+23
+00:01:37,880 --> 00:01:45,500
+‫We have here a 400 bad request and we can get here from the request URL using the chrome dev tools,
+
+24
+00:01:45,500 --> 00:01:49,250
+‫the correct identifier of the course that we are trying to update.
+
+25
+00:01:49,280 --> 00:01:55,220
+‫We are going to take this course ID and we are going to use it here to build our put request URL.
+
+26
+00:01:55,220 --> 00:01:58,370
+‫So here is the full URL that we want to update.
+
+27
+00:01:58,370 --> 00:02:02,570
+‫And now we just need to specify here the body of the request.
+
+28
+00:02:02,600 --> 00:02:07,730
+‫Notice that we are already setting here the content type header to application slash.
+
+29
+00:02:07,730 --> 00:02:08,480
+‫Jason.
+
+30
+00:02:08,480 --> 00:02:14,690
+‫Let's then switch back here to the network log and grab the body of the Http request here.
+
+31
+00:02:14,690 --> 00:02:22,040
+‫From the request payload, we can now use this request body here in the body part of our Restlet client.
+
+32
+00:02:22,040 --> 00:02:27,140
+‫Let's paste this in and let's format this into proper Json.
+
+33
+00:02:27,140 --> 00:02:33,860
+‫Once we have the body of our put request, we can now go ahead and trigger here the send button and
+
+34
+00:02:33,860 --> 00:02:39,680
+‫notice that we are adding here this field which normally we should not be trying to update.
+
+35
+00:02:39,680 --> 00:02:44,330
+‫So in an update request we should not try to override the ID field.
+
+36
+00:02:44,330 --> 00:02:47,930
+‫This would be a good example of a bug in our application.
+
+37
+00:02:47,930 --> 00:02:49,910
+‫Now for that, let's trigger the request.
+
+38
+00:02:49,910 --> 00:02:55,940
+‫We are going to click here on Send and it looks like nothing happened, but if we click here on this
+
+39
+00:02:55,940 --> 00:03:01,370
+‫collapse button, we are going to scroll down and see below here the response that we got.
+
+40
+00:03:01,370 --> 00:03:02,960
+‫So as you can see, we got an error.
+
+41
+00:03:02,960 --> 00:03:09,830
+‫We got a 400 bad request back from our Nestjs backend and we can see here the body of the response.
+
+42
+00:03:09,830 --> 00:03:15,440
+‫So from now on, whenever we want to simulate errors, we are going to be using this nice rest browser
+
+43
+00:03:15,440 --> 00:03:17,090
+‫based Http client.
+
+44
+00:03:17,090 --> 00:03:23,810
+‫Before going any further, let's switch back here to our program and let's go ahead and remove the simulated
+
+45
+00:03:23,810 --> 00:03:29,210
+‫bug so that we can use our user interface in other lessons if we need to.
+
+46
+00:03:29,210 --> 00:03:34,400
+‫And with this in place, we are now ready to continue the error handling section of our course.
+
+47
+00:03:34,400 --> 00:03:41,750
+‫Let's learn how to customize the body of the error response if we need to using a nestjs filter.
+

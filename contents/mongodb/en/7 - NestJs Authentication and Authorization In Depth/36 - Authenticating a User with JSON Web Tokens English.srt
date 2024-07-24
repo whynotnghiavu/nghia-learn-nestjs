@@ -1,0 +1,504 @@
+﻿1
+00:00:04,030 --> 00:00:06,220
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,220 --> 00:00:11,320
+‫In this new lesson, we are going to finish the implementation of our login controller.
+
+3
+00:00:11,320 --> 00:00:18,220
+‫So here we have already validated the user plain text password against the password hash stored in the
+
+4
+00:00:18,220 --> 00:00:19,030
+‫database.
+
+5
+00:00:19,030 --> 00:00:25,510
+‫So now at this point in the program, what we want to do is to create a Json web token that will allow
+
+6
+00:00:25,510 --> 00:00:31,210
+‫to prove that the carrier of the token is indeed a given user in our system.
+
+7
+00:00:31,210 --> 00:00:36,820
+‫So how does having this token prove that a request comes from a given user?
+
+8
+00:00:36,820 --> 00:00:41,980
+‫Well, because our service that we are writing here only creates a token.
+
+9
+00:00:41,980 --> 00:00:49,780
+‫If the password is correct, then this proves that the carrier of the token is also the user because
+
+10
+00:00:49,780 --> 00:00:53,700
+‫only the user should have known the user password.
+
+11
+00:00:53,710 --> 00:01:00,010
+‫This of course assumes that the user did not lose the password, that the attacker did not manage to
+
+12
+00:01:00,040 --> 00:01:06,560
+‫guess the user password and that the password was not stolen by some means, such as, for example,
+
+13
+00:01:06,560 --> 00:01:12,530
+‫using a compromised network where the user was suffering a man in the middle attack, etcetera.
+
+14
+00:01:12,560 --> 00:01:18,890
+‫Going back to our program at this point in the program, we want to be able to create a Json web token
+
+15
+00:01:18,890 --> 00:01:20,450
+‫that identifies the user.
+
+16
+00:01:20,450 --> 00:01:24,260
+‫So what is a Json web token and what does it look like?
+
+17
+00:01:24,260 --> 00:01:31,460
+‫Well, if we go here to this website, JWT, dot IO and we scroll down, besides being able to read
+
+18
+00:01:31,460 --> 00:01:36,050
+‫here some documentation on Json web tokens, we also have here a live example.
+
+19
+00:01:36,050 --> 00:01:38,780
+‫So you see this string here highlighted.
+
+20
+00:01:38,780 --> 00:01:46,080
+‫This is an example of a Json web token, its URL friendly in the sense that you can paste it as a URL
+
+21
+00:01:46,130 --> 00:01:50,030
+‫parameter without any escaping being necessary.
+
+22
+00:01:50,030 --> 00:01:58,430
+‫And it's a plain text string that is divided on three parts and we can identify the different parts
+
+23
+00:01:58,430 --> 00:02:01,130
+‫of the string via the dot separator.
+
+24
+00:02:01,160 --> 00:02:03,680
+‫So the first part here is the header.
+
+25
+00:02:03,680 --> 00:02:05,540
+‫We can see it decoded here.
+
+26
+00:02:05,540 --> 00:02:12,530
+‫It provides some information about how to decode the Json web token we have here, the algorithm used,
+
+27
+00:02:12,530 --> 00:02:13,280
+‫etcetera.
+
+28
+00:02:13,310 --> 00:02:15,800
+‫The second part is going to be the payload.
+
+29
+00:02:15,800 --> 00:02:18,890
+‫So here is where we are going to identify the user.
+
+30
+00:02:18,890 --> 00:02:22,040
+‫And the third part is going to be the signature.
+
+31
+00:02:22,040 --> 00:02:29,060
+‫So this is a cryptographic signature that proves that the token is valid in the payload of our Json
+
+32
+00:02:29,060 --> 00:02:36,080
+‫web token, we are going to be adding both the user identifier so that we can know that the token is
+
+33
+00:02:36,080 --> 00:02:37,340
+‫associated to a given user.
+
+34
+00:02:37,340 --> 00:02:43,580
+‫But we are also going to be adding the user roles such as administrator student ET cetera.
+
+35
+00:02:43,580 --> 00:02:49,790
+‫In order to be able to create a Json web token like this and send it back to our front end, we are
+
+36
+00:02:49,790 --> 00:02:55,070
+‫going to be using the Node Json web token library from zero.
+
+37
+00:02:55,070 --> 00:03:01,040
+‫So this is an open source library that allows us to quickly create new Json web tokens.
+
+38
+00:03:01,040 --> 00:03:04,130
+‫We have already installed it here in our program.
+
+39
+00:03:04,130 --> 00:03:10,730
+‫So in order to be able to use it, we simply have to generate a unique secret that we are going to be
+
+40
+00:03:10,730 --> 00:03:12,770
+‫installing in our server.
+
+41
+00:03:12,770 --> 00:03:20,420
+‫With that secret, we are going to be able to easily create new Json web tokens by calling JWT dot sign
+
+42
+00:03:20,450 --> 00:03:20,990
+‫here.
+
+43
+00:03:20,990 --> 00:03:24,260
+‫We are going to be passing the payload of our Json web token.
+
+44
+00:03:24,260 --> 00:03:28,430
+‫And here in the second parameter we need to add our secret.
+
+45
+00:03:28,460 --> 00:03:33,350
+‫Let's then start by quickly adding a new signing secret to our program.
+
+46
+00:03:33,350 --> 00:03:40,040
+‫We are going to open here our constants file where we have stored here, our MongoDB connection, and
+
+47
+00:03:40,040 --> 00:03:45,980
+‫here we are going to be adding a new secret that we are going to be calling JWT secret.
+
+48
+00:03:46,010 --> 00:03:53,300
+‫We are going to paste in here a unique password that have generated before using a password generator.
+
+49
+00:03:53,300 --> 00:03:57,470
+‫So here we are, defining this as a constant in our program.
+
+50
+00:03:57,470 --> 00:04:03,740
+‫In your application, you probably would like to import this as an environment variable so that if you
+
+51
+00:04:03,740 --> 00:04:09,440
+‫want to change your secret, you would not need then to redeploy your program here.
+
+52
+00:04:09,440 --> 00:04:13,370
+‫For simplicity purposes, we are simply defining it as a constant.
+
+53
+00:04:13,400 --> 00:04:20,240
+‫Now we are going to go back here to our controller and we are going to be importing here the JWT library
+
+54
+00:04:20,240 --> 00:04:22,220
+‫that we already have installed.
+
+55
+00:04:22,220 --> 00:04:28,730
+‫Now that we have here a reference to the Json web token library, we can use it to create a new Json
+
+56
+00:04:28,730 --> 00:04:29,630
+‫web token.
+
+57
+00:04:29,630 --> 00:04:32,240
+‫We are going to do so in the following way.
+
+58
+00:04:32,240 --> 00:04:38,240
+‫We are going to call JWT dot sign and we are going to be passing here a payload.
+
+59
+00:04:38,240 --> 00:04:41,630
+‫So this is going to be the payload of our Json web token.
+
+60
+00:04:41,630 --> 00:04:44,960
+‫We are going to pass in here a unique user identifier.
+
+61
+00:04:44,960 --> 00:04:50,690
+‫Let's say that we are going to be using the email for that and we are also going to be passing here
+
+62
+00:04:50,690 --> 00:04:52,310
+‫the user roles.
+
+63
+00:04:52,310 --> 00:04:59,570
+‫So the Json web token is going to be the basis both of our authentication, but also of our authorization
+
+64
+00:04:59,570 --> 00:05:00,450
+‫solution here.
+
+65
+00:05:00,540 --> 00:05:02,190
+‫Here on the Rolls property.
+
+66
+00:05:02,190 --> 00:05:04,740
+‫We are going to pass in the user rolls.
+
+67
+00:05:04,770 --> 00:05:10,500
+‫Now, in order to sign this Json web token, we are going to be needing the signing secret that should
+
+68
+00:05:10,500 --> 00:05:12,480
+‫not be made available to the front end.
+
+69
+00:05:12,480 --> 00:05:16,710
+‫So this is something that only the back end should have access to.
+
+70
+00:05:16,710 --> 00:05:21,090
+‫And with this we have created here a sign Json web token.
+
+71
+00:05:21,090 --> 00:05:26,940
+‫We can now assign the output of this call here to a new constant that we are going to be calling of
+
+72
+00:05:26,940 --> 00:05:28,500
+‫JWT token.
+
+73
+00:05:28,500 --> 00:05:36,480
+‫So this property here is a string that looks like what we have seen here in the jwt.io website.
+
+74
+00:05:36,480 --> 00:05:42,420
+‫So this is a Json web token that is currently assigned here to this constant.
+
+75
+00:05:42,420 --> 00:05:46,530
+‫So now all we have to do is to send this back to the client.
+
+76
+00:05:46,530 --> 00:05:53,460
+‫The client will then use this to prove the identity of the user that is currently using a given instance
+
+77
+00:05:53,460 --> 00:05:54,870
+‫of our front end.
+
+78
+00:05:54,870 --> 00:06:01,090
+‫In order to send this back to the client, we need to call here the resolve function from our custom
+
+79
+00:06:01,090 --> 00:06:07,240
+‫promise and we need to pass it the value that is going to get emitted whenever the promise gets resolved
+
+80
+00:06:07,240 --> 00:06:08,020
+‫successfully.
+
+81
+00:06:08,020 --> 00:06:13,930
+‫So this is going to be a Json payload, which is going to contain only one property, which is going
+
+82
+00:06:13,930 --> 00:06:17,350
+‫to be the of JWT token property.
+
+83
+00:06:17,350 --> 00:06:23,200
+‫So this property will be a string, which is a Json web token and we are going to see what this payload
+
+84
+00:06:23,200 --> 00:06:30,040
+‫looks like in a moment when we test our new implementation of the login service which is now completed.
+
+85
+00:06:30,040 --> 00:06:33,370
+‫Let's now see our authentication controller in action.
+
+86
+00:06:33,370 --> 00:06:37,870
+‫We are going to switch here to a larger window where we have here the network tab.
+
+87
+00:06:37,870 --> 00:06:44,260
+‫Let's clear here the network log and let's head over here to the login page using our side menu.
+
+88
+00:06:44,290 --> 00:06:50,890
+‫Here we have a couple of pre-filled in valid values student at Angular University, Ohio.
+
+89
+00:06:51,010 --> 00:06:52,570
+‫That's our user.
+
+90
+00:06:52,570 --> 00:06:56,320
+‫And we also have a pre-filled invalid password.
+
+91
+00:06:56,320 --> 00:07:02,380
+‫So this is just for simplicity purposes so that you can quickly log in and test the functionality.
+
+92
+00:07:02,410 --> 00:07:08,950
+‫Now before going ahead and clicking on the login button, let's test the cases where the login should
+
+93
+00:07:08,950 --> 00:07:09,520
+‫fail.
+
+94
+00:07:09,520 --> 00:07:17,560
+‫So let's say that we use here an email that does not exist, let's say does not exist at Angular university.io
+
+95
+00:07:17,590 --> 00:07:25,240
+‫we fill in here any password, we click login and take a look here at the network log we have here.
+
+96
+00:07:25,240 --> 00:07:32,560
+‫Login failed as expected because we got back from our backend a 401 unauthorized response.
+
+97
+00:07:32,560 --> 00:07:39,160
+‫So we have sent here in the body of our request two properties, the email and the password.
+
+98
+00:07:39,160 --> 00:07:42,520
+‫And we got back, as expected, a 401.
+
+99
+00:07:42,550 --> 00:07:43,960
+‫Unauthorized error.
+
+100
+00:07:43,960 --> 00:07:50,290
+‫Now let's clear here the network log and let's now try this with a valid email that corresponds to a
+
+101
+00:07:50,290 --> 00:07:55,960
+‫user that indeed exists in our database student at Angular University, Ohio.
+
+102
+00:07:55,960 --> 00:08:02,470
+‫But instead of providing here a correct value, let's just type in here any random value.
+
+103
+00:08:02,470 --> 00:08:10,540
+‫So if we now click log in, we are going to get back again from the backend login failed and a 401 unauthorized
+
+104
+00:08:10,540 --> 00:08:12,520
+‫error reply as expected.
+
+105
+00:08:12,520 --> 00:08:19,330
+‫So so far a user with an invalid email and an invalid password did not manage to log in to our backend
+
+106
+00:08:19,360 --> 00:08:20,500
+‫as expected.
+
+107
+00:08:20,500 --> 00:08:28,390
+‫Now let's clear here the password field and for this particular email let's simply type the word password,
+
+108
+00:08:28,390 --> 00:08:32,950
+‫which as you already know well, is a bad example of a password.
+
+109
+00:08:32,950 --> 00:08:39,580
+‫This is just for simplicity purposes to make it easy for you to type in the correct password.
+
+110
+00:08:39,580 --> 00:08:46,450
+‫So we have entered here our correct password that you can also obtain simply by refreshing here the
+
+111
+00:08:46,450 --> 00:08:47,140
+‫login page.
+
+112
+00:08:47,140 --> 00:08:54,610
+‫Again, let's click on login and this time around we have here a 201 created response.
+
+113
+00:08:54,610 --> 00:09:01,390
+‫We got redirected to the courses page and we even called here the courses endpoint to get the list of
+
+114
+00:09:01,390 --> 00:09:03,040
+‫courses as expected.
+
+115
+00:09:03,040 --> 00:09:09,490
+‫Let's have a further look at this call to slash API slash login so we can see that we got here in the
+
+116
+00:09:09,490 --> 00:09:15,130
+‫response a Json payload containing one property of JWT token.
+
+117
+00:09:15,130 --> 00:09:19,480
+‫And here we can see this long string separated by dots.
+
+118
+00:09:19,510 --> 00:09:22,570
+‫This indeed looks like a Json web token.
+
+119
+00:09:22,570 --> 00:09:27,940
+‫Let's take the value of this string and let's go here to jwt.io.
+
+120
+00:09:27,970 --> 00:09:34,360
+‫We're going to clear here this text box and we're going to paste the JWT that we have just created.
+
+121
+00:09:34,390 --> 00:09:42,310
+‫So we did not manage to validate here the signature, but we can see here that the payload is indeed
+
+122
+00:09:42,310 --> 00:09:48,850
+‫the email of the user and the roles of the user, which in this case is only the student role.
+
+123
+00:09:48,850 --> 00:09:54,220
+‫So this shows that we have indeed created a valid Json web token in our back end.
+
+124
+00:09:54,250 --> 00:09:59,890
+‫Now in the next few lessons, we are going to learn how to use this Json web token to.
+
+125
+00:10:00,230 --> 00:10:07,430
+‫Notify the user in subsequent requests to our backend, such as, for example, in this second request
+
+126
+00:10:07,430 --> 00:10:12,320
+‫to slash API slash courses that was immediately sent after the login.
+

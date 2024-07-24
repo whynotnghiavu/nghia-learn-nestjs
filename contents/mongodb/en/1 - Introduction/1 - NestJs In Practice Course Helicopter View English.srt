@@ -1,0 +1,180 @@
+﻿1
+00:00:03,730 --> 00:00:08,080
+‫Hello everyone, and welcome to the Nestjs in practice course.
+
+2
+00:00:08,080 --> 00:00:14,140
+‫I'm Vasco from the Angular University and I will be your instructor for this course if you don't know
+
+3
+00:00:14,140 --> 00:00:15,130
+‫Nestjs yet.
+
+4
+00:00:15,130 --> 00:00:17,290
+‫It's like Angular but for the backend.
+
+5
+00:00:17,290 --> 00:00:24,790
+‫So with Nestjs we can design our nodejs backend using a lot of the same concepts that we use also in
+
+6
+00:00:24,790 --> 00:00:26,410
+‫our angular frontend.
+
+7
+00:00:26,410 --> 00:00:34,930
+‫So things like modules, pipes, services, ET, all of those concepts we can reuse also to design our
+
+8
+00:00:34,930 --> 00:00:36,250
+‫NodeJS backend.
+
+9
+00:00:36,280 --> 00:00:42,250
+‫Nestjs also has the advantage that it's very similar to some popular backend development frameworks
+
+10
+00:00:42,250 --> 00:00:48,580
+‫that you might already know from other ecosystems, such as, for example, the Java Spring framework
+
+11
+00:00:48,580 --> 00:00:55,210
+‫from the Java ecosystem or the ASP.Net MVC Framework from the Cdash ecosystem.
+
+12
+00:00:55,210 --> 00:01:01,340
+‫Nestjs is very similar to those popular backend development frameworks because it also has an object
+
+13
+00:01:01,340 --> 00:01:08,630
+‫oriented, decorator based API that allows us to structure our backend by dividing everything into different
+
+14
+00:01:08,630 --> 00:01:12,050
+‫types of services such as controllers, repositories.
+
+15
+00:01:12,050 --> 00:01:20,120
+‫And we can also define our data validation business rules directly on our domain classes using decorators.
+
+16
+00:01:20,120 --> 00:01:26,180
+‫In this course, you are going to learn from scratch how to design and develop a nestjs backend that
+
+17
+00:01:26,180 --> 00:01:31,550
+‫is going to take the form of a rest API that queries a MongoDB database.
+
+18
+00:01:31,550 --> 00:01:38,270
+‫So we are going to be using the mongoose ODM or object to document mapping library for querying the
+
+19
+00:01:38,270 --> 00:01:39,020
+‫database.
+
+20
+00:01:39,020 --> 00:01:45,290
+‫If you are not familiar with NoSQL databases or the MongoDB database, please don't worry because we
+
+21
+00:01:45,290 --> 00:01:47,720
+‫are going to explain everything from scratch.
+
+22
+00:01:47,720 --> 00:01:54,320
+‫So for this course, no prior knowledge is assumed for Nestjs, MongoDB and Mongoose.
+
+23
+00:01:54,350 --> 00:01:59,060
+‫In this course we are going to cover in detail the Nestjs backend development framework.
+
+24
+00:01:59,060 --> 00:02:06,260
+‫We are going to start by providing you with a complete Crud example of data modification and querying
+
+25
+00:02:06,260 --> 00:02:09,380
+‫in a MongoDB database using Nestjs.
+
+26
+00:02:09,380 --> 00:02:13,070
+‫And then we are going to move on to some more advanced features.
+
+27
+00:02:13,070 --> 00:02:20,630
+‫We are going to add authentication and authorization to our Nestjs backend using Json web tokens.
+
+28
+00:02:20,630 --> 00:02:26,780
+‫We are going to learn how to design our backend by dividing it into multiple types of services such
+
+29
+00:02:26,780 --> 00:02:29,150
+‫as controllers and repositories.
+
+30
+00:02:29,150 --> 00:02:37,550
+‫We are going to learn in detail all the nestjs concepts, including services, modules, guards, pipes.
+
+31
+00:02:37,550 --> 00:02:38,480
+‫ET cetera.
+
+32
+00:02:38,480 --> 00:02:44,390
+‫We are going to learn in detail how to do custom error handling using nestjs and we are also going to
+
+33
+00:02:44,390 --> 00:02:48,860
+‫learn how to do data validation using a decorator based approach.
+
+34
+00:02:48,860 --> 00:02:53,720
+‫For that, we are going to be leveraging the built in Nestjs validation pipe.
+
+35
+00:02:53,720 --> 00:02:58,970
+‫At the end of this course, you will have learned everything that you need in practice in order to create
+
+36
+00:02:59,000 --> 00:03:07,190
+‫a backend using common rest principles, query a MongoDB database design and develop your backend using
+
+37
+00:03:07,190 --> 00:03:10,250
+‫common patterns such as controllers and services.
+
+38
+00:03:10,250 --> 00:03:16,550
+‫You will learn how to do decorator based data validation, custom error handling and you will know how
+
+39
+00:03:16,550 --> 00:03:23,000
+‫to secure your backend using authentication and authorization based on Json web tokens.
+
+40
+00:03:23,000 --> 00:03:30,020
+‫So you will have learned everything that you need in practice for creating a production ready Nestjs
+
+41
+00:03:30,020 --> 00:03:30,860
+‫backend.
+
+42
+00:03:30,860 --> 00:03:33,400
+‫So I hope that you will enjoy the course.
+
+43
+00:03:33,410 --> 00:03:35,210
+‫I want to thank you for watching.
+
+44
+00:03:35,210 --> 00:03:40,370
+‫If you have any questions about the course, please let me know in the comment section below.
+
+45
+00:03:40,370 --> 00:03:45,110
+‫And without further ado, let's get started learning Nestjs together.
+

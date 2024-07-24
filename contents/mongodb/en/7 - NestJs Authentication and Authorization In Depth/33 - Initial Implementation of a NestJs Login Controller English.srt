@@ -1,0 +1,288 @@
+﻿1
+00:00:03,820 --> 00:00:06,100
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,100 --> 00:00:11,590
+‫In this new lesson, we are going to start the implementation of our login backend controller.
+
+3
+00:00:11,590 --> 00:00:16,000
+‫So the first thing that we are going to do is starting with our front end.
+
+4
+00:00:16,030 --> 00:00:20,260
+‫We are going to send the email and the password back to the client.
+
+5
+00:00:20,260 --> 00:00:25,690
+‫So here whenever we click on login, we are going to be triggering here the login method in the login
+
+6
+00:00:25,690 --> 00:00:26,620
+‫component.
+
+7
+00:00:26,620 --> 00:00:32,080
+‫At this point, the first thing that we are going to do is to retrieve the user email and password from
+
+8
+00:00:32,080 --> 00:00:34,150
+‫the form we are going to grab here.
+
+9
+00:00:34,150 --> 00:00:38,680
+‫The current form value by accessing this dot form dot value.
+
+10
+00:00:38,680 --> 00:00:43,990
+‫Now, using the current form value, we are going to send this back to the client using the authentication
+
+11
+00:00:43,990 --> 00:00:44,590
+‫service.
+
+12
+00:00:44,590 --> 00:00:47,770
+‫Let's have a look at how this service is implemented.
+
+13
+00:00:47,770 --> 00:00:51,820
+‫So as you can see, we only have here one method, which is login.
+
+14
+00:00:51,820 --> 00:00:58,450
+‫It takes two parameters, which is the login and the password, and it performs an Http post call to
+
+15
+00:00:58,450 --> 00:01:02,240
+‫our backend to this endpoint slash API slash login.
+
+16
+00:01:02,240 --> 00:01:07,610
+‫And in the body of the Http post call we are going to be passing the email and the password.
+
+17
+00:01:07,610 --> 00:01:09,650
+‫Let's then call this service.
+
+18
+00:01:09,680 --> 00:01:15,800
+‫Going back here to our login method, we are going to access here the authentication service and we
+
+19
+00:01:15,800 --> 00:01:17,630
+‫are going to call the login method.
+
+20
+00:01:17,630 --> 00:01:23,960
+‫We are going to then pass in here as the first parameter, the email, and the second parameter is going
+
+21
+00:01:23,960 --> 00:01:26,360
+‫to be the password value of the form.
+
+22
+00:01:26,360 --> 00:01:31,160
+‫So the name of the parameters come here from the form configuration.
+
+23
+00:01:31,160 --> 00:01:36,830
+‫Now in order to trigger the request to the backend, we need to subscribe to this observable, otherwise
+
+24
+00:01:36,830 --> 00:01:39,170
+‫the request will not be triggered.
+
+25
+00:01:39,170 --> 00:01:43,280
+‫Let's add here a couple of handlers to our subscribe call.
+
+26
+00:01:43,280 --> 00:01:50,270
+‫So let's add here a success handler and here, whenever the login occurs successfully, we want to redirect
+
+27
+00:01:50,270 --> 00:01:52,550
+‫the user back to the courses page.
+
+28
+00:01:52,550 --> 00:01:53,930
+‫So let's use for that.
+
+29
+00:01:53,930 --> 00:01:57,710
+‫The router that we already have injected here in our constructor.
+
+30
+00:01:57,710 --> 00:02:04,910
+‫Let's use the API, navigate by URL for example, and let's redirect the user to slash courses.
+
+31
+00:02:04,910 --> 00:02:08,480
+‫So this will display then the list of courses to the user.
+
+32
+00:02:08,480 --> 00:02:13,700
+‫Let's also add here an error handler just in case that something goes wrong.
+
+33
+00:02:13,700 --> 00:02:15,890
+‫We are going to grab here the error.
+
+34
+00:02:15,890 --> 00:02:22,460
+‫We are going to log the error to the console and we are going to show a simple pop up to the user alerting
+
+35
+00:02:22,460 --> 00:02:25,070
+‫the user that the login has failed.
+
+36
+00:02:25,070 --> 00:02:30,980
+‫And with this we have sent an Http request to our backend containing the email and password.
+
+37
+00:02:30,980 --> 00:02:35,660
+‫So let's now create here a new controller to handle the login request.
+
+38
+00:02:35,690 --> 00:02:41,630
+‫We are going to create here a new module for our backend which is going to be isolated from the courses
+
+39
+00:02:41,630 --> 00:02:42,200
+‫module.
+
+40
+00:02:42,200 --> 00:02:45,590
+‫It's going to contain its own set of separate services.
+
+41
+00:02:45,590 --> 00:02:50,240
+‫So let's create here a new directory and we are going to call this model off.
+
+42
+00:02:50,240 --> 00:02:56,120
+‫So this is going to contain everything related to authentication and authorization in our backend.
+
+43
+00:02:56,150 --> 00:03:01,910
+‫Inside this directory, we are going to be creating here a new controller which is going to be the off
+
+44
+00:03:01,910 --> 00:03:02,650
+‫controller.
+
+45
+00:03:02,650 --> 00:03:06,520
+‫Now this controller is going to be part of a new module.
+
+46
+00:03:06,520 --> 00:03:12,820
+‫So let's create here a new separate file that we are going to call off, App.module.ts.
+
+47
+00:03:12,820 --> 00:03:19,300
+‫So it's important to bear in mind that there is a similarly named file in our front end that contains
+
+48
+00:03:19,300 --> 00:03:20,560
+‫the login component.
+
+49
+00:03:20,560 --> 00:03:28,690
+‫So this module here needs to be added to our back end inside the rest API folder where all our backend
+
+50
+00:03:28,720 --> 00:03:29,320
+‫is.
+
+51
+00:03:29,350 --> 00:03:32,920
+‫Let's then write here the definition of our module.
+
+52
+00:03:32,920 --> 00:03:39,340
+‫The module as usual is going to be a plain TypeScript class that we need to decorate with the module
+
+53
+00:03:39,340 --> 00:03:41,620
+‫decorator from Nestjs.
+
+54
+00:03:41,650 --> 00:03:47,830
+‫Let's go ahead and add here in the controllers property, our new controller that we are going to be
+
+55
+00:03:47,830 --> 00:03:52,630
+‫defining in this file that we have just added the authentication controller.
+
+56
+00:03:52,630 --> 00:04:00,070
+‫Let's define here the skeleton of a class and let's annotate this with the controller decorator from
+
+57
+00:04:00,070 --> 00:04:01,180
+‫Nestjs.
+
+58
+00:04:01,180 --> 00:04:08,390
+‫So this controller is meant to target the requests to the slash API slash login.
+
+59
+00:04:08,390 --> 00:04:14,360
+‫So let's add here simply login so that we are sure that we can grab this request.
+
+60
+00:04:14,390 --> 00:04:20,330
+‫We are going to create here a new method that is going to be called login and we are going to annotate
+
+61
+00:04:20,330 --> 00:04:23,630
+‫this with the post decorator from Nestjs.
+
+62
+00:04:23,660 --> 00:04:29,180
+‫We are going to see later how to implement this method and how to grab everything that we need out of
+
+63
+00:04:29,180 --> 00:04:30,440
+‫the Http request.
+
+64
+00:04:30,440 --> 00:04:37,250
+‫Right now, let's set up this class as a controller that belongs here to our authentication module.
+
+65
+00:04:37,250 --> 00:04:41,750
+‫So let's add here the authentication controller to the controllers property.
+
+66
+00:04:41,750 --> 00:04:45,860
+‫And with this we have an initial version of our authentication module.
+
+67
+00:04:45,860 --> 00:04:51,380
+‫Now all we need to do is to plug this in as a feature module in our backend.
+
+68
+00:04:51,380 --> 00:04:59,810
+‫So this file here, App.module.ts inside the rest API folder contains our root module for our Nestjs
+
+69
+00:04:59,840 --> 00:05:00,530
+‫application.
+
+70
+00:05:00,640 --> 00:05:07,300
+‫So let's go ahead and add here on the imports our new authentication feature module.
+
+71
+00:05:07,300 --> 00:05:11,800
+‫And with this we have the skeleton of our authentication module in place.
+
+72
+00:05:11,800 --> 00:05:16,210
+‫Let's then start implementing step by step our login controller.
+

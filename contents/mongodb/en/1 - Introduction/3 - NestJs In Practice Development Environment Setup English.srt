@@ -1,0 +1,416 @@
+﻿1
+00:00:03,490 --> 00:00:09,550
+‫Hello everyone, and welcome to the Nestjs In practice course in this course we are going to give you
+
+2
+00:00:09,550 --> 00:00:13,330
+‫a complete guided tour of the Nestjs framework.
+
+3
+00:00:13,330 --> 00:00:16,750
+‫Let's get started setting up your development environment.
+
+4
+00:00:16,750 --> 00:00:23,860
+‫Let's head over to the Angular University GitHub page and from here let's grab the code that we will
+
+5
+00:00:23,860 --> 00:00:25,150
+‫need for the course.
+
+6
+00:00:25,150 --> 00:00:28,540
+‫So if we scroll down, we are going to see here a search box.
+
+7
+00:00:28,540 --> 00:00:36,460
+‫Let's type in simply nestjs and we are going to see here the first entry should be the Nestjs course.
+
+8
+00:00:36,460 --> 00:00:41,890
+‫Let's now scroll down and confirm that this is indeed the correct repository.
+
+9
+00:00:41,920 --> 00:00:46,840
+‫Now we are going to grab this code and we are going to install it in your development machine.
+
+10
+00:00:46,840 --> 00:00:54,160
+‫There are two ways of doing that, either by cloning the GitHub repository or by downloading the branch
+
+11
+00:00:54,160 --> 00:00:56,020
+‫that we need as a zip file.
+
+12
+00:00:56,020 --> 00:01:01,310
+‫So the branch that we need at the start of the course is not the master branch.
+
+13
+00:01:01,310 --> 00:01:05,990
+‫The master branch contains the final code at the end of the course.
+
+14
+00:01:05,990 --> 00:01:11,540
+‫The branch that you are looking for right now, it's going to be the one dash Start branch.
+
+15
+00:01:11,540 --> 00:01:15,350
+‫So this is the initial point of the course that we need to grab.
+
+16
+00:01:15,350 --> 00:01:22,310
+‫If you are coding along as we go through the lessons now, we can download this branch here using this
+
+17
+00:01:22,310 --> 00:01:30,350
+‫button here, download a zip or if you prefer to use git, we can also clone this repository and switch
+
+18
+00:01:30,350 --> 00:01:32,960
+‫to the one dash start branch.
+
+19
+00:01:32,960 --> 00:01:38,300
+‫Now, before installing the lessons code, we need to make sure that you have on your development machine
+
+20
+00:01:38,300 --> 00:01:44,900
+‫the latest version of Node, so you should head over to nodejs.org and download the current version
+
+21
+00:01:44,900 --> 00:01:47,540
+‫and not the long term support version.
+
+22
+00:01:47,540 --> 00:01:53,330
+‫So tools such as the angular CLI tend to work better with the latest version of Node.
+
+23
+00:01:53,330 --> 00:01:58,850
+‫So once you have node installed on your machine, the only thing that you need is an ID.
+
+24
+00:01:58,880 --> 00:02:04,700
+‫However, if you want to conveniently switch between the multiple branches that you will need at the
+
+25
+00:02:04,700 --> 00:02:10,100
+‫beginning of each course section, then I also recommend you to install git on your machine.
+
+26
+00:02:10,100 --> 00:02:11,930
+‫Git is however optional.
+
+27
+00:02:11,930 --> 00:02:15,770
+‫You can always download the code as a zip file as we will see.
+
+28
+00:02:15,800 --> 00:02:21,500
+‫Now, in order to edit the code, we are going to need an integrated development environment or IDE.
+
+29
+00:02:21,530 --> 00:02:28,340
+‫This course is going to be filmed using the Webstorm, which is an excellent ID that you can download
+
+30
+00:02:28,340 --> 00:02:30,350
+‫here as a free trial.
+
+31
+00:02:30,350 --> 00:02:37,970
+‫If you prefer a free IDE, then you can also use Visual Studio code, which is also an excellent IDE
+
+32
+00:02:38,060 --> 00:02:39,860
+‫and it's completely free.
+
+33
+00:02:39,890 --> 00:02:46,430
+‫Either way you will have Node and an IDE ready to go in your development machine.
+
+34
+00:02:46,430 --> 00:02:52,970
+‫Now that we have these essential tools in place, let's switch over here to the Nestjs repository and
+
+35
+00:02:52,970 --> 00:02:57,440
+‫let's get the code by, for example, cloning the repository.
+
+36
+00:02:57,470 --> 00:03:01,130
+‫Remember that you can always download it here as a zip file.
+
+37
+00:03:01,130 --> 00:03:07,010
+‫Either way, once you have the code in your machine, we are going to open it with your IDE of choice.
+
+38
+00:03:07,010 --> 00:03:13,130
+‫So here we have opened the Nestjs course repository using Webstorm.
+
+39
+00:03:13,130 --> 00:03:18,470
+‫Now if you downloaded the code as a zip file, you already have the correct code version.
+
+40
+00:03:18,470 --> 00:03:25,220
+‫However, if you downloaded the code via git by cloning the repository, then you will need to switch
+
+41
+00:03:25,220 --> 00:03:26,840
+‫branches at this point.
+
+42
+00:03:26,840 --> 00:03:33,860
+‫So for that let's open here a terminal that in Webstorm can be opened with Alt 12 and let's do a git
+
+43
+00:03:33,860 --> 00:03:38,840
+‫branch command to see that indeed we are in the master branch now.
+
+44
+00:03:38,840 --> 00:03:43,970
+‫We will need to switch to the one dash start branch and you can do so in the following way.
+
+45
+00:03:43,970 --> 00:03:48,020
+‫You are going to run the command git checkout one dash start.
+
+46
+00:03:48,020 --> 00:03:55,040
+‫Let's now run git branch again and confirm that indeed we are in the one dash start branch containing
+
+47
+00:03:55,040 --> 00:03:58,040
+‫the code that we need at the beginning of the course.
+
+48
+00:03:58,040 --> 00:04:04,490
+‫Now, before doing anything else, I recommend that you install all your dependency pieces right now
+
+49
+00:04:04,490 --> 00:04:05,900
+‫at the beginning of the course.
+
+50
+00:04:05,900 --> 00:04:12,080
+‫You can do so here on the folder Nestjs course, which is the root of the repository.
+
+51
+00:04:12,110 --> 00:04:18,440
+‫You need to make sure that you are in the folder that contains here the root package.json file.
+
+52
+00:04:18,440 --> 00:04:23,120
+‫And from this folder you are going to run the command NPM install.
+
+53
+00:04:23,120 --> 00:04:28,910
+‫Now this is going to take a moment, but all your dependencies that you need for running the small frontend
+
+54
+00:04:28,910 --> 00:04:34,220
+‫that we are going to be using are going to be installed once your frontend dependencies are installed.
+
+55
+00:04:34,220 --> 00:04:39,620
+‫I recommend that at this point in the course you install also your backend dependencies.
+
+56
+00:04:39,620 --> 00:04:45,290
+‫This way you will have all your dependencies installed with the correct version so that we can focus
+
+57
+00:04:45,290 --> 00:04:47,680
+‫on the development of our API.
+
+58
+00:04:47,690 --> 00:04:54,740
+‫In order to install the backend dependencies, you need to CD into the rest API folder, which is this
+
+59
+00:04:54,740 --> 00:04:59,180
+‫directory here that we can see at the root of the repository.
+
+60
+00:04:59,180 --> 00:05:00,500
+‫So inside this.
+
+61
+00:05:00,560 --> 00:05:07,080
+‫Directory, you are going to find a second package.json which corresponds to our back end.
+
+62
+00:05:07,100 --> 00:05:13,790
+‫So as you can see, this is a separate node project nested inside here, our root repository.
+
+63
+00:05:13,790 --> 00:05:20,780
+‫So from inside this rest folder we are going to run a second NPM install command.
+
+64
+00:05:20,810 --> 00:05:27,140
+‫This is going to pull down all our backend dependencies and with this we have all the correct dependencies
+
+65
+00:05:27,140 --> 00:05:29,210
+‫installed with the right versions.
+
+66
+00:05:29,240 --> 00:05:35,450
+‫Notice that both the back end and the front end dependencies have package lock Json files.
+
+67
+00:05:35,450 --> 00:05:41,480
+‫It's important that you don't delete these files and that you run the installation using the versions
+
+68
+00:05:41,480 --> 00:05:43,520
+‫that are specified inside them.
+
+69
+00:05:43,520 --> 00:05:47,720
+‫This way you will be sure that everything works during the course.
+
+70
+00:05:47,750 --> 00:05:50,780
+‫Okay, so we are now almost ready to start.
+
+71
+00:05:50,780 --> 00:05:55,460
+‫Let's just give a quick test to our front end to see if it's working.
+
+72
+00:05:55,460 --> 00:06:02,730
+‫So from the root of our project, which should correspond here to the Nestjs course folder.
+
+73
+00:06:02,730 --> 00:06:06,690
+‫So it's this folder here at the root of your repository.
+
+74
+00:06:06,720 --> 00:06:10,230
+‫We are going to run the following command NPM start.
+
+75
+00:06:10,260 --> 00:06:16,680
+‫This is going to start the angular CLI in development mode and the angular development server is going
+
+76
+00:06:16,680 --> 00:06:20,400
+‫to be serving this small application that you see here on the screen.
+
+77
+00:06:20,400 --> 00:06:26,730
+‫Now during the course we will review certain parts of this application which is built in Angular, but
+
+78
+00:06:26,730 --> 00:06:29,760
+‫we are not going to build the application itself.
+
+79
+00:06:29,760 --> 00:06:34,560
+‫Instead we are going to focus on building the back end after a moment.
+
+80
+00:06:34,560 --> 00:06:37,500
+‫The angular CLI server is going to be serving here.
+
+81
+00:06:37,500 --> 00:06:40,470
+‫Our application on Port 4200.
+
+82
+00:06:40,470 --> 00:06:42,120
+‫Let's have a look at the application.
+
+83
+00:06:42,120 --> 00:06:47,520
+‫We are going to switch here to a larger window and we are going to see that we have here a login page.
+
+84
+00:06:47,520 --> 00:06:52,350
+‫Now we will be implementing authentication and authorization later on in the course.
+
+85
+00:06:52,350 --> 00:06:58,530
+‫Right now we are going to use here the side menu and we are going to navigate here to the courses page.
+
+86
+00:06:58,530 --> 00:07:04,800
+‫Once we click on courses, we are going to see here the all courses page with a loading indicator.
+
+87
+00:07:04,800 --> 00:07:12,750
+‫Now this is our application for which we are going to build our rest backend using Nestjs and MongoDB.
+
+88
+00:07:12,780 --> 00:07:16,710
+‫Let's open here the dev tools and see what is going on here.
+
+89
+00:07:16,710 --> 00:07:22,770
+‫We are going to open here the network tab and we are going to reload our application to see what type
+
+90
+00:07:22,770 --> 00:07:25,140
+‫of network requests are being made.
+
+91
+00:07:25,140 --> 00:07:32,760
+‫So as you can see, when the page starts up, we are doing here a request to slash API slash courses
+
+92
+00:07:32,760 --> 00:07:38,670
+‫and we are getting here a timeout, which means that our backend is not yet working.
+
+93
+00:07:38,670 --> 00:07:45,030
+‫So we are going to build this backend step by step and provide here to this screen a list of courses.
+
+94
+00:07:45,030 --> 00:07:51,450
+‫So this very simple slash API slash courses endpoint is going to be the first endpoint that we are going
+
+95
+00:07:51,450 --> 00:07:54,540
+‫to build in this course in the following few lessons.
+
+96
+00:07:54,540 --> 00:08:00,750
+‫Now, one last recommendation while taking the course, it's very important that here when you start
+
+97
+00:08:00,750 --> 00:08:09,390
+‫your front end to use the command NPM start, so please don't use NG serve directly because your project
+
+98
+00:08:09,390 --> 00:08:10,470
+‫will not work.
+
+99
+00:08:10,500 --> 00:08:14,010
+‫The NG serve command alone will not be sufficient.
+
+100
+00:08:14,040 --> 00:08:19,650
+‫We also need to pass it some extra configuration options like we see here on the screen.
+
+101
+00:08:19,650 --> 00:08:24,810
+‫So please always run NPM start while starting your front end server.
+
+102
+00:08:24,810 --> 00:08:27,870
+‫And with this we are all set up and ready to go.
+
+103
+00:08:27,870 --> 00:08:32,970
+‫Let's get started writing our first rest Nestjs endpoint.
+
+104
+00:08:32,970 --> 00:08:35,970
+‫This is coming right up in the next few lessons.
+

@@ -1,0 +1,312 @@
+﻿1
+00:00:03,670 --> 00:00:05,810
+‫Hello, everyone, and welcome back.
+
+2
+00:00:05,830 --> 00:00:10,210
+‫In the last lesson we saw how to handle a mongoose schema validation error.
+
+3
+00:00:10,210 --> 00:00:14,650
+‫Whenever we are processing an Http request in our nestjs backend.
+
+4
+00:00:14,650 --> 00:00:21,520
+‫And that request contains some data that when we try to add it or update it on the database, it ends
+
+5
+00:00:21,520 --> 00:00:26,750
+‫up triggering a mongoose error that we then handle with our fallback exception filter.
+
+6
+00:00:26,770 --> 00:00:33,430
+‫Now we would like to take our validation a step further for that specific type of errors, validation
+
+7
+00:00:33,430 --> 00:00:35,500
+‫errors from our input data.
+
+8
+00:00:35,500 --> 00:00:41,710
+‫We would like to, instead of letting the execution logic of the backend reach the point where the data
+
+9
+00:00:41,710 --> 00:00:49,150
+‫is trying to get inserted into the database, let's instead validate the data immediately when it arrives
+
+10
+00:00:49,150 --> 00:00:50,150
+‫to our backend.
+
+11
+00:00:50,170 --> 00:00:55,270
+‫More specifically, we would like to validate, for example, this course object that we are receiving
+
+12
+00:00:55,270 --> 00:00:57,880
+‫here in the body of the Http request.
+
+13
+00:00:57,910 --> 00:01:04,760
+‫Going back here to our Restlet interface, this is the Json payload that we want to validate immediately
+
+14
+00:01:04,760 --> 00:01:06,530
+‫when this arrives at the backend.
+
+15
+00:01:06,530 --> 00:01:12,290
+‫So we want to detect that there is a problem in the sequential number field right at the beginning of
+
+16
+00:01:12,290 --> 00:01:18,680
+‫processing this Http request and not close to the end when we might have already triggered some logic
+
+17
+00:01:18,680 --> 00:01:22,700
+‫that might have accidentally produced some side effect on the database.
+
+18
+00:01:22,730 --> 00:01:28,970
+‫We want to detect validation errors right at the beginning of the request and we want to produce a more
+
+19
+00:01:28,970 --> 00:01:31,490
+‫useful response for our client.
+
+20
+00:01:31,490 --> 00:01:37,220
+‫So we want to make sure that we validate all the errors of the payload and not simply report the first
+
+21
+00:01:37,220 --> 00:01:40,180
+‫one that triggered the schema validation error.
+
+22
+00:01:40,190 --> 00:01:46,150
+‫We want to send back a complete error payload specifying all the fields that are in error.
+
+23
+00:01:46,160 --> 00:01:53,330
+‫Any mandatory fields that are missing and specifying what is the exact problem with each of the fields.
+
+24
+00:01:53,330 --> 00:01:58,970
+‫This way, in our front end we are going to be able to display a more useful error message to the user,
+
+25
+00:01:58,970 --> 00:02:05,150
+‫informing him of all the fields that he needs to edit in order to implement this type of validation
+
+26
+00:02:05,150 --> 00:02:05,660
+‫logic.
+
+27
+00:02:05,660 --> 00:02:08,720
+‫We are going to be using the class validator package.
+
+28
+00:02:08,720 --> 00:02:13,880
+‫So as you can see, this is validation made easy using TypeScript decorators.
+
+29
+00:02:13,880 --> 00:02:16,580
+‫Let's have a look at what it looks like.
+
+30
+00:02:16,580 --> 00:02:23,120
+‫So as we can see here in the examples, we are going to be taking our domain model object interfaces
+
+31
+00:02:23,120 --> 00:02:26,270
+‫such as, for example, courses, lessons, et cetera.
+
+32
+00:02:26,270 --> 00:02:29,000
+‫And we are going to turn them into classes.
+
+33
+00:02:29,000 --> 00:02:34,100
+‫Then as classes we will be able to apply decorators to its properties.
+
+34
+00:02:34,100 --> 00:02:39,710
+‫We have here a series of decorators that allows us to specify that, for example, this number here
+
+35
+00:02:39,710 --> 00:02:44,180
+‫must be an integer and it must be between 0 and 10.
+
+36
+00:02:44,210 --> 00:02:50,450
+‫We can even validate string patterns using regular expressions such as, for example, is email.
+
+37
+00:02:50,450 --> 00:02:53,090
+‫We can validate that this is a valid date.
+
+38
+00:02:53,120 --> 00:02:58,190
+‫We can make fields mandatory, we can validate the length of a field.
+
+39
+00:02:58,190 --> 00:02:58,700
+‫ET cetera.
+
+40
+00:02:58,700 --> 00:03:05,630
+‫So we have here a very fine grained control over the validation of each of the properties of a given
+
+41
+00:03:05,630 --> 00:03:06,770
+‫domain model.
+
+42
+00:03:06,770 --> 00:03:12,170
+‫At this moment in the course, you already have class validator installed in your workspace.
+
+43
+00:03:12,170 --> 00:03:16,550
+‫So as an example, let's apply this to the course type definition.
+
+44
+00:03:16,550 --> 00:03:22,190
+‫Going back here to our project, we are going to go here to the shared folder in the root directory
+
+45
+00:03:22,190 --> 00:03:25,280
+‫of the project and we are going to click here on course.
+
+46
+00:03:25,280 --> 00:03:31,700
+‫So as you can see, this is now currently an interface, so we can't apply here decorators to it.
+
+47
+00:03:31,700 --> 00:03:35,240
+‫So let's then first change it into a class.
+
+48
+00:03:35,240 --> 00:03:41,390
+‫Now that we have changed it to a class, let's go ahead and add here some decorators to specify the
+
+49
+00:03:41,390 --> 00:03:44,390
+‫validation messages for each of these fields.
+
+50
+00:03:44,390 --> 00:03:48,710
+‫For example, this field here is supposed to be an integer.
+
+51
+00:03:48,710 --> 00:03:50,930
+‫So let's go ahead and add here.
+
+52
+00:03:50,930 --> 00:03:54,740
+‫The is int decorator from class validator.
+
+53
+00:03:54,740 --> 00:03:59,540
+‫Now this decorator takes in here a series of configuration parameters.
+
+54
+00:03:59,540 --> 00:04:01,790
+‫One of them, for example, is the message.
+
+55
+00:04:01,790 --> 00:04:06,440
+‫So we can specify here a message for when this validation is not met.
+
+56
+00:04:06,470 --> 00:04:07,340
+‫We are going to add here.
+
+57
+00:04:07,340 --> 00:04:10,610
+‫For example, the second no must be numeric.
+
+58
+00:04:10,610 --> 00:04:12,770
+‫Let's give here a few more examples.
+
+59
+00:04:12,770 --> 00:04:16,430
+‫For example, the property must be a string.
+
+60
+00:04:16,430 --> 00:04:22,760
+‫So let's add here the string decorator and let's make this, for example, an optional property.
+
+61
+00:04:22,760 --> 00:04:25,910
+‫Let's set in here the always flag to false.
+
+62
+00:04:25,910 --> 00:04:31,790
+‫This way we can validate course instances that don't have a filled in.
+
+63
+00:04:31,790 --> 00:04:36,560
+‫We can apply similar decorators to the other properties of a course.
+
+64
+00:04:36,560 --> 00:04:43,130
+‫Let's add here a string to icon URL, also to course list description to description.
+
+65
+00:04:43,130 --> 00:04:45,890
+‫Also the long description field should be a string.
+
+66
+00:04:45,890 --> 00:04:47,630
+‫The category as well.
+
+67
+00:04:47,630 --> 00:04:55,070
+‫Let's add here the is int decorator to the lesson count property and let's also validate that the promo
+
+68
+00:04:55,070 --> 00:04:56,240
+‫field is a boolean.
+
+69
+00:04:56,240 --> 00:04:59,330
+‫Using is boolean to complete our example.
+
+70
+00:04:59,330 --> 00:05:00,350
+‫Let's make sure that.
+
+71
+00:05:00,460 --> 00:05:04,110
+‫This field here is a string as well.
+
+72
+00:05:04,120 --> 00:05:07,660
+‫Now, because this ID field is also a MongoDB field.
+
+73
+00:05:07,660 --> 00:05:11,350
+‫Let's add in the is mongo ID decorator as well.
+
+74
+00:05:11,350 --> 00:05:17,290
+‫Now we are going to come back to this definition of the course class and adapt here, the validation
+
+75
+00:05:17,290 --> 00:05:18,070
+‫decorators.
+
+76
+00:05:18,070 --> 00:05:25,180
+‫Right now we want to show you how to use this decorators in order to validate an incoming Json payload.
+
+77
+00:05:25,180 --> 00:05:31,090
+‫So in order to do that, we are going to need to introduce a new nestjs concept, which is the notion
+
+78
+00:05:31,090 --> 00:05:32,040
+‫of pipe.
+

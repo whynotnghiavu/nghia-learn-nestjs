@@ -1,0 +1,304 @@
+﻿1
+00:00:03,730 --> 00:00:06,070
+‫Hello, everyone, and welcome back.
+
+2
+00:00:06,070 --> 00:00:12,130
+‫In this new section of the Nestjs in practice course, we are going to be adding common security features
+
+3
+00:00:12,130 --> 00:00:15,700
+‫to our backend, such as authentication and authorization.
+
+4
+00:00:15,700 --> 00:00:19,480
+‫We are going to be basing our solution around Json web tokens.
+
+5
+00:00:19,480 --> 00:00:22,720
+‫So let's break down how we are going to approach this.
+
+6
+00:00:22,720 --> 00:00:27,280
+‫First we are going to be implementing starting from the front end, the login screen.
+
+7
+00:00:27,280 --> 00:00:33,070
+‫So currently if you click here on the side menu and you click on login, you are going to be redirected
+
+8
+00:00:33,070 --> 00:00:35,410
+‫here to this login page.
+
+9
+00:00:35,410 --> 00:00:40,990
+‫Now the login page corresponds to the login component and it's not implemented yet.
+
+10
+00:00:41,020 --> 00:00:46,360
+‫We are then going to start implementing our authentication starting at this screen.
+
+11
+00:00:46,360 --> 00:00:52,210
+‫Whenever the login button gets pushed, we are going to see that we are going to call the login method
+
+12
+00:00:52,210 --> 00:00:55,960
+‫and here is where we are going to start our implementation.
+
+13
+00:00:55,960 --> 00:00:58,360
+‫So how are we going to do this?
+
+14
+00:00:58,390 --> 00:01:05,150
+‫We are going to call a new endpoint in our Nestjs backend, which is going to be the slash API slash
+
+15
+00:01:05,150 --> 00:01:08,990
+‫login endpoint to that secure backend endpoint.
+
+16
+00:01:09,020 --> 00:01:14,960
+‫We are going to be passing the username and the password that we are going to retrieve here from the
+
+17
+00:01:14,960 --> 00:01:16,070
+‫login form.
+
+18
+00:01:16,070 --> 00:01:22,700
+‫Now our backend is going to receive the username, which will be the email and the password and the
+
+19
+00:01:22,700 --> 00:01:29,090
+‫backend is going to validate to make sure that the user password is correct and indeed corresponds to
+
+20
+00:01:29,090 --> 00:01:30,500
+‫this particular user.
+
+21
+00:01:30,500 --> 00:01:34,700
+‫So how is our Nestjs backend endpoint going to do that?
+
+22
+00:01:34,700 --> 00:01:40,220
+‫Our login endpoint is going to be able to do that because here going back here to our database, we
+
+23
+00:01:40,220 --> 00:01:46,520
+‫are going to have here a user's collection that was created whenever you run the Populate DB script
+
+24
+00:01:46,520 --> 00:01:51,410
+‫at the beginning of the course and you are going to see that in this collection you already have two
+
+25
+00:01:51,410 --> 00:01:53,120
+‫users ready to use.
+
+26
+00:01:53,120 --> 00:02:00,560
+‫So you have here the student at Angular University, Ohio User, which is a regular user that has only
+
+27
+00:02:00,560 --> 00:02:07,310
+‫read Access to the data and you have here an administrative user which can also edit the data.
+
+28
+00:02:07,340 --> 00:02:13,240
+‫Besides the email, you also have here a password hash stored in the database.
+
+29
+00:02:13,250 --> 00:02:16,730
+‫Now if you look at this, it's a strange looking string.
+
+30
+00:02:16,730 --> 00:02:22,130
+‫It's the password essentially, but it has been transformed by a hashing algorithm.
+
+31
+00:02:22,130 --> 00:02:29,870
+‫So the hashing algorithm that we have used has turned the password and also a unique random number that
+
+32
+00:02:29,870 --> 00:02:34,910
+‫is unique to this user, and it has used it to produce a password digest.
+
+33
+00:02:34,940 --> 00:02:42,710
+‫This is a new form of the password that can only be derived from the original password and the unique
+
+34
+00:02:42,710 --> 00:02:49,160
+‫salt random number associated to each user and that it's safe to store in the database.
+
+35
+00:02:49,190 --> 00:02:53,840
+‫Now why is it safe to store the password in this form on the database?
+
+36
+00:02:53,840 --> 00:02:59,900
+‫This is because it's essentially computationally impossible to get the password back from the hash.
+
+37
+00:02:59,900 --> 00:03:02,840
+‫So the hash is an irreversible process.
+
+38
+00:03:02,840 --> 00:03:10,340
+‫So if by some reason a malicious attacker managed to put his hands on our user's collection and grabbing
+
+39
+00:03:10,340 --> 00:03:17,270
+‫all the password hashes of each user, that same attacker would not be able to obtain the actual passwords
+
+40
+00:03:17,270 --> 00:03:22,700
+‫from the user and use them to log in to the website and impersonate a given user.
+
+41
+00:03:22,700 --> 00:03:28,670
+‫If you are curious to learn how these password hashes were generated from the original password, these
+
+42
+00:03:28,670 --> 00:03:34,460
+‫were created using this particular NPM package, password, hash and salt.
+
+43
+00:03:34,460 --> 00:03:43,280
+‫So this is a simple and easy to use node package that uses internal APIs from Node in order to hash
+
+44
+00:03:43,280 --> 00:03:47,540
+‫our password in a secure way by using secure defaults.
+
+45
+00:03:47,540 --> 00:03:54,020
+‫So as you can see, the hashes have been generated using this algorithm which is considered safe for
+
+46
+00:03:54,020 --> 00:03:57,620
+‫password storage and we have hashed it 10,000 times.
+
+47
+00:03:57,620 --> 00:04:03,890
+‫This means that we hash the password once through this algorithm, then we take the output and we hash
+
+48
+00:04:03,890 --> 00:04:04,700
+‫it again.
+
+49
+00:04:04,700 --> 00:04:05,360
+‫ET cetera.
+
+50
+00:04:05,360 --> 00:04:11,690
+‫Until we do that 10,000 times, we get the output of that process and we store it in the database in
+
+51
+00:04:11,690 --> 00:04:13,010
+‫the following format.
+
+52
+00:04:13,010 --> 00:04:19,310
+‫So here we have a dollar separator between the multiple components of the string that we have stored
+
+53
+00:04:19,310 --> 00:04:20,300
+‫in the database.
+
+54
+00:04:20,330 --> 00:04:23,240
+‫We can see that this is the algorithm that has been used.
+
+55
+00:04:23,240 --> 00:04:25,580
+‫We can see here the number of iterations.
+
+56
+00:04:25,580 --> 00:04:28,850
+‫This is the hash output and this is the salt.
+
+57
+00:04:28,850 --> 00:04:33,560
+‫So this is a unique random number that is unique per user.
+
+58
+00:04:33,560 --> 00:04:39,740
+‫This means that if two users have used exactly the same password, then even though the password is
+
+59
+00:04:39,740 --> 00:04:45,920
+‫the same, the string that gets stored in the database is going to be different due to the use of the
+
+60
+00:04:45,920 --> 00:04:46,880
+‫random salt.
+
+61
+00:04:46,910 --> 00:04:53,480
+‫This means that if an attacker manages to identify the password of one user, you will not know what
+
+62
+00:04:53,510 --> 00:05:00,560
+‫other users in the user list share the same password because all the hashes stored on the database.
+
+63
+00:05:00,660 --> 00:05:04,380
+‫Are going to be unique, even if the passwords are identical.
+
+64
+00:05:04,410 --> 00:05:08,580
+‫So going back here to our program, here is what we're about to do.
+
+65
+00:05:08,610 --> 00:05:15,000
+‫We are going to take the email and password and we're going to send it to our backend using the authentication
+
+66
+00:05:15,000 --> 00:05:15,660
+‫service.
+
+67
+00:05:15,690 --> 00:05:22,050
+‫We are then going to create a new rest endpoint that is going to validate the password by using the
+
+68
+00:05:22,050 --> 00:05:23,670
+‫digest on the database.
+
+69
+00:05:23,670 --> 00:05:29,940
+‫And if the password is then valid, that same login backend service is going to create what is known
+
+70
+00:05:29,940 --> 00:05:31,530
+‫as a bearer token.
+
+71
+00:05:31,530 --> 00:05:38,310
+‫This is a small Json payload known as a Json web token that uniquely identifies the user.
+
+72
+00:05:38,310 --> 00:05:45,750
+‫So anyone in possession of that bearer token is going to be identifiable by our backend in a secure
+
+73
+00:05:45,750 --> 00:05:46,160
+‫way.
+
+74
+00:05:46,170 --> 00:05:50,040
+‫Let's then get started with our authentication implementation.
+
+75
+00:05:50,040 --> 00:05:55,100
+‫We are going to start by implementing here the login logic in our login component.
+
+76
+00:05:55,110 --> 00:05:57,930
+‫This is coming right up in the next lesson.
+
