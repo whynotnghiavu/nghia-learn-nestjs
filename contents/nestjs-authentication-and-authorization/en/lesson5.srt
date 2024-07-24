@@ -1,0 +1,436 @@
+﻿1
+00:00:00,720 --> 00:00:05,070
+In the real world production applications
+should never store passwords in clear text.
+
+2
+00:00:05,460 --> 00:00:05,970
+Instead.
+
+3
+00:00:06,330 --> 00:00:08,190
+Passwords should
+always be hashed
+
+4
+00:00:08,430 --> 00:00:08,880
+salted.
+
+5
+00:00:09,330 --> 00:00:13,300
+Hashing is defined as putting a
+password through a hashing algorithm.
+
+6
+00:00:13,350 --> 00:00:16,150
+Be it be crypt se j et cetera.
+
+7
+00:00:16,230 --> 00:00:20,380
+Return plain text into an unintelligible
+series of numbers and letters.
+
+8
+00:00:20,490 --> 00:00:22,420
+In contrast to encryption.
+
+9
+00:00:22,590 --> 00:00:24,270
+Ashing is a one way mechanism.
+
+10
+00:00:24,690 --> 00:00:26,010
+Once hashing has been done
+
+11
+00:00:26,310 --> 00:00:29,310
+it should be impossible to
+go from the output to the input.
+
+12
+00:00:29,910 --> 00:00:34,620
+Salting is the act of adding a series of
+random characters to a password before
+
+13
+00:00:34,620 --> 00:00:36,970
+growing through
+the hashing function.
+
+14
+00:00:37,020 --> 00:00:39,240
+Thus the input is made
+up of the password.
+
+15
+00:00:39,570 --> 00:00:40,620
+Plus the saw salt.
+
+16
+00:00:41,280 --> 00:00:44,230
+Note that the salt should
+be unique for each password.
+
+17
+00:00:44,640 --> 00:00:49,140
+As resulting helps
+developers increase password
+
+18
+00:00:49,140 --> 00:00:50,140
+complexity without
+affecting user experience.
+
+19
+00:00:50,580 --> 00:00:52,548
+Adding salt makes
+it very difficult for
+
+20
+00:00:52,680 --> 00:00:56,980
+hackers to guess the original
+password using a rainbow table attack.
+
+21
+00:00:57,120 --> 00:00:58,170
+In this extension
+
+22
+00:00:58,320 --> 00:01:02,280
+will be using the be crypt algorithm
+the it is based on the blowfish cipher.
+
+23
+00:01:02,730 --> 00:01:05,820
+It is designed to be slow
+and not to allow any shortcut
+
+24
+00:01:06,150 --> 00:01:08,380
+and slowing down any attack.
+
+25
+00:01:08,760 --> 00:01:12,788
+All right so let's get started and get a
+dependency installed before you begin.
+
+26
+00:01:12,870 --> 00:01:16,860
+As head over to our ID and inside of
+our terminal lessons thought the be crypt
+
+27
+00:01:16,860 --> 00:01:19,090
+package and it's
+type definitions.
+
+28
+00:01:20,430 --> 00:01:23,430
+We have these packages
+already installed so we'll skip ahead
+
+29
+00:01:23,790 --> 00:01:26,910
+but if you're following
+along go ahead and pause
+
+30
+00:01:26,910 --> 00:01:27,910
+the video until everything
+finishes installing.
+
+31
+00:01:28,200 --> 00:01:29,010
+Once it's done.
+
+32
+00:01:29,370 --> 00:01:32,370
+Before we dive into all the
+good stuff let's first wrap up
+
+33
+00:01:32,490 --> 00:01:34,590
+all of our upcoming
+work into a new module.
+
+34
+00:01:34,950 --> 00:01:36,810
+Let's generate a new nest module
+
+35
+00:01:37,110 --> 00:01:38,220
+and call it i am.
+
+36
+00:01:38,640 --> 00:01:41,304
+Ct for identity and
+act zest management.
+
+37
+00:01:41,340 --> 00:01:42,930
+He had nest g module
+
+38
+00:01:43,230 --> 00:01:44,650
+i a m.
+
+39
+00:01:47,250 --> 00:01:48,510
+Inside of this module.
+
+40
+00:01:48,900 --> 00:01:50,710
+Us generate to services.
+
+41
+00:01:50,850 --> 00:01:52,990
+One that will act
+as an interface.
+
+42
+00:01:53,190 --> 00:01:55,180
+Let's call it hashing service.
+
+43
+00:01:55,440 --> 00:01:57,940
+And another one
+representing its implementation.
+
+44
+00:01:58,290 --> 00:01:59,860
+Be crypt service.
+
+45
+00:02:00,000 --> 00:02:04,710
+Will generate both services and side of the
+i am slashed hashing directory as follows.
+
+46
+00:02:05,130 --> 00:02:08,370
+Let's open up the
+newly generated hashing
+
+47
+00:02:08,370 --> 00:02:09,000
+service file first and
+make a few adjustments.
+
+48
+00:02:09,330 --> 00:02:13,110
+Let's start by making this
+class abstract as we wanted
+
+49
+00:02:13,110 --> 00:02:14,980
+to act as an interface or
+hashing service abstraction.
+
+50
+00:02:15,630 --> 00:02:18,330
+Next let's define
+to abstract methods
+
+51
+00:02:18,540 --> 00:02:21,580
+that will have to be provided
+by the concrete implementations.
+
+52
+00:02:22,020 --> 00:02:22,500
+Hash.
+
+53
+00:02:22,950 --> 00:02:26,370
+Makes data as an input argument
+and returns a high hashed string
+
+54
+00:02:26,670 --> 00:02:27,540
+while compare
+
+55
+00:02:27,840 --> 00:02:29,620
+also takes two arguments.
+
+56
+00:02:29,670 --> 00:02:30,150
+Data.
+
+57
+00:02:30,510 --> 00:02:32,130
+Being the data to be encrypted
+
+58
+00:02:32,520 --> 00:02:33,820
+and encrypted.
+
+59
+00:02:34,140 --> 00:02:36,240
+Being the data to
+be compared against.
+
+60
+00:02:36,600 --> 00:02:39,930
+This method will return a promise
+to be either resolved or rejected
+
+61
+00:02:40,140 --> 00:02:40,680
+with an air.
+
+62
+00:02:41,370 --> 00:02:44,130
+With this and place let's open up
+the other service we just created
+
+63
+00:02:44,400 --> 00:02:45,480
+be crypt service
+
+64
+00:02:45,840 --> 00:02:48,760
+and make sure it implements
+our new hashing service.
+
+65
+00:02:49,230 --> 00:02:52,470
+Our ID should prompt us to
+auto implement this interface
+
+66
+00:02:52,620 --> 00:02:53,490
+lets go ahead and do it.
+
+67
+00:02:54,330 --> 00:02:56,250
+Next let's update
+the hash method
+
+68
+00:02:56,610 --> 00:03:00,760
+and make use of the hash function from
+the be crypt package we just installed.
+
+69
+00:03:00,992 --> 00:03:04,920
+First let's of flagged
+this method as a sink and
+
+70
+00:03:04,920 --> 00:03:06,310
+then replace its context
+with the fallen and code.
+
+71
+00:03:12,060 --> 00:03:14,110
+Now onto the compare method.
+
+72
+00:03:14,280 --> 00:03:15,210
+Similarly here
+
+73
+00:03:15,510 --> 00:03:19,660
+let's use the corresponding compare
+method from the be crypt package as well.
+
+74
+00:03:19,920 --> 00:03:20,520
+And that's it.
+
+75
+00:03:21,060 --> 00:03:24,190
+Note that of the code here can
+be found below the course video.
+
+76
+00:03:24,750 --> 00:03:25,290
+Lastly
+
+77
+00:03:25,560 --> 00:03:27,360
+let's open up the
+i am module file
+
+78
+00:03:27,660 --> 00:03:29,160
+in let's change a
+few things in there.
+
+79
+00:03:29,970 --> 00:03:32,310
+You may have noticed we're
+getting some airs at the moment here.
+
+80
+00:03:32,880 --> 00:03:35,760
+This is because of the hashing
+service is an abstract class
+
+81
+00:03:36,120 --> 00:03:37,920
+and it can't be
+registered as a provider.
+
+82
+00:03:38,250 --> 00:03:40,090
+Is it cannot be instantiated.
+
+83
+00:03:40,710 --> 00:03:44,920
+Her fixed us up let's replace the
+providers array with the following code.
+
+84
+00:03:45,870 --> 00:03:47,130
+With what we just did here
+
+85
+00:03:47,430 --> 00:03:49,590
+now whenever the
+hashing service token
+
+86
+00:03:49,890 --> 00:03:53,091
+is resolved it will point
+to the be crypt service.
+
+87
+00:03:53,430 --> 00:03:56,500
+Ashing service will serve
+as an abstract interface.
+
+88
+00:03:56,610 --> 00:03:57,030
+While be
+
+89
+00:03:57,305 --> 00:04:01,030
+service is are concrete
+implementation of that service.
+
+90
+00:04:01,620 --> 00:04:05,400
+What we've done here is
+really useful because if we ever
+
+91
+00:04:05,400 --> 00:04:06,930
+decided to migrate to a
+different hashing algorithm.
+
+92
+00:04:07,260 --> 00:04:10,530
+We could simply create a new service
+that implements the hashing service
+
+93
+00:04:10,890 --> 00:04:13,290
+and update this provider
+to point of the new service
+
+94
+00:04:13,500 --> 00:04:15,880
+instead of the be
+gripped service class.
+

@@ -1,0 +1,1038 @@
+﻿1
+00:00:00,900 --> 00:00:02,220
+Jason web tokens
+
+2
+00:00:02,370 --> 00:00:03,600
+or gw teas.
+
+3
+00:00:03,990 --> 00:00:08,010
+Are an open standard used to share
+security information between two parties
+
+4
+00:00:08,130 --> 00:00:08,700
+a client
+
+5
+00:00:08,820 --> 00:00:09,970
+and a server.
+
+6
+00:00:10,080 --> 00:00:11,340
+Each Jada beauty
+
+7
+00:00:11,610 --> 00:00:15,400
+contains encoded jaison
+objects including a set of claims.
+
+8
+00:00:15,720 --> 00:00:18,960
+Data beauties are signed
+using a cryptographic algorithm
+
+9
+00:00:19,200 --> 00:00:23,110
+to ensure that claims cannot be
+altered after the token has been issued.
+
+10
+00:00:23,550 --> 00:00:25,530
+Be a ts can be
+signed using a secret.
+
+11
+00:00:25,920 --> 00:00:27,480
+With the age Mac algorithm.
+
+12
+00:00:27,810 --> 00:00:33,010
+Or a public private key pair
+using our essay or a c d s a.
+
+13
+00:00:33,360 --> 00:00:36,810
+If you're new to jiddah beauties don't worry
+of all this seems a bit confusing right
+
+14
+00:00:36,810 --> 00:00:40,090
+now we'll be diving into
+everything here in much more detail.
+
+15
+00:00:40,230 --> 00:00:44,880
+In their compact form Jason web tokens
+consist of three parts separated by dots.
+
+16
+00:00:45,210 --> 00:00:46,230
+Which are the header
+
+17
+00:00:46,500 --> 00:00:47,100
+payload.
+
+18
+00:00:47,460 --> 00:00:48,610
+In signature.
+
+19
+00:00:48,810 --> 00:00:52,000
+Therefore a jwt typically
+looks like the following.
+
+20
+00:00:52,590 --> 00:00:55,930
+Let's break down the different parts
+so everything makes a little more sense.
+
+21
+00:00:56,460 --> 00:00:57,550
+The header.
+
+22
+00:00:57,600 --> 00:00:59,590
+Typically consists of two parts.
+
+23
+00:00:59,640 --> 00:01:00,750
+The type of the token
+
+24
+00:01:01,050 --> 00:01:02,320
+which is jwt.
+
+25
+00:01:02,670 --> 00:01:05,640
+In the signing algorithm
+being used such as h Mac
+
+26
+00:01:05,880 --> 00:01:07,290
+sh a to fifty six
+
+27
+00:01:07,410 --> 00:01:08,891
+or our essay.
+
+28
+00:01:09,240 --> 00:01:11,430
+The second part of
+the token is the payload
+
+29
+00:01:11,580 --> 00:01:12,960
+which contains the claim mps.
+
+30
+00:01:13,590 --> 00:01:16,980
+Claims are statements about
+an entity typically the user
+
+31
+00:01:17,250 --> 00:01:20,190
+and any additional data and
+application wanted to pass down with it.
+
+32
+00:01:21,000 --> 00:01:23,100
+To create the third
+party signature part.
+
+33
+00:01:23,460 --> 00:01:25,110
+You have to take
+the encoded header.
+
+34
+00:01:25,470 --> 00:01:26,580
+The encoded payload
+
+35
+00:01:26,880 --> 00:01:32,590
+a secret and the algorithm specified
+in the header and digitally sign all of it.
+
+36
+00:01:32,730 --> 00:01:33,884
+In authentication
+
+37
+00:01:34,050 --> 00:01:37,060
+when the user successfully
+logs in using their credentials.
+
+38
+00:01:37,140 --> 00:01:39,610
+A jaison web token
+will be returned.
+
+39
+00:01:39,780 --> 00:01:42,820
+Right now our application
+just returns a boolean.
+
+40
+00:01:43,080 --> 00:01:46,959
+Whenever the user wants to
+access a protected row or a resource.
+
+41
+00:01:47,040 --> 00:01:49,600
+The user agent
+should send their jwt.
+
+42
+00:01:49,830 --> 00:01:53,620
+Typically in the authorization
+header using the bear schema.
+
+43
+00:01:53,940 --> 00:01:56,610
+The content of the header should
+look something like the following.
+
+44
+00:01:57,180 --> 00:02:00,220
+Authorization Colin
+bear and then the token.
+
+45
+00:02:00,480 --> 00:02:03,390
+If you're curious to learn even
+more about Jada beauties in general.
+
+46
+00:02:03,720 --> 00:02:07,150
+Make sure to check out the
+website Jada beauty dot io.
+
+47
+00:02:07,740 --> 00:02:11,591
+Now that we understand the high
+level and specifics of Jada beauties.
+
+48
+00:02:11,790 --> 00:02:13,467
+Let's switch back to our ID
+
+49
+00:02:13,590 --> 00:02:17,050
+and see how we can start implementing
+them into our own application.
+
+50
+00:02:17,520 --> 00:02:18,300
+Before we start.
+
+51
+00:02:18,660 --> 00:02:20,940
+Let's install two additional
+dependencies first
+
+52
+00:02:21,060 --> 00:02:22,470
+that will be using
+and our project.
+
+53
+00:02:22,920 --> 00:02:27,101
+Is our nestorius slashed jbt
+and nestorius slash config.
+
+54
+00:02:27,570 --> 00:02:31,740
+Nest has slashed jwt is a wrapper
+around the jaison web token package
+
+55
+00:02:31,920 --> 00:02:34,650
+which exposes methods
+for encoding and decoding.
+
+56
+00:02:35,094 --> 00:02:36,130
+A beauties.
+
+57
+00:02:36,690 --> 00:02:41,290
+And nastiest config which was already
+introduced in the fundamentals course.
+
+58
+00:02:41,520 --> 00:02:44,880
+Will continue ahead here since we already
+have these packages installed but if you're
+
+59
+00:02:44,880 --> 00:02:48,400
+following along just pause the video
+and come back when everything's finished.
+
+60
+00:02:48,780 --> 00:02:50,700
+Once the installation
+process is complete.
+
+61
+00:02:51,090 --> 00:02:55,151
+Let's open up our app module t s
+file and head over to the imports array.
+
+62
+00:02:55,500 --> 00:02:57,300
+Let's import the config module
+
+63
+00:02:57,510 --> 00:02:59,880
+from the nastiest
+slush config package
+
+64
+00:03:00,120 --> 00:03:02,530
+and add it into our
+imports array here.
+
+65
+00:03:03,450 --> 00:03:07,360
+Next let's initialize the module
+by calling the for route method.
+
+66
+00:03:07,950 --> 00:03:08,910
+But this and place
+
+67
+00:03:09,150 --> 00:03:11,520
+we can now create
+a local dot mv file
+
+68
+00:03:11,700 --> 00:03:14,380
+where we store our private
+environment variables.
+
+69
+00:03:14,490 --> 00:03:18,900
+This is where will store
+a secret that will be
+
+70
+00:03:18,900 --> 00:03:19,900
+used for encoding and
+decoding are jwt tokens.
+
+71
+00:03:20,160 --> 00:03:24,150
+Know that it's very
+important to never keep
+
+72
+00:03:24,150 --> 00:03:25,150
+or push secret keys
+up to your repository.
+
+73
+00:03:25,230 --> 00:03:28,020
+The nestle i already has
+dot envy files included.
+
+74
+00:03:28,380 --> 00:03:31,240
+In a good ignore file to
+ensure that this never happens.
+
+75
+00:03:31,650 --> 00:03:32,040
+Though
+
+76
+00:03:32,340 --> 00:03:34,050
+let's create our dot dmv file
+
+77
+00:03:34,320 --> 00:03:35,890
+in the root directory.
+
+78
+00:03:37,050 --> 00:03:37,950
+An inside of it.
+
+79
+00:03:38,430 --> 00:03:42,430
+As add the following variables which
+you can also find below the course video.
+
+80
+00:03:43,680 --> 00:03:46,560
+Jwt secret represents
+our secret key.
+
+81
+00:03:47,040 --> 00:03:48,780
+It should be hard
+to guess and long
+
+82
+00:03:49,170 --> 00:03:51,190
+and usually the
+longer the better.
+
+83
+00:03:51,510 --> 00:03:57,310
+V w t token audience identifies the recipients
+at the jwt is intended to be used for.
+
+84
+00:03:57,450 --> 00:04:00,000
+Next we have jwt token issuer.
+
+85
+00:04:00,330 --> 00:04:04,120
+Which identifies the principle
+that issued the j w duty.
+
+86
+00:04:04,590 --> 00:04:05,370
+And lastly.
+
+87
+00:04:05,670 --> 00:04:07,830
+Ada beauty access token t t l
+
+88
+00:04:08,040 --> 00:04:11,400
+which is the access
+token time to live a k t t l.
+
+89
+00:04:11,910 --> 00:04:14,490
+And we have the set to thirty
+six hundred seconds meaning.
+
+90
+00:04:14,820 --> 00:04:18,700
+Every issued token will
+automatically expire after one hour.
+
+91
+00:04:18,990 --> 00:04:22,320
+You can of course a justice setting to
+whatever you think is best for your project
+
+92
+00:04:22,350 --> 00:04:26,230
+but we suggest keep a low
+meaning to a short time to live.
+
+93
+00:04:26,640 --> 00:04:30,060
+Note that environment variables we
+sat here are essential to our applications
+
+94
+00:04:30,090 --> 00:04:32,080
+starting up and
+running properly.
+
+95
+00:04:32,250 --> 00:04:34,020
+Since our application
+depends on them.
+
+96
+00:04:34,380 --> 00:04:37,080
+We need to make sure we have
+all the required variables we need
+
+97
+00:04:37,200 --> 00:04:40,210
+so we can connect to
+the correct databases etc.
+
+98
+00:04:40,620 --> 00:04:43,830
+It is a best practice to throw an
+exception during application startup
+
+99
+00:04:44,040 --> 00:04:45,870
+if any required
+environment variables
+
+100
+00:04:46,110 --> 00:04:47,220
+have not been provided.
+
+101
+00:04:47,610 --> 00:04:50,380
+Or if they don't meet
+certain validation rules.
+
+102
+00:04:50,970 --> 00:04:54,600
+Will learn more or if you
+need a refresher about
+
+103
+00:04:54,600 --> 00:04:55,320
+environment variable
+validation and nes Jess
+
+104
+00:04:55,590 --> 00:04:59,440
+check out the schema validation
+lesson from the fundamentals course.
+
+105
+00:05:00,240 --> 00:05:02,250
+All right so let's make
+sure to save this file
+
+106
+00:05:02,490 --> 00:05:05,250
+and create a new directory
+inside of our i am folder
+
+107
+00:05:05,550 --> 00:05:06,774
+called config.
+
+108
+00:05:12,840 --> 00:05:13,860
+Inside this folder.
+
+109
+00:05:14,220 --> 00:05:18,100
+Let's create a g w t
+dot config dot t s file.
+
+110
+00:05:18,450 --> 00:05:19,680
+With this violent place.
+
+111
+00:05:20,070 --> 00:05:25,090
+We can register a new configuration
+namespace under the Jada beauty token.
+
+112
+00:05:25,950 --> 00:05:29,970
+We've already covered config namespaces
+features in the fundamentals course so check
+
+113
+00:05:29,970 --> 00:05:31,890
+it out if you need a
+refresher but essentially.
+
+114
+00:05:32,220 --> 00:05:34,080
+Were just scoping
+or name spacing.
+
+115
+00:05:34,440 --> 00:05:37,960
+All of these configurations
+under the Jada beauty namespace.
+
+116
+00:05:38,880 --> 00:05:41,800
+Next up let's open
+up the i am module.
+
+117
+00:05:41,880 --> 00:05:44,760
+And add the jwt module
+to the imports array.
+
+118
+00:05:45,240 --> 00:05:46,290
+Making sure to imported
+
+119
+00:05:46,530 --> 00:05:48,849
+from ness Jess slashed jwt.
+
+120
+00:05:50,640 --> 00:05:53,190
+Let's now called the
+register a sink method on it.
+
+121
+00:05:53,790 --> 00:05:55,200
+And as an input argument.
+
+122
+00:05:55,530 --> 00:05:58,300
+We can pass in the jwt config.
+
+123
+00:05:58,440 --> 00:06:00,000
+Not as provider method
+
+124
+00:06:00,300 --> 00:06:04,000
+where jbt config is our
+namespace configuration factory.
+
+125
+00:06:04,350 --> 00:06:06,030
+You haven't seen
+as provider before.
+
+126
+00:06:06,420 --> 00:06:10,710
+This method converts a factory to match
+the expected a sink modules configuration
+
+127
+00:06:10,740 --> 00:06:13,960
+object with imports
+use factory etc.
+
+128
+00:06:14,130 --> 00:06:16,030
+It's essentially
+just a time-saver.
+
+129
+00:06:16,110 --> 00:06:20,080
+In prevents us from entering in
+unnecessary boilerplate code here.
+
+130
+00:06:20,340 --> 00:06:23,220
+Let's not forget to also
+import the config module
+
+131
+00:06:23,580 --> 00:06:28,590
+and register the jwt
+config factory so it can
+
+132
+00:06:28,590 --> 00:06:29,590
+be injected by the
+authentication service.
+
+133
+00:06:30,480 --> 00:06:32,530
+Right we have no error so far.
+
+134
+00:06:32,940 --> 00:06:35,940
+Now with the Jada beauty
+stuff configured and loaded
+
+135
+00:06:36,240 --> 00:06:38,820
+we can navigate to our
+authentication service file
+
+136
+00:06:39,210 --> 00:06:42,130
+and filled the gap we've
+left in our sign in method.
+
+137
+00:06:42,840 --> 00:06:45,810
+Let's start by
+injecting the jwt service
+
+138
+00:06:45,990 --> 00:06:47,070
+making sure to imported
+
+139
+00:06:47,190 --> 00:06:50,200
+from the nes js
+slashed jwt package.
+
+140
+00:06:53,010 --> 00:06:55,860
+We have the ability to inject
+this service as we imported the
+
+141
+00:06:56,159 --> 00:06:58,840
+beauty module into
+our i am module.
+
+142
+00:06:59,070 --> 00:07:02,340
+Now let's inject that jwt
+configuration we created.
+
+143
+00:07:02,700 --> 00:07:04,630
+Using the inject decorator.
+
+144
+00:07:04,710 --> 00:07:08,910
+Giving us the ability to easily grab those
+Jada beauty configuration key values here
+
+145
+00:07:08,940 --> 00:07:10,960
+within or
+authentication service.
+
+146
+00:07:11,310 --> 00:07:12,570
+With this and place.
+
+147
+00:07:12,930 --> 00:07:15,640
+Let's scroll down to the sign
+in method implementation
+
+148
+00:07:15,870 --> 00:07:19,330
+and replace that to do comment
+we left with the following code.
+
+149
+00:07:21,030 --> 00:07:23,370
+Here we're calling
+the sign a sink method
+
+150
+00:07:23,610 --> 00:07:28,030
+of the jwt service to generate
+a new jwt access token.
+
+151
+00:07:28,680 --> 00:07:32,140
+We're passing in the payload
+object as the first argument.
+
+152
+00:07:32,250 --> 00:07:34,241
+And the Jada
+beauty configuration
+
+153
+00:07:34,380 --> 00:07:35,220
+as the second one.
+
+154
+00:07:35,580 --> 00:07:37,440
+Which instructs the jwt service
+
+155
+00:07:37,710 --> 00:07:39,150
+what the expiration time.
+
+156
+00:07:39,480 --> 00:07:42,044
+Is your audience etc is.
+
+157
+00:07:42,600 --> 00:07:45,420
+We'll worry about the payload
+object and decoding it later on
+
+158
+00:07:45,690 --> 00:07:48,940
+when we create an authentication
+guard in future lessons.
+
+159
+00:07:49,560 --> 00:07:50,730
+Back to our code here
+
+160
+00:07:50,970 --> 00:07:55,050
+you may have noticed in the first argument
+that we chose the property name of sub
+
+161
+00:07:55,170 --> 00:07:56,820
+to hold our user ID value.
+
+162
+00:07:57,240 --> 00:08:01,450
+It's a good practice to do this to
+remain consistent with jwt standards.
+
+163
+00:08:01,830 --> 00:08:05,910
+We also decide added to include the user's
+email address here in the signs token
+
+164
+00:08:06,210 --> 00:08:07,380
+but this is totally optional.
+
+165
+00:08:07,860 --> 00:08:10,620
+We can pass down whatever
+we'd like in Djibouti tokens
+
+166
+00:08:11,040 --> 00:08:14,220
+but it's a best practice to keep
+them very lightweight and small
+
+167
+00:08:14,430 --> 00:08:17,290
+and only include things
+that are absolutely essential.
+
+168
+00:08:18,030 --> 00:08:19,110
+Or the second argument
+
+169
+00:08:19,320 --> 00:08:21,870
+we passed the jbt
+configuration object
+
+170
+00:08:22,020 --> 00:08:24,630
+passing down the
+audience issuer etc
+
+171
+00:08:24,930 --> 00:08:26,770
+from our namespace configuration
+
+172
+00:08:27,120 --> 00:08:31,540
+and we set the expires and property
+equal to our access token teeth yell.
+
+173
+00:08:32,010 --> 00:08:32,490
+Next.
+
+174
+00:08:32,850 --> 00:08:35,790
+Let's update the return statement
+so that instead of returning true.
+
+175
+00:08:36,180 --> 00:08:39,520
+It sends an object containing
+the access token property.
+
+176
+00:08:41,310 --> 00:08:41,730
+Great
+
+177
+00:08:42,000 --> 00:08:42,930
+with this and place.
+
+178
+00:08:43,290 --> 00:08:45,130
+Let's make sure to
+save our changes.
+
+179
+00:08:45,240 --> 00:08:48,150
+At back to insomnia and test
+our site and endpoint again
+
+180
+00:08:48,330 --> 00:08:52,240
+making sure we pass in valid
+credentials in the request body.
+
+181
+00:08:52,680 --> 00:08:54,150
+And as we can see on our screen.
+
+182
+00:08:54,570 --> 00:08:56,670
+We received the
+access token back
+
+183
+00:08:56,820 --> 00:08:57,240
+great.
+
+184
+00:08:57,570 --> 00:08:58,081
+Are sign an
+
+185
+00:08:58,200 --> 00:09:00,100
+point is now fully functional.
+
+186
+00:09:00,480 --> 00:09:00,840
+Note.
+
+187
+00:09:01,230 --> 00:09:05,100
+There are safer alternatives than
+sending the access token as a pure text
+
+188
+00:09:05,220 --> 00:09:09,610
+for example by using the http
+only and secure cookies option.
+
+189
+00:09:10,140 --> 00:09:12,060
+Let's switch back
+to our ID eero quick
+
+190
+00:09:12,360 --> 00:09:15,400
+that we can showcase
+this safer approach as well.
+
+191
+00:09:15,720 --> 00:09:18,190
+Let's open up the
+authentication controller
+
+192
+00:09:18,300 --> 00:09:21,010
+and let's focus on
+the sign in method.
+
+193
+00:09:21,720 --> 00:09:22,140
+Here.
+
+194
+00:09:22,470 --> 00:09:23,730
+As at a new parameter
+
+195
+00:09:23,850 --> 00:09:24,870
+named response
+
+196
+00:09:25,140 --> 00:09:27,730
+and annotated with
+the rest decorator.
+
+197
+00:09:28,140 --> 00:09:31,060
+Setting the pass
+through property to true.
+
+198
+00:09:33,030 --> 00:09:33,450
+Then
+
+199
+00:09:33,750 --> 00:09:37,200
+let's replace the body
+of this method with the
+
+200
+00:09:37,200 --> 00:09:38,500
+following code that we can
+find below the course video.
+
+201
+00:09:39,570 --> 00:09:41,250
+Let's also make sure
+to flag our method
+
+202
+00:09:41,370 --> 00:09:42,700
+as a sink.
+
+203
+00:09:43,050 --> 00:09:44,670
+Great so let's save our changes.
+
+204
+00:09:44,971 --> 00:09:46,440
+Had ever do insomnia again
+
+205
+00:09:46,770 --> 00:09:49,510
+and call the sign-in
+and point once more.
+
+206
+00:09:53,640 --> 00:09:54,480
+As we can see.
+
+207
+00:09:54,900 --> 00:09:58,090
+The response bodies now empty
+and that's what we actually expected.
+
+208
+00:09:58,230 --> 00:09:59,760
+But let's open
+up the cookies tab
+
+209
+00:09:59,940 --> 00:10:00,870
+and as we can see.
+
+210
+00:10:01,200 --> 00:10:03,910
+There's our access
+token in here perfect.
+
+211
+00:10:04,080 --> 00:10:08,010
+Just to make things easier
+to understand in this course
+
+212
+00:10:08,010 --> 00:10:09,600
+will be continuing on with the
+first approach which was so.
+
+213
+00:10:10,049 --> 00:10:11,938
+As tokens inside
+of the request body
+
+214
+00:10:12,418 --> 00:10:15,448
+but we just wanted to make sure you're
+aware of any potential risks they're.
+
+215
+00:10:15,808 --> 00:10:18,298
+In provide you with and
+even safer cookie approach
+
+216
+00:10:18,448 --> 00:10:20,708
+if that's something your
+application required.
+
+217
+00:10:20,818 --> 00:10:21,208
+So.
+
+218
+00:10:21,598 --> 00:10:23,549
+Let's make sure to
+switch back to our ID
+
+219
+00:10:23,848 --> 00:10:27,248
+and revert these changes we
+made in our authentication controller.
+
+220
+00:10:27,448 --> 00:10:28,228
+Save everything
+
+221
+00:10:28,528 --> 00:10:29,998
+and we'll be ready
+to continue forward
+
+222
+00:10:30,238 --> 00:10:31,808
+in the rest of this course.
+

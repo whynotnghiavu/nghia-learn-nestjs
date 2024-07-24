@@ -1,0 +1,43 @@
+﻿1
+00:00:00,930 --> 00:00:04,450
+Throughout this course we're going
+to be using a great tool called insomnia.
+
+2
+00:00:04,590 --> 00:00:09,520
+Insomnia his arrest client that lets us
+make requests to our application with ease.
+
+3
+00:00:09,630 --> 00:00:12,810
+There are many other great
+alternatives like postman for example
+
+4
+00:00:13,050 --> 00:00:14,910
+so feel free to use
+whatever you prefer
+
+5
+00:00:15,060 --> 00:00:18,360
+but it might be easier to follow
+along if you're using insomnia with us.
+
+6
+00:00:19,020 --> 00:00:20,310
+To get started with insomnia.
+
+7
+00:00:20,640 --> 00:00:23,580
+Download it at insomnia dot
+rest to get everything set up.
+
+8
+00:00:24,300 --> 00:00:24,960
+When you're ready
+
+9
+00:00:25,170 --> 00:00:28,990
+fire up insomnia or the tool of
+your choice and let's get started.
+

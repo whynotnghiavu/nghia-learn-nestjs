@@ -1,0 +1,248 @@
+﻿1
+00:00:00,840 --> 00:00:01,860
+In a be a key
+
+2
+00:00:02,040 --> 00:00:05,730
+is a unique identifier used
+to connect to or perform and
+
+3
+00:00:05,901 --> 00:00:06,600
+a p i call.
+
+4
+00:00:07,200 --> 00:00:08,190
+Apia keys
+
+5
+00:00:08,430 --> 00:00:10,650
+can be used to either
+access your application
+
+6
+00:00:10,860 --> 00:00:13,060
+without any principal identity.
+
+7
+00:00:13,110 --> 00:00:17,400
+Or to create secondary
+credentials so that you
+
+8
+00:00:17,400 --> 00:00:18,940
+could send requests on
+behalf of a specific user.
+
+9
+00:00:19,230 --> 00:00:20,250
+In the first approach as.
+
+10
+00:00:20,640 --> 00:00:24,520
+A PR keys will be useful for
+accessing public data anonymously.
+
+11
+00:00:24,750 --> 00:00:26,010
+It'll be used to associate
+
+12
+00:00:26,280 --> 00:00:28,780
+a PR requests with your project.
+
+13
+00:00:29,400 --> 00:00:30,540
+In the latter approach
+
+14
+00:00:30,840 --> 00:00:34,260
+Apia keys will represent
+secondary credentials of users
+
+15
+00:00:34,500 --> 00:00:39,234
+that have this same or lower access
+rights depending on the defined scope.
+
+16
+00:00:39,480 --> 00:00:40,500
+These two variance it's
+
+17
+00:00:40,740 --> 00:00:43,030
+are not supposed to
+be used interchangeably.
+
+18
+00:00:43,380 --> 00:00:46,380
+Whether you should use the
+former ord the latter approach
+
+19
+00:00:46,620 --> 00:00:49,210
+greatly depends on what
+your application needs.
+
+20
+00:00:50,010 --> 00:00:50,880
+Or example
+
+21
+00:00:51,060 --> 00:00:55,170
+if you're building a sas product where
+customers can create their own projects and
+
+22
+00:00:55,170 --> 00:00:57,190
+you would like to
+expose a mechanism.
+
+23
+00:00:57,240 --> 00:01:00,720
+That lets users interact
+with those projects
+
+24
+00:01:00,720 --> 00:01:01,720
+on behalf of a third
+party tool anonymously.
+
+25
+00:01:02,100 --> 00:01:03,840
+And you should likely
+choose the first variant
+
+26
+00:01:04,080 --> 00:01:06,540
+were Apia keys can be
+used without any principal
+
+27
+00:01:06,810 --> 00:01:09,130
+and are simply tied
+to specific projects.
+
+28
+00:01:09,840 --> 00:01:10,500
+However
+
+29
+00:01:10,710 --> 00:01:14,850
+if you're building a
+social network application
+
+30
+00:01:14,850 --> 00:01:15,240
+or let's say something
+similar to get hub
+
+31
+00:01:15,540 --> 00:01:19,080
+it may be beneficial to let
+users create their own a PR keys
+
+32
+00:01:19,350 --> 00:01:20,310
+which will allow them
+
+33
+00:01:20,580 --> 00:01:23,729
+to build custom maps that
+interact with your applications a p i
+
+34
+00:01:24,000 --> 00:01:26,530
+but without using your
+front and application.
+
+35
+00:01:27,450 --> 00:01:28,200
+Essentially
+
+36
+00:01:28,470 --> 00:01:29,981
+a user could generate in a
+
+37
+00:01:30,210 --> 00:01:32,220
+key that can be used
+from a third party tool.
+
+38
+00:01:32,610 --> 00:01:35,740
+Which will allow them to
+access user specific information.
+
+39
+00:01:35,850 --> 00:01:38,950
+Or perform actions
+on behalf of that user.
+
+40
+00:01:39,210 --> 00:01:43,500
+Such an ape yankee could have a specific
+set of scopes in the user could control what
+
+41
+00:01:43,500 --> 00:01:47,322
+exactly can be accessed
+through that specific Apia key.
+
+42
+00:01:47,400 --> 00:01:49,140
+If you've worked
+with get up stripe
+
+43
+00:01:49,440 --> 00:01:51,600
+or other st case
+that offer a pie keys.
+
+44
+00:01:51,930 --> 00:01:53,250
+This all should sound familiar
+
+45
+00:01:53,430 --> 00:01:54,540
+but if not don't worry
+
+46
+00:01:54,840 --> 00:01:57,240
+we'll be diving into
+everything in much more detail
+
+47
+00:01:57,390 --> 00:01:59,410
+and it should all
+make sense soon.
+
+48
+00:02:00,210 --> 00:02:03,780
+In these next few lessons were
+choosing to implement the second variant
+
+49
+00:02:04,020 --> 00:02:06,090
+as we already have
+the user entity in place
+
+50
+00:02:06,480 --> 00:02:07,560
+but just so you're aware.
+
+51
+00:02:07,890 --> 00:02:11,760
+Implementing the first approach should be
+almost identical to what we're about to do
+
+52
+00:02:11,760 --> 00:02:15,150
+so don't worry if
+you're interested in
+
+53
+00:02:15,150 --> 00:02:16,150
+implementing or learning
+about that first approach.
+

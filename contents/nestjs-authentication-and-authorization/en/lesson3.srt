@@ -1,0 +1,667 @@
+﻿1
+00:00:00,960 --> 00:00:04,830
+In this course will be
+building a simple coffee
+
+2
+00:00:04,830 --> 00:00:05,830
+application that
+consists of two resources.
+
+3
+00:00:05,940 --> 00:00:06,630
+Users
+
+4
+00:00:06,900 --> 00:00:08,140
+and coffees.
+
+5
+00:00:08,310 --> 00:00:10,290
+As we've already
+mentioned in the first lesson
+
+6
+00:00:10,500 --> 00:00:13,590
+will assume that you're
+familiar with everything
+
+7
+00:00:13,590 --> 00:00:14,590
+we've covered in the
+fundamentals course.
+
+8
+00:00:14,790 --> 00:00:18,700
+All right so let's start by building or
+application and head over to our terminals.
+
+9
+00:00:18,990 --> 00:00:21,270
+And create a fresh
+nest application.
+
+10
+00:00:21,600 --> 00:00:24,460
+By entering in the
+nest new command.
+
+11
+00:00:24,810 --> 00:00:24,930
+The
+
+12
+00:00:25,149 --> 00:00:26,910
+the ally is going to
+prompt us as always
+
+13
+00:00:27,180 --> 00:00:29,580
+asking what name we want
+to use for this new project.
+
+14
+00:00:29,970 --> 00:00:32,590
+Let's call it off
+dash extension.
+
+15
+00:00:38,670 --> 00:00:39,810
+Once everything finishes.
+
+16
+00:00:40,170 --> 00:00:44,610
+Let's cd or change directory
+into our newly created
+
+17
+00:00:44,700 --> 00:00:46,030
+application by entering
+cd off dash extension.
+
+18
+00:00:50,250 --> 00:00:52,380
+Next let's generate to resources
+
+19
+00:00:52,560 --> 00:00:54,520
+coffees and users.
+
+20
+00:00:54,639 --> 00:00:58,230
+Help speed up this repetitive
+process the necessary
+
+21
+00:00:58,230 --> 00:00:59,490
+or seal i provides us with
+a generator or schematic.
+
+22
+00:00:59,820 --> 00:01:02,340
+That automatically generates
+all of the boilerplate code.
+
+23
+00:01:02,790 --> 00:01:06,930
+Help us avoid doing
+all this manually and to
+
+24
+00:01:06,960 --> 00:01:07,960
+make the developer
+experience that much simpler.
+
+25
+00:01:08,040 --> 00:01:09,450
+Was use it by running.
+
+26
+00:01:09,780 --> 00:01:11,400
+Nest g resource
+
+27
+00:01:11,520 --> 00:01:13,150
+and let's call it coffees.
+
+28
+00:01:14,280 --> 00:01:17,820
+This command will
+prompt us asking what
+
+29
+00:01:17,820 --> 00:01:18,420
+transport layer we want
+to use at our project.
+
+30
+00:01:18,810 --> 00:01:21,130
+Will choose arrest a p i.
+
+31
+00:01:21,210 --> 00:01:22,410
+As for the next question
+
+32
+00:01:22,680 --> 00:01:26,489
+would you like to generate
+crud entry points let's
+
+33
+00:01:26,489 --> 00:01:27,570
+say yes and have some
+endpoints of generated for us.
+
+34
+00:01:27,960 --> 00:01:31,030
+Which we will protect
+later on in this course.
+
+35
+00:01:31,710 --> 00:01:34,560
+As you can see on the screen
+the resource schematic generated
+
+36
+00:01:34,830 --> 00:01:39,210
+a module to keep code
+organized and establish
+
+37
+00:01:39,210 --> 00:01:40,210
+clear boundaries grouping
+related components.
+
+38
+00:01:40,380 --> 00:01:43,230
+A controller with
+nest g controller
+
+39
+00:01:43,380 --> 00:01:44,760
+to define crud routes
+
+40
+00:01:45,060 --> 00:01:47,400
+a service with nest g service
+
+41
+00:01:47,580 --> 00:01:49,620
+to implement an
+isolate business logic
+
+42
+00:01:50,070 --> 00:01:53,070
+and entity class to represent
+the resource data shape
+
+43
+00:01:53,400 --> 00:01:54,210
+and lastly
+
+44
+00:01:54,510 --> 00:01:55,890
+data transfer objects
+
+45
+00:01:56,100 --> 00:01:59,880
+or inputs for graft you'll applications
+to define how the data will be sent
+
+46
+00:02:00,030 --> 00:02:01,330
+over the network.
+
+47
+00:02:01,740 --> 00:02:05,410
+Now let's generate the users
+resource using the same commands.
+
+48
+00:02:05,520 --> 00:02:07,440
+Via nest g resource
+
+49
+00:02:07,680 --> 00:02:09,250
+and let's call it users.
+
+50
+00:02:09,870 --> 00:02:12,900
+With our to resources
+in place let's start up or
+
+51
+00:02:12,900 --> 00:02:13,620
+application to make
+sure everything's working.
+
+52
+00:02:14,250 --> 00:02:18,850
+Let's fire up the app and development
+mode with n p m run start Colin deaf.
+
+53
+00:02:21,480 --> 00:02:21,810
+Great
+
+54
+00:02:21,930 --> 00:02:23,010
+everything works so far.
+
+55
+00:02:23,520 --> 00:02:25,980
+In our terminal we can
+see that both users module
+
+56
+00:02:26,250 --> 00:02:29,020
+an coffees module were
+successfully initialized.
+
+57
+00:02:29,100 --> 00:02:32,260
+We can even see some
+endpoints registered in our project.
+
+58
+00:02:32,370 --> 00:02:32,730
+Great.
+
+59
+00:02:33,390 --> 00:02:38,170
+What's open up the users service file real
+quick and see what we have in their so far.
+
+60
+00:02:38,970 --> 00:02:43,800
+As we can see the seal i generated service
+classes are not tied to any specific r m.
+
+61
+00:02:44,130 --> 00:02:45,090
+Or data source.
+
+62
+00:02:45,420 --> 00:02:49,180
+This makes the generator generic
+enough to meet the needs of any project.
+
+63
+00:02:49,260 --> 00:02:49,860
+By default
+
+64
+00:02:50,130 --> 00:02:53,100
+all methods will contain placeholders
+as we can see on the screen.
+
+65
+00:02:53,460 --> 00:02:58,120
+Allowing us to populate the service with
+the data sources specific to our project.
+
+66
+00:02:58,620 --> 00:02:59,490
+In this extension
+
+67
+00:02:59,790 --> 00:03:02,790
+similarly to what we did in the
+fundamentals course will be connecting our
+
+68
+00:03:02,790 --> 00:03:04,860
+application to a
+postgres database.
+
+69
+00:03:05,190 --> 00:03:07,690
+With the help of
+the tibor m library.
+
+70
+00:03:07,860 --> 00:03:08,430
+Remember.
+
+71
+00:03:08,850 --> 00:03:11,520
+In your project you can use
+any data source you wish.
+
+72
+00:03:11,910 --> 00:03:13,320
+Any r m you prefer.
+
+73
+00:03:13,650 --> 00:03:16,740
+Be at mongoose next
+micro or m et cetera.
+
+74
+00:03:17,281 --> 00:03:19,350
+You could even use
+database drivers directly
+
+75
+00:03:19,470 --> 00:03:20,850
+and run plane sql queries
+
+76
+00:03:20,970 --> 00:03:23,020
+anything or applications new.
+
+77
+00:03:23,370 --> 00:03:26,370
+We are specifically using
+type or am here in this course
+
+78
+00:03:26,700 --> 00:03:30,240
+but just know that you
+are not limited to using
+
+79
+00:03:30,300 --> 00:03:31,720
+type r m in your future
+applications by any means.
+
+80
+00:03:32,280 --> 00:03:35,790
+Since we don't want to
+spend too much time explaining
+
+81
+00:03:35,790 --> 00:03:36,540
+all the configuration
+related pieces again.
+
+82
+00:03:36,870 --> 00:03:39,420
+If you're unfamiliar with
+everything or just need a refresher
+
+83
+00:03:39,720 --> 00:03:41,190
+please check out
+lesson number three.
+
+84
+00:03:41,520 --> 00:03:43,530
+Add post-grad
+sequel with type or him
+
+85
+00:03:43,740 --> 00:03:46,140
+from our fundamentals course
+to learn more about docker
+
+86
+00:03:46,290 --> 00:03:48,090
+type are a module and so on.
+
+87
+00:03:48,840 --> 00:03:49,710
+Back to our code.
+
+88
+00:03:50,130 --> 00:03:53,760
+Let's get some of the same set about of the
+way in our application here and start by
+
+89
+00:03:53,760 --> 00:03:56,580
+creating a docker dash
+compose dot yaml file
+
+90
+00:03:56,850 --> 00:03:58,690
+in the projects root directory.
+
+91
+00:04:00,240 --> 00:04:03,690
+Inside this docker compose file
+let's define a database container
+
+92
+00:04:03,960 --> 00:04:05,530
+in gamble format.
+
+93
+00:04:05,760 --> 00:04:09,250
+You can find the code to copy
+paste here below the course video.
+
+94
+00:04:09,570 --> 00:04:09,990
+Now.
+
+95
+00:04:10,410 --> 00:04:12,030
+Let's bring our container up
+
+96
+00:04:12,330 --> 00:04:13,680
+using docker compose.
+
+97
+00:04:14,010 --> 00:04:14,820
+In our terminal.
+
+98
+00:04:15,240 --> 00:04:17,400
+Make sure we're at
+the project root directory
+
+99
+00:04:17,790 --> 00:04:20,460
+and let's enter in docker
+dash cam pose up.
+
+100
+00:04:20,790 --> 00:04:22,129
+Dash d.
+
+101
+00:04:22,680 --> 00:04:23,040
+Note.
+
+102
+00:04:23,400 --> 00:04:27,791
+Make sure to have docker itself up and
+running in the background before running us.
+
+103
+00:04:28,110 --> 00:04:29,110
+Rate.
+
+104
+00:04:29,670 --> 00:04:32,400
+We now have a postgres
+database running in the background.
+
+105
+00:04:32,880 --> 00:04:35,800
+Now for the nes
+js type r m portion.
+
+106
+00:04:36,510 --> 00:04:39,911
+Let's get the necessary dependencies
+installed for her application.
+
+107
+00:04:40,050 --> 00:04:42,792
+Which are at ness
+js slashed i ballroom.
+
+108
+00:04:42,870 --> 00:04:43,710
+Type bahram
+
+109
+00:04:44,100 --> 00:04:45,000
+and pg.
+
+110
+00:04:45,420 --> 00:04:46,050
+Posts gross.
+
+111
+00:04:46,530 --> 00:04:47,040
+Remember.
+
+112
+00:04:47,400 --> 00:04:50,440
+Type or m can integrate
+with many other databases.
+
+113
+00:04:50,511 --> 00:04:53,100
+Will be using post-crash
+as it's powerful efficient
+
+114
+00:04:53,370 --> 00:04:54,520
+and free.
+
+115
+00:04:54,870 --> 00:04:56,880
+Once the installation
+process is complete meet.
+
+116
+00:04:57,660 --> 00:05:00,030
+Let's open up our
+app module t s file
+
+117
+00:05:00,180 --> 00:05:02,560
+and head over to
+the imports array.
+
+118
+00:05:03,390 --> 00:05:08,460
+In here let's import the type
+or a module from the nest
+
+119
+00:05:08,460 --> 00:05:10,270
+js tibor and package and
+add it into our imports array.
+
+120
+00:05:10,500 --> 00:05:12,210
+Necklace initialized this module
+
+121
+00:05:12,510 --> 00:05:16,920
+by calling the for route method which lets
+us configured the connection to type r m
+
+122
+00:05:17,190 --> 00:05:19,770
+as well as a few additional
+tools available to integrate it
+
+123
+00:05:19,950 --> 00:05:21,495
+with ness jas.
+
+124
+00:05:21,960 --> 00:05:25,020
+Let's enter in the following configure
+aeration options that we set up in our docker
+
+125
+00:05:25,020 --> 00:05:26,880
+compose file and
+we should be all set.
+
+126
+00:05:27,480 --> 00:05:31,510
+Remember you can find the code to copy
+paste for this arrival of course video.
+
+127
+00:05:31,770 --> 00:05:34,440
+With docker and type
+r and portion all set up.
+
+128
+00:05:34,830 --> 00:05:39,090
+Let's open up our user energy file that was
+already generated by the resource schematic
+
+129
+00:05:39,480 --> 00:05:40,320
+and add a new
+
+130
+00:05:40,440 --> 00:05:41,760
+entity decorator on top.
+
+131
+00:05:42,090 --> 00:05:44,471
+Making sure to
+imported from type rm.
+
+132
+00:05:44,550 --> 00:05:48,160
+Next up was at a few columns
+for ID email and password.
+
+133
+00:05:48,270 --> 00:05:50,700
+And now that we have the
+basics of our entity set up.
+
+134
+00:05:51,060 --> 00:05:53,920
+Let's registered this user
+entity in our application.
+
+135
+00:05:54,120 --> 00:05:56,640
+To achieve this let's
+open up our users module
+
+136
+00:05:56,970 --> 00:05:58,710
+and first create an input array
+
+137
+00:05:59,010 --> 00:06:00,850
+inside of the model decorator.
+
+138
+00:06:00,960 --> 00:06:05,490
+In this imports re let's add type r
+m four feature passing in an array
+
+139
+00:06:05,760 --> 00:06:07,530
+with our users
+energy inside of it.
+
+140
+00:06:08,340 --> 00:06:09,210
+And just like that
+
+141
+00:06:09,480 --> 00:06:14,290
+we created our first database entity
+and table within our postgres database.
+
+142
+00:06:14,370 --> 00:06:14,820
+Now.
+
+143
+00:06:15,150 --> 00:06:16,440
+That we have all this and place
+
+144
+00:06:16,740 --> 00:06:19,690
+we could start using a real
+database in our application.
+

@@ -1,0 +1,1273 @@
+﻿1
+00:00:00,810 --> 00:00:05,590
+One benefit of gw beauties or Jason
+web tokens is that they are stateless.
+
+2
+00:00:05,790 --> 00:00:09,900
+That means we don't have
+to query a central database
+
+3
+00:00:09,900 --> 00:00:11,290
+to validate the token on
+each incoming request.
+
+4
+00:00:11,520 --> 00:00:13,620
+As long as the token
+signature is valid
+
+5
+00:00:14,070 --> 00:00:15,990
+and the token has
+an expired itself.
+
+6
+00:00:16,350 --> 00:00:20,350
+We can authenticate the request in
+associated with the corresponding user.
+
+7
+00:00:20,490 --> 00:00:21,900
+This poses a challenge though.
+
+8
+00:00:22,440 --> 00:00:26,370
+Let's say we want to invalidate a leaked or
+compromised refresh token to prevent the
+
+9
+00:00:26,370 --> 00:00:28,720
+attacker from logging
+into our system.
+
+10
+00:00:28,770 --> 00:00:32,530
+Or let's say the admin has
+updated the users roller permissions.
+
+11
+00:00:32,583 --> 00:00:34,530
+They should be
+automatically logged out.
+
+12
+00:00:35,040 --> 00:00:38,620
+In case a user's roles were
+embedded into the token themselves.
+
+13
+00:00:39,000 --> 00:00:41,730
+The how can we accomplish
+and fix any of these issues.
+
+14
+00:00:42,240 --> 00:00:42,690
+Well
+
+15
+00:00:42,870 --> 00:00:46,170
+since our current tokens are
+stateless we cannot revoked them
+
+16
+00:00:46,440 --> 00:00:50,700
+as they're not stored in the database unless
+we remove the principal or target user
+
+17
+00:00:51,060 --> 00:00:51,690
+but usually
+
+18
+00:00:51,840 --> 00:00:53,190
+that's not what we want to do.
+
+19
+00:00:53,760 --> 00:00:56,260
+But what about if we store
+tokens in the database.
+
+20
+00:00:56,400 --> 00:01:00,000
+With this approach we
+could check which tokens
+
+21
+00:01:00,000 --> 00:01:00,480
+are valid in which ones
+have to be revoked.
+
+22
+00:01:00,810 --> 00:01:02,850
+Based on whether there
+are still in the database or not
+
+23
+00:01:03,180 --> 00:01:03,480
+but.
+
+24
+00:01:03,840 --> 00:01:05,670
+This makes Jada
+beauties stateful
+
+25
+00:01:05,880 --> 00:01:08,440
+and behave similarly
+to credentials.
+
+26
+00:01:08,550 --> 00:01:09,150
+Essentially
+
+27
+00:01:09,450 --> 00:01:10,950
+in order to make that idea work.
+
+28
+00:01:11,280 --> 00:01:14,790
+We would have to keep a list of all
+issued tokens in a dedicated table
+
+29
+00:01:15,000 --> 00:01:17,260
+or in the existing users table.
+
+30
+00:01:17,700 --> 00:01:21,660
+Then the guard we implemented would have
+to query the database on every incoming
+
+31
+00:01:21,660 --> 00:01:24,480
+request just a check of
+the given token is included
+
+32
+00:01:24,750 --> 00:01:26,130
+in the list of stored tokens.
+
+33
+00:01:26,520 --> 00:01:29,760
+I think you could imagine
+that this would have a
+
+34
+00:01:29,760 --> 00:01:30,760
+negative impact on our
+applications performance.
+
+35
+00:01:30,930 --> 00:01:31,800
+Who as you can see.
+
+36
+00:01:32,220 --> 00:01:33,480
+This approach is not ideal.
+
+37
+00:01:33,960 --> 00:01:34,800
+In this lesson.
+
+38
+00:01:35,280 --> 00:01:38,830
+Will showcase something we
+consider a nice middle ground solution.
+
+39
+00:01:39,030 --> 00:01:41,110
+First will implement
+a mechanism.
+
+40
+00:01:41,160 --> 00:01:43,360
+Old a refresh token rotation.
+
+41
+00:01:43,860 --> 00:01:47,160
+Whenever he refresh token was
+used to issue a new pair of tokens.
+
+42
+00:01:47,550 --> 00:01:49,320
+Will invalidate the original one
+
+43
+00:01:49,440 --> 00:01:53,560
+or old refresh token so it cannot
+be used again in the future.
+
+44
+00:01:54,060 --> 00:01:54,930
+To do all of this
+
+45
+00:01:55,140 --> 00:01:59,430
+you're going to add a
+red is database to our
+
+46
+00:01:59,430 --> 00:01:59,880
+stack but feel free to use
+any database you want.
+
+47
+00:02:00,240 --> 00:02:04,140
+You could even leverage
+our existing postgres database
+
+48
+00:02:04,170 --> 00:02:05,440
+and just added dedicated
+table if you'd prefer.
+
+49
+00:02:05,520 --> 00:02:07,590
+We decided to use read
+us because it's a lightweight.
+
+50
+00:02:08,010 --> 00:02:11,050
+E-value storage system that
+provides great performance
+
+51
+00:02:11,250 --> 00:02:14,350
+and it's all we need to
+accomplish the task at hand here.
+
+52
+00:02:14,550 --> 00:02:15,990
+But let's head over to our ID
+
+53
+00:02:16,110 --> 00:02:20,440
+and open up our docker compose file
+and let's add a reddish service in there.
+
+54
+00:02:21,060 --> 00:02:21,780
+Next up
+
+55
+00:02:22,020 --> 00:02:26,711
+let's install the io read his package
+which has a robust read his client.
+
+56
+00:02:26,760 --> 00:02:29,490
+Was open up our terminals
+and type in and p m i.
+
+57
+00:02:29,849 --> 00:02:31,392
+I yo read us.
+
+58
+00:02:37,560 --> 00:02:41,400
+Let's also make sure to
+start our newly added read his
+
+59
+00:02:41,401 --> 00:02:43,870
+service with the docker dash
+compose up dash d command.
+
+60
+00:02:44,940 --> 00:02:45,570
+Next up.
+
+61
+00:02:46,020 --> 00:02:51,160
+Let's generate a refresh token ids
+storage class using the following command.
+
+62
+00:02:51,480 --> 00:02:52,740
+Nest g class
+
+63
+00:02:52,950 --> 00:02:58,770
+i am slash authentication
+slash refresh dash
+
+64
+00:02:58,770 --> 00:02:59,310
+token dash ideas dot
+storage but this in place
+
+65
+00:02:59,610 --> 00:03:04,230
+let's now navigate to the
+i am module and register
+
+66
+00:03:04,230 --> 00:03:05,560
+refresh token ids storage
+as a provide wider.
+
+67
+00:03:06,480 --> 00:03:09,820
+Now onto the refresh
+tokens ID storage class itself.
+
+68
+00:03:12,300 --> 00:03:13,300
+First.
+
+69
+00:03:13,530 --> 00:03:16,570
+Let's annotated with the
+injectable decorator as always.
+
+70
+00:03:18,510 --> 00:03:19,140
+Next up.
+
+71
+00:03:19,800 --> 00:03:20,490
+Let's implement
+
+72
+00:03:20,640 --> 00:03:21,660
+to interfaces
+
+73
+00:03:21,870 --> 00:03:24,780
+that led us hook into our nest
+applications a life cycle events
+
+74
+00:03:25,080 --> 00:03:27,490
+these are an
+application bootstrap.
+
+75
+00:03:27,780 --> 00:03:30,010
+And an application shut down.
+
+76
+00:03:33,120 --> 00:03:36,060
+Our ID he will hint to us to
+implement these interfaces
+
+77
+00:03:36,210 --> 00:03:37,990
+let's go ahead and do it.
+
+78
+00:03:39,150 --> 00:03:41,400
+Inside of the an
+application bootstrap hook.
+
+79
+00:03:41,760 --> 00:03:44,740
+Let's add the following code you
+can find below the course video.
+
+80
+00:03:47,400 --> 00:03:48,990
+As you could see
+in the comment here
+
+81
+00:03:49,110 --> 00:03:53,370
+ideally we should have registered a
+separate rattus module that encapsulates the
+
+82
+00:03:53,550 --> 00:03:54,060
+his client
+
+83
+00:03:54,420 --> 00:03:56,850
+and ties itself to the
+applications life cycle.
+
+84
+00:03:57,180 --> 00:03:57,720
+However
+
+85
+00:03:57,930 --> 00:04:02,020
+as in this course who want to primarily
+focus on authentication and authorization.
+
+86
+00:04:02,160 --> 00:04:05,520
+We decided to take a
+shortcut here as we don't want
+
+87
+00:04:05,550 --> 00:04:06,300
+to spend too much time on
+things we've already covered
+
+88
+00:04:06,600 --> 00:04:08,410
+in the fundamentals course.
+
+89
+00:04:08,520 --> 00:04:10,470
+Don't worry this
+approach is still okay
+
+90
+00:04:10,770 --> 00:04:14,250
+we just wanted to
+remind you that in an ideal
+
+91
+00:04:14,250 --> 00:04:15,250
+world we'd would want
+to separate the south.
+
+92
+00:04:15,480 --> 00:04:16,440
+Okay so next
+
+93
+00:04:16,590 --> 00:04:19,840
+let's move on to the an
+application shut down method.
+
+94
+00:04:20,220 --> 00:04:20,730
+In here.
+
+95
+00:04:21,060 --> 00:04:22,410
+Let's add just one line.
+
+96
+00:04:22,800 --> 00:04:23,580
+Read his client
+
+97
+00:04:23,850 --> 00:04:25,150
+dot quit.
+
+98
+00:04:25,980 --> 00:04:26,730
+In this method
+
+99
+00:04:26,970 --> 00:04:30,630
+when our application
+shuts down the reddest
+
+100
+00:04:30,630 --> 00:04:31,170
+connection will be
+terminated which is ideal.
+
+101
+00:04:31,500 --> 00:04:34,540
+As we want to make sure we
+always clean up our resources.
+
+102
+00:04:34,980 --> 00:04:35,400
+Rate.
+
+103
+00:04:35,760 --> 00:04:37,230
+With our read
+his client in place.
+
+104
+00:04:37,560 --> 00:04:41,800
+Let's add for methods in this class
+now to set up our business logic.
+
+105
+00:04:44,850 --> 00:04:45,420
+Insert.
+
+106
+00:04:45,840 --> 00:04:48,150
+Which will use to insert
+new entries into the red
+
+107
+00:04:48,251 --> 00:04:49,251
+database.
+
+108
+00:04:49,350 --> 00:04:50,040
+Validate
+
+109
+00:04:50,280 --> 00:04:53,670
+which will validate the token ID passed
+in and depending on the validation we
+
+110
+00:04:53,670 --> 00:04:56,260
+implement will
+return true or false.
+
+111
+00:04:56,310 --> 00:05:00,330
+Invalidate which will
+help us invalidate the
+
+112
+00:05:00,330 --> 00:05:01,330
+token by removing the
+ID entry from our database.
+
+113
+00:05:01,710 --> 00:05:02,490
+And lastly
+
+114
+00:05:02,640 --> 00:05:03,480
+the private method
+
+115
+00:05:03,690 --> 00:05:04,290
+get key
+
+116
+00:05:04,590 --> 00:05:08,020
+which constructs the entry
+ID based on the user identifier.
+
+117
+00:05:08,790 --> 00:05:11,770
+Let's start by first implementing
+the get key method.
+
+118
+00:05:11,880 --> 00:05:13,050
+Inside the get key method
+
+119
+00:05:13,290 --> 00:05:15,540
+let's simply return
+the stringify to user ID
+
+120
+00:05:15,720 --> 00:05:17,592
+with the user dash prefix.
+
+121
+00:05:17,760 --> 00:05:21,450
+This will be helpful so
+our key entries in our read
+
+122
+00:05:21,450 --> 00:05:23,410
+estate of base have a
+nice uniform look and feel.
+
+123
+00:05:23,640 --> 00:05:24,120
+Next
+
+124
+00:05:24,330 --> 00:05:25,800
+inside the insert method
+
+125
+00:05:25,980 --> 00:05:27,762
+let's add the following logic.
+
+126
+00:05:28,907 --> 00:05:31,530
+This code were using
+the reddest client to insert
+
+127
+00:05:31,680 --> 00:05:32,940
+be at the set method.
+
+128
+00:05:33,330 --> 00:05:37,870
+A new token ID entry into our
+database under a specified key.
+
+129
+00:05:38,160 --> 00:05:38,700
+Now
+
+130
+00:05:38,880 --> 00:05:40,602
+onto the validate method.
+
+131
+00:05:42,060 --> 00:05:45,900
+Here we retrieved the Stuart ID from
+the database and compare it to the second
+
+132
+00:05:45,900 --> 00:05:47,490
+argument passed
+into this method.
+
+133
+00:05:47,880 --> 00:05:49,260
+Which might be either different
+
+134
+00:05:49,560 --> 00:05:50,740
+or undefined.
+
+135
+00:05:51,240 --> 00:05:51,810
+Basically
+
+136
+00:05:52,020 --> 00:05:56,310
+we're ensuring that a token
+ID this method received
+
+137
+00:05:56,310 --> 00:05:57,430
+matches what we have
+stored in our database.
+
+138
+00:05:57,960 --> 00:05:58,860
+And lastly.
+
+139
+00:05:59,190 --> 00:06:00,190
+Invalidate.
+
+140
+00:06:00,360 --> 00:06:04,150
+Which will solve one of our problems
+we mentioned at the start of this lesson.
+
+141
+00:06:04,230 --> 00:06:04,950
+In this code.
+
+142
+00:06:05,280 --> 00:06:09,780
+Were using the Dell
+method of our read his client
+
+143
+00:06:09,780 --> 00:06:10,780
+to delete a specific
+entry from our database.
+
+144
+00:06:11,310 --> 00:06:14,430
+This way if someone tried to use
+the refresh token that was once valid.
+
+145
+00:06:14,880 --> 00:06:19,380
+Our validate method
+will return false since the
+
+146
+00:06:19,380 --> 00:06:20,380
+user ID doesn't exist in
+our database anymore.
+
+147
+00:06:20,670 --> 00:06:21,360
+And there we have it.
+
+148
+00:06:21,960 --> 00:06:25,780
+Our refresh token ids
+storage class is all set.
+
+149
+00:06:26,190 --> 00:06:29,190
+We now have all the
+logic and place that we
+
+150
+00:06:29,190 --> 00:06:30,190
+talked about in the
+beginning this lesson.
+
+151
+00:06:30,330 --> 00:06:31,740
+Okay so we'll all of that done.
+
+152
+00:06:32,160 --> 00:06:35,970
+Let's open up or authentication service
+and eject our new storage class they're
+
+153
+00:06:36,120 --> 00:06:37,960
+using the standard approach.
+
+154
+00:06:40,830 --> 00:06:41,310
+Now.
+
+155
+00:06:41,760 --> 00:06:46,150
+Let's scroll to the generate tokens
+method and make use of our provider there.
+
+156
+00:06:46,590 --> 00:06:46,980
+First.
+
+157
+00:06:47,310 --> 00:06:48,720
+Before we sign our token.
+
+158
+00:06:49,200 --> 00:06:51,540
+Let's generate a
+unique refresh token ID
+
+159
+00:06:51,840 --> 00:06:54,120
+using the random
+you you ID generator.
+
+160
+00:06:54,450 --> 00:06:57,970
+From the native cryptography
+library named crypto.
+
+161
+00:06:58,500 --> 00:07:01,020
+Now that we have this
+in place let's pass this ID
+
+162
+00:07:01,290 --> 00:07:05,080
+as an extra payloads property
+of this signed refresh token.
+
+163
+00:07:09,660 --> 00:07:10,350
+Ideally
+
+164
+00:07:10,620 --> 00:07:14,820
+we should add an interface here describing
+the refresh token payload structure
+
+165
+00:07:15,300 --> 00:07:17,670
+but since we have so many
+important things to build here.
+
+166
+00:07:18,000 --> 00:07:19,350
+We're going to admit it for now
+
+167
+00:07:19,620 --> 00:07:21,300
+but feel free to
+make one for yourself.
+
+168
+00:07:21,660 --> 00:07:24,130
+As in general this
+is a best practice.
+
+169
+00:07:24,360 --> 00:07:24,990
+Now
+
+170
+00:07:25,200 --> 00:07:26,670
+once our tokens are signed.
+
+171
+00:07:27,000 --> 00:07:31,020
+Let's make sure we insert
+this ID into our read estate
+
+172
+00:07:31,020 --> 00:07:32,820
+of base using the refresh
+token ids storage provider.
+
+173
+00:07:33,210 --> 00:07:36,730
+Calling the insert method we
+created a few moments ago.
+
+174
+00:07:36,990 --> 00:07:37,620
+And that's it.
+
+175
+00:07:38,160 --> 00:07:40,230
+Our generate tokens
+method as all set.
+
+176
+00:07:40,800 --> 00:07:43,290
+Now if we scroll down to
+the refresh tokens method.
+
+177
+00:07:43,740 --> 00:07:46,720
+Let's make a few important
+additions here as well.
+
+178
+00:07:47,340 --> 00:07:50,350
+Let's first start by
+updating our type argument.
+
+179
+00:07:50,820 --> 00:07:51,480
+Next up.
+
+180
+00:07:51,870 --> 00:07:54,580
+Was grabbed the
+refresh token ID property.
+
+181
+00:07:55,230 --> 00:07:57,540
+After we fetch the
+user entity in our code
+
+182
+00:07:57,780 --> 00:08:00,000
+let's validate the
+refresh token ID.
+
+183
+00:08:00,510 --> 00:08:04,350
+Passing it to the refresh token
+ids storage validate method.
+
+184
+00:08:04,770 --> 00:08:06,760
+Alongside user ID.
+
+185
+00:08:07,530 --> 00:08:09,060
+Now if it is valid
+
+186
+00:08:09,330 --> 00:08:13,780
+we have to invalidate it so it cannot
+be used for any subsequent requests.
+
+187
+00:08:14,130 --> 00:08:17,200
+This technique is called
+refresh token rotation.
+
+188
+00:08:17,640 --> 00:08:19,210
+If it is invalid.
+
+189
+00:08:19,350 --> 00:08:23,130
+We want to make sure we
+throat the corresponding air
+
+190
+00:08:23,130 --> 00:08:25,240
+indicating that the refresh
+token is no longer valid.
+
+191
+00:08:25,560 --> 00:08:27,180
+Let's save our
+changes had ever do.
+
+192
+00:08:27,600 --> 00:08:30,280
+Here and see if everything
+we've done so far works.
+
+193
+00:08:30,630 --> 00:08:35,110
+Let's start by hitting the sign in
+endpoint to retrieve a fresh set of tokens.
+
+194
+00:08:35,640 --> 00:08:37,770
+Let's copy that
+generated refresh token
+
+195
+00:08:38,100 --> 00:08:42,210
+and try to regenerate tokens passing
+the refresh token to the authenticate
+
+196
+00:08:42,360 --> 00:08:44,430
+slash refresh dash
+tokens and point
+
+197
+00:08:44,730 --> 00:08:46,420
+as we have done previously.
+
+198
+00:08:48,870 --> 00:08:49,860
+Let's click send
+
+199
+00:08:50,190 --> 00:08:51,150
+and as we can see
+
+200
+00:08:51,270 --> 00:08:51,900
+it worked.
+
+201
+00:08:52,260 --> 00:08:54,520
+We received a new set of tokens.
+
+202
+00:08:54,840 --> 00:08:56,670
+Now let's click send again
+
+203
+00:08:57,090 --> 00:09:01,630
+and this is when we'll see the new
+mechanism we just put together do its job.
+
+204
+00:09:01,710 --> 00:09:02,550
+And voila.
+
+205
+00:09:02,905 --> 00:09:05,490
+Refresh token we just
+used a moment ago
+
+206
+00:09:05,760 --> 00:09:10,210
+has been invalidated and can
+no longer be used after its first use.
+
+207
+00:09:10,350 --> 00:09:11,430
+So as we can see.
+
+208
+00:09:12,030 --> 00:09:16,620
+This new ability gives
+us an additional layer of
+
+209
+00:09:16,620 --> 00:09:18,040
+security and took minimal
+effort for us to put together.
+
+210
+00:09:18,930 --> 00:09:20,040
+Let's continue forward
+
+211
+00:09:20,280 --> 00:09:22,110
+and dive into a new topic called
+
+212
+00:09:22,290 --> 00:09:24,340
+automatic reuse detection.
+
+213
+00:09:24,720 --> 00:09:29,250
+Automatic reuse detection
+is a key component
+
+214
+00:09:29,257 --> 00:09:30,257
+of any solid refresh
+token rotation strategy.
+
+215
+00:09:30,300 --> 00:09:30,900
+In fact.
+
+216
+00:09:31,230 --> 00:09:34,410
+We already have this detection
+functionality implemented in our code
+
+217
+00:09:34,710 --> 00:09:35,550
+at the moment though
+
+218
+00:09:35,760 --> 00:09:39,600
+we'd just don't react
+differently in any case where
+
+219
+00:09:39,600 --> 00:09:41,260
+the old refreshed hogan
+was attempted to be reused.
+
+220
+00:09:41,340 --> 00:09:43,620
+So let's switch over
+to our ID he once again
+
+221
+00:09:44,010 --> 00:09:47,410
+and open up the refresh
+token ids storage class.
+
+222
+00:09:47,730 --> 00:09:48,990
+Inside the valid method.
+
+223
+00:09:49,410 --> 00:09:51,420
+If distort ID is undefined
+
+224
+00:09:51,720 --> 00:09:55,030
+that means the refresh token
+has already been invalidated.
+
+225
+00:09:55,650 --> 00:10:00,192
+So let's kick things off by first declaring
+a new dedicated except ocean class.
+
+226
+00:10:00,240 --> 00:10:04,510
+Let's grow up in above our
+class let's add another tiny class.
+
+227
+00:10:05,070 --> 00:10:08,370
+Note that ideally we should put
+this new class in a dedicated file
+
+228
+00:10:08,820 --> 00:10:11,820
+but once again since best practices
+like this were already covered in the
+
+229
+00:10:11,820 --> 00:10:14,430
+fundamentals course will
+focus on the task at hand
+
+230
+00:10:14,610 --> 00:10:17,220
+and just continue ahead
+with the two classes in one file
+
+231
+00:10:17,520 --> 00:10:18,150
+but go ahead
+
+232
+00:10:18,420 --> 00:10:19,199
+and put it in its own.
+
+233
+00:10:19,680 --> 00:10:21,368
+Want to keep things clean.
+
+234
+00:10:22,018 --> 00:10:22,888
+Back to our code.
+
+235
+00:10:23,338 --> 00:10:25,078
+Let's scroll back to
+our validate method
+
+236
+00:10:25,468 --> 00:10:29,158
+and in the case where stored
+ID does not match the token ID.
+
+237
+00:10:29,608 --> 00:10:31,840
+Let's throw the
+exception we justified.
+
+238
+00:10:33,448 --> 00:10:33,898
+Great.
+
+239
+00:10:34,228 --> 00:10:34,678
+Now.
+
+240
+00:10:35,098 --> 00:10:39,898
+Let's switch to the authentication service
+and in our refresh tokens catch clause
+
+241
+00:10:40,048 --> 00:10:42,428
+let's add a new
+condition here as well.
+
+242
+00:10:45,268 --> 00:10:46,628
+And that's it.
+
+243
+00:10:46,738 --> 00:10:48,928
+At this point with the
+code we've just added.
+
+244
+00:10:49,318 --> 00:10:53,608
+Our system is now aware when and
+invalidated refresh token is being used.
+
+245
+00:10:54,088 --> 00:10:58,258
+Now he will be up to you in your systems
+needs on whether this is a moment to either
+
+246
+00:10:58,558 --> 00:11:01,708
+log such information somewhere
+let's say for security purposes.
+
+247
+00:11:02,068 --> 00:11:03,778
+Or maybe even notify the user
+
+248
+00:11:04,018 --> 00:11:06,698
+that their log in may have
+been potentially compromised.
+
+249
+00:11:07,918 --> 00:11:09,628
+We have you gone
+to our next topic.
+
+250
+00:11:09,958 --> 00:11:11,938
+As we've mentioned at
+the beginning of this lesson.
+
+251
+00:11:12,418 --> 00:11:16,918
+Storing all tokens
+including access tokens
+
+252
+00:11:16,918 --> 00:11:17,918
+in the database has
+some serious implications
+
+253
+00:11:18,358 --> 00:11:20,758
+and so we typically
+recommend not to do this
+
+254
+00:11:21,058 --> 00:11:23,638
+unless you're one hundred per
+cent aware of what you're doing.
+
+255
+00:11:24,268 --> 00:11:27,058
+If your application requires
+stateful authenticate then.
+
+256
+00:11:27,508 --> 00:11:29,398
+Perhaps instead of jw tease
+
+257
+00:11:29,638 --> 00:11:32,218
+you should consider implementing
+a more stateful mechanism
+
+258
+00:11:32,428 --> 00:11:34,478
+like for example sessions.
+
+259
+00:11:34,858 --> 00:11:39,448
+Still with what we did so far it's feasible
+to almost ensure up to date data in our
+
+260
+00:11:39,448 --> 00:11:42,688
+gw teased by making
+access tokens very short lived.
+
+261
+00:11:43,168 --> 00:11:43,828
+For example.
+
+262
+00:11:44,128 --> 00:11:47,008
+If you set the access
+token lifetime to five minutes
+
+263
+00:11:47,368 --> 00:11:50,848
+and on the you i side of your
+application be at mobile web etc.
+
+264
+00:11:51,178 --> 00:11:55,378
+You implement a background process that
+periodically refreshes the access token.
+
+265
+00:11:55,738 --> 00:11:57,658
+An attacker or
+just a regular user
+
+266
+00:11:57,958 --> 00:12:01,148
+only has a maximum five
+minute window of opportunity
+
+267
+00:12:01,348 --> 00:12:03,658
+to invalidate a so
+called user session.
+
+268
+00:12:03,988 --> 00:12:06,898
+You could simply invalidate
+it's corresponding refresh tokens
+
+269
+00:12:07,198 --> 00:12:10,678
+and so the user would be automatically
+logged out in a Max of five minutes.
+
+270
+00:12:11,068 --> 00:12:13,958
+As his current access
+token would auto expire.
+
+271
+00:12:14,308 --> 00:12:18,988
+So as we can see there are
+many different approaches
+
+272
+00:12:18,988 --> 00:12:19,988
+and strategies to
+handling token invalidation
+
+273
+00:12:20,128 --> 00:12:23,078
+so make sure to think about
+whatever is best for your application
+
+274
+00:12:23,278 --> 00:12:26,558
+and how high of a level
+of security you really need.
+

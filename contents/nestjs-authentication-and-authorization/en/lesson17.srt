@@ -1,0 +1,1183 @@
+﻿1
+00:00:00,990 --> 00:00:02,610
+As we mentioned in
+the previous lesson.
+
+2
+00:00:03,060 --> 00:00:03,900
+In this chapter.
+
+3
+00:00:04,230 --> 00:00:06,240
+Will implement in
+Apia keys feature
+
+4
+00:00:06,450 --> 00:00:09,430
+that will let us send
+requests on behalf of a user.
+
+5
+00:00:09,750 --> 00:00:10,170
+So
+
+6
+00:00:10,410 --> 00:00:15,430
+let's start by generating a new entity
+class called a p i dash p dot entity.
+
+7
+00:00:15,750 --> 00:00:17,370
+And please it
+within their directory
+
+8
+00:00:17,610 --> 00:00:20,070
+of users slash a p i dash keys
+
+9
+00:00:20,190 --> 00:00:21,670
+slash entities.
+
+10
+00:00:22,080 --> 00:00:22,890
+Just a reminder
+
+11
+00:00:23,160 --> 00:00:24,960
+that were passing
+the no spec flag
+
+12
+00:00:25,260 --> 00:00:29,830
+that the cla doesn't generate a test
+file as we won't need them for entities.
+
+13
+00:00:30,660 --> 00:00:32,040
+Let's do what we typically do.
+
+14
+00:00:32,370 --> 00:00:37,560
+An stopped by renaming the class to simply
+Apia key removing the entity suffix year
+
+15
+00:00:37,860 --> 00:00:38,730
+since it's redundant
+
+16
+00:00:39,090 --> 00:00:42,010
+and we don't want the
+word entity in our database.
+
+17
+00:00:42,600 --> 00:00:46,770
+Next let's start by
+adding the entity decorator
+
+18
+00:00:46,770 --> 00:00:48,209
+on top making sure to
+import it from type of ram.
+
+19
+00:00:48,570 --> 00:00:50,860
+And afterwards let's
+add a few columns.
+
+20
+00:00:50,940 --> 00:00:51,940
+ID.
+
+21
+00:00:52,140 --> 00:00:52,530
+E.
+
+22
+00:00:53,040 --> 00:00:54,460
+U you ID.
+
+23
+00:00:54,990 --> 00:00:55,590
+Lastly.
+
+24
+00:00:55,920 --> 00:00:59,670
+Let's establish a many to one
+relationship with the user entity
+
+25
+00:00:59,850 --> 00:01:01,900
+using the many to one decorator.
+
+26
+00:01:02,340 --> 00:01:04,440
+Now that we have the
+basics of her energy set up.
+
+27
+00:01:05,070 --> 00:01:06,990
+A register this Apia key entity
+
+28
+00:01:07,140 --> 00:01:08,380
+in our application.
+
+29
+00:01:09,330 --> 00:01:10,170
+To achieve this.
+
+30
+00:01:10,530 --> 00:01:12,090
+Let's open up our users module
+
+31
+00:01:12,270 --> 00:01:17,531
+and let's add the a p i key entity to
+the type r ram module for feature array.
+
+32
+00:01:19,380 --> 00:01:21,930
+Let's not forget to update
+our user energy as well.
+
+33
+00:01:22,440 --> 00:01:27,690
+Adding the Apia keys field
+there and specifying that
+
+34
+00:01:27,690 --> 00:01:29,410
+user is the owner side of
+this one too many relationship.
+
+35
+00:01:31,080 --> 00:01:32,080
+Perfect.
+
+36
+00:01:32,430 --> 00:01:33,600
+With our energies updated.
+
+37
+00:01:33,960 --> 00:01:39,210
+Let's create a new
+Apia keys service in the i
+
+38
+00:01:39,210 --> 00:01:39,330
+am slash authentication
+directory using the.
+
+39
+00:01:39,750 --> 00:01:41,020
+I see alive.
+
+40
+00:01:42,510 --> 00:01:43,470
+Once as generated.
+
+41
+00:01:43,890 --> 00:01:47,770
+Let's open up the newly generated
+file and defined for methods.
+
+42
+00:01:49,350 --> 00:01:50,370
+Create and hash.
+
+43
+00:01:50,700 --> 00:01:52,261
+Or creating and hashing new a
+
+44
+00:01:52,560 --> 00:01:53,560
+keys.
+
+45
+00:01:53,700 --> 00:01:54,300
+Validate
+
+46
+00:01:54,540 --> 00:01:56,622
+for validating a PR keys.
+
+47
+00:01:56,730 --> 00:01:57,857
+Extract ID from a
+
+48
+00:01:57,992 --> 00:02:02,280
+a key for retrieving the Apia
+key ID from the encoded Apia key.
+
+49
+00:02:02,820 --> 00:02:03,510
+And lastly.
+
+50
+00:02:03,840 --> 00:02:07,571
+Generate Apia key for
+generating a p key strengths.
+
+51
+00:02:07,890 --> 00:02:09,910
+Before we jump
+into these methods.
+
+52
+00:02:10,020 --> 00:02:14,310
+Let's start things off by declaring the
+missing generated a PR key payload interface
+
+53
+00:02:14,400 --> 00:02:16,500
+right above the a
+Yankees service class
+
+54
+00:02:16,860 --> 00:02:17,580
+but ideally.
+
+55
+00:02:17,880 --> 00:02:19,200
+Move this into its own file
+
+56
+00:02:19,470 --> 00:02:22,420
+we're just trying to focus
+on the task at hand here.
+
+57
+00:02:22,650 --> 00:02:25,180
+This interface will
+consist of two properties.
+
+58
+00:02:25,290 --> 00:02:28,560
+Ape yankee which represents
+a user friendly Apia key
+
+59
+00:02:28,980 --> 00:02:29,940
+and hashed key
+
+60
+00:02:30,180 --> 00:02:33,730
+a hashed version of the Apia
+key that will store in the database.
+
+61
+00:02:34,561 --> 00:02:35,970
+With this interface in place.
+
+62
+00:02:36,420 --> 00:02:40,510
+Let's inject the hashing service
+into the Apia keys service constructor.
+
+63
+00:02:42,390 --> 00:02:42,930
+All right.
+
+64
+00:02:43,290 --> 00:02:44,920
+Now onto the methods.
+
+65
+00:02:45,090 --> 00:02:47,100
+Will start with the
+January Apia key.
+
+66
+00:02:47,730 --> 00:02:48,630
+Inside this method.
+
+67
+00:02:49,170 --> 00:02:52,050
+Let's first generate a
+random unique Apia key string.
+
+68
+00:02:52,500 --> 00:02:56,940
+Using the random you
+you ID function from the
+
+69
+00:02:56,940 --> 00:02:58,360
+native crypto package we
+used in previous lessons.
+
+70
+00:02:58,740 --> 00:02:59,670
+And pretending it
+
+71
+00:02:59,970 --> 00:03:01,901
+with and Apia key identifier.
+
+72
+00:03:02,250 --> 00:03:04,330
+Just ID and our case.
+
+73
+00:03:04,470 --> 00:03:05,470
+Next.
+
+74
+00:03:05,640 --> 00:03:06,540
+Let's use buffer
+
+75
+00:03:06,870 --> 00:03:08,770
+and it's to string method.
+
+76
+00:03:08,803 --> 00:03:11,790
+Generate the corresponding
+strength in base sixty four format
+
+77
+00:03:11,910 --> 00:03:14,910
+just to make sure it looks more
+user friendly and consistent.
+
+78
+00:03:15,270 --> 00:03:17,140
+Without spaces etc
+
+79
+00:03:17,280 --> 00:03:19,331
+and then let's
+return the result.
+
+80
+00:03:19,860 --> 00:03:22,050
+Next let's move onto the
+create and hashmap acid.
+
+81
+00:03:22,740 --> 00:03:23,280
+Inside.
+
+82
+00:03:23,610 --> 00:03:25,051
+Let's start by generating in a p
+
+83
+00:03:25,176 --> 00:03:28,758
+key using the January
+Apia q method we justified.
+
+84
+00:03:29,640 --> 00:03:31,470
+Next using the hashing service.
+
+85
+00:03:31,830 --> 00:03:34,870
+As generate a hashed
+key and await the result.
+
+86
+00:03:35,550 --> 00:03:36,550
+Lastly.
+
+87
+00:03:36,630 --> 00:03:40,410
+Let's make sure to return the generated
+a p i keep payload object meaning
+
+88
+00:03:40,560 --> 00:03:43,210
+a p a key and hashed key.
+
+89
+00:03:43,440 --> 00:03:43,860
+Note.
+
+90
+00:03:44,220 --> 00:03:46,560
+Instead of using the
+be crypt algorithm here
+
+91
+00:03:46,740 --> 00:03:50,490
+you could consider using
+something a bit more performance
+
+92
+00:03:50,490 --> 00:03:52,600
+as will need to validate
+the hash per each request.
+
+93
+00:03:53,430 --> 00:03:57,537
+You you idea itself is
+already pretty long oh so
+
+94
+00:03:57,537 --> 00:03:59,020
+be crypt might not
+necessarily be require here.
+
+95
+00:03:59,460 --> 00:04:01,569
+Next onto the
+validate the method.
+
+96
+00:04:01,710 --> 00:04:02,640
+And are valid a method.
+
+97
+00:04:03,000 --> 00:04:05,700
+Will just call their corresponding
+hashing surface method
+
+98
+00:04:05,910 --> 00:04:08,740
+as follows making
+sure to return the result.
+
+99
+00:04:09,240 --> 00:04:10,200
+Now lastly
+
+100
+00:04:10,410 --> 00:04:13,270
+the extract ID from
+a be a key method.
+
+101
+00:04:16,500 --> 00:04:20,340
+This method takes the encoded a
+PR key in based sixty four format
+
+102
+00:04:20,700 --> 00:04:22,470
+and returns the extracted ID
+
+103
+00:04:22,740 --> 00:04:26,010
+which we assigned as a prefix
+of the random unique string
+
+104
+00:04:26,190 --> 00:04:28,420
+in our generate Apia key method.
+
+105
+00:04:29,250 --> 00:04:29,760
+Alright
+
+106
+00:04:30,030 --> 00:04:31,080
+with everything in place.
+
+107
+00:04:31,500 --> 00:04:33,750
+It's now generate
+a new a p key guard
+
+108
+00:04:34,050 --> 00:04:37,510
+using the nastiest schematic
+to wire everything together.
+
+109
+00:04:37,740 --> 00:04:39,539
+Was open up our
+terminals and run.
+
+110
+00:04:39,990 --> 00:04:40,860
+Nest g guard.
+
+111
+00:04:41,280 --> 00:04:45,711
+I am slash authentication slash
+guards such a p i dash keep.
+
+112
+00:04:46,080 --> 00:04:50,160
+Let's now navigate to
+this newly generated file
+
+113
+00:04:50,160 --> 00:04:51,150
+an start off by retrieving
+the request object
+
+114
+00:04:51,270 --> 00:04:53,770
+from the execution
+context instance.
+
+115
+00:04:54,510 --> 00:04:54,930
+Next.
+
+116
+00:04:55,320 --> 00:04:57,960
+As the finding method
+called extract key from header
+
+117
+00:04:58,230 --> 00:05:02,107
+that you may recognize
+as it resembles the
+
+118
+00:05:02,186 --> 00:05:02,550
+corresponding extracts
+token from had method.
+
+119
+00:05:02,880 --> 00:05:03,570
+We implemented
+
+120
+00:05:03,810 --> 00:05:05,800
+in our access token guard.
+
+121
+00:05:06,750 --> 00:05:07,710
+As you can see
+
+122
+00:05:07,920 --> 00:05:11,820
+in both access token driven
+and a PR key driven strategies
+
+123
+00:05:12,060 --> 00:05:13,680
+we use the authorization header.
+
+124
+00:05:14,250 --> 00:05:17,380
+So to avoid
+unnecessary validations.
+
+125
+00:05:17,670 --> 00:05:19,920
+If the request header
+contains an access token
+
+126
+00:05:20,160 --> 00:05:21,480
+not a napier key
+
+127
+00:05:21,720 --> 00:05:23,640
+will add an
+additional if condition
+
+128
+00:05:23,820 --> 00:05:26,580
+that will return the token
+variable only if type ipe.
+
+129
+00:05:26,970 --> 00:05:28,960
+Equals Apia keep.
+
+130
+00:05:29,338 --> 00:05:31,350
+Is also open up the
+access token guard
+
+131
+00:05:31,620 --> 00:05:34,240
+and make sure to make
+the same update their.
+
+132
+00:05:35,520 --> 00:05:39,278
+One little difference instead of
+looking for the Apia key prefix.
+
+133
+00:05:39,420 --> 00:05:42,670
+We now check against the
+presence of the bear string.
+
+134
+00:05:43,380 --> 00:05:44,380
+Great.
+
+135
+00:05:44,550 --> 00:05:46,200
+Going back to r Apia key guard.
+
+136
+00:05:46,620 --> 00:05:51,060
+Let's use this method from within the can
+activate method to retrieve the Apia key
+
+137
+00:05:51,390 --> 00:05:52,780
+and if it's undefined.
+
+138
+00:05:52,920 --> 00:05:55,240
+Let's throw the
+unauthorized exception.
+
+139
+00:06:01,740 --> 00:06:03,310
+Before we move further.
+
+140
+00:06:03,420 --> 00:06:04,170
+That's inject the a
+
+141
+00:06:04,320 --> 00:06:08,459
+r keys service to our
+guards constructor some
+
+142
+00:06:08,490 --> 00:06:09,490
+can use it to validate
+incoming Apia keys.
+
+143
+00:06:09,540 --> 00:06:10,080
+Also.
+
+144
+00:06:10,500 --> 00:06:12,790
+Lets inject the
+Apia keys repository
+
+145
+00:06:12,990 --> 00:06:16,840
+we can retrieve a p i key
+entries from our database table.
+
+146
+00:06:17,730 --> 00:06:19,780
+With these
+dependencies and place.
+
+147
+00:06:20,040 --> 00:06:22,960
+Let's switch back to our
+can activate method again.
+
+148
+00:06:23,940 --> 00:06:26,550
+Using the extract ID
+from a p i key method.
+
+149
+00:06:27,000 --> 00:06:29,481
+From our Apia keys
+service lets extract the a
+
+150
+00:06:29,681 --> 00:06:32,530
+key identifier from
+the encoded string.
+
+151
+00:06:33,600 --> 00:06:36,100
+Next up let's add
+try catch blocks.
+
+152
+00:06:36,300 --> 00:06:37,500
+Inside the try block
+
+153
+00:06:37,740 --> 00:06:41,100
+let's retrieved the Apia he
+entity from our Apia keys table.
+
+154
+00:06:41,520 --> 00:06:44,980
+Using the ID we extracted
+from me encoded string.
+
+155
+00:06:45,480 --> 00:06:46,080
+Note that
+
+156
+00:06:46,230 --> 00:06:50,700
+we instruct the or am
+here to auto populate the
+
+157
+00:06:50,705 --> 00:06:51,510
+related user entity as
+part of the same query.
+
+158
+00:06:52,080 --> 00:06:54,840
+Remember that we are
+using type r m in this course
+
+159
+00:06:54,990 --> 00:06:57,390
+but whatever rm your
+application is using.
+
+160
+00:06:57,810 --> 00:07:01,600
+You'd want to make sure to populate
+the user entity and this call as well.
+
+161
+00:07:02,190 --> 00:07:02,550
+Next.
+
+162
+00:07:02,940 --> 00:07:07,110
+Let's use the validate method of the a
+p r keys service provider to validate the
+
+163
+00:07:07,110 --> 00:07:11,440
+given a PR key and compare it with
+its hash that we store in the database.
+
+164
+00:07:11,760 --> 00:07:13,030
+And lastly.
+
+165
+00:07:13,200 --> 00:07:17,340
+Says we want to allow
+the use of a PR keys
+
+166
+00:07:17,340 --> 00:07:17,880
+to authenticate on
+behalf of specific users.
+
+167
+00:07:18,330 --> 00:07:21,120
+Let's make sure we also
+assigned the related user entity
+
+168
+00:07:21,300 --> 00:07:25,660
+to the request object so it can be retrieved
+later on in our controller methods.
+
+169
+00:07:25,830 --> 00:07:29,790
+This will make it easy
+for us to access to
+
+170
+00:07:29,790 --> 00:07:30,790
+user in r code base
+winter request comes in.
+
+171
+00:07:31,470 --> 00:07:31,980
+Perfect
+
+172
+00:07:32,220 --> 00:07:35,850
+for their guard all set up let's
+open up the authentication
+
+173
+00:07:35,850 --> 00:07:38,230
+guard and inject the newly
+created a PR guard there.
+
+174
+00:07:42,510 --> 00:07:45,000
+Next navigate to
+the off type ii numb
+
+175
+00:07:45,390 --> 00:07:48,130
+and let's add
+the a p i t in there.
+
+176
+00:07:49,650 --> 00:07:51,060
+Back to our
+authentication guard.
+
+177
+00:07:51,450 --> 00:07:52,890
+Let's also update our mapping
+
+178
+00:07:53,190 --> 00:07:55,450
+the off type guard map object.
+
+179
+00:07:57,600 --> 00:07:59,110
+And that's it.
+
+180
+00:07:59,280 --> 00:08:00,390
+So to wrap everything up.
+
+181
+00:08:00,780 --> 00:08:04,630
+Let's open up our i am module
+an change a few things in there.
+
+182
+00:08:05,850 --> 00:08:06,420
+First up
+
+183
+00:08:06,600 --> 00:08:10,680
+let's make sure we register a p i e
+repository in the context of this module.
+
+184
+00:08:11,010 --> 00:08:12,540
+By adding a p i e entity
+
+185
+00:08:12,780 --> 00:08:16,098
+the for features imports
+array of tibor a module.
+
+186
+00:08:16,830 --> 00:08:17,310
+Next.
+
+187
+00:08:17,790 --> 00:08:19,350
+Let's add the Apia key guard.
+
+188
+00:08:19,745 --> 00:08:22,260
+The providers around
+so it becomes injectable
+
+189
+00:08:22,440 --> 00:08:25,930
+meaning that it can be injected
+into the authentication guard.
+
+190
+00:08:26,010 --> 00:08:26,430
+Grape.
+
+191
+00:08:26,820 --> 00:08:30,010
+Are Apia key based
+authentication is now also.
+
+192
+00:08:31,230 --> 00:08:34,320
+Let's save our changes and
+navigate to the coffee's controller now.
+
+193
+00:08:34,830 --> 00:08:35,190
+Here
+
+194
+00:08:35,400 --> 00:08:38,280
+will apply the off decorator
+to the controller class.
+
+195
+00:08:38,580 --> 00:08:41,280
+Instructing are authentication
+guard that both bear
+
+196
+00:08:41,580 --> 00:08:46,060
+and a p i key driven strategies
+are supported by coffees routes.
+
+197
+00:08:46,380 --> 00:08:47,560
+All right.
+
+198
+00:08:47,700 --> 00:08:47,790
+To
+
+199
+00:08:48,030 --> 00:08:51,610
+everything out we need to
+create a testable Apia keno.
+
+200
+00:08:51,720 --> 00:08:55,320
+We don't plan to implement the
+entire crowd workflow for Apia keys
+
+201
+00:08:55,590 --> 00:08:57,720
+as this is something we've
+already done thoroughly.
+
+202
+00:08:58,080 --> 00:08:59,400
+In our fundamentals course
+
+203
+00:08:59,790 --> 00:09:00,540
+but ideally
+
+204
+00:09:00,810 --> 00:09:03,930
+it's probably something you'd want to
+have and a real-world application so if you
+
+205
+00:09:03,930 --> 00:09:06,700
+want set it up for
+fun and for practice.
+
+206
+00:09:07,140 --> 00:09:07,740
+So instead the.
+
+207
+00:09:08,100 --> 00:09:10,020
+As an easier way for
+us the test everything
+
+208
+00:09:10,320 --> 00:09:13,390
+will use nests rebel
+feature once again.
+
+209
+00:09:13,920 --> 00:09:17,370
+Let's open up our terminals and start
+the rebel using the following command
+
+210
+00:09:17,610 --> 00:09:19,500
+and p m run start dash dash.
+
+211
+00:09:19,830 --> 00:09:21,000
+Dash dash entry file
+
+212
+00:09:21,210 --> 00:09:22,420
+and rebel.
+
+213
+00:09:22,620 --> 00:09:23,820
+Inside the rebel session.
+
+214
+00:09:24,270 --> 00:09:27,210
+Let's first stickler a
+unique ID for our a p i keep.
+
+215
+00:09:27,600 --> 00:09:32,560
+You you ID equals the string of
+random underscore unique underscore ID.
+
+216
+00:09:32,850 --> 00:09:33,300
+Next.
+
+217
+00:09:33,810 --> 00:09:36,240
+Let's away and retrieved
+the Apia keys service
+
+218
+00:09:36,540 --> 00:09:40,560
+called the create and hash method to
+generate the a p i keep payload saving
+
+219
+00:09:40,560 --> 00:09:42,700
+everything to a
+payload variable.
+
+220
+00:09:43,470 --> 00:09:47,250
+And lastly lessons or a new a
+PR key into our database table.
+
+221
+00:09:47,580 --> 00:09:51,090
+Using the Apia accused repository
+and calling these saved method on it.
+
+222
+00:09:51,511 --> 00:09:52,620
+Making sure to pass down.
+
+223
+00:09:53,088 --> 00:09:54,340
+You ID.
+
+224
+00:09:54,390 --> 00:09:57,420
+A key with the value of
+our payload dot hashed key
+
+225
+00:09:57,870 --> 00:10:01,140
+and user making sure to
+specify the user in our case
+
+226
+00:10:01,260 --> 00:10:02,560
+ID one.
+
+227
+00:10:02,730 --> 00:10:03,940
+And voila.
+
+228
+00:10:05,322 --> 00:10:09,112
+Let's make sure to copy this
+generated a p a key we got back.
+
+229
+00:10:09,192 --> 00:10:10,662
+Now let's head over to insomnia
+
+230
+00:10:10,872 --> 00:10:13,092
+and while we're on the
+coffee's endpoint page.
+
+231
+00:10:13,512 --> 00:10:15,102
+Let's switch to the headers tab
+
+232
+00:10:15,462 --> 00:10:17,652
+and replace the current
+authorization header value
+
+233
+00:10:17,952 --> 00:10:19,182
+to Apia key.
+
+234
+00:10:19,722 --> 00:10:21,852
+Making sure to add
+a space and then let's
+
+235
+00:10:22,002 --> 00:10:24,802
+paste that generated
+Apia a key here.
+
+236
+00:10:25,242 --> 00:10:25,692
+Now.
+
+237
+00:10:26,022 --> 00:10:27,414
+Let's click cent.
+
+238
+00:10:27,672 --> 00:10:28,482
+And look at that.
+
+239
+00:10:29,022 --> 00:10:29,832
+As we can see.
+
+240
+00:10:30,162 --> 00:10:31,822
+The request was successful.
+
+241
+00:10:32,292 --> 00:10:37,152
+R a p i returned a response back to us we
+were authenticated to access this endpoint
+
+242
+00:10:37,422 --> 00:10:38,862
+on behalf of user one.
+
+243
+00:10:39,192 --> 00:10:41,812
+They're valid in
+Apia key fantastic.
+
+244
+00:10:42,282 --> 00:10:43,570
+A switch back to our ID
+
+245
+00:10:43,902 --> 00:10:45,592
+and take a look
+at our terminals.
+
+246
+00:10:45,852 --> 00:10:46,902
+As we can see here
+
+247
+00:10:47,112 --> 00:10:47,832
+our user
+
+248
+00:10:48,072 --> 00:10:49,302
+a user of ID one
+
+249
+00:10:49,572 --> 00:10:53,922
+that's associated with
+the Apia key was logged
+
+250
+00:10:53,922 --> 00:10:54,612
+into the console thanks of
+the console log we added
+
+251
+00:10:54,852 --> 00:10:57,502
+in our coffees controller
+in a previous lessons.
+
+252
+00:10:58,062 --> 00:10:59,982
+With everything we've
+accomplished in this lesson.
+
+253
+00:11:00,342 --> 00:11:03,492
+Now our coffees and point
+supports both bearer token
+
+254
+00:11:03,972 --> 00:11:04,339
+and a
+
+255
+00:11:04,617 --> 00:11:06,802
+key driven authentication flows.
+
+256
+00:11:06,912 --> 00:11:10,032
+You can see there's a lot of
+possibilities for application from here.
+
+257
+00:11:10,452 --> 00:11:13,902
+We now have the ability to provide this
+Apia key the driven authentication flow
+
+258
+00:11:14,082 --> 00:11:15,612
+to other parts
+of our application
+
+259
+00:11:15,762 --> 00:11:17,602
+if we ever needed it.
+

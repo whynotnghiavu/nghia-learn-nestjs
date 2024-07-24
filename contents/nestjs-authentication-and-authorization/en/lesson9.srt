@@ -1,0 +1,571 @@
+﻿1
+00:00:00,840 --> 00:00:02,790
+As we mentioned in
+the previous lesson
+
+2
+00:00:03,000 --> 00:00:07,290
+in any application there are always certain
+and points that should remain public.
+
+3
+00:00:07,620 --> 00:00:09,720
+Take for example
+this sign in and point
+
+4
+00:00:09,900 --> 00:00:11,520
+that lets users log
+into the system.
+
+5
+00:00:11,910 --> 00:00:12,780
+Unless it's public
+
+6
+00:00:13,080 --> 00:00:15,689
+no one would be able to
+access it in actually log in.
+
+7
+00:00:16,410 --> 00:00:18,130
+Right now in our application.
+
+8
+00:00:18,240 --> 00:00:21,900
+Every route is being protected
+by our as access token
+
+9
+00:00:21,900 --> 00:00:23,860
+guards since we registered
+at globally via ap guard.
+
+10
+00:00:24,090 --> 00:00:28,060
+But how can we let her application know
+which routes we want to remain public.
+
+11
+00:00:28,380 --> 00:00:29,100
+Which he of this.
+
+12
+00:00:29,490 --> 00:00:30,960
+Let's create a new decorator
+
+13
+00:00:31,140 --> 00:00:34,510
+that lets us flag specific
+and points as unprotected.
+
+14
+00:00:34,950 --> 00:00:37,650
+This will also come in handy
+in future challenges we will face
+
+15
+00:00:37,770 --> 00:00:39,400
+in upcoming lessons.
+
+16
+00:00:39,870 --> 00:00:42,360
+Let's start things off
+by creating an enum
+
+17
+00:00:42,480 --> 00:00:46,990
+that will indicate what authentication
+type we want to use for specific routes.
+
+18
+00:00:47,190 --> 00:00:49,710
+In our i am slash
+authentication folder.
+
+19
+00:00:50,190 --> 00:00:51,690
+Let's create a new directory
+
+20
+00:00:51,810 --> 00:00:52,860
+named he nubs
+
+21
+00:00:53,220 --> 00:00:53,940
+and inside of it.
+
+22
+00:00:54,270 --> 00:00:55,380
+Re a new file
+
+23
+00:00:55,590 --> 00:00:55,920
+old
+
+24
+00:00:56,160 --> 00:00:57,330
+off dash type.
+
+25
+00:00:57,750 --> 00:00:58,590
+Dot enum
+
+26
+00:00:58,710 --> 00:01:00,190
+dot t s.
+
+27
+00:01:00,570 --> 00:01:01,530
+Inside this file.
+
+28
+00:01:02,040 --> 00:01:05,350
+Let's create a simple ina
+that consists of two values.
+
+29
+00:01:05,400 --> 00:01:05,910
+Bear.
+
+30
+00:01:06,270 --> 00:01:08,220
+Which is going to
+beat the default strategy
+
+31
+00:01:08,400 --> 00:01:09,300
+and none
+
+32
+00:01:09,510 --> 00:01:13,210
+which indicates we want to skip
+authentication for a given resource.
+
+33
+00:01:13,440 --> 00:01:16,320
+Next up we're going to
+create a decorator named off.
+
+34
+00:01:16,860 --> 00:01:19,020
+This do decorator will
+let us choose the strategy
+
+35
+00:01:19,260 --> 00:01:22,240
+for the annotated endpoint
+on or an entire controller.
+
+36
+00:01:22,590 --> 00:01:26,550
+Though alongside the
+newly created enums folder
+
+37
+00:01:26,550 --> 00:01:27,550
+let's create a new
+directory called decorators.
+
+38
+00:01:27,870 --> 00:01:28,830
+And inside the folder.
+
+39
+00:01:29,310 --> 00:01:32,770
+Create a new off dot
+decorator dot ts file.
+
+40
+00:01:33,300 --> 00:01:34,050
+In this file.
+
+41
+00:01:34,500 --> 00:01:37,248
+Let's first declared
+the meta data key.
+
+42
+00:01:37,620 --> 00:01:38,100
+Next.
+
+43
+00:01:38,520 --> 00:01:40,612
+Let's create our
+custom decorator.
+
+44
+00:01:41,640 --> 00:01:43,530
+If you're not familiar
+with the set meditate a
+
+45
+00:01:43,800 --> 00:01:44,280
+her here
+
+46
+00:01:44,550 --> 00:01:46,170
+we recommend
+looking at the lesson
+
+47
+00:01:46,470 --> 00:01:50,579
+using meta data to built generic guards
+or interceptors from our fundamental
+
+48
+00:01:50,700 --> 00:01:51,700
+force.
+
+49
+00:01:52,200 --> 00:01:53,460
+With all of this and place
+
+50
+00:01:53,760 --> 00:01:55,890
+let's head over to our
+access token guard
+
+51
+00:01:56,220 --> 00:01:59,310
+and start by removing the console
+log we added in the previous lesson
+
+52
+00:01:59,610 --> 00:02:01,570
+as we no longer need it.
+
+53
+00:02:01,860 --> 00:02:05,280
+Next let's open up our terminals
+and generate a new guard
+
+54
+00:02:05,520 --> 00:02:07,300
+using the nest the alive.
+
+55
+00:02:07,800 --> 00:02:11,430
+Let's place it within the i am
+authentication and guards folder
+
+56
+00:02:11,610 --> 00:02:12,420
+and let's call this
+
+57
+00:02:12,630 --> 00:02:13,630
+authentication.
+
+58
+00:02:14,400 --> 00:02:15,150
+In this guard.
+
+59
+00:02:15,540 --> 00:02:17,440
+We're going to need
+to dependencies.
+
+60
+00:02:18,121 --> 00:02:23,230
+First being the reflector provider which
+gives us access to the underlying meta data.
+
+61
+00:02:23,310 --> 00:02:24,360
+And the second dependency
+
+62
+00:02:24,480 --> 00:02:26,770
+being our access token guard.
+
+63
+00:02:27,510 --> 00:02:31,770
+This may look strange since we're composing
+a guard from multiple other guards
+
+64
+00:02:32,190 --> 00:02:35,640
+and we are even injecting the access
+token guard in the constructor here
+
+65
+00:02:36,090 --> 00:02:37,950
+but injecting
+guards in this way.
+
+66
+00:02:38,280 --> 00:02:41,790
+Similar to how he typically inject
+services is feasible as long as
+
+67
+00:02:41,910 --> 00:02:46,000
+register our guards as providers
+in our modules providers array.
+
+68
+00:02:46,290 --> 00:02:49,780
+Next in here let's dig Claire
+to properties in our class.
+
+69
+00:02:50,040 --> 00:02:53,130
+One being the static
+default aspx type property.
+
+70
+00:02:53,460 --> 00:02:57,600
+Indicating which
+strategy is the default one
+
+71
+00:02:57,630 --> 00:02:58,630
+in our case will make
+that off type bear.
+
+72
+00:02:59,190 --> 00:03:00,000
+And another one
+
+73
+00:03:00,120 --> 00:03:04,230
+this time non-static which represents
+the mappings between off types
+
+74
+00:03:04,500 --> 00:03:06,971
+in their actual
+corresponding guards.
+
+75
+00:03:07,350 --> 00:03:11,100
+With all that in place now let's move
+onto the can activate method of our guard.
+
+76
+00:03:11,700 --> 00:03:14,580
+Let's call the reflectors
+get all and override method
+
+77
+00:03:14,970 --> 00:03:18,880
+and passing the author type
+key constant as the first argument.
+
+78
+00:03:21,330 --> 00:03:22,260
+For the second argument.
+
+79
+00:03:22,770 --> 00:03:26,730
+Will be passing in an array
+that consists of two targets
+
+80
+00:03:26,790 --> 00:03:28,020
+that we want this meta
+data to be retrieved from.
+
+81
+00:03:28,470 --> 00:03:29,640
+Either a class.
+
+82
+00:03:29,970 --> 00:03:32,980
+Or a handler aka a
+method reference.
+
+83
+00:03:33,300 --> 00:03:34,350
+By doing all of this.
+
+84
+00:03:34,830 --> 00:03:39,130
+Were able to place our guard on
+either a class or the method level.
+
+85
+00:03:39,780 --> 00:03:42,030
+Next using our off
+type guard map.
+
+86
+00:03:42,390 --> 00:03:46,600
+Let's map of type values to the
+corresponding guard instances.
+
+87
+00:03:47,370 --> 00:03:47,970
+Also
+
+88
+00:03:48,210 --> 00:03:52,200
+let's make sure to
+declare the error variable
+
+89
+00:03:52,200 --> 00:03:52,740
+that represents the
+exception to be thrown
+
+90
+00:03:52,980 --> 00:03:54,390
+by the authentication guard
+
+91
+00:03:54,690 --> 00:03:57,190
+in case all guards
+returned false.
+
+92
+00:03:57,660 --> 00:03:58,530
+And lastly
+
+93
+00:03:58,800 --> 00:04:02,880
+less iterate through
+our the guards array and
+
+94
+00:04:02,880 --> 00:04:03,880
+call their respective
+can activate methods.
+
+95
+00:04:07,320 --> 00:04:10,080
+If any of the allowed
+authentication types pass
+
+96
+00:04:10,260 --> 00:04:11,250
+we return true.
+
+97
+00:04:11,730 --> 00:04:15,570
+Otherwise our guard will throw the most
+recent error thrown by the trigger guard
+
+98
+00:04:15,870 --> 00:04:17,460
+or unauthorized exception
+
+99
+00:04:17,640 --> 00:04:19,420
+which is the default air.
+
+100
+00:04:20,400 --> 00:04:21,510
+Let's save our changes.
+
+101
+00:04:21,870 --> 00:04:26,340
+Open up the i am module
+and replace the access token
+
+102
+00:04:26,340 --> 00:04:28,150
+guard with our newly
+created authentication guard.
+
+103
+00:04:31,923 --> 00:04:36,150
+Was also make sure to register at the
+an access token guard as a provider now
+
+104
+00:04:36,360 --> 00:04:39,790
+but it becomes injectable
+for the authentication guard.
+
+105
+00:04:40,710 --> 00:04:41,220
+Perfect.
+
+106
+00:04:41,640 --> 00:04:46,060
+Let's save our changes had ever do insomnia
+and let's test the sign an endpoint.
+
+107
+00:04:46,650 --> 00:04:47,490
+As we can see.
+
+108
+00:04:47,910 --> 00:04:51,720
+It is now returning a four o one which
+means it's currently protected by our guard
+
+109
+00:04:51,995 --> 00:04:53,950
+does not what we want actually.
+
+110
+00:04:54,030 --> 00:04:55,960
+Let's switch back to our ID.
+
+111
+00:04:56,070 --> 00:04:58,360
+Open up our
+authentication controller
+
+112
+00:04:58,500 --> 00:05:01,680
+and applied the off decorated we
+created at the beginning of this lesson
+
+113
+00:05:01,807 --> 00:05:03,420
+and apply it to the entire
+
+114
+00:05:03,720 --> 00:05:05,740
+authentication controller class.
+
+115
+00:05:05,910 --> 00:05:06,720
+Passing in the
+
+116
+00:05:06,840 --> 00:05:09,820
+off type none as
+an input argument.
+
+117
+00:05:10,320 --> 00:05:11,860
+If we save our changes.
+
+118
+00:05:12,180 --> 00:05:16,540
+It back over to insomnia and test
+everything again we'll see wala it works.
+
+119
+00:05:16,800 --> 00:05:19,800
+Are sign in and sign up routes
+are now publicly available
+
+120
+00:05:20,040 --> 00:05:21,750
+were no longer
+getting a four o one
+
+121
+00:05:22,140 --> 00:05:25,170
+and users will be able to sign
+up and sign into our system now.
+
+122
+00:05:25,680 --> 00:05:26,370
+Not only that
+
+123
+00:05:26,790 --> 00:05:28,830
+but with the help of our
+authentic a reader in the future
+
+124
+00:05:29,130 --> 00:05:34,030
+we can now make public or make unprotected
+any other future routes we might need.
+

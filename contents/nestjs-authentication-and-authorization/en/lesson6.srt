@@ -1,0 +1,811 @@
+﻿1
+00:00:00,960 --> 00:00:01,950
+In this lesson
+
+2
+00:00:02,100 --> 00:00:06,840
+will be implementing routes that are essential
+to our authentication workflows being
+
+3
+00:00:06,960 --> 00:00:07,960
+sign-in.
+
+4
+00:00:08,130 --> 00:00:11,940
+Which will authenticated
+user by verifying
+
+5
+00:00:11,940 --> 00:00:12,540
+their credentials such
+as username password.
+
+6
+00:00:12,870 --> 00:00:15,660
+Or an identity token
+from an identity provider.
+
+7
+00:00:15,990 --> 00:00:19,260
+In manage authenticated
+state by issuing a portable token.
+
+8
+00:00:19,710 --> 00:00:21,550
+Much as a dj w t.
+
+9
+00:00:21,630 --> 00:00:22,890
+In lastly sign up.
+
+10
+00:00:23,520 --> 00:00:26,260
+That will let users
+register into our system.
+
+11
+00:00:26,610 --> 00:00:30,430
+All right so let's switch to our ID
+and start setting everything up.
+
+12
+00:00:30,840 --> 00:00:34,979
+Let's start off by generating
+a new authentication
+
+13
+00:00:34,979 --> 00:00:36,300
+controller in our existing i
+am module using the nest
+
+14
+00:00:36,537 --> 00:00:37,110
+see ally.
+
+15
+00:00:37,590 --> 00:00:40,870
+With nest g controller i
+am slash authentication.
+
+16
+00:00:41,520 --> 00:00:45,300
+Note we're generating this controller in
+the new dedicated authentication folder.
+
+17
+00:00:45,690 --> 00:00:48,790
+Just so we can have a clear
+separation between the authentication
+
+18
+00:00:49,110 --> 00:00:50,880
+and authorization related files.
+
+19
+00:00:51,240 --> 00:00:53,590
+It will be working
+on in future lessons.
+
+20
+00:00:54,120 --> 00:00:57,870
+We will also need an authentication
+service so let's generate that as well.
+
+21
+00:00:58,440 --> 00:01:01,571
+The at nest g service i
+am slash authentication.
+
+22
+00:01:02,220 --> 00:01:03,220
+Great.
+
+23
+00:01:03,600 --> 00:01:07,530
+Before we start adding methods
+to our authentication service
+
+24
+00:01:07,530 --> 00:01:09,280
+in implementing the sign in
+and sign up functionalities.
+
+25
+00:01:09,660 --> 00:01:10,350
+Us generate
+
+26
+00:01:10,620 --> 00:01:15,030
+the dt o or data transfer
+object classes for to
+
+27
+00:01:15,060 --> 00:01:16,300
+endpoints points we plan
+on exposing in our application.
+
+28
+00:01:16,350 --> 00:01:16,770
+Being.
+
+29
+00:01:17,130 --> 00:01:18,420
+Signed in detail
+
+30
+00:01:18,600 --> 00:01:20,590
+in sign up detail.
+
+31
+00:01:21,060 --> 00:01:25,440
+Next we're going to
+install to packages that
+
+32
+00:01:25,440 --> 00:01:26,440
+will be using to validate
+any incoming requests.
+
+33
+00:01:26,760 --> 00:01:29,790
+You may remember these from the fundamental
+course as there are an essential part of
+
+34
+00:01:29,790 --> 00:01:32,200
+almost every nest
+js appliques Haitian.
+
+35
+00:01:32,460 --> 00:01:33,300
+Let's enter in
+
+36
+00:01:33,600 --> 00:01:37,110
+and p m i class dash
+validator and secondly class
+
+37
+00:01:37,320 --> 00:01:38,622
+bash transformer.
+
+38
+00:01:39,780 --> 00:01:42,780
+We'll be continuing ahead
+as we already have these
+
+39
+00:01:42,780 --> 00:01:43,560
+installed but if you're
+planning on following along
+
+40
+00:01:43,800 --> 00:01:46,570
+just pause the video and come
+back when everything's finished.
+
+41
+00:01:46,920 --> 00:01:48,120
+Now with everything installed.
+
+42
+00:01:48,510 --> 00:01:52,180
+Let's open up our main ts
+file and add the following line.
+
+43
+00:01:52,680 --> 00:01:56,430
+Up dot use global pipes and
+let's pass in new validation pipe.
+
+44
+00:01:56,790 --> 00:01:58,050
+Making sure to imported from
+
+45
+00:01:58,262 --> 00:01:59,830
+j a slash common.
+
+46
+00:02:02,490 --> 00:02:05,040
+With our validation pipe in
+place we can move on to our
+
+47
+00:02:05,252 --> 00:02:07,030
+to your classes now.
+
+48
+00:02:07,080 --> 00:02:11,500
+Let's start with the sign up and point that
+will let users register into the system.
+
+49
+00:02:11,769 --> 00:02:14,070
+Register a new user
+will need credentials
+
+50
+00:02:14,280 --> 00:02:18,701
+let's add email and password
+properties into our sign up detail class.
+
+51
+00:02:19,470 --> 00:02:22,240
+Next let's apply some
+validation annotations.
+
+52
+00:02:22,470 --> 00:02:25,270
+Like his email for
+the email property.
+
+53
+00:02:25,440 --> 00:02:28,140
+Which will validate if the
+specified email is in fact
+
+54
+00:02:28,260 --> 00:02:29,410
+an email.
+
+55
+00:02:29,550 --> 00:02:31,020
+And for the password property
+
+56
+00:02:31,320 --> 00:02:33,330
+let's add men length ten
+
+57
+00:02:33,540 --> 00:02:37,300
+as we don't want to accept passwords
+that are less than ten characters long.
+
+58
+00:02:38,430 --> 00:02:42,270
+All right with our
+validations and place we
+
+59
+00:02:42,270 --> 00:02:43,270
+could now switched to
+our authentication service.
+
+60
+00:02:43,650 --> 00:02:45,480
+In order to create new users.
+
+61
+00:02:45,810 --> 00:02:48,700
+This service will need
+to use the user repository.
+
+62
+00:02:48,930 --> 00:02:53,500
+Bullets injected into our constructor
+using the inject repository decorator.
+
+63
+00:02:54,030 --> 00:02:56,460
+Know that before we
+insert a new user row
+
+64
+00:02:56,700 --> 00:02:59,710
+we have to make sure to have
+hashed the passwords we receipt.
+
+65
+00:02:59,790 --> 00:03:00,570
+Which Eve this
+
+66
+00:03:00,870 --> 00:03:04,510
+lets inject the hashing service
+we created in the previous lesson.
+
+67
+00:03:05,610 --> 00:03:10,600
+With these dependencies injected we can now
+declare a new sign up method in our class.
+
+68
+00:03:10,800 --> 00:03:12,600
+This method will
+take the sign up.
+
+69
+00:03:12,990 --> 00:03:15,310
+O instance as an input argument.
+
+70
+00:03:15,780 --> 00:03:16,830
+In sight of this method.
+
+71
+00:03:17,190 --> 00:03:21,280
+We can start by creating a
+new user entity instance like so.
+
+72
+00:03:22,860 --> 00:03:25,410
+Since we flagged the
+email column as unique.
+
+73
+00:03:25,830 --> 00:03:30,150
+As crests may throw the
+unique violation constraint or
+
+74
+00:03:30,150 --> 00:03:31,380
+just in case there's another
+user already registered
+
+75
+00:03:31,650 --> 00:03:33,430
+in our users table.
+
+76
+00:03:33,480 --> 00:03:36,660
+Let's make sure to wrap
+this code into a try catch block
+
+77
+00:03:36,900 --> 00:03:39,250
+to handle this exact scenario.
+
+78
+00:03:43,410 --> 00:03:43,770
+Note.
+
+79
+00:03:44,220 --> 00:03:46,170
+As a best practice ideally
+
+80
+00:03:46,350 --> 00:03:51,030
+we should have declared the pg unique
+violation Erica constant in a dedicated file.
+
+81
+00:03:51,479 --> 00:03:53,670
+It can be reused
+elsewhere in our code base
+
+82
+00:03:54,120 --> 00:03:56,340
+but just to keep things
+in this lesson simple
+
+83
+00:03:56,610 --> 00:03:58,410
+will leave it as
+it is for right now.
+
+84
+00:03:58,950 --> 00:04:00,600
+With sign up wrapped up.
+
+85
+00:04:00,930 --> 00:04:03,970
+Let's move on to the
+sign-in side of things.
+
+86
+00:04:04,110 --> 00:04:09,100
+First let's open up the sign in detail
+class and add some missing properties.
+
+87
+00:04:09,300 --> 00:04:13,020
+The sign in a user will
+have to provide us with
+
+88
+00:04:13,020 --> 00:04:14,020
+an email address and
+they're valid password.
+
+89
+00:04:14,370 --> 00:04:18,478
+Let's also apply the
+same set of validation
+
+90
+00:04:18,510 --> 00:04:19,510
+constraints we did in
+our sign up detail class.
+
+91
+00:04:20,010 --> 00:04:21,090
+With our class last updated.
+
+92
+00:04:21,390 --> 00:04:25,200
+Let's switch back to the
+authentication service again
+
+93
+00:04:25,230 --> 00:04:26,310
+and define a another
+method right below the sign up
+
+94
+00:04:26,790 --> 00:04:28,350
+and name it sign in
+
+95
+00:04:28,620 --> 00:04:30,550
+or log in if you prefer.
+
+96
+00:04:30,840 --> 00:04:33,180
+This method will take
+just one argument.
+
+97
+00:04:33,600 --> 00:04:34,770
+Sign in d t o
+
+98
+00:04:35,040 --> 00:04:38,430
+which is our credentials
+object containing the email
+
+99
+00:04:38,430 --> 00:04:40,180
+and password that the user
+will send over the network.
+
+100
+00:04:40,410 --> 00:04:42,010
+In the side of this method.
+
+101
+00:04:42,120 --> 00:04:45,580
+As add the following code
+and bring it down the line by line.
+
+102
+00:04:45,630 --> 00:04:46,080
+Earth
+
+103
+00:04:46,200 --> 00:04:50,920
+we have to check to see if a user with the
+given email address exists in our system.
+
+104
+00:04:51,300 --> 00:04:52,020
+Afterwards
+
+105
+00:04:52,290 --> 00:04:55,800
+we can use the hashing service
+to check if the provided password
+
+106
+00:04:56,040 --> 00:04:57,450
+matches the hash diversion
+
+107
+00:04:57,708 --> 00:04:59,410
+we stored in our database.
+
+108
+00:04:59,850 --> 00:05:01,860
+If any of these two
+to operations fail
+
+109
+00:05:02,130 --> 00:05:04,170
+we throw an
+unauthorized exception
+
+110
+00:05:04,350 --> 00:05:05,670
+otherwise we return true
+
+111
+00:05:05,910 --> 00:05:07,870
+as they have been
+properly authenticated.
+
+112
+00:05:09,060 --> 00:05:10,500
+Note that in the next lesson
+
+113
+00:05:10,800 --> 00:05:15,150
+will be improving this
+even further by returning a
+
+114
+00:05:15,150 --> 00:05:17,110
+jwt access token instead
+of returning a boolean value.
+
+115
+00:05:17,520 --> 00:05:20,490
+Okay so what the corresponding
+service methods in place.
+
+116
+00:05:20,910 --> 00:05:24,870
+Let's switch over to the authentication
+controller class and inject our service there
+
+117
+00:05:25,050 --> 00:05:27,640
+but the standard dependency
+injection approach.
+
+118
+00:05:30,840 --> 00:05:32,470
+Inside our controller.
+
+119
+00:05:32,580 --> 00:05:34,480
+Let's define to methods.
+
+120
+00:05:34,650 --> 00:05:35,160
+One
+
+121
+00:05:35,280 --> 00:05:37,000
+for the sign up route.
+
+122
+00:05:40,112 --> 00:05:42,940
+And another for
+this sign en route.
+
+123
+00:05:45,900 --> 00:05:48,510
+The sign and route will
+have one subtle difference.
+
+124
+00:05:48,870 --> 00:05:49,800
+In this method
+
+125
+00:05:50,100 --> 00:05:54,690
+we want to use the http
+code annotation to instruct the
+
+126
+00:05:54,690 --> 00:05:56,350
+nest framework betting case
+of a successful operation.
+
+127
+00:05:56,400 --> 00:05:58,800
+We want the http
+status to be two hundred
+
+128
+00:05:59,070 --> 00:06:00,360
+instead of two hundred and one.
+
+129
+00:06:00,720 --> 00:06:03,460
+Which is the default
+for post routes and nest.
+
+130
+00:06:03,510 --> 00:06:04,140
+The lastly.
+
+131
+00:06:04,500 --> 00:06:06,150
+Let's open up her i am module
+
+132
+00:06:06,390 --> 00:06:07,260
+and first create
+
+133
+00:06:07,410 --> 00:06:10,278
+and imports array inside
+of the module decorator.
+
+134
+00:06:10,650 --> 00:06:11,760
+In this imports array.
+
+135
+00:06:12,150 --> 00:06:16,860
+Let's add type or ramped
+up for feature passing
+
+136
+00:06:16,860 --> 00:06:17,100
+an array with our
+user entity inside of it.
+
+137
+00:06:17,790 --> 00:06:18,600
+And just like that.
+
+138
+00:06:18,930 --> 00:06:20,880
+We made the user
+repository available
+
+139
+00:06:21,060 --> 00:06:23,170
+to our authentication service.
+
+140
+00:06:23,760 --> 00:06:24,960
+Now that we have this and place
+
+141
+00:06:25,260 --> 00:06:28,300
+we can switch to insomnia
+and test out these 'em points.
+
+142
+00:06:28,440 --> 00:06:28,830
+First.
+
+143
+00:06:29,160 --> 00:06:33,210
+Let's try to sign in
+using invalid credentials
+
+144
+00:06:33,210 --> 00:06:33,660
+which right now will
+always be the case
+
+145
+00:06:33,870 --> 00:06:36,190
+as we haven't
+created and users yet.
+
+146
+00:06:36,660 --> 00:06:40,140
+As we can see we received
+the four o one response that says
+
+147
+00:06:40,380 --> 00:06:43,210
+unauthorized which is
+exactly what we should expect.
+
+148
+00:06:43,770 --> 00:06:48,430
+Now let's call the sign up and point
+passing in the exact same user body.
+
+149
+00:06:48,570 --> 00:06:50,950
+And create a user
+in our database.
+
+150
+00:06:52,590 --> 00:06:53,400
+As we can see
+
+151
+00:06:53,670 --> 00:06:57,300
+we received the to a one
+status code back which means of
+
+152
+00:06:57,300 --> 00:06:59,470
+the user was successfully
+created in our database great.
+
+153
+00:06:59,880 --> 00:07:03,570
+Just to make sure our conflict detection
+mechanism works as we intended.
+
+154
+00:07:03,900 --> 00:07:07,480
+Let's call the say poi again passing
+in this same set of credentials.
+
+155
+00:07:07,860 --> 00:07:08,910
+Excellent it works
+
+156
+00:07:09,120 --> 00:07:13,080
+we received the conflict error message
+back as we know this helps prevent us from
+
+157
+00:07:13,080 --> 00:07:15,340
+having duplicate
+users in our database.
+
+158
+00:07:15,690 --> 00:07:16,440
+One last thing.
+
+159
+00:07:16,860 --> 00:07:18,660
+Let's switch back
+to the sign in route
+
+160
+00:07:18,900 --> 00:07:22,000
+and call it passing credentials
+of the user we just created.
+
+161
+00:07:23,310 --> 00:07:24,360
+And as we can see
+
+162
+00:07:24,510 --> 00:07:25,200
+it works now.
+
+163
+00:07:25,530 --> 00:07:27,690
+Since the user is now
+within our database
+
+164
+00:07:27,990 --> 00:07:29,790
+and were passing in
+the correct password.
+
+165
+00:07:30,120 --> 00:07:32,200
+We're now able to
+sign in successfully.
+
+166
+00:07:32,580 --> 00:07:36,700
+Let's try calling this a p i again but
+this time with an incorrect password.
+
+167
+00:07:37,500 --> 00:07:38,500
+Excellent.
+
+168
+00:07:38,820 --> 00:07:40,890
+We received the
+for one unauthorized
+
+169
+00:07:41,010 --> 00:07:42,520
+just as we should.
+
+170
+00:07:43,020 --> 00:07:46,170
+Although they response skimmers
+of our end points are not ideal yet.
+
+171
+00:07:46,590 --> 00:07:48,210
+We have the
+authenticate shim part
+
+172
+00:07:48,480 --> 00:07:49,650
+working well so far
+
+173
+00:07:49,980 --> 00:07:51,090
+but were far from done
+
+174
+00:07:51,300 --> 00:07:53,190
+will keep on improving
+everything more and more
+
+175
+00:07:53,310 --> 00:07:54,970
+in the upcoming lessons.
+

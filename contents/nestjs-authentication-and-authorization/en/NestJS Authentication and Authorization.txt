@@ -1,0 +1,20 @@
+NestJS Authentication - Course Overview
+Authentication and Authorization 
+Creating a Users resource 
+Prerequisite: Install Insomnia 
+Hashing Passwords 
+Implementing Sign-in and Sign-up Routes
+What’s JWT? 
+Protecting our routes with a Guard 
+Adding Public Routes 
+Active User Decorator 
+Implementing Refresh Tokens
+Invalidating Tokens? 
+Role-Based Access Control 
+Claims-based Authorization 
+Policy-based Authorization 
+Introduction to API Keys 
+Integrate API Keys feature 
+Part 3: Google Authentication - NestJS portion 
+Bonus: Two-factor authentication 
+Bonus: Sessions with Passport

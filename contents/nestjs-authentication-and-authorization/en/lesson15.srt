@@ -1,0 +1,1001 @@
+﻿1
+00:00:01,260 --> 00:00:05,140
+A policy defines a requirement
+or a collection of requirements.
+
+2
+00:00:05,190 --> 00:00:08,591
+That the user must satisfy
+in order to access a resource.
+
+3
+00:00:08,850 --> 00:00:09,450
+In fact.
+
+4
+00:00:09,780 --> 00:00:13,120
+Even if you use claim based
+or role-based authorization.
+
+5
+00:00:13,200 --> 00:00:17,770
+You're actually using policy based
+authorization but as hard-coded policies.
+
+6
+00:00:18,510 --> 00:00:20,340
+Think of the roles
+decorator recreated.
+
+7
+00:00:20,700 --> 00:00:23,070
+Which required a user
+to have a specific role
+
+8
+00:00:23,220 --> 00:00:27,480
+essentially creating a hardcoded
+policy implemented within our roles guard.
+
+9
+00:00:28,080 --> 00:00:32,400
+Just as a disclaimer that in this lesson
+we're going to be diving into some much more
+
+10
+00:00:32,400 --> 00:00:35,670
+advanced scenarios of
+authorization that aren't
+
+11
+00:00:35,670 --> 00:00:36,670
+typically required
+for most applications.
+
+12
+00:00:36,960 --> 00:00:37,650
+Usually
+
+13
+00:00:37,950 --> 00:00:41,610
+roles based or claims based
+is sufficient for most use cases
+
+14
+00:00:41,910 --> 00:00:45,490
+but we thought it might be helpful to
+showcase policy based authorization.
+
+15
+00:00:45,630 --> 00:00:48,910
+Just in case you might need it for
+yourself in your future applications.
+
+16
+00:00:49,410 --> 00:00:51,298
+All right so let's
+switch to our ID
+
+17
+00:00:51,660 --> 00:00:54,390
+and see how we could leverage
+policies and our application
+
+18
+00:00:54,510 --> 00:00:56,470
+if we felt we needed them.
+
+19
+00:00:56,520 --> 00:01:00,090
+Inside the authorization folder let's
+create the following directories tree
+
+20
+00:01:00,360 --> 00:01:02,590
+policies slash interfaces.
+
+21
+00:01:03,420 --> 00:01:04,620
+In the interfaces folder
+
+22
+00:01:04,920 --> 00:01:09,370
+with create a new file and
+name it policy dot interface dot t s.
+
+23
+00:01:09,600 --> 00:01:12,940
+Inside of this file let's
+declare a policy interface.
+
+24
+00:01:14,070 --> 00:01:17,580
+This'll be a very simple interface
+which will consist of one property
+
+25
+00:01:17,700 --> 00:01:18,270
+name
+
+26
+00:01:18,480 --> 00:01:20,710
+that will use to make
+debugging simpler.
+
+27
+00:01:20,940 --> 00:01:24,810
+Next let's create a another file
+alongside the policy interface and name it
+
+28
+00:01:25,110 --> 00:01:26,550
+policy dash handler
+
+29
+00:01:26,700 --> 00:01:28,673
+not interface dart t us.
+
+30
+00:01:29,370 --> 00:01:30,360
+Inside of this file
+
+31
+00:01:30,600 --> 00:01:33,340
+must declare a policy
+handler interface.
+
+32
+00:01:34,980 --> 00:01:38,710
+This interface requires at the
+handle method must be implemented.
+
+33
+00:01:39,060 --> 00:01:41,010
+This handle method
+will take two arguments.
+
+34
+00:01:41,370 --> 00:01:42,060
+Policy
+
+35
+00:01:42,330 --> 00:01:46,980
+which is the corresponding policy instance
+for which this handler was implemented for.
+
+36
+00:01:47,580 --> 00:01:49,110
+Note the generic type t
+
+37
+00:01:49,380 --> 00:01:53,080
+as different policy handlers will
+have their own dedicated policies.
+
+38
+00:01:53,490 --> 00:01:54,570
+And our second argument
+
+39
+00:01:54,840 --> 00:01:56,490
+be active user data object
+
+40
+00:01:56,640 --> 00:01:58,890
+indicating what's
+the context user
+
+41
+00:01:59,070 --> 00:02:01,690
+for which were
+executing this policy on.
+
+42
+00:02:01,980 --> 00:02:02,980
+Perfect.
+
+43
+00:02:03,780 --> 00:02:08,440
+With these interfaces and place let's never
+wanted the policy handler storage class.
+
+44
+00:02:08,550 --> 00:02:09,360
+This class
+
+45
+00:02:09,630 --> 00:02:11,790
+will serve us as a
+static map collection
+
+46
+00:02:12,000 --> 00:02:13,380
+that associates policies
+
+47
+00:02:13,620 --> 00:02:16,120
+with their corresponding
+policy handlers.
+
+48
+00:02:16,290 --> 00:02:17,040
+Each policy
+
+49
+00:02:17,220 --> 00:02:19,840
+should have exactly
+one policy handler.
+
+50
+00:02:19,980 --> 00:02:21,120
+The policy handler
+
+51
+00:02:21,390 --> 00:02:24,120
+will be in charge of
+processing a specific pa rc.
+
+52
+00:02:24,480 --> 00:02:25,020
+Don't worry.
+
+53
+00:02:25,380 --> 00:02:28,120
+All this will make much
+more sense in a moment.
+
+54
+00:02:28,680 --> 00:02:32,310
+Let's start by creating a policy
+dash handlers dot storage file
+
+55
+00:02:32,460 --> 00:02:33,750
+in our policies folder.
+
+56
+00:02:34,230 --> 00:02:35,460
+An inside of this file.
+
+57
+00:02:35,790 --> 00:02:40,240
+Let's declare a simple class that contains
+one private collection under the hood.
+
+58
+00:02:40,500 --> 00:02:40,980
+Also.
+
+59
+00:02:41,340 --> 00:02:44,350
+Let's make sure to annotated
+with the injectable decorator.
+
+60
+00:02:45,840 --> 00:02:50,190
+The first type argument
+we specify for the map class
+
+61
+00:02:50,220 --> 00:02:51,150
+indicates the type of
+our keys in this collection.
+
+62
+00:02:51,630 --> 00:02:55,300
+Since keys equals classes
+representing our policies
+
+63
+00:02:55,440 --> 00:02:58,450
+and we need to use
+type of policy here.
+
+64
+00:02:58,830 --> 00:03:00,510
+The second type
+argument we see here.
+
+65
+00:03:00,900 --> 00:03:03,340
+Represents values
+for these keys.
+
+66
+00:03:03,420 --> 00:03:06,150
+Year we've used policy
+handler of type any.
+
+67
+00:03:06,510 --> 00:03:09,730
+As will be using policy
+handler instances as values.
+
+68
+00:03:10,440 --> 00:03:15,570
+Note that in the case of keys we operate
+on types not concrete instances as we want
+
+69
+00:03:15,570 --> 00:03:18,370
+to enable developers
+to manually instantiate
+
+70
+00:03:18,480 --> 00:03:20,580
+an convey figure
+policies for example.
+
+71
+00:03:20,940 --> 00:03:24,370
+If different and points in our
+application have different requirements.
+
+72
+00:03:24,930 --> 00:03:26,280
+All right so enough theory.
+
+73
+00:03:26,610 --> 00:03:27,150
+Next.
+
+74
+00:03:27,541 --> 00:03:31,350
+Will need to methods
+that let us operate on
+
+75
+00:03:31,353 --> 00:03:32,353
+the internal collection
+of this storage class.
+
+76
+00:03:32,610 --> 00:03:33,000
+Yet.
+
+77
+00:03:33,360 --> 00:03:37,840
+Or retrieving the policy handler
+class based on the given policy class.
+
+78
+00:03:38,010 --> 00:03:38,400
+And
+
+79
+00:03:38,610 --> 00:03:39,600
+the method add.
+
+80
+00:03:40,170 --> 00:03:43,210
+Or associating policies
+with policy handlers.
+
+81
+00:03:44,100 --> 00:03:49,170
+Nope we've used the
+cls suffix here to indicate
+
+82
+00:03:49,170 --> 00:03:50,170
+were operating on
+classes here not instances.
+
+83
+00:03:50,580 --> 00:03:52,230
+With this storage
+class and place
+
+84
+00:03:52,530 --> 00:03:54,940
+we can start creating
+our first policy.
+
+85
+00:03:55,290 --> 00:03:56,790
+For demonstration purposes
+
+86
+00:03:57,030 --> 00:03:59,100
+will implement a
+very custom policy.
+
+87
+00:03:59,460 --> 00:04:03,840
+Framework contributor policy that checks
+of the user's email address is registered
+
+88
+00:04:03,840 --> 00:04:06,490
+under the nastiest
+dot com domain.
+
+89
+00:04:07,380 --> 00:04:09,240
+So one side our policies folder
+
+90
+00:04:09,510 --> 00:04:14,980
+let's create a new file and name it framework
+dash contributor dot policy dot to yes.
+
+91
+00:04:15,180 --> 00:04:16,320
+Inside of this file
+
+92
+00:04:16,590 --> 00:04:19,980
+let's create a simple class
+called framework contributor policy
+
+93
+00:04:20,160 --> 00:04:22,990
+and make it implement
+the policy interface.
+
+94
+00:04:24,090 --> 00:04:27,280
+Let's also not forget to
+provide the name of this policy.
+
+95
+00:04:27,480 --> 00:04:27,900
+Note
+
+96
+00:04:28,050 --> 00:04:31,470
+typically would recommend
+creating another file next to this one.
+
+97
+00:04:31,860 --> 00:04:32,580
+In calling it
+
+98
+00:04:32,850 --> 00:04:35,550
+bremer contributor policy
+dash handler that t ts
+
+99
+00:04:35,970 --> 00:04:40,200
+but since the framework contributor policy
+is very straightforward short and simple.
+
+100
+00:04:40,590 --> 00:04:41,700
+In order to make things
+
+101
+00:04:41,820 --> 00:04:43,900
+easier to comprehend
+and understand.
+
+102
+00:04:43,980 --> 00:04:45,780
+We decided to create
+the handler class
+
+103
+00:04:46,020 --> 00:04:49,720
+straightened side of this file
+right after the policy definition.
+
+104
+00:04:50,070 --> 00:04:54,220
+The let's go ahead and create the
+framework contributor policy handler now.
+
+105
+00:04:54,780 --> 00:04:55,500
+Once again
+
+106
+00:04:55,680 --> 00:05:00,240
+let's make sure it's
+annotated with the injectable
+
+107
+00:05:00,240 --> 00:05:02,200
+decorator and that implements
+our policy handler interface.
+
+108
+00:05:02,910 --> 00:05:05,320
+Next up let's
+declare a constructor
+
+109
+00:05:05,520 --> 00:05:08,830
+and inject the policy
+handler storage provider.
+
+110
+00:05:11,250 --> 00:05:12,790
+Inside this constructor.
+
+111
+00:05:12,930 --> 00:05:14,820
+Using the policy handler storage
+
+112
+00:05:14,940 --> 00:05:17,010
+add method we
+created a moment ago.
+
+113
+00:05:17,520 --> 00:05:21,780
+Let's associate this handler with the
+corresponding framework contributor policy
+
+114
+00:05:21,990 --> 00:05:23,140
+as follows.
+
+115
+00:05:29,100 --> 00:05:32,890
+Since all of our policy handlers
+are designed to be a synchronous.
+
+116
+00:05:33,000 --> 00:05:33,990
+Let's flag this method
+
+117
+00:05:34,140 --> 00:05:35,470
+as a sink.
+
+118
+00:05:35,730 --> 00:05:36,570
+And from here
+
+119
+00:05:36,690 --> 00:05:39,340
+we can start implementing
+our actual policy.
+
+120
+00:05:39,690 --> 00:05:41,400
+Inside of the handle method.
+
+121
+00:05:41,730 --> 00:05:45,010
+Let's add the following logic you
+can find below the course video.
+
+122
+00:05:45,360 --> 00:05:46,590
+In the code shown here.
+
+123
+00:05:47,010 --> 00:05:51,150
+We are simply checking
+whether the the user's
+
+124
+00:05:51,150 --> 00:05:51,630
+email address ends
+with at ness js dot com
+
+125
+00:05:52,110 --> 00:05:52,800
+and if not
+
+126
+00:05:52,980 --> 00:05:53,970
+we throw an exception
+
+127
+00:05:54,270 --> 00:05:54,810
+and that's it.
+
+128
+00:05:55,471 --> 00:05:55,980
+Remember
+
+129
+00:05:56,220 --> 00:06:00,630
+we are just creating a very simple policy
+for demonstration purposes but hopefully
+
+130
+00:06:00,660 --> 00:06:02,340
+you can see the
+possibilities here
+
+131
+00:06:02,670 --> 00:06:05,250
+and why this type of
+authorization could be useful.
+
+132
+00:06:05,640 --> 00:06:08,049
+In certain applications
+and circumstances.
+
+133
+00:06:09,210 --> 00:06:10,590
+Before we continue further.
+
+134
+00:06:11,070 --> 00:06:15,600
+Let's open up our i am
+module file and make
+
+135
+00:06:15,600 --> 00:06:16,600
+sure to register both
+policy handler storage.
+
+136
+00:06:16,860 --> 00:06:20,680
+And framework contributor
+policy handler classes as providers.
+
+137
+00:06:21,000 --> 00:06:24,670
+This is why we added those
+injectable decorators after all.
+
+138
+00:06:24,750 --> 00:06:25,750
+Right.
+
+139
+00:06:26,010 --> 00:06:28,140
+Now there are two more
+steps we need to do.
+
+140
+00:06:28,470 --> 00:06:30,880
+That we already covered
+in previous lessons.
+
+141
+00:06:31,080 --> 00:06:31,500
+First.
+
+142
+00:06:31,980 --> 00:06:33,510
+Instead of our decorators folder
+
+143
+00:06:33,630 --> 00:06:37,860
+let's create a new
+policies decorator for
+
+144
+00:06:37,860 --> 00:06:38,860
+attaching policies to
+end points or controllers.
+
+145
+00:06:39,690 --> 00:06:43,450
+Like always all of the code for this
+can be found below the course video.
+
+146
+00:06:43,890 --> 00:06:44,670
+Once we're done.
+
+147
+00:06:45,180 --> 00:06:47,310
+Let's create a a
+new policies guard
+
+148
+00:06:47,430 --> 00:06:51,280
+that runs context specific
+policies for a given operation.
+
+149
+00:06:51,780 --> 00:06:54,060
+We'll start by pasting
+our usual boilerplate
+
+150
+00:06:54,360 --> 00:06:55,440
+reading the meta data
+
+151
+00:06:55,710 --> 00:06:58,650
+ignoring the guard if
+policies aren't present etc
+
+152
+00:06:58,800 --> 00:07:01,300
+we've done this a few
+times already in this course.
+
+153
+00:07:01,680 --> 00:07:03,490
+And with his coat and place.
+
+154
+00:07:03,600 --> 00:07:07,180
+Let's start implementing the
+policy specific lodge Jack now.
+
+155
+00:07:07,920 --> 00:07:11,086
+Now listen Jack the policy
+handler storage regretted.
+
+156
+00:07:11,190 --> 00:07:14,470
+As will need it for retrieving
+policy handlers themselves.
+
+157
+00:07:15,870 --> 00:07:17,610
+If policies are defined
+
+158
+00:07:17,820 --> 00:07:19,230
+then let's iterate through them.
+
+159
+00:07:19,560 --> 00:07:24,000
+Map to their corresponding policy handler
+instances and call the handler method.
+
+160
+00:07:24,420 --> 00:07:27,520
+Passing the policy
+instance as a first parameter.
+
+161
+00:07:27,660 --> 00:07:29,010
+And the active user data
+
+162
+00:07:29,130 --> 00:07:30,820
+as the second one.
+
+163
+00:07:30,990 --> 00:07:31,410
+Note
+
+164
+00:07:31,770 --> 00:07:34,180
+to retrieve the
+corresponding handler.
+
+165
+00:07:34,230 --> 00:07:37,570
+We have to pass the policy
+the constructor reference.
+
+166
+00:07:37,800 --> 00:07:38,790
+As you may remember
+
+167
+00:07:39,060 --> 00:07:45,040
+our policy handler storage associates handlers
+with policy classes and not instances.
+
+168
+00:07:45,870 --> 00:07:48,150
+Since our policy
+handlers handle method
+
+169
+00:07:48,270 --> 00:07:49,050
+are a sink.
+
+170
+00:07:49,470 --> 00:07:53,080
+Let's use the promise that
+all here to all wait the results.
+
+171
+00:08:00,600 --> 00:08:02,670
+In in case any error was thrown.
+
+172
+00:08:03,000 --> 00:08:07,960
+Let's use catch and map the heirs
+to the forbidden exception error.
+
+173
+00:08:08,880 --> 00:08:09,880
+Perfect.
+
+174
+00:08:10,380 --> 00:08:11,580
+With all of that in place.
+
+175
+00:08:12,060 --> 00:08:14,400
+Let's navigate to
+the i am module file
+
+176
+00:08:14,520 --> 00:08:18,280
+an swap the permissions guard
+with our new policies guard.
+
+177
+00:08:22,140 --> 00:08:22,650
+Next.
+
+178
+00:08:23,070 --> 00:08:25,350
+Let's open up our
+coffees controller file.
+
+179
+00:08:25,890 --> 00:08:28,720
+And instead of using the
+permissions decorator.
+
+180
+00:08:28,980 --> 00:08:29,970
+Let's commented out
+
+181
+00:08:30,420 --> 00:08:32,460
+and let's use the
+policies annotation.
+
+182
+00:08:32,790 --> 00:08:35,440
+Applying the framework
+contributor policy.
+
+183
+00:08:37,050 --> 00:08:38,050
+Awesome.
+
+184
+00:08:38,220 --> 00:08:38,640
+Know
+
+185
+00:08:38,820 --> 00:08:41,640
+you could apply multiple
+policies to a single and point
+
+186
+00:08:41,760 --> 00:08:43,510
+as follows if needed.
+
+187
+00:08:45,330 --> 00:08:45,810
+Alright.
+
+188
+00:08:46,200 --> 00:08:47,770
+So let's save our changes.
+
+189
+00:08:47,880 --> 00:08:49,020
+Had overdue insomnia
+
+190
+00:08:49,350 --> 00:08:52,418
+and test everything to see
+these policies and action.
+
+191
+00:08:52,680 --> 00:08:53,670
+Lets it send
+
+192
+00:08:53,820 --> 00:08:57,760
+an check to see if we can access
+the post slash coffees endpoint.
+
+193
+00:08:57,960 --> 00:09:01,860
+Know that if you're getting
+a four o one air make
+
+194
+00:09:01,920 --> 00:09:03,430
+sure to sign in again and
+update your access token.
+
+195
+00:09:03,540 --> 00:09:05,730
+And yes as we could
+see we do have access.
+
+196
+00:09:06,090 --> 00:09:10,720
+Since our users email address
+is user one at nest jazz dot com.
+
+197
+00:09:10,800 --> 00:09:11,310
+Now.
+
+198
+00:09:11,670 --> 00:09:13,200
+Let's switch back to r i d e.
+
+199
+00:09:13,650 --> 00:09:16,800
+Open up our framework
+contributor policy handler class
+
+200
+00:09:16,950 --> 00:09:21,130
+to instead of checking for
+the presence of at sjs dot com.
+
+201
+00:09:21,330 --> 00:09:24,910
+Updated to expect
+at trial on dot io.
+
+202
+00:09:25,500 --> 00:09:26,550
+Let's save our changes.
+
+203
+00:09:26,880 --> 00:09:29,850
+Had overdue insomnia and try to
+hit that same and point once again.
+
+204
+00:09:30,420 --> 00:09:31,440
+And as we can see.
+
+205
+00:09:31,860 --> 00:09:35,969
+We are now an authorized
+to access this endpoint due to
+
+206
+00:09:35,969 --> 00:09:37,530
+the policy authorization of
+restrictions we have sat on it.
+
+207
+00:09:38,430 --> 00:09:40,290
+Recovered quite
+a bit in this lesson
+
+208
+00:09:40,620 --> 00:09:44,410
+and hopefully you could see the
+value in policy based authorization
+
+209
+00:09:44,550 --> 00:09:48,390
+but also how it really may not
+be necessary for every application
+
+210
+00:09:48,570 --> 00:09:50,280
+and especially
+not every endpoint.
+
+211
+00:09:50,850 --> 00:09:51,930
+Like most tools
+
+212
+00:09:52,200 --> 00:09:53,820
+there's a use
+case for everything
+
+213
+00:09:54,240 --> 00:09:55,950
+and with what we've
+covered in this lesson
+
+214
+00:09:56,190 --> 00:09:57,240
+you'll be able to cover.
+
+215
+00:09:57,540 --> 00:09:59,010
+Even the most complex
+
+216
+00:09:59,130 --> 00:10:02,380
+authorization scenarios in
+your future nest applications.
+

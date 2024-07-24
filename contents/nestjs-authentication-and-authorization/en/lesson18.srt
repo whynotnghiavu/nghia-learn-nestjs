@@ -1,0 +1,732 @@
+﻿1
+00:00:01,170 --> 00:00:02,010
+In this lesson.
+
+2
+00:00:02,400 --> 00:00:05,970
+We're going to implement
+a new feature putting
+
+3
+00:00:05,970 --> 00:00:06,690
+users sign up and
+sign into our application
+
+4
+00:00:06,870 --> 00:00:08,280
+using their Google accounts
+
+5
+00:00:08,400 --> 00:00:10,050
+instead of using
+regular credentials
+
+6
+00:00:10,230 --> 00:00:11,890
+like email and password.
+
+7
+00:00:12,330 --> 00:00:13,720
+For most applications
+
+8
+00:00:14,040 --> 00:00:16,620
+and for those who want to
+provide for the needs of their users.
+
+9
+00:00:16,952 --> 00:00:19,980
+Is very important to offer
+one click authentication options
+
+10
+00:00:20,280 --> 00:00:21,270
+like Google asked
+
+11
+00:00:21,541 --> 00:00:24,520
+make it easier to
+register and log into apps.
+
+12
+00:00:24,750 --> 00:00:25,440
+And this lesson
+
+13
+00:00:25,740 --> 00:00:28,540
+will be setting everything
+up in our nest application.
+
+14
+00:00:29,160 --> 00:00:31,830
+Also make sure to
+check out the two previous
+
+15
+00:00:31,950 --> 00:00:35,670
+tax base lessons as they are companions
+to everything we will be doing here.
+
+16
+00:00:36,090 --> 00:00:36,750
+One lesson
+
+17
+00:00:37,020 --> 00:00:39,060
+is about instructions
+on how to set up a new
+
+18
+00:00:39,240 --> 00:00:42,190
+Google project via
+the gcp dashboard.
+
+19
+00:00:42,450 --> 00:00:43,230
+And the other lesson.
+
+20
+00:00:43,560 --> 00:00:46,390
+Is on how to test our
+Google authentication blow.
+
+21
+00:00:47,070 --> 00:00:47,760
+After all
+
+22
+00:00:47,970 --> 00:00:52,050
+we will need a you are to do
+so so make sure to check out
+
+23
+00:00:52,050 --> 00:00:53,520
+the lesson on creating a
+Google off the front and demo.
+
+24
+00:00:53,940 --> 00:00:56,580
+Where you can set up a
+very basic react application
+
+25
+00:00:56,850 --> 00:00:58,290
+in order for us
+to test everything.
+
+26
+00:00:58,860 --> 00:00:59,370
+But note
+
+27
+00:00:59,610 --> 00:01:01,080
+that this could be
+done with anything.
+
+28
+00:01:01,440 --> 00:01:03,210
+Any front and the
+framework of your choice
+
+29
+00:01:03,360 --> 00:01:04,650
+a mobile application
+
+30
+00:01:04,830 --> 00:01:05,830
+etc.
+
+31
+00:01:06,570 --> 00:01:08,430
+So back to our task at hand.
+
+32
+00:01:08,940 --> 00:01:09,780
+Let's switch to r i
+
+33
+00:01:09,991 --> 00:01:10,290
+he
+
+34
+00:01:10,410 --> 00:01:13,330
+ain't start by updating
+our dot e and the file.
+
+35
+00:01:14,340 --> 00:01:15,900
+Inside the dmv file.
+
+36
+00:01:16,230 --> 00:01:18,270
+Let's declare to new
+environment variables
+
+37
+00:01:18,510 --> 00:01:19,740
+Google client ID
+
+38
+00:01:19,897 --> 00:01:21,850
+and Google client secret.
+
+39
+00:01:22,020 --> 00:01:24,600
+You can get these ideas
+from your gcp dashboard
+
+40
+00:01:24,810 --> 00:01:26,280
+if you've set all
+that up already.
+
+41
+00:01:26,730 --> 00:01:30,690
+If not make sure to go
+through both of those text-based
+
+42
+00:01:30,690 --> 00:01:31,830
+lessons first before
+continuing further along
+
+43
+00:01:32,010 --> 00:01:33,280
+in this lesson.
+
+44
+00:01:33,450 --> 00:01:37,380
+The next la is open a bar terminals and
+first less install a new dependency that will
+
+45
+00:01:37,380 --> 00:01:39,510
+need to use to
+verify Google tokens
+
+46
+00:01:39,750 --> 00:01:42,100
+the Google off library package.
+
+47
+00:01:42,570 --> 00:01:44,890
+Once the installation
+process is complete.
+
+48
+00:01:44,940 --> 00:01:46,350
+Loss generate a new service
+
+49
+00:01:46,650 --> 00:01:49,920
+and put it inside of i
+am authentication social
+
+50
+00:01:50,070 --> 00:01:52,750
+and call it Google
+authentication service.
+
+51
+00:01:53,520 --> 00:01:57,070
+Let's also create its corresponding
+controller in this same location.
+
+52
+00:01:59,160 --> 00:01:59,850
+Okay great.
+
+53
+00:02:00,240 --> 00:02:03,120
+Let's open a bar newly generated
+Google authentication service
+
+54
+00:02:03,600 --> 00:02:06,700
+and declared the our
+client private property.
+
+55
+00:02:06,990 --> 00:02:07,440
+Of type
+
+56
+00:02:07,650 --> 00:02:09,090
+o off to client
+
+57
+00:02:09,360 --> 00:02:12,670
+imported from the Google
+off library we just install.
+
+58
+00:02:13,950 --> 00:02:17,680
+Now let's inject three dependencies
+into our services constructor.
+
+59
+00:02:18,000 --> 00:02:18,960
+Config service.
+
+60
+00:02:19,350 --> 00:02:22,180
+Authentication service
+in our user repository.
+
+61
+00:02:23,160 --> 00:02:27,150
+Also let's implement the on module in the
+interface as we're going to want to do a
+
+62
+00:02:27,150 --> 00:02:31,420
+few things when the module
+initializes in or applications life cycle.
+
+63
+00:02:35,370 --> 00:02:37,290
+Inside the on
+module in it method.
+
+64
+00:02:37,776 --> 00:02:39,420
+Is initialized the our client.
+
+65
+00:02:39,750 --> 00:02:40,800
+By calling new
+
+66
+00:02:41,100 --> 00:02:42,550
+a both to client.
+
+67
+00:02:42,600 --> 00:02:44,610
+Passing in both our client ID
+
+68
+00:02:44,730 --> 00:02:45,900
+and plight secret.
+
+69
+00:02:46,350 --> 00:02:49,150
+Both which we can
+get from r e n b file.
+
+70
+00:02:49,710 --> 00:02:50,710
+Grape.
+
+71
+00:02:50,910 --> 00:02:51,390
+Next.
+
+72
+00:02:51,780 --> 00:02:53,550
+What's the fine and
+authenticate method.
+
+73
+00:02:53,880 --> 00:02:55,620
+Which will do all
+the heavy lifting here.
+
+74
+00:02:56,100 --> 00:02:57,780
+This method takes one parameter
+
+75
+00:02:58,050 --> 00:03:00,300
+which is the access
+token issued by Google.
+
+76
+00:03:00,630 --> 00:03:02,010
+Using the oh author client.
+
+77
+00:03:02,400 --> 00:03:04,620
+Must retrieve the user
+specific information
+
+78
+00:03:04,740 --> 00:03:05,950
+as follows.
+
+79
+00:03:06,810 --> 00:03:08,040
+Now before we move further
+
+80
+00:03:08,340 --> 00:03:12,240
+let's really quickly
+navigate to the user energy
+
+81
+00:03:12,240 --> 00:03:13,240
+class and make to
+additions there as well.
+
+82
+00:03:13,860 --> 00:03:16,380
+First we'll need a new
+column called Google ID
+
+83
+00:03:16,680 --> 00:03:20,700
+that will contain values
+only if a user's account
+
+84
+00:03:20,700 --> 00:03:22,000
+has linked to the
+corresponding Google account.
+
+85
+00:03:22,050 --> 00:03:22,560
+Also
+
+86
+00:03:22,800 --> 00:03:24,720
+let's make sure we update
+the password column
+
+87
+00:03:24,840 --> 00:03:27,990
+and make it nullable as users
+who use Google for signing in
+
+88
+00:03:28,200 --> 00:03:31,036
+won't have passwords
+in the standard sense.
+
+89
+00:03:31,830 --> 00:03:34,570
+All right back to our Google
+authentication service.
+
+90
+00:03:34,650 --> 00:03:36,150
+Us retrieve the user entity
+
+91
+00:03:36,300 --> 00:03:38,530
+based on a user's Google ID.
+
+92
+00:03:39,030 --> 00:03:40,320
+If it doesn't exist yet.
+
+93
+00:03:40,710 --> 00:03:42,630
+Will create a new
+account on our system.
+
+94
+00:03:43,080 --> 00:03:43,650
+Otherwise
+
+95
+00:03:43,890 --> 00:03:45,060
+we'll sign the user in
+
+96
+00:03:45,303 --> 00:03:48,790
+and respond with the access
+and refresh token pairs.
+
+97
+00:03:53,760 --> 00:03:54,760
+Lastly.
+
+98
+00:03:54,960 --> 00:03:57,760
+Let's wrap everything
+up in a try catch block.
+
+99
+00:03:59,100 --> 00:04:00,670
+If there was a conflict.
+
+100
+00:04:00,840 --> 00:04:02,940
+Let's make sure to
+throw a conflict exception.
+
+101
+00:04:03,300 --> 00:04:03,900
+Otherwise
+
+102
+00:04:04,200 --> 00:04:06,460
+we can throw
+unauthorized exception.
+
+103
+00:04:07,350 --> 00:04:11,340
+You may have noticed that
+we're using a unique error
+
+104
+00:04:11,340 --> 00:04:12,750
+code here since we're using
+post crests as our database
+
+105
+00:04:12,870 --> 00:04:14,850
+for this exact
+conflict logic here
+
+106
+00:04:15,090 --> 00:04:17,580
+might look different if you're
+using a different database
+
+107
+00:04:17,790 --> 00:04:19,450
+in your future applications.
+
+108
+00:04:20,010 --> 00:04:21,090
+Are a great so
+
+109
+00:04:21,300 --> 00:04:23,160
+moving on let's
+save our changes.
+
+110
+00:04:23,520 --> 00:04:27,690
+In create an actual
+endpoint for everything by
+
+111
+00:04:27,690 --> 00:04:28,690
+opening up our Google
+authentic cation controller.
+
+112
+00:04:29,760 --> 00:04:32,520
+Let's start by updating
+the controller prefix here
+
+113
+00:04:32,640 --> 00:04:37,210
+to be authentication slash Google
+so it's consistent with other routes.
+
+114
+00:04:38,010 --> 00:04:38,490
+Next.
+
+115
+00:04:38,910 --> 00:04:39,533
+Let's inject
+
+116
+00:04:39,644 --> 00:04:42,940
+Google authentication service
+using the standard approach.
+
+117
+00:04:47,940 --> 00:04:49,230
+Now inside of our class.
+
+118
+00:04:49,536 --> 00:04:53,400
+Sickler a single authenticate
+route that cause the
+
+119
+00:04:53,400 --> 00:04:55,421
+corresponding Google
+authentication service method.
+
+120
+00:04:55,980 --> 00:04:58,770
+We don't have a Google
+token detail class to find yet.
+
+121
+00:04:59,220 --> 00:04:59,970
+Let's go ahead.
+
+122
+00:05:00,360 --> 00:05:02,280
+Navigate to r d
+to your directory
+
+123
+00:05:02,580 --> 00:05:04,560
+and create a new
+Google dash token
+
+124
+00:05:04,680 --> 00:05:06,820
+dot dt or file in there.
+
+125
+00:05:07,620 --> 00:05:08,550
+Inside this file.
+
+126
+00:05:09,000 --> 00:05:11,130
+Let's add a simple
+class with one property
+
+127
+00:05:11,238 --> 00:05:13,300
+represents the Google token.
+
+128
+00:05:14,610 --> 00:05:15,720
+With this and place
+
+129
+00:05:15,960 --> 00:05:19,650
+let's switch back to
+our controller class and
+
+130
+00:05:19,668 --> 00:05:21,040
+make sure to add the
+missing details class import.
+
+131
+00:05:21,601 --> 00:05:22,290
+And lastly
+
+132
+00:05:22,590 --> 00:05:24,060
+just to make this route public
+
+133
+00:05:24,360 --> 00:05:26,520
+let's make sure we
+annotate the entire controller
+
+134
+00:05:26,640 --> 00:05:28,380
+with the auth
+decorator passing in.
+
+135
+00:05:28,740 --> 00:05:30,400
+Off type none.
+
+136
+00:05:32,460 --> 00:05:34,450
+One last thing
+before we continue.
+
+137
+00:05:34,560 --> 00:05:37,660
+Since our you i is hosted
+on port port thousand.
+
+138
+00:05:37,830 --> 00:05:39,750
+And r a p eyes on
+port three thousand.
+
+139
+00:05:40,230 --> 00:05:44,380
+We have to enable course or
+cross origin resource sharing.
+
+140
+00:05:44,490 --> 00:05:45,360
+Easy fix though.
+
+141
+00:05:45,720 --> 00:05:47,370
+It's open up our main t s file
+
+142
+00:05:47,580 --> 00:05:49,330
+and add the following line.
+
+143
+00:05:49,890 --> 00:05:51,420
+Aap dot enable course yeah
+
+144
+00:05:51,810 --> 00:05:53,170
+and that's it.
+
+145
+00:05:54,180 --> 00:05:55,290
+With everything set up
+
+146
+00:05:55,500 --> 00:05:59,130
+now let's start our react
+application if you set it up already
+
+147
+00:05:59,280 --> 00:06:01,720
+just so we can
+test the overall flow.
+
+148
+00:06:02,070 --> 00:06:04,290
+If we open our browser
+support for thousand
+
+149
+00:06:04,590 --> 00:06:06,330
+once our react app
+is built and running
+
+150
+00:06:06,570 --> 00:06:08,740
+we should see our
+Google sign in button.
+
+151
+00:06:08,790 --> 00:06:10,860
+Let's go ahead and click on
+sign in and as your account.
+
+152
+00:06:11,400 --> 00:06:15,360
+And it should open up a pop up or a sep
+but tab in the full window mode letting you
+
+153
+00:06:15,360 --> 00:06:17,860
+choose the account
+you want to log in with.
+
+154
+00:06:18,870 --> 00:06:20,820
+And after a successful login
+
+155
+00:06:20,970 --> 00:06:25,050
+you should see the access an refresh
+token logged out to your chrome consul
+
+156
+00:06:25,470 --> 00:06:26,310
+and there we have it.
+
+157
+00:06:26,880 --> 00:06:30,390
+In just a few steps we managed
+to integrate our nest application
+
+158
+00:06:30,540 --> 00:06:32,140
+with Google authentication
+
+159
+00:06:32,340 --> 00:06:35,310
+one of the most popular one
+click off providers out there
+
+160
+00:06:35,490 --> 00:06:37,030
+in today's world.
+

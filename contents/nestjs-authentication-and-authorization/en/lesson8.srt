@@ -1,0 +1,667 @@
+﻿1
+00:00:01,290 --> 00:00:05,050
+Now that we have our sign in and
+sign up and points implemented.
+
+2
+00:00:05,100 --> 00:00:09,690
+We can move on to protecting other existing
+and points for example the crud user and
+
+3
+00:00:09,690 --> 00:00:12,340
+points regenerated
+in previous lessons.
+
+4
+00:00:12,540 --> 00:00:13,320
+Which of this.
+
+5
+00:00:13,680 --> 00:00:17,670
+Will create a guard
+that will check for the
+
+6
+00:00:17,670 --> 00:00:19,090
+presence of a valid Judah
+beauty as a bearer token.
+
+7
+00:00:19,260 --> 00:00:21,600
+Any protected row
+handler with this guard.
+
+8
+00:00:21,960 --> 00:00:25,080
+Will only be invoked if the user
+has been successfully validate it.
+
+9
+00:00:25,830 --> 00:00:29,067
+All right so let's head over to our
+terminals in generate a new guard via
+
+10
+00:00:29,220 --> 00:00:30,270
+nest g guard.
+
+11
+00:00:30,840 --> 00:00:32,520
+And let's plays it within i am.
+
+12
+00:00:32,880 --> 00:00:33,880
+Authentication
+
+13
+00:00:34,110 --> 00:00:38,576
+and put it with and a new guards
+folder calling it access dashed token.
+
+14
+00:00:39,510 --> 00:00:41,370
+Let's open of this
+newly generated file
+
+15
+00:00:41,790 --> 00:00:44,350
+and start by adding the
+required dependencies.
+
+16
+00:00:45,720 --> 00:00:46,110
+First
+
+17
+00:00:46,290 --> 00:00:50,550
+lesson check the jwt beauty
+service into our constructor
+
+18
+00:00:50,550 --> 00:00:53,200
+that we're going to use to
+decode and coming jwt tokens.
+
+19
+00:00:54,060 --> 00:00:58,890
+For this will also need the
+jwt configuration again so
+
+20
+00:00:58,890 --> 00:01:01,300
+that we can pass the secret
+key down to the decode method.
+
+21
+00:01:01,978 --> 00:01:02,978
+Perfect.
+
+22
+00:01:03,510 --> 00:01:05,247
+Before we can
+validate an incoming
+
+23
+00:01:05,430 --> 00:01:06,660
+jwt token
+
+24
+00:01:06,960 --> 00:01:09,910
+we first have to extract
+it from the request object.
+
+25
+00:01:10,200 --> 00:01:14,190
+Depending on what your strategy is and
+whether you're sending access tokens as part
+
+26
+00:01:14,190 --> 00:01:16,140
+of the authorization
+header as we are now.
+
+27
+00:01:16,530 --> 00:01:19,650
+Or you decided to use the
+http only cookies approach
+
+28
+00:01:19,950 --> 00:01:21,660
+that we presented in
+the previous lesson.
+
+29
+00:01:22,200 --> 00:01:24,480
+The implementation here
+will vary just a little bit.
+
+30
+00:01:25,200 --> 00:01:25,980
+In this lesson
+
+31
+00:01:26,250 --> 00:01:29,790
+will assume that the token will be included
+in the authorization header which is
+
+32
+00:01:29,790 --> 00:01:33,070
+generally a very common
+widely used pattern.
+
+33
+00:01:33,330 --> 00:01:36,220
+Though let's start by
+declaring a new method.
+
+34
+00:01:36,420 --> 00:01:39,550
+And name it extracts
+token from header.
+
+35
+00:01:40,410 --> 00:01:40,980
+This method.
+
+36
+00:01:41,340 --> 00:01:45,420
+Will accept one parameter which is
+the platform specific request object
+
+37
+00:01:45,660 --> 00:01:48,430
+in our case express js request.
+
+38
+00:01:49,110 --> 00:01:53,530
+Make sure to import at the request
+interface from the express package.
+
+39
+00:01:53,970 --> 00:01:54,480
+Next.
+
+40
+00:01:54,840 --> 00:01:55,920
+Inside of this method.
+
+41
+00:01:56,340 --> 00:01:59,440
+Let's grab the token from
+the authorization header.
+
+42
+00:01:59,820 --> 00:02:01,590
+The reason why use split here
+
+43
+00:02:01,770 --> 00:02:05,940
+is that the bearer token
+should have the bear
+
+44
+00:02:05,940 --> 00:02:06,360
+prefix which we can
+ignore at this moment.
+
+45
+00:02:06,720 --> 00:02:10,120
+We want the token part
+that comes or right after it.
+
+46
+00:02:10,500 --> 00:02:14,400
+All right with this method
+in place let's grab the
+
+47
+00:02:14,400 --> 00:02:15,600
+reference to the request
+object in our can activate method
+
+48
+00:02:15,840 --> 00:02:17,890
+using the execution context.
+
+49
+00:02:18,450 --> 00:02:22,470
+Note for graft your
+applications you'd have to use
+
+50
+00:02:22,470 --> 00:02:24,130
+the rapper graft your
+execution context here instead.
+
+51
+00:02:24,390 --> 00:02:28,380
+Next up let's extract
+the token from their quest
+
+52
+00:02:28,380 --> 00:02:29,860
+object using the method
+we just declared in our class.
+
+53
+00:02:33,360 --> 00:02:35,430
+And in the case the
+token is not present.
+
+54
+00:02:35,820 --> 00:02:38,590
+Let's throw the
+unauthorized exception air.
+
+55
+00:02:44,580 --> 00:02:46,320
+In case the token is available.
+
+56
+00:02:46,650 --> 00:02:48,600
+Let's use the jwt service
+
+57
+00:02:48,900 --> 00:02:53,020
+verify async method
+to verify and decode it.
+
+58
+00:02:53,370 --> 00:02:55,260
+In order to use a
+weight in our method.
+
+59
+00:02:55,710 --> 00:02:58,030
+We also need to align
+the method signature.
+
+60
+00:02:58,140 --> 00:02:59,160
+It as a sink
+
+61
+00:02:59,550 --> 00:03:01,200
+and update the return type
+
+62
+00:03:01,320 --> 00:03:05,050
+as it can't contain bullion an
+observable bullying and him.
+
+63
+00:03:06,510 --> 00:03:07,980
+Since verify async
+
+64
+00:03:08,250 --> 00:03:10,260
+may throw some
+custom errors like
+
+65
+00:03:10,440 --> 00:03:11,790
+Jada beauty expired
+
+66
+00:03:12,030 --> 00:03:15,000
+that are not auto recognized
+by the nest js framework.
+
+67
+00:03:15,450 --> 00:03:16,410
+We must wrap it
+
+68
+00:03:16,620 --> 00:03:20,471
+in the try catch blocks and re
+throw an unauthorized exception.
+
+69
+00:03:21,420 --> 00:03:26,040
+Note to improve debugging
+experience here we could log
+
+70
+00:03:26,040 --> 00:03:27,270
+the original message down
+just for development purposes
+
+71
+00:03:27,570 --> 00:03:31,350
+or converted to a user friendly
+message and pass it as an argument to the
+
+72
+00:03:31,350 --> 00:03:33,400
+unauthorized
+exception constructor.
+
+73
+00:03:34,080 --> 00:03:34,590
+Perfect.
+
+74
+00:03:35,100 --> 00:03:36,220
+And lastly.
+
+75
+00:03:36,390 --> 00:03:40,410
+Let's assign the decoded
+payload to the request user property
+
+76
+00:03:40,620 --> 00:03:43,930
+which has a very common
+practice in the know js community.
+
+77
+00:03:44,025 --> 00:03:48,120
+This way we can access the user
+objects later on in our and points
+
+78
+00:03:48,420 --> 00:03:50,500
+or other subsequent guards.
+
+79
+00:03:50,610 --> 00:03:51,180
+However
+
+80
+00:03:51,480 --> 00:03:55,710
+doing this here without
+defining the user key as
+
+81
+00:03:55,800 --> 00:03:57,430
+a constant can lead to
+some unexpected behavior.
+
+82
+00:03:57,480 --> 00:03:58,260
+Let's go ahead
+
+83
+00:03:58,530 --> 00:04:01,110
+and create the i am
+duck constance file.
+
+84
+00:04:01,440 --> 00:04:02,920
+In the i am folder.
+
+85
+00:04:03,210 --> 00:04:07,990
+And inside of it export request
+underscore user underscore key constant.
+
+86
+00:04:08,070 --> 00:04:10,690
+Making an equal
+to the string of user.
+
+87
+00:04:11,640 --> 00:04:12,750
+Now back to our guard
+
+88
+00:04:12,960 --> 00:04:14,530
+let's use it inside.
+
+89
+00:04:21,270 --> 00:04:27,160
+Let's also temporarily at a console log
+just a verify Howard decoded object looks.
+
+90
+00:04:28,680 --> 00:04:32,820
+All right let's save our
+changes and before we
+
+91
+00:04:32,820 --> 00:04:33,420
+bind this guard to any
+routes in our system.
+
+92
+00:04:33,810 --> 00:04:37,600
+Let's head over to insomnia
+to grab a valid access token.
+
+93
+00:04:38,730 --> 00:04:42,749
+Let's call the sign in
+and point again and make
+
+94
+00:04:42,749 --> 00:04:43,749
+sure to copy the access
+token to our clipboard.
+
+95
+00:04:44,670 --> 00:04:47,110
+Next let's switch
+back to our ID.
+
+96
+00:04:47,160 --> 00:04:48,750
+Open up the i am module
+
+97
+00:04:49,050 --> 00:04:51,330
+and register access
+token guard globally
+
+98
+00:04:51,600 --> 00:04:55,180
+using a dedicated app
+underscore guard token.
+
+99
+00:04:59,130 --> 00:05:03,480
+Note that we could have
+binded access token guard to
+
+100
+00:05:03,480 --> 00:05:04,500
+individual routes that
+sort of doing this globally
+
+101
+00:05:04,800 --> 00:05:07,180
+using the use guards decorator.
+
+102
+00:05:07,320 --> 00:05:11,910
+But since it's rather a tedious process we
+decided to auto protect all and points we
+
+103
+00:05:11,910 --> 00:05:14,170
+have in our
+application by default.
+
+104
+00:05:14,430 --> 00:05:16,770
+This is also eight
+recommended best practice.
+
+105
+00:05:17,130 --> 00:05:20,940
+As it mitigates the risk
+of some one forgetting
+
+106
+00:05:20,940 --> 00:05:22,070
+to annotate a newly added
+and point with discard.
+
+107
+00:05:22,860 --> 00:05:26,890
+Now instead every new one point
+will automatically become protected.
+
+108
+00:05:27,060 --> 00:05:30,780
+Since there are certain
+routes from which we want to
+
+109
+00:05:30,780 --> 00:05:32,500
+intentionally skip the
+authentication requirement.
+
+110
+00:05:32,580 --> 00:05:37,180
+We will implement a new decorator that lets
+us exclude those routes in the next lesson.
+
+111
+00:05:37,920 --> 00:05:39,150
+Back to our task at hand.
+
+112
+00:05:39,660 --> 00:05:43,860
+Let's say of all our
+changes switch back to
+
+113
+00:05:43,860 --> 00:05:44,430
+insomnia and try to
+hit the coffee's endpoint
+
+114
+00:05:44,700 --> 00:05:48,360
+the one that was auto generated by
+the resource schematic a few lessons ago
+
+115
+00:05:48,630 --> 00:05:50,200
+mr see what happens.
+
+116
+00:05:56,910 --> 00:05:57,750
+As we can see
+
+117
+00:05:58,020 --> 00:06:01,950
+we received the four
+o one error saying that
+
+118
+00:06:01,950 --> 00:06:02,550
+were unauthorized
+to access this resource
+
+119
+00:06:02,670 --> 00:06:03,670
+rape.
+
+120
+00:06:04,110 --> 00:06:06,240
+Now let's click
+on the headers tab
+
+121
+00:06:06,390 --> 00:06:10,170
+and add the authorization
+header so we can
+
+122
+00:06:10,170 --> 00:06:11,170
+send the access token
+as part of our request.
+
+123
+00:06:11,520 --> 00:06:14,730
+For our key let's call it
+authorization with a capital a
+
+124
+00:06:15,090 --> 00:06:15,930
+and for the value
+
+125
+00:06:16,230 --> 00:06:17,730
+let's paste are access token
+
+126
+00:06:17,910 --> 00:06:21,700
+prefixed with the bearer
+string we copied a moment ago.
+
+127
+00:06:21,840 --> 00:06:22,680
+The click send.
+
+128
+00:06:23,131 --> 00:06:24,990
+Should now see that
+everything works great.
+
+129
+00:06:25,530 --> 00:06:26,370
+We received the
+
+130
+00:06:26,610 --> 00:06:30,689
+this action returns all
+coffee string which is
+
+131
+00:06:30,689 --> 00:06:31,930
+exactly what our coffees
+controller route returns.
+
+132
+00:06:32,310 --> 00:06:33,000
+Our guard
+
+133
+00:06:33,270 --> 00:06:36,600
+was able to verify and
+decode our jwt access token
+
+134
+00:06:36,900 --> 00:06:40,090
+and allowed us access
+into the application excellent.
+
+135
+00:06:40,560 --> 00:06:42,570
+Let's switch back to
+our ID he real quick
+
+136
+00:06:42,750 --> 00:06:46,900
+just to verify what was locked at
+the console for our user payload.
+
+137
+00:06:47,730 --> 00:06:48,420
+And there we have it.
+
+138
+00:06:48,780 --> 00:06:52,860
+Already decoded user payload that will be
+passed down with our Jada beauty tokens.
+
+139
+00:06:53,220 --> 00:06:54,360
+As we mentioned earlier.
+
+140
+00:06:54,780 --> 00:06:56,400
+This could be
+used in other routes
+
+141
+00:06:56,580 --> 00:06:57,360
+other guards.
+
+142
+00:06:57,720 --> 00:07:02,110
+Or anywhere in application where we
+might need this user specific information.
+

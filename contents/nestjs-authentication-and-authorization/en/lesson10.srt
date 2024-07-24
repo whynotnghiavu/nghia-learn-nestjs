@@ -1,0 +1,651 @@
+﻿1
+00:00:01,050 --> 00:00:03,390
+In the lesson protecting
+our routes with a guard.
+
+2
+00:00:03,780 --> 00:00:06,120
+After we validated the
+incoming access token.
+
+3
+00:00:06,540 --> 00:00:09,150
+We decided to Ottawa's
+sign the Dakota payload
+
+4
+00:00:09,450 --> 00:00:10,650
+and put it in the requests
+
+5
+00:00:10,830 --> 00:00:11,730
+user property
+
+6
+00:00:12,180 --> 00:00:12,570
+but.
+
+7
+00:00:12,900 --> 00:00:15,660
+How can we grabbed this object
+from within are protected routes.
+
+8
+00:00:16,050 --> 00:00:16,830
+How can we determine
+
+9
+00:00:16,980 --> 00:00:20,350
+who the identity of the
+current a p i request is.
+
+10
+00:00:20,520 --> 00:00:21,840
+Let's grab this request object
+
+11
+00:00:22,140 --> 00:00:24,090
+in learn how we can
+get the user information
+
+12
+00:00:24,240 --> 00:00:24,870
+and utilize it
+
+13
+00:00:25,050 --> 00:00:26,230
+and her coat.
+
+14
+00:00:26,340 --> 00:00:27,630
+But switch over to our ID
+
+15
+00:00:27,960 --> 00:00:30,460
+and open up the
+coffee's controller file.
+
+16
+00:00:31,110 --> 00:00:35,040
+Or example sake let's say would like to
+retrieve the object representing the active
+
+17
+00:00:35,040 --> 00:00:37,170
+user aka a currently
+logged in user.
+
+18
+00:00:37,500 --> 00:00:39,150
+Inside of the find
+all get 'em point.
+
+19
+00:00:39,750 --> 00:00:43,691
+For demonstration purposes let's add
+a new method argument called request.
+
+20
+00:00:43,770 --> 00:00:45,940
+An annotated with
+the wreck decorator.
+
+21
+00:00:46,920 --> 00:00:48,450
+Next within the method body
+
+22
+00:00:48,690 --> 00:00:50,490
+was at a simple console log
+
+23
+00:00:50,940 --> 00:00:53,740
+and log out request dot user.
+
+24
+00:00:56,550 --> 00:00:57,660
+Let's save our changes
+
+25
+00:00:57,960 --> 00:00:59,530
+and head over to insomnia.
+
+26
+00:01:00,030 --> 00:01:04,080
+Let's call the coffee's get route again
+just so we can trigger this console log.
+
+27
+00:01:04,650 --> 00:01:06,668
+Now if we switch back to our ID.
+
+28
+00:01:06,840 --> 00:01:08,470
+And open up our terminal.
+
+29
+00:01:09,270 --> 00:01:10,110
+As we can see
+
+30
+00:01:10,290 --> 00:01:13,540
+our decoded payload got
+logged in the console here.
+
+31
+00:01:13,620 --> 00:01:18,160
+Now even though this works this
+approach seems to be far from ideal right.
+
+32
+00:01:18,630 --> 00:01:20,820
+First off taking the
+entire request object
+
+33
+00:01:20,940 --> 00:01:22,530
+as an input argument
+of our method.
+
+34
+00:01:22,890 --> 00:01:26,670
+Makes it harder to test as the request
+interface is generally quite broad.
+
+35
+00:01:27,150 --> 00:01:27,930
+Another problem.
+
+36
+00:01:28,350 --> 00:01:31,890
+That it requires an
+understanding of the access token
+
+37
+00:01:31,890 --> 00:01:33,300
+guard implementation which
+assigns the Dakota payload.
+
+38
+00:01:33,642 --> 00:01:35,100
+The request user keep.
+
+39
+00:01:35,460 --> 00:01:37,110
+In some people might
+not be aware of this
+
+40
+00:01:37,230 --> 00:01:38,592
+especially newcomers.
+
+41
+00:01:38,640 --> 00:01:41,140
+People who joined the
+project at a later stage.
+
+42
+00:01:41,400 --> 00:01:43,300
+We simplify this
+whole situation.
+
+43
+00:01:43,440 --> 00:01:45,240
+Let's create a new
+puram decorator
+
+44
+00:01:45,450 --> 00:01:47,650
+who handle a few things for us.
+
+45
+00:01:47,850 --> 00:01:49,410
+Inside of the i am folder
+
+46
+00:01:49,710 --> 00:01:52,660
+let's create a new directory
+and call it decorators.
+
+47
+00:01:56,790 --> 00:01:58,890
+Inside this new folder
+let's add a new file
+
+48
+00:01:59,310 --> 00:01:59,910
+and name it.
+
+49
+00:02:00,270 --> 00:02:03,700
+Active dash user
+dot decorator dot ts.
+
+50
+00:02:04,650 --> 00:02:05,400
+I the file.
+
+51
+00:02:05,850 --> 00:02:08,070
+Must declare a new
+active user decorator
+
+52
+00:02:08,310 --> 00:02:11,040
+but the help of create
+puram decorator utility
+
+53
+00:02:11,190 --> 00:02:13,285
+exported from nastiest comment.
+
+54
+00:02:13,980 --> 00:02:16,710
+If you're unfamiliar with the
+create puram decorator function.
+
+55
+00:02:17,041 --> 00:02:20,520
+Recommend looking at the bonus
+create custom puram decorators lesson
+
+56
+00:02:20,790 --> 00:02:22,600
+from our fundamentals course.
+
+57
+00:02:23,190 --> 00:02:26,760
+Next up let's pass the
+following function to
+
+58
+00:02:26,760 --> 00:02:27,240
+the create puram
+decorator as an argument.
+
+59
+00:02:27,570 --> 00:02:29,770
+The code can be found
+below the course video.
+
+60
+00:02:30,060 --> 00:02:33,150
+Now let's break everything
+down to see what we're
+
+61
+00:02:33,150 --> 00:02:34,750
+doing here to get a better
+understanding of everything.
+
+62
+00:02:35,085 --> 00:02:36,180
+In the first line here.
+
+63
+00:02:36,511 --> 00:02:41,470
+Are grabbing the request object from
+the execution context using switch to http
+
+64
+00:02:41,640 --> 00:02:43,960
+and calling the
+get request method.
+
+65
+00:02:44,910 --> 00:02:45,480
+Next
+
+66
+00:02:45,630 --> 00:02:49,080
+from that request object were
+selecting the decoded user payload
+
+67
+00:02:49,440 --> 00:02:51,730
+and assigning it
+to the user variable.
+
+68
+00:02:52,050 --> 00:02:52,680
+Lastly
+
+69
+00:02:52,980 --> 00:02:55,560
+if a field parameter was
+passed into the decorator
+
+70
+00:02:55,980 --> 00:02:59,280
+and we want to grab that corresponding
+field property from the user object.
+
+71
+00:02:59,730 --> 00:03:02,410
+Otherwise we return
+the entire user object.
+
+72
+00:03:02,730 --> 00:03:04,980
+Okay so the code here is
+straightforward enough so so far
+
+73
+00:03:05,460 --> 00:03:08,370
+but will end up saving us a
+lot of boilerplate code and time
+
+74
+00:03:08,490 --> 00:03:09,090
+in the future.
+
+75
+00:03:09,630 --> 00:03:10,740
+So let's save our changes.
+
+76
+00:03:11,160 --> 00:03:14,490
+At back to the coffee's controller
+and instead of using the wreck object.
+
+77
+00:03:15,000 --> 00:03:19,570
+Let's now make sure to use our new
+active user decorator that we just created.
+
+78
+00:03:24,240 --> 00:03:26,280
+But everything in place
+let's save our changes
+
+79
+00:03:26,490 --> 00:03:28,500
+i'd ever do insomnia
+and click send again.
+
+80
+00:03:29,040 --> 00:03:32,490
+Once we receive the
+response back if we switch
+
+81
+00:03:32,490 --> 00:03:33,240
+back to our ID and open
+up our terminals again.
+
+82
+00:03:33,870 --> 00:03:36,930
+We'll see we'll get logged into the
+console and as we can see again.
+
+83
+00:03:37,260 --> 00:03:38,670
+Are accustomed decorator works
+
+84
+00:03:38,910 --> 00:03:42,300
+as intended and we no
+longer have to inject the
+
+85
+00:03:42,300 --> 00:03:43,720
+entire request object
+into her handler great.
+
+86
+00:03:43,830 --> 00:03:44,940
+As we mentioned earlier.
+
+87
+00:03:45,330 --> 00:03:49,560
+Now that we're not using the request
+itself this will help keep tests simpler
+
+88
+00:03:49,770 --> 00:03:52,360
+is will be easy to mock
+out our new decorator.
+
+89
+00:03:52,710 --> 00:03:53,550
+Back to our code.
+
+90
+00:03:53,880 --> 00:03:56,475
+There is one last thing
+we could improve here.
+
+91
+00:03:56,580 --> 00:03:57,120
+So far
+
+92
+00:03:57,330 --> 00:04:00,990
+we haven't declared what the
+actual shape of our jwt payload is.
+
+93
+00:04:01,380 --> 00:04:04,110
+Which and our case represents
+the decoded user data.
+
+94
+00:04:04,680 --> 00:04:06,820
+That a make
+things strongly type.
+
+95
+00:04:07,020 --> 00:04:08,250
+Let's create a new file
+
+96
+00:04:08,370 --> 00:04:10,950
+inside of the i am
+slash interfaces folder
+
+97
+00:04:11,400 --> 00:04:12,030
+and name it.
+
+98
+00:04:12,390 --> 00:04:14,160
+Active dash user dashed data.
+
+99
+00:04:14,490 --> 00:04:16,720
+Not interface that to yes.
+
+100
+00:04:19,170 --> 00:04:23,080
+Inside this file let's start by adding
+the active user data interface.
+
+101
+00:04:23,670 --> 00:04:26,100
+Inside this interface
+let's declare to properties.
+
+102
+00:04:26,520 --> 00:04:26,940
+Tub
+
+103
+00:04:27,420 --> 00:04:28,720
+and email.
+
+104
+00:04:29,160 --> 00:04:30,720
+In our case stub
+
+105
+00:04:30,930 --> 00:04:34,000
+represents the user ID
+that granted this token.
+
+106
+00:04:34,200 --> 00:04:35,100
+While email
+
+107
+00:04:35,370 --> 00:04:37,740
+is just an extra user
+specific prop forty
+
+108
+00:04:37,950 --> 00:04:41,470
+we provided in the authentication
+service when generating the token.
+
+109
+00:04:41,730 --> 00:04:42,810
+Pwt beauty payload
+
+110
+00:04:43,110 --> 00:04:46,890
+contains a few other
+properties which we've seen
+
+111
+00:04:46,890 --> 00:04:47,550
+when we logged the
+user object in the console.
+
+112
+00:04:47,910 --> 00:04:49,320
+For example e x p.
+
+113
+00:04:49,650 --> 00:04:51,840
+Which is the exploration
+timestamp of the token
+
+114
+00:04:52,140 --> 00:04:53,040
+or a u d
+
+115
+00:04:53,220 --> 00:04:56,040
+which is the audience we passed
+then when generating the token.
+
+116
+00:04:56,550 --> 00:05:00,780
+As these are irrelevant to
+the user and this interface we
+
+117
+00:05:00,780 --> 00:05:03,130
+won't be adding them to the
+active user data interface you.
+
+118
+00:05:03,270 --> 00:05:04,830
+All right with
+everything here in place.
+
+119
+00:05:05,220 --> 00:05:06,180
+Let's save our changes
+
+120
+00:05:06,300 --> 00:05:08,980
+and make use of this
+newly defined interface.
+
+121
+00:05:09,510 --> 00:05:10,110
+First up.
+
+122
+00:05:10,440 --> 00:05:13,200
+Let's switch back to the active
+user decorator would just created.
+
+123
+00:05:13,710 --> 00:05:16,710
+Here we could start by strongly
+typing the field perimeter.
+
+124
+00:05:17,040 --> 00:05:19,810
+Using the key of active
+user data expression.
+
+125
+00:05:20,580 --> 00:05:23,610
+And next we can also specify
+the type for the user variable
+
+126
+00:05:23,730 --> 00:05:24,880
+as follows.
+
+127
+00:05:27,450 --> 00:05:27,960
+Perfect.
+
+128
+00:05:28,410 --> 00:05:28,920
+Now
+
+129
+00:05:29,190 --> 00:05:30,990
+let's navigate to the
+coffee's controller
+
+130
+00:05:31,110 --> 00:05:34,050
+and use the active user
+data interface there as well.
+
+131
+00:05:34,410 --> 00:05:35,940
+Which can be found
+in the user perimeter.
+
+132
+00:05:36,300 --> 00:05:37,931
+Of our find all method.
+
+133
+00:05:40,230 --> 00:05:41,100
+And lastly.
+
+134
+00:05:41,460 --> 00:05:43,500
+Let's open up the
+authentication service
+
+135
+00:05:43,740 --> 00:05:48,120
+and make sure that the payload we pass to
+the jw tea service when signing the token.
+
+136
+00:05:48,630 --> 00:05:51,190
+Fulfills the active
+user data interface.
+
+137
+00:05:54,750 --> 00:05:55,200
+Rate
+
+138
+00:05:55,350 --> 00:05:59,580
+now we are fully type-safe
+and we've simplified
+
+139
+00:05:59,610 --> 00:05:59,820
+how we can access
+current user data and our
+
+140
+00:05:59,940 --> 00:06:00,390
+points.
+
+141
+00:06:00,750 --> 00:06:03,670
+All of which will come in
+handy in future lessons.
+

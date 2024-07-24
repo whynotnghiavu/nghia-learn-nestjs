@@ -1,0 +1,1019 @@
+﻿1
+00:00:01,020 --> 00:00:02,020
+Authorization.
+
+2
+00:00:02,310 --> 00:00:06,480
+Which is often confused or combined with
+the concept of authentication which we've
+
+3
+00:00:06,489 --> 00:00:08,310
+been discussing
+so far in this course.
+
+4
+00:00:08,640 --> 00:00:11,130
+Is the process of
+giving a user permission
+
+5
+00:00:11,370 --> 00:00:14,290
+to access a specific
+resource or function.
+
+6
+00:00:14,340 --> 00:00:15,120
+For example
+
+7
+00:00:15,360 --> 00:00:17,730
+an administrative user
+is allowed to create
+
+8
+00:00:18,030 --> 00:00:18,360
+edit
+
+9
+00:00:18,570 --> 00:00:19,560
+and delete coffees.
+
+10
+00:00:19,890 --> 00:00:23,220
+Whereas as a non administrative
+user is only authorized
+
+11
+00:00:23,340 --> 00:00:24,820
+to view coffees.
+
+12
+00:00:25,080 --> 00:00:29,530
+Authorization as orthogonal meaning
+that it is independent from authentication.
+
+13
+00:00:29,730 --> 00:00:32,250
+However as we have already
+mentioned in previous lessons.
+
+14
+00:00:32,610 --> 00:00:35,520
+Authorization does require
+an authentication mechanism
+
+15
+00:00:35,820 --> 00:00:37,410
+which luckily we've
+implemented already.
+
+16
+00:00:38,010 --> 00:00:39,450
+Role-based access control
+
+17
+00:00:39,690 --> 00:00:44,640
+or rb a a c as a policy
+neutral access control
+
+18
+00:00:44,640 --> 00:00:45,640
+mechanism defined
+around roles and privileges.
+
+19
+00:00:46,110 --> 00:00:50,670
+When using role-based access control you
+examined the needs of your users and group
+
+20
+00:00:50,671 --> 00:00:53,770
+them into specified roles
+based on shared responsibilities.
+
+21
+00:00:54,120 --> 00:00:54,810
+For example.
+
+22
+00:00:55,230 --> 00:00:58,060
+Let's say we have a
+coffees catalog application.
+
+23
+00:00:58,110 --> 00:01:02,430
+Users with the admiral
+can manage costs please
+
+24
+00:01:02,430 --> 00:01:02,970
+add edit or remove
+them from the catalog.
+
+25
+00:01:03,420 --> 00:01:04,080
+On the other hand.
+
+26
+00:01:04,530 --> 00:01:08,460
+Regular users can only
+navigate through the
+
+27
+00:01:08,460 --> 00:01:09,460
+list of coffees and
+view individual coffers.
+
+28
+00:01:10,080 --> 00:01:12,990
+We might even have a
+supervisor or super admin role
+
+29
+00:01:13,170 --> 00:01:15,210
+that in addition to
+managing coffees
+
+30
+00:01:15,510 --> 00:01:16,380
+can even create
+
+31
+00:01:16,650 --> 00:01:20,100
+edit and remove existing users
+including those with the role admin.
+
+32
+00:01:20,670 --> 00:01:24,450
+They might even have
+the ability to promote
+
+33
+00:01:24,450 --> 00:01:25,450
+a user from being a
+regular one to an advert.
+
+34
+00:01:25,560 --> 00:01:26,560
+Essentially.
+
+35
+00:01:26,640 --> 00:01:30,330
+A role is a collection of permissions
+that you can apply to users as.
+
+36
+00:01:30,750 --> 00:01:33,480
+Using roles makes
+it easier to add delete
+
+37
+00:01:33,720 --> 00:01:35,220
+and customize permissions
+
+38
+00:01:35,490 --> 00:01:39,100
+as opposed to assigning
+permissions to every user individually.
+
+39
+00:01:39,900 --> 00:01:40,740
+In this lesson.
+
+40
+00:01:41,250 --> 00:01:43,170
+We will define a role enum
+
+41
+00:01:43,470 --> 00:01:46,720
+that will represent all of the
+role supported in our project.
+
+42
+00:01:46,980 --> 00:01:50,700
+And our case we're just
+going to make these static
+
+43
+00:01:50,700 --> 00:01:51,690
+values that aren't coming
+from a database or anything
+
+44
+00:01:51,900 --> 00:01:53,500
+but in certain situations.
+
+45
+00:01:53,700 --> 00:01:56,670
+We would want these roles stored
+in a database and even better.
+
+46
+00:01:57,060 --> 00:01:59,080
+Maybe we'd want
+to have a dashboard.
+
+47
+00:01:59,160 --> 00:02:02,310
+Where we could create new roles
+and assign them to existing users.
+
+48
+00:02:02,820 --> 00:02:03,540
+If you wish
+
+49
+00:02:03,840 --> 00:02:07,260
+you could generate a new roles
+resource using the nastiest July.
+
+50
+00:02:07,620 --> 00:02:10,990
+Implement the karate and
+points declare a role entity.
+
+51
+00:02:11,070 --> 00:02:15,280
+Establish a relationship between
+the user and the role entity etc.
+
+52
+00:02:15,540 --> 00:02:19,420
+But since all of that is outside of
+the scope of this specific extension.
+
+53
+00:02:19,500 --> 00:02:23,350
+Will proceed uh-huh head with a
+predefined and static list of roles.
+
+54
+00:02:24,030 --> 00:02:25,320
+So back to our code.
+
+55
+00:02:25,860 --> 00:02:30,330
+Let's switch to r ID and start
+by adding a new directory
+
+56
+00:02:30,390 --> 00:02:31,870
+and side of the users
+folder and call it ninos.
+
+57
+00:02:34,620 --> 00:02:35,610
+Inside this folder.
+
+58
+00:02:36,000 --> 00:02:40,150
+Let's create a new ina
+named role da enough that t s.
+
+59
+00:02:40,980 --> 00:02:41,730
+In this file
+
+60
+00:02:41,970 --> 00:02:45,100
+let's declare the following
+static enough that will use.
+
+61
+00:02:45,540 --> 00:02:47,400
+This ina consists of two values.
+
+62
+00:02:47,730 --> 00:02:48,300
+Regular
+
+63
+00:02:48,600 --> 00:02:50,160
+which represents a regular user
+
+64
+00:02:50,280 --> 00:02:51,120
+and admin.
+
+65
+00:02:51,450 --> 00:02:54,611
+Which indicate someone who
+is capable of managing coffees.
+
+66
+00:02:55,020 --> 00:02:56,340
+As we have mentioned earlier
+
+67
+00:02:56,580 --> 00:03:00,300
+depending on what application you're about
+to build you could add more and different
+
+68
+00:03:00,300 --> 00:03:02,550
+roles to this as we
+mentioned earlier baby
+
+69
+00:03:02,790 --> 00:03:04,720
+you'd even want to
+have been in a database.
+
+70
+00:03:05,550 --> 00:03:08,610
+Next up let's open up our
+user entity class and at a new
+
+71
+00:03:08,910 --> 00:03:10,660
+role column there.
+
+72
+00:03:11,460 --> 00:03:12,460
+Great.
+
+73
+00:03:12,750 --> 00:03:14,220
+There's one caveat here though.
+
+74
+00:03:14,550 --> 00:03:17,940
+Our existing user doesn't have
+the role assigned as it was created
+
+75
+00:03:18,150 --> 00:03:20,260
+before we introduced this com.
+
+76
+00:03:20,490 --> 00:03:23,190
+Let's update all of our
+users using the new nests
+
+77
+00:03:23,340 --> 00:03:24,760
+rebel feature.
+
+78
+00:03:25,590 --> 00:03:26,160
+Rebel.
+
+79
+00:03:26,550 --> 00:03:30,150
+Is a simple interactive environment
+that takes single user inputs.
+
+80
+00:03:30,510 --> 00:03:31,380
+Executes them
+
+81
+00:03:31,710 --> 00:03:33,210
+and returns of result back.
+
+82
+00:03:33,660 --> 00:03:34,620
+The rebel future
+
+83
+00:03:34,770 --> 00:03:38,520
+lets you inspect your dependency graph
+and call methods on your providers and
+
+84
+00:03:38,520 --> 00:03:40,500
+controllers directly
+from your terminal.
+
+85
+00:03:40,950 --> 00:03:44,520
+Note that we're using the
+rep of feature here mainly
+
+86
+00:03:44,520 --> 00:03:45,600
+for ease of use as we're
+learning new concepts
+
+87
+00:03:45,810 --> 00:03:48,270
+in dealing with our services
+and database in this course
+
+88
+00:03:48,720 --> 00:03:51,120
+but you wouldn't want to use
+this in any production setting
+
+89
+00:03:51,270 --> 00:03:52,170
+or anything like that.
+
+90
+00:03:52,620 --> 00:03:55,080
+It's just a fantastic option
+during development time.
+
+91
+00:03:55,410 --> 00:03:58,620
+Or general application introspection
+to see how everything's working.
+
+92
+00:03:59,250 --> 00:04:03,450
+All right so let's create a new rebel t
+s file alongside of our existing main t s
+
+93
+00:04:03,450 --> 00:04:05,620
+file and entering
+the following code.
+
+94
+00:04:07,140 --> 00:04:10,560
+We will be diving into
+exactly was happening
+
+95
+00:04:10,560 --> 00:04:11,160
+here as it's outside of
+the scope of this course
+
+96
+00:04:11,580 --> 00:04:14,520
+but there's a link below
+the video with more
+
+97
+00:04:14,520 --> 00:04:15,520
+information about
+rebel if you're interested.
+
+98
+00:04:15,870 --> 00:04:18,630
+Now in our terminals let's start
+the rebel with the following command
+
+99
+00:04:19,080 --> 00:04:20,190
+and p m run start.
+
+100
+00:04:20,520 --> 00:04:22,680
+Dash dash dash dash entry file
+
+101
+00:04:22,860 --> 00:04:24,340
+and in the word rebel.
+
+102
+00:04:26,940 --> 00:04:28,310
+Once it's initialized.
+
+103
+00:04:28,800 --> 00:04:32,190
+Let's use the users repository
+to update our user entity
+
+104
+00:04:32,340 --> 00:04:33,750
+calling the update method.
+
+105
+00:04:34,140 --> 00:04:36,520
+Grabbing the user by ID one.
+
+106
+00:04:36,570 --> 00:04:39,430
+And setting the role
+to the string of regular.
+
+107
+00:04:39,810 --> 00:04:40,810
+Perfect.
+
+108
+00:04:40,860 --> 00:04:44,580
+Now let's retrieve all
+the users just a double
+
+109
+00:04:44,580 --> 00:04:45,580
+check that the role
+was properly updated.
+
+110
+00:04:45,870 --> 00:04:48,069
+Right and as we
+can see it worked.
+
+111
+00:04:48,480 --> 00:04:52,620
+We have only updated one user here because
+it's all we had in our database but you
+
+112
+00:04:52,620 --> 00:04:55,930
+made his do this with other
+users if you have more in yours.
+
+113
+00:04:56,040 --> 00:04:58,770
+Of course in the real
+world who wouldn't use the
+
+114
+00:04:58,770 --> 00:04:59,860
+rebel to make these kinds
+of updates of migrations.
+
+115
+00:05:00,150 --> 00:05:01,380
+Back to our task at hand.
+
+116
+00:05:01,800 --> 00:05:05,370
+We now need to implement a decorator
+that would lead us indicate what roles are
+
+117
+00:05:05,370 --> 00:05:07,650
+required to access
+specific and points.
+
+118
+00:05:08,160 --> 00:05:09,690
+Though inside the i am folder.
+
+119
+00:05:10,080 --> 00:05:12,000
+Let's start of by
+creating a new directory
+
+120
+00:05:12,300 --> 00:05:13,540
+called authorization.
+
+121
+00:05:13,770 --> 00:05:17,620
+Where will keep everything related
+to our upcoming off authorization work.
+
+122
+00:05:18,240 --> 00:05:22,740
+Inside this new folder let's create a
+directory named decorators and create a new
+
+123
+00:05:22,800 --> 00:05:25,720
+roles dot decorator
+got t s file there.
+
+124
+00:05:28,260 --> 00:05:31,590
+Following what we've already did with
+the ot decorator and previous lessons.
+
+125
+00:05:31,980 --> 00:05:34,290
+Will once again use
+the set meditate or helper
+
+126
+00:05:34,590 --> 00:05:37,720
+a will grab roles that are
+passed into the decorator.
+
+127
+00:05:37,950 --> 00:05:38,310
+Rate
+
+128
+00:05:38,610 --> 00:05:39,510
+with this and place
+
+129
+00:05:39,750 --> 00:05:41,310
+we can now generate a new guard
+
+130
+00:05:41,430 --> 00:05:44,490
+slots open up our terminals and
+in a separate terminal window.
+
+131
+00:05:45,000 --> 00:05:47,500
+Use the necessary
+osceola to created.
+
+132
+00:05:47,700 --> 00:05:52,481
+Nest g guard i am slash
+authorization splash guards slash roles.
+
+133
+00:05:52,710 --> 00:05:53,730
+Let's open up this file
+
+134
+00:05:54,181 --> 00:05:58,510
+and let's first inject the reflector class
+we've seen in previous lessons as well.
+
+135
+00:06:00,780 --> 00:06:03,060
+Now onto the can activate
+method of our guard.
+
+136
+00:06:03,510 --> 00:06:07,620
+Let's serpa retrieving
+the required roles for
+
+137
+00:06:07,620 --> 00:06:08,190
+the target endpoint using
+the reflector provider.
+
+138
+00:06:08,610 --> 00:06:10,380
+Making sure to look
+both in the handler.
+
+139
+00:06:10,710 --> 00:06:13,470
+If the decorators used
+methods and at the class level
+
+140
+00:06:13,590 --> 00:06:17,410
+if used on an entire
+controller resolver class etc.
+
+141
+00:06:18,150 --> 00:06:20,040
+In the case there
+are no rules required
+
+142
+00:06:20,340 --> 00:06:23,850
+we assume that this handler
+doesn't require any additional
+
+143
+00:06:23,850 --> 00:06:26,020
+validation and we let to
+request proceed right away.
+
+144
+00:06:28,080 --> 00:06:28,650
+Otherwise
+
+145
+00:06:28,890 --> 00:06:31,950
+me to grab the act of user
+data from the request object
+
+146
+00:06:32,070 --> 00:06:34,140
+that we assigned in
+the access token guard
+
+147
+00:06:34,601 --> 00:06:37,390
+and check if it has one
+of the required roles.
+
+148
+00:06:39,960 --> 00:06:40,960
+Rate.
+
+149
+00:06:41,070 --> 00:06:41,970
+One issue though.
+
+150
+00:06:42,300 --> 00:06:45,840
+As you can see the role property is
+now highlighted and we're getting an error
+
+151
+00:06:45,840 --> 00:06:49,800
+stating that property role does
+not exist on type active user data.
+
+152
+00:06:50,251 --> 00:06:52,510
+Let's go ahead and
+fix this real quick.
+
+153
+00:06:52,740 --> 00:06:55,781
+First let's navigate to the
+active user data interface.
+
+154
+00:06:56,190 --> 00:06:59,110
+And add the missing
+role property here.
+
+155
+00:07:02,910 --> 00:07:03,420
+Next.
+
+156
+00:07:03,810 --> 00:07:06,240
+We need to open up
+the authentication service
+
+157
+00:07:06,390 --> 00:07:09,370
+scroll up to the
+generate tokens method.
+
+158
+00:07:10,470 --> 00:07:12,990
+And make sure that we
+are passing the user dot role
+
+159
+00:07:13,140 --> 00:07:14,910
+alongside the
+email for the payload
+
+160
+00:07:15,180 --> 00:07:17,440
+of every sign access token.
+
+161
+00:07:19,440 --> 00:07:20,440
+Perfect.
+
+162
+00:07:20,610 --> 00:07:22,230
+All right with our guard all set
+
+163
+00:07:22,500 --> 00:07:24,090
+we should be able
+to register at globally
+
+164
+00:07:24,300 --> 00:07:26,730
+similarly to what we did
+with the authentication guard.
+
+165
+00:07:27,210 --> 00:07:29,040
+Was open up i am module
+
+166
+00:07:29,310 --> 00:07:31,210
+and provide the app guard.
+
+167
+00:07:31,470 --> 00:07:33,790
+Utilizing the use class syntax
+
+168
+00:07:33,960 --> 00:07:36,460
+and we can pass in
+our roles guard here.
+
+169
+00:07:37,740 --> 00:07:39,900
+Rate with our guard
+register globally now.
+
+170
+00:07:40,440 --> 00:07:41,850
+The only thing
+that's left for us to do
+
+171
+00:07:41,970 --> 00:07:46,690
+is to entity methods that require specific
+roles with our new roles decorator.
+
+172
+00:07:47,130 --> 00:07:50,140
+Will stretto and open
+up our coffees controller.
+
+173
+00:07:50,580 --> 00:07:51,870
+Unless annotate create
+
+174
+00:07:52,020 --> 00:07:52,500
+update
+
+175
+00:07:52,620 --> 00:07:54,100
+and delete operations.
+
+176
+00:07:54,330 --> 00:07:55,620
+With the roles decorator
+
+177
+00:07:55,920 --> 00:07:58,680
+setting their required
+role all to roll dot admin.
+
+178
+00:07:59,070 --> 00:08:03,820
+Which will set our application so that
+only admins can access these and points.
+
+179
+00:08:04,500 --> 00:08:06,210
+With these roles
+decorators applied.
+
+180
+00:08:06,720 --> 00:08:11,160
+Let's save our changes
+head over to insomnia and
+
+181
+00:08:11,160 --> 00:08:12,580
+test out our create slash
+coffees post endpoint.
+
+182
+00:08:19,620 --> 00:08:20,700
+And as we can see.
+
+183
+00:08:21,300 --> 00:08:24,540
+We received the four o three
+forbidden resource air back
+
+184
+00:08:24,690 --> 00:08:26,350
+just as we should expect.
+
+185
+00:08:26,700 --> 00:08:27,420
+From now on.
+
+186
+00:08:27,720 --> 00:08:31,530
+Users that don't have the admin
+role assigned won't be able to create
+
+187
+00:08:31,650 --> 00:08:32,040
+edit
+
+188
+00:08:32,160 --> 00:08:34,150
+or delete coffees perfect.
+
+189
+00:08:34,350 --> 00:08:36,370
+Now let's switch back to our ID.
+
+190
+00:08:36,570 --> 00:08:37,710
+Open up our terminals
+
+191
+00:08:37,860 --> 00:08:42,240
+switch back to the rebel
+window and execute the
+
+192
+00:08:42,240 --> 00:08:42,750
+same up the inquiry
+with one subtle difference.
+
+193
+00:08:43,170 --> 00:08:45,060
+Instead of using
+regular as the role
+
+194
+00:08:45,360 --> 00:08:47,440
+let's now set it to admin.
+
+195
+00:08:48,540 --> 00:08:49,350
+As we can see.
+
+196
+00:08:49,800 --> 00:08:53,550
+There was one entity
+affected which means our
+
+197
+00:08:53,580 --> 00:08:54,580
+user should have the
+admin role now great.
+
+198
+00:08:54,870 --> 00:08:58,500
+Let's head back over to insomnia once again
+to test if we can access that endpoint
+
+199
+00:08:58,680 --> 00:09:00,400
+now that we're an admin.
+
+200
+00:09:00,570 --> 00:09:00,990
+First.
+
+201
+00:09:01,320 --> 00:09:06,120
+We have to re authenticate
+ourselves as the users
+
+202
+00:09:06,120 --> 00:09:07,510
+role is embedded in the
+Jada beauty access token.
+
+203
+00:09:07,651 --> 00:09:10,090
+Let's go ahead at
+and sign in again.
+
+204
+00:09:10,620 --> 00:09:12,490
+Once we receive the response.
+
+205
+00:09:12,630 --> 00:09:15,030
+Let's copy the newly
+generated access token
+
+206
+00:09:15,150 --> 00:09:19,320
+and update the authorization header
+in our post slash coffees endpoint tab
+
+207
+00:09:19,770 --> 00:09:21,550
+and click send again.
+
+208
+00:09:22,890 --> 00:09:23,730
+And voila
+
+209
+00:09:24,000 --> 00:09:27,270
+r a p i returned back successful
+with a to a one created
+
+210
+00:09:27,420 --> 00:09:29,710
+this action adds a new coffee.
+
+211
+00:09:29,880 --> 00:09:30,660
+As we can see.
+
+212
+00:09:31,170 --> 00:09:32,310
+Now that we are admins
+
+213
+00:09:32,580 --> 00:09:36,600
+our guard is working just
+as intended and owning
+
+214
+00:09:36,600 --> 00:09:38,230
+allowing us access if
+we are an authorized role.
+
+215
+00:09:38,460 --> 00:09:40,170
+We covered a lot in this lesson
+
+216
+00:09:40,350 --> 00:09:41,910
+but as you can
+see we've let out out
+
+217
+00:09:42,030 --> 00:09:44,970
+all the foundations for
+authorization itself in from here.
+
+218
+00:09:45,360 --> 00:09:49,690
+There are many additional ways or directions
+we can go in terms of authorization.
+
+219
+00:09:49,860 --> 00:09:51,060
+Just depends on what we need
+
+220
+00:09:51,300 --> 00:09:52,840
+and are given applications.
+
