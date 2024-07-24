@@ -1,0 +1,108 @@
+1
+00:00:00,660 --> 00:00:09,870
+Trong bài học này, chúng ta sẽ tạo microservice đầu tiên và gọi nó là dịch vụ dash quy trình làm việc.  Dịch vụ cơ sở ảo hiện có của chúng tôi đã được tạo ở gần đầu khóa học này.
+
+2
+00:00:10,200 --> 00:00:21,210
+Sẽ sử dụng vi dịch vụ mới này để quản lý quy trình công việc.  Có nghĩa là tạo màn hình, v.v. Để làm cho mọi thứ đơn giản hơn, chúng ta sẽ sử dụng cla khó chịu nhất để chuyển dự án của chúng ta thành một kho lưu trữ đơn âm.
+
+3
+00:00:21,750 --> 00:00:34,090
+Cũng sẽ sử dụng lớp này để tạo microservice mới trong kho phương châm này.  Chỉ trong trường hợp bạn không quen với thuật ngữ mono repo là một kho lưu trữ duy nhất chứa nhiều dự án.
+
+4
+00:00:34,290 --> 00:00:42,270
+Trong trường hợp của chúng ta.  Sẽ phải có các dự án ăn dự án cơ sở ảo, ứng dụng tổ hiện có của chúng tôi và dự án dịch vụ quy trình công việc.
+
+5
+00:00:42,660 --> 00:00:51,670
+Dịch vụ vi mô mới của chúng tôi.  Có cả hai trong một kho lưu trữ duy nhất sẽ giúp bạn dễ dàng chia sẻ các mô hình giao diện bằng mã chung khác giữa chúng.
+
+6
+00:00:52,230 --> 00:00:59,770
+Vì vậy, hãy bắt đầu bằng cách mở terminal của chúng tôi và chạy lệnh sau.  Dịch vụ dash quy trình làm việc của ứng dụng Nest g.
+
+7
+00:01:00,420 --> 00:01:06,760
+Lệnh này sẽ tạo một ứng dụng lồng mới có tên là dịch vụ quy trình công việc và đặt nó vào thư mục ứng dụng.
+
+8
+00:01:07,140 --> 00:01:14,680
+Ai cũng sẽ cập nhật Nest sila Jace trong hồ sơ và thêm mục nhập dịch vụ tro ngày của quy trình làm việc mới vào phần dự án.
+
+9
+00:01:15,570 --> 00:01:25,950
+Nếu nhìn vào cấu trúc thư mục, chúng ta có thể thấy nó thay vì có thư mục src hoặc source.  Bây giờ chúng ta có các ứng dụng cơ sở dấu gạch ngang ảo và dịch vụ dấu gạch ngang quy trình công việc.
+
+10
+00:01:26,340 --> 00:01:35,140
+Cả hai đều nằm trong thư mục ứng dụng.  Để đơn giản, mọi thứ sẽ sử dụng http làm giao thức liên lạc giữa hai ứng dụng.
+
+11
+00:01:35,640 --> 00:01:42,540
+Chúng ta sẽ đi sâu vào các giao thức khác và tích hợp trình trung chuyển tin nhắn tích hợp trong các bài học sau.  Trước khi chúng ta tiến hành.
+
+12
+00:01:42,960 --> 00:01:48,820
+Hãy đảm bảo rằng chúng tôi cập nhật cổng mà ứng dụng dịch vụ quy trình làm việc sẽ chạy để tránh xung đột.
+
+13
+00:01:49,170 --> 00:01:55,800
+Hãy mở tệp t chính của dịch vụ quy trình công việc và cập nhật cổng lên ba nghìn lẻ một.  Cách này.
+
+14
+00:01:56,220 --> 00:02:08,782
+Cả hai ứng dụng sẽ chạy trên các cổng khác nhau và có thể chạy chúng cạnh nhau.  Được rồi, hãy bắt tay vào thực hiện và bắt đầu bằng cách tạo một tài nguyên mới trong ứng dụng dịch vụ quy trình làm việc gọi đó là dịch vụ quy trình công việc.
+
+15
+00:02:08,940 --> 00:02:14,910
+Sẽ sử dụng loại zeolite khó chịu nhất để tạo ra tài nguyên này cho chúng ta, vì vậy hãy đi tới thiết bị đầu cuối của chúng ta và chạy lệnh sau.
+
+16
+00:02:15,390 --> 00:02:22,650
+Quy trình làm việc của tài nguyên Nest g.  Sau đó, tôi sẽ được nhắc chọn ứng dụng nào mà chúng tôi muốn tạo xếp hạng tài nguyên này và.
+
+17
+00:02:23,280 --> 00:02:31,720
+Sẽ chọn ứng dụng dịch vụ quy trình làm việc.  Sau đó, việc bán hàng tôi sẽ tạo tài nguyên cho chúng tôi và cập nhật mô-đun ứng dụng dịch vụ quy trình công việc.
+
+18
+00:02:33,360 --> 00:02:41,950
+Tiếp theo bên trong ứng dụng cơ sở ảo, hãy tạo một mô-đun tòa nhà mới sẽ sử dụng dịch vụ quy trình công việc này để quản lý quy trình công việc.
+
+19
+00:02:42,210 --> 00:02:54,370
+Vì vậy, hãy chạy lệnh sau.  Tòa nhà tài nguyên Nest g.  Với nguồn lực và địa điểm này.  Hãy mở tệp dịch vụ tòa nhà mới được tạo và thêm một phương thức mới ở đây gọi là tạo quy trình công việc.
+
+20
+00:02:55,410 --> 00:03:08,200
+Phương pháp này sẽ gọi dịch vụ quy trình công việc để tạo quy trình làm việc mới.  Lý tưởng nhất là chúng ta nên khai báo logic này trong một dịch vụ quy trình công việc riêng biệt nhưng để đơn giản hóa, hiện tại chúng ta sẽ giữ mọi thứ ở bất kỳ dịch vụ nào.
+
+21
+00:03:08,490 --> 00:03:22,720
+Không. Dành cho những người sử dụng phiên bản cũ hơn của no jas.  Dưới 17 trinh nguyên, bạn có thể cần phải cài đặt gói tìm nạp không có dấu gạch ngang để sử dụng chức năng tìm nạp hoặc sử dụng các trục gạch chéo khó chịu nhất cho cùng chức năng.
+
+22
+00:03:23,430 --> 00:03:32,070
+Hiện nay.  Hãy thêm lệnh gọi vào phương thức mới này ngay sau khi chúng ta tạo một tòa nhà mới.  Vì vậy, trong tệp, hãy chuyển sang phương thức tạo và thêm đoạn mã sau vào bên trong.
+
+23
+00:03:32,820 --> 00:03:41,440
+Như mọi khi, bạn có thể tìm thấy mã bên dưới video khóa học.  Xuất sắc.  Hãy đi tới terminal của chúng ta và bây giờ khởi động cả hai ứng dụng.
+
+24
+00:03:41,730 --> 00:03:53,110
+Hãy nhập vào và p m run start com def dash dash cơ sở dash ảo.  Và trong một cửa sổ terminal riêng biệt và chạy chiều, hãy bắt đầu gọi dịch vụ dash quy trình làm việc của def dash dash.
+
+25
+00:03:53,700 --> 00:04:14,950
+Với cả hai ứng dụng đang chạy, hãy sử dụng Curl để tạo một tòa nhà mới và kiểm tra mọi thứ.  Nếu chúng ta nhìn vào thiết bị đầu cuối nơi ứng dụng cơ sở ảo đang chạy, chúng ta có thể thấy rằng không có lỗi nào, điều này có nghĩa là chúng ta đã gọi thành công ứng dụng dịch vụ quy trình làm việc từ ứng dụng cơ sở ảo và có các dịch vụ vi mô đầu tiên của chúng ta hoạt động rất tốt.
+
+26
+00:04:15,570 --> 00:04:24,340
+Tất nhiên mọi thứ chúng ta có ở đây đều rất cơ bản nhưng chúng ta có một điểm khởi đầu tuyệt vời để tìm hiểu thêm về microservice và cách sử dụng chúng, hãy chứng kiến ​​Jess.
+
+27
+00:04:24,990 --> 00:04:34,480
+Trong nhiều bài học tiếp theo, chúng ta sẽ đi sâu hơn vào kiến ​​trúc microservices và tìm hiểu cách sử dụng ness js để xây dựng ngay cả những ứng dụng microservice phức tạp nhất.
+

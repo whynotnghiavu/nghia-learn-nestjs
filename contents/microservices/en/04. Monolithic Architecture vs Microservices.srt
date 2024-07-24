@@ -1,0 +1,158 @@
+﻿1
+00:00:00,960 --> 00:00:03,030
+When working in a
+monolithic architecture
+
+2
+00:00:03,300 --> 00:00:06,300
+with a single application that
+contains all of our business logic.
+
+3
+00:00:06,720 --> 00:00:10,050
+These monolithic applications
+are usually divided into modules
+
+4
+00:00:10,350 --> 00:00:12,540
+but all these modules
+are deployed together
+
+5
+00:00:12,690 --> 00:00:14,290
+as a single unit.
+
+6
+00:00:14,340 --> 00:00:17,070
+These applications are usually
+deployed onto a single server
+
+7
+00:00:17,370 --> 00:00:21,160
+and all the modules share
+the same memory ansi huh.
+
+8
+00:00:21,690 --> 00:00:23,190
+The modules communicate
+with each other
+
+9
+00:00:23,400 --> 00:00:25,020
+using in-process calls
+
+10
+00:00:25,230 --> 00:00:25,560
+be it.
+
+11
+00:00:25,920 --> 00:00:28,420
+Function calls method calls etc.
+
+12
+00:00:28,590 --> 00:00:30,930
+That's why we can easily
+share data between modules
+
+13
+00:00:31,380 --> 00:00:35,080
+and we can also use transactions
+that span multiple modules.
+
+14
+00:00:35,940 --> 00:00:36,510
+Also
+
+15
+00:00:36,630 --> 00:00:39,150
+we can easily debug
+monolithic applications
+
+16
+00:00:39,270 --> 00:00:40,890
+as we have a single process
+
+17
+00:00:41,040 --> 00:00:43,350
+and we can easily
+trace the execution flow.
+
+18
+00:00:43,950 --> 00:00:44,730
+On the other hand
+
+19
+00:00:45,150 --> 00:00:48,540
+and a microservices architecture that
+we learned about in a previous lesson.
+
+20
+00:00:48,960 --> 00:00:51,240
+We have a set of small
+services that are deployed
+
+21
+00:00:51,390 --> 00:00:52,390
+independently.
+
+22
+00:00:53,340 --> 00:00:57,450
+Each service is a separate
+application that contains
+
+23
+00:00:57,450 --> 00:00:58,470
+all of the business logic
+for a specific domain.
+
+24
+00:00:58,890 --> 00:01:01,620
+The services can communicate
+with each other using the network
+
+25
+00:01:01,890 --> 00:01:03,280
+via http
+
+26
+00:01:03,480 --> 00:01:04,920
+tcp etc
+
+27
+00:01:05,220 --> 00:01:07,560
+or message brokers
+such as rabbit em que
+
+28
+00:01:07,860 --> 00:01:08,400
+kafka
+
+29
+00:01:08,550 --> 00:01:10,450
+and so on and so forth.
+
+30
+00:01:11,280 --> 00:01:14,640
+Just keep in mind that each
+architecture has its pros and cons.
+
+31
+00:01:15,120 --> 00:01:18,390
+Monolithic applications are
+usually easier to develop Andy bug.
+
+32
+00:01:18,750 --> 00:01:20,830
+In there are also
+easier to deploy.
+
+33
+00:01:21,660 --> 00:01:25,590
+On the other hand microservices tend
+to be easier to scale and maintain in are
+
+34
+00:01:25,590 --> 00:01:28,000
+usually more
+resilient to failures.
+

@@ -1,0 +1,44 @@
+1
+00:00:00,960 --> 00:00:06,300
+Khi làm việc trong kiến ​​trúc nguyên khối với một ứng dụng duy nhất chứa tất cả logic nghiệp vụ của chúng tôi.
+
+2
+00:00:06,720 --> 00:00:14,290
+Các ứng dụng nguyên khối này thường được chia thành các mô-đun nhưng tất cả các mô-đun này được triển khai cùng nhau dưới dạng một đơn vị.
+
+3
+00:00:14,340 --> 00:00:21,160
+Các ứng dụng này thường được triển khai trên một máy chủ duy nhất và tất cả các mô-đun đều có chung bộ nhớ ansi.
+
+4
+00:00:21,690 --> 00:00:28,420
+Các mô-đun giao tiếp với nhau bằng cách sử dụng các cuộc gọi trong quá trình.  Cuộc gọi hàm gọi phương thức, v.v.
+
+5
+00:00:28,590 --> 00:00:35,080
+Đó là lý do tại sao chúng ta có thể dễ dàng chia sẻ dữ liệu giữa các mô-đun và chúng ta cũng có thể sử dụng các giao dịch trải rộng trên nhiều mô-đun.
+
+6
+00:00:35,940 --> 00:00:43,350
+Ngoài ra, chúng tôi có thể dễ dàng gỡ lỗi các ứng dụng nguyên khối vì chúng tôi có một quy trình duy nhất và có thể dễ dàng theo dõi luồng thực thi.
+
+7
+00:00:43,950 --> 00:00:52,390
+Mặt khác và kiến ​​trúc microservices mà chúng ta đã học ở bài học trước.  Chúng tôi có một tập hợp các dịch vụ nhỏ được triển khai độc lập.
+
+8
+00:00:53,340 --> 00:00:58,470
+Mỗi dịch vụ là một ứng dụng riêng biệt chứa tất cả logic nghiệp vụ cho một miền cụ thể.
+
+9
+00:00:58,890 --> 00:01:10,450
+Các dịch vụ có thể liên lạc với nhau bằng mạng thông qua http tcp, v.v. hoặc các nhà môi giới tin nhắn như rabbit em que kafka, v.v.
+
+10
+00:01:11,280 --> 00:01:18,390
+Chỉ cần nhớ rằng mỗi kiến ​​trúc đều có ưu và nhược điểm.  Các ứng dụng nguyên khối thường dễ phát triển lỗi Andy hơn.
+
+11
+00:01:18,750 --> 00:01:28,000
+Trong đó cũng dễ triển khai hơn.  Mặt khác, các dịch vụ vi mô có xu hướng dễ mở rộng quy mô và bảo trì hơn nên thường có khả năng phục hồi tốt hơn trước các lỗi.
+

@@ -1,0 +1,22 @@
+1 Lý thuyết Giới thiệu khóa học
+2 Tạo dự án mới nest new name
+3 Lý thuyết Microservices là gì
+4 Lý thuyết Giới thiệu Monolithic và Microservices
+5 Tạo Microservice
+6 Lý thuyết Mẫu 1 Database 1 service
+7 Tạo Docker Compose
+8 Tạo thêm Health Checks
+9 Converting from HTTP to NATS
+
+10 Vertical vs Horizontal Scaling
+11 Request-Response vs Event-Driven
+12 Creating an Alarms Service
+13 Orchestration vs Choreography
+14 Alarm Classifier and Notifications Services
+
+15 Using RabbitMQ instead of NATS
+16 Message Acknowledgement
+17 Data Consistency
+18 Transactional Outbox Pattern
+19 Inbox Pattern
+20 Bonus Distributed tracing

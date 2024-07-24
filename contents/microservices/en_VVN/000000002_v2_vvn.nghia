@@ -1,0 +1,20 @@
+1
+00:00:00,840 --> 00:00:08,410
+Trước khi chúng ta bắt đầu mọi thứ.  Hãy bắt đầu bằng cách tạo một tổ trống dưới dạng ứng dụng để chúng ta có thứ gì đó có thể làm việc trong các bài học sau.
+
+2
+00:00:08,610 --> 00:00:16,810
+Hãy đi tới thiết bị đầu cuối của chúng ta và nhập lệnh mới vào tổ.  Gọi cơ sở dash ảo dự án của chúng tôi hoặc bất cứ điều gì bạn muốn.
+
+3
+00:00:19,380 --> 00:00:28,685
+Khi mọi thứ hoàn tất cài đặt, hãy cd hoặc thay đổi thư mục vào ứng dụng mới được tạo trong trường hợp của chúng tôi bằng cách nhập cơ sở nét đứt ảo cd.
+
+4
+00:00:29,490 --> 00:00:37,090
+Với bộ khởi động và vị trí ban đầu, giờ đây chúng ta có thể bắt đầu hoặc ứng dụng ở chế độ phát triển với n p m run start độ sâu dấu hai chấm.
+
+5
+00:00:37,320 --> 00:00:45,880
+Như mọi khi, ứng dụng của chúng tôi hiện sẽ có sẵn trên cổng 3000 và ở đó chúng tôi đã thiết lập xong tất cả và sẵn sàng tiếp tục tiến về phía trước.
+

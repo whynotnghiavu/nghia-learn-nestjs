@@ -1,0 +1,144 @@
+1
+00:00:01,080 --> 00:00:09,730
+Xác nhận về cơ bản là một thông báo cho người môi giới tin nhắn rằng một tin nhắn cụ thể đã được xử lý và người môi giới không cần phải lo lắng về điều đó nữa.
+
+2
+00:00:09,900 --> 00:00:20,100
+Đặc biệt cần đọc để gửi thông điệp tới người tiêu dùng này hoặc một số người tiêu dùng khác.  Với cơ chế xác nhận, chúng tôi có thể đảm bảo rằng tin nhắn không bị mất trong trường hợp dịch vụ bị lỗi.
+
+3
+00:00:20,460 --> 00:00:33,280
+Hoặc lỗi xử lý tin nhắn.  Bạn cũng có thể đảm bảo tính nhất quán của dữ liệu giữa các dịch vụ khác nhau.  Theo mặc định, nhà vận chuyển thỏ em que sẽ tự động xác nhận các tin nhắn sau khi dịch vụ tiêu dùng nhận được chúng.
+
+4
+00:00:33,330 --> 00:00:42,490
+Tuy nhiên, trong một số trường hợp, chúng tôi có thể muốn xác nhận tin nhắn theo cách thủ công.  Chúng ta hãy xem xét kỹ hơn cách tất cả những điều này hoạt động trong thực tế.
+
+5
+00:00:43,200 --> 00:00:52,210
+Hãy mở tệp bộ điều khiển dịch vụ thông báo và cập nhật phương thức gửi thông báo để luôn đưa ra lỗi nhằm mô phỏng quá trình xử lý tin nhắn.
+
+6
+00:00:53,130 --> 00:01:05,920
+Trong hệ thống thế giới thực, điều này có thể xảy ra nếu máy chủ email ngừng hoạt động chẳng hạn.  Chúng ta cũng phải kích hoạt lại dịch vụ tạo cảnh báo, vì vậy hãy mở tệp dịch vụ tạo cảnh báo bằng một công cụ trang trí thời gian không phổ biến.
+
+7
+00:01:06,450 --> 00:01:14,250
+Bây giờ tiếp theo.  Chúng tôi cần di chuyển dịch vụ thông báo sang rabbits q.  Đầu tiên chúng ta hãy mở tập tin docker soạn yaml của chúng ta.
+
+8
+00:01:14,790 --> 00:01:29,801
+Bản cập nhật dịch vụ thông báo phụ thuộc vào dịch vụ thỏ mq.  Tiếp theo khai báo rabbit em que gạch dưới biến môi trường của bạn để dịch vụ thông báo có thể kết nối với máy chủ rabbit em que.
+
+9
+00:01:30,990 --> 00:01:51,390
+Tương tự.  Chúng ta cũng hãy làm tương tự với dịch vụ báo động.  Với tất cả những điều này và địa điểm phải điều hướng đến ứng dụng dịch vụ thông báo và mở tệp ts chính.
+
+10
+00:01:51,812 --> 00:02:09,340
+Cập nhật phương thức kết nối vi dịch vụ để sử dụng chiến lược vận chuyển mq của thỏ.  Cuối cùng, chúng tôi cũng phải cập nhật ứng dụng dịch vụ báo động, ứng dụng điều phối của chúng tôi để sử dụng ứng dụng khách thỏ em que khi gửi sự kiện đến dịch vụ thông báo.
+
+11
+00:02:09,660 --> 00:02:18,280
+Vì thế.  Hãy mở tệp t s hằng số của chúng ta và trước tiên đổi tên hằng số hiện có thành nats gạch dưới thông báo gạch dưới borough xảy ra.
+
+12
+00:02:20,340 --> 00:02:27,190
+Tiếp theo, hãy khai báo một hằng số mới có tên là dịch vụ gạch dưới thông báo ngay sau hằng số môi giới tin nhắn nats.
+
+13
+00:02:27,960 --> 00:02:36,190
+Với điều đó tại chỗ.  Hãy mở tệp mô-đun dịch vụ cảnh báo của chúng tôi và cập nhật cấu hình mô-đun máy khách để đăng ký với máy khách.
+
+14
+00:02:36,390 --> 00:02:44,770
+Một cho chiến lược vận chuyển nats và một cho chiến lược vận chuyển thỏ mq.  Cụ thể cho dịch vụ thông báo.
+
+15
+00:02:45,390 --> 00:02:54,700
+Bây giờ thật tuyệt vời khi nhà cung cấp dịch vụ leo núi đã đăng ký, hãy mở tệp bộ điều khiển dịch vụ cảnh báo trong ứng dụng khách dịch vụ thông báo bằng trình trang trí tiêm.
+
+16
+00:03:00,990 --> 00:03:08,830
+Vì mục đích thuần khiết, chúng ta cũng hãy đổi tên thuộc tính của trình môi giới tin nhắn ở đây thành thuộc tính của trình môi giới tin nhắn nats để chúng ta có thể phân biệt giữa hai thuộc tính này.
+
+17
+00:03:09,720 --> 00:03:19,450
+Và cuối cùng nhưng không kém phần quan trọng, hãy cuộn xuống phương thức tạo và cập nhật giải mã để sử dụng ứng dụng khách dịch vụ thông báo thay vì ứng dụng khách môi giới tin nhắn để gửi thông báo.
+
+18
+00:03:21,480 --> 00:03:31,390
+Hãy lưu các thay đổi của chúng ta vào terminal và đảm bảo mọi thứ đều hoạt động.  Như thể chúng ta có thể thấy từ nhật ký, kỷ nguyên thông báo không gửi được đã được ghi vào bảng điều khiển của chúng ta.
+
+19
+00:03:32,250 --> 00:03:40,380
+Tuy nhiên, tin nhắn đã không được gửi lại đến dịch vụ tiêu dùng.  Điều này là do chiến lược vận chuyển thỏ mq như chúng tôi đã đề cập trước đó.
+
+20
+00:03:40,800 --> 00:03:48,464
+Tự động xác nhận tin nhắn sau khi gửi chúng đến dịch vụ tiêu dùng.  Vậy làm thế nào chúng ta có thể xác nhận tin nhắn theo cách thủ công.
+
+21
+00:03:48,750 --> 00:03:57,010
+Chà, chúng ta có thể thực hiện điều này bằng cách trước tiên tắt tính năng xác nhận tự động và sau đó xác nhận tin nhắn theo cách thủ công bằng phương pháp hành động kênh.
+
+22
+00:03:57,510 --> 00:04:07,660
+Vì vậy, hãy mở tệp ts chính của chúng ta trong ứng dụng dịch vụ thông báo và cập nhật phương thức microservice kết nối, đặt thuộc tính no act thành false.
+
+23
+00:04:08,670 --> 00:04:14,790
+Với sự thay đổi này hiện tại, nhà môi giới tin nhắn sẽ không tự động xác nhận tin nhắn để kiểm tra nó.
+
+24
+00:04:15,150 --> 00:04:26,170
+Hãy chuyển sang terminal một lần nữa và quan sát các nhật ký đó.  Vì vậy, có vẻ như các tin nhắn vẫn chưa được gửi lại ngay lập tức đến bộ phận dịch vụ tiêu dùng nhưng tại sao lại có.
+
+25
+00:04:26,670 --> 00:04:35,110
+Vâng, trong Rabat em que, các tin nhắn không được xác nhận sẽ không bị xóa khỏi q và được gửi lại cho dịch vụ tiêu dùng khi dịch vụ tiêu dùng khởi động lại.
+
+26
+00:04:35,460 --> 00:04:41,620
+Điều đó có nghĩa là để xem tin nhắn đang được gửi lại tới dịch vụ thông báo, chúng tôi cần khởi động lại.
+
+27
+00:04:41,880 --> 00:04:53,200
+Kích hoạt khởi động lại nhưng chỉ cần cập nhật câu trả lời của tệp bộ điều khiển dịch vụ thông báo và lưu nó.  Hãy chuyển sang thiết bị đầu cuối một lần nữa và quan sát các ổ khóa đó.
+
+28
+00:04:53,820 --> 00:05:01,240
+Và như chúng ta có thể thấy từ nhật ký ở đây.  Một số tin nhắn không được xác nhận trước đây đã được gửi lại cho dịch vụ.
+
+29
+00:05:01,500 --> 00:05:06,990
+Nhưng điều gì sẽ xảy ra nếu chúng ta muốn tin nhắn được gửi lại ngay lập tức thay vì đợi dịch vụ khởi động lại.
+
+30
+00:05:07,440 --> 00:05:18,730
+Vâng, chúng ta có thể làm điều này bằng cách sử dụng phương pháp kênh nac.  Để làm được điều này, chúng ta cần chèn bối cảnh are m q bằng cách sử dụng trình trang trí c t x puram như sau.
+
+31
+00:05:20,340 --> 00:05:26,890
+Và bên trong phương thức gửi thông báo, chúng ta có thể sử dụng phương thức cổ kênh để từ chối tin nhắn.
+
+32
+00:05:28,500 --> 00:05:34,800
+Để tránh đi vào một vòng lặp vô hạn.  Cũng sẽ kiểm tra xem tin nhắn đã được gửi lại chưa.  Nếu vậy.
+
+33
+00:05:35,130 --> 00:05:42,970
+Sẽ xác nhận tin nhắn và loại bỏ.  Vì vậy, hãy lưu các thay đổi của chúng ta và đi tới thiết bị đầu cuối và quan sát các nhật ký đó một lần nữa.
+
+34
+00:05:45,330 --> 00:05:54,430
+Và như chúng ta có thể thấy, tin nhắn ngay lập tức được gửi lại đến dịch vụ tiêu dùng sau khi nó bị từ chối và cuối cùng được thừa nhận và loại bỏ một cách xuất sắc.
+
+35
+00:05:55,020 --> 00:06:02,110
+Vì vậy, để tóm tắt trong bài học này, chúng ta đã học cách xác nhận tin nhắn theo cách thủ công bằng cách sử dụng các phương thức kênh hành động và kênh nac.
+
+36
+00:06:02,520 --> 00:06:11,650
+Chúng tôi cũng học được điều đó ở Rabat em que.  Các tin nhắn không được xác nhận sẽ không bị xóa khỏi q và a lại được gửi đến dịch vụ tiêu dùng khi dịch vụ tiêu dùng khởi động lại.
+

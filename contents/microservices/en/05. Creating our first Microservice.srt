@@ -1,0 +1,479 @@
+﻿1
+00:00:00,660 --> 00:00:05,923
+In this lesson will create our first
+microservice and call it workflows dash service.
+
+2
+00:00:06,000 --> 00:00:09,360
+Our existing virtual
+facility service that
+
+3
+00:00:09,360 --> 00:00:09,870
+were created near the
+beginning of this course.
+
+4
+00:00:10,200 --> 00:00:13,390
+Will use this new microservice
+to manage workflows.
+
+5
+00:00:13,470 --> 00:00:14,250
+Meaning create
+
+6
+00:00:14,520 --> 00:00:16,030
+monitor etc.
+
+7
+00:00:16,410 --> 00:00:17,400
+To make things simpler
+
+8
+00:00:17,550 --> 00:00:21,210
+will use the nastiest cla to convert
+our project into a mono repo.
+
+9
+00:00:21,750 --> 00:00:26,706
+Will also use the cla to generate the
+new microservice within this motto repo.
+
+10
+00:00:27,570 --> 00:00:29,670
+Just in case you're not
+familiar with the term
+
+11
+00:00:29,970 --> 00:00:34,090
+a mono repo is a single repository
+that contains multiple projects.
+
+12
+00:00:34,290 --> 00:00:35,100
+In our case.
+
+13
+00:00:35,430 --> 00:00:36,390
+Will have to projects
+
+14
+00:00:36,660 --> 00:00:40,330
+eat virtual facility project our
+existing nest yes application
+
+15
+00:00:40,440 --> 00:00:42,270
+and the workflows
+service project.
+
+16
+00:00:42,660 --> 00:00:44,140
+Our new microservice.
+
+17
+00:00:44,520 --> 00:00:46,470
+Having them both
+in a single repository
+
+18
+00:00:46,710 --> 00:00:51,670
+will make it easy ear to share interfaces
+models in other common code between them.
+
+19
+00:00:52,230 --> 00:00:54,540
+So let's get started by
+opening up our terminal
+
+20
+00:00:54,660 --> 00:00:56,130
+and running the
+following command.
+
+21
+00:00:56,580 --> 00:00:59,770
+Nest g app workflows
+dash service.
+
+22
+00:01:00,420 --> 00:01:04,530
+This command will generate
+a new nest yes application
+
+23
+00:01:04,530 --> 00:01:06,760
+called workflows service and
+place it in the apps directory.
+
+24
+00:01:07,140 --> 00:01:10,050
+Who will also update
+the nest sila Jace on file
+
+25
+00:01:10,320 --> 00:01:12,480
+and add a new workflows
+day ash service entry
+
+26
+00:01:12,600 --> 00:01:14,680
+to the projects section.
+
+27
+00:01:15,570 --> 00:01:17,490
+If we look at the
+directory structure
+
+28
+00:01:17,670 --> 00:01:20,820
+we can see that instead of
+having a src or source folder.
+
+29
+00:01:21,240 --> 00:01:22,800
+We now have to applications
+
+30
+00:01:22,920 --> 00:01:25,950
+virtual dash facility and
+workflows dash service.
+
+31
+00:01:26,340 --> 00:01:27,180
+Both located
+
+32
+00:01:27,390 --> 00:01:29,200
+in the apps directory.
+
+33
+00:01:29,430 --> 00:01:30,630
+To keep things simple
+
+34
+00:01:30,840 --> 00:01:35,140
+will use http as the communication
+protocol between the two applications.
+
+35
+00:01:35,640 --> 00:01:39,750
+We'll dive into other
+protocols and built in
+
+36
+00:01:39,750 --> 00:01:40,750
+message broker
+integrations in future lessons.
+
+37
+00:01:41,550 --> 00:01:42,540
+Before we proceed.
+
+38
+00:01:42,960 --> 00:01:46,920
+Let's make sure we update
+the port on which the workflows
+
+39
+00:01:46,920 --> 00:01:48,820
+service application will
+run to avoid conflicts.
+
+40
+00:01:49,170 --> 00:01:51,240
+Let's open up the
+workflows service main t
+
+41
+00:01:51,420 --> 00:01:51,810
+file
+
+42
+00:01:52,230 --> 00:01:54,630
+and update the port to
+three thousand and one.
+
+43
+00:01:55,290 --> 00:01:55,800
+This way.
+
+44
+00:01:56,220 --> 00:02:00,030
+Both applications will
+run on different ports
+
+45
+00:02:00,030 --> 00:02:01,030
+and will be able to
+run them side by side.
+
+46
+00:02:01,290 --> 00:02:05,220
+Of all right so let's get her hands dirty
+and start by creating a new resource in the
+
+47
+00:02:05,220 --> 00:02:08,782
+workflow service application
+calling it workflows service.
+
+48
+00:02:08,940 --> 00:02:12,060
+Will use the nastiest zeolite
+to generate this resource for us
+
+49
+00:02:12,360 --> 00:02:14,910
+so let's head over to our terminals
+and run the following command.
+
+50
+00:02:15,390 --> 00:02:17,800
+Nest g resource workflows.
+
+51
+00:02:18,450 --> 00:02:21,840
+The seal i will then
+prompted to select which
+
+52
+00:02:21,840 --> 00:02:22,650
+application where we want
+to gen rate this resource and.
+
+53
+00:02:23,280 --> 00:02:25,720
+Will select the workflows
+service application.
+
+54
+00:02:26,040 --> 00:02:28,200
+Then the sale i will
+generate the resource for us
+
+55
+00:02:28,590 --> 00:02:31,720
+and update the workflows
+service application module.
+
+56
+00:02:33,360 --> 00:02:36,360
+Next up inside of the
+virtual facility application
+
+57
+00:02:36,480 --> 00:02:40,950
+let's create a new
+buildings modul that will
+
+58
+00:02:40,950 --> 00:02:41,950
+use this workflow service
+to manage workflows.
+
+59
+00:02:42,210 --> 00:02:44,291
+So let's run the
+following command.
+
+60
+00:02:44,430 --> 00:02:46,720
+Nest g resource buildings.
+
+61
+00:02:47,370 --> 00:02:48,750
+With this resource and place.
+
+62
+00:02:49,170 --> 00:02:52,560
+Let's open up the newly
+generated building service
+
+63
+00:02:52,620 --> 00:02:54,370
+file and add a new method
+here called create workflow.
+
+64
+00:02:55,410 --> 00:02:56,040
+This method
+
+65
+00:02:56,160 --> 00:02:58,230
+will call the workflows
+service to create
+
+66
+00:02:58,350 --> 00:02:59,590
+a new workflow.
+
+67
+00:02:59,790 --> 00:03:03,360
+Ideally we would declare this
+logic in a separate workflows service
+
+68
+00:03:03,630 --> 00:03:05,130
+but for the sake of simplicity
+
+69
+00:03:05,370 --> 00:03:08,200
+will keep everything any
+single service for now.
+
+70
+00:03:08,490 --> 00:03:08,910
+No.
+
+71
+00:03:09,330 --> 00:03:11,950
+For those using older
+versions of no jas.
+
+72
+00:03:12,000 --> 00:03:13,380
+Lower than virgin seventeen
+
+73
+00:03:13,650 --> 00:03:18,120
+you may need to install the no dash
+fetch package to use the fetch function or
+
+74
+00:03:18,120 --> 00:03:20,880
+alternatively use
+nastiest slash axios
+
+75
+00:03:21,180 --> 00:03:22,720
+for the same functionality.
+
+76
+00:03:23,430 --> 00:03:23,910
+Now.
+
+77
+00:03:24,270 --> 00:03:27,690
+Let's add a call to this new method
+right after we create a new building.
+
+78
+00:03:28,020 --> 00:03:30,090
+So in the file let's head
+to the create method
+
+79
+00:03:30,540 --> 00:03:32,070
+and add the following
+code inside their.
+
+80
+00:03:32,820 --> 00:03:35,830
+As always the code can be
+found below the course video.
+
+81
+00:03:37,050 --> 00:03:38,050
+Excellent.
+
+82
+00:03:38,250 --> 00:03:41,440
+Let's head of or to our terminal
+and now start both applications.
+
+83
+00:03:41,730 --> 00:03:42,510
+Let's enter in
+
+84
+00:03:42,629 --> 00:03:44,280
+and p m run start com def
+
+85
+00:03:44,460 --> 00:03:46,574
+dash dash virtual dash facility.
+
+86
+00:03:46,980 --> 00:03:48,570
+And in a separate
+terminal window
+
+87
+00:03:48,840 --> 00:03:50,340
+and pm run start calling def
+
+88
+00:03:50,490 --> 00:03:53,110
+dash dash workflows
+dash service.
+
+89
+00:03:53,700 --> 00:03:57,540
+With both applications
+running let's use curl to
+
+90
+00:03:57,540 --> 00:03:58,870
+create a new building
+and test everything out.
+
+91
+00:03:59,700 --> 00:04:03,090
+If we look at the terminal where the
+virtual facility application is running
+
+92
+00:04:03,270 --> 00:04:05,040
+we can see that
+there are no errors
+
+93
+00:04:05,280 --> 00:04:08,310
+this means we successfully called
+the workflow service application
+
+94
+00:04:08,580 --> 00:04:13,500
+from the virtual facility application and
+have our first microservices up and running
+
+95
+00:04:13,710 --> 00:04:14,950
+great job.
+
+96
+00:04:15,570 --> 00:04:19,380
+Of course everything we have here so
+far is all very basic but we have a great
+
+97
+00:04:19,380 --> 00:04:23,340
+starting point for us
+to learn more about
+
+98
+00:04:23,340 --> 00:04:24,340
+microservices and how
+to use them witness Jess.
+
+99
+00:04:24,990 --> 00:04:26,520
+In the next many lessons
+
+100
+00:04:26,760 --> 00:04:30,570
+will dive even deeper
+into the microservices
+
+101
+00:04:30,576 --> 00:04:31,050
+architecture and learn
+how to use ness js
+
+102
+00:04:31,290 --> 00:04:34,480
+to build even the most complex
+microservice applications.
+

@@ -1,0 +1,68 @@
+1
+00:00:00,960 --> 00:00:09,220
+Kiểm tra tình trạng là một phần thiết yếu của bất kỳ ứng dụng sẵn sàng sản xuất nào.  Chúng cho phép chúng tôi theo dõi tình trạng của ứng dụng cũng như các phần phụ thuộc của nó.
+
+2
+00:00:09,330 --> 00:00:22,990
+Cơ sở dữ liệu dịch vụ bên ngoài vv và nhanh chóng phát hiện bất kỳ vấn đề có thể phát sinh.  Hầu hết các nhà cung cấp đám mây và người điều phối vùng chứa cũng sử dụng các biện pháp kiểm tra tình trạng để xác định xem bệnh nhân đính đá của chúng tôi có khỏe mạnh và sẵn sàng nhận lưu lượng truy cập hay không.
+
+3
+00:00:23,250 --> 00:00:34,360
+Trong bài học này, chúng ta sẽ tìm hiểu cách thêm tính năng kiểm tra tình trạng vào các dịch vụ Nest JS của chúng tôi.  Trước khi chúng ta tiến hành.  Hãy cài đặt gói ga cuối khó chịu nhất sẽ sử dụng để thêm tính năng kiểm tra tình trạng cho các dịch vụ của chúng tôi.
+
+4
+00:00:35,520 --> 00:00:45,400
+Sau khi quá trình cài đặt hoàn tất, hãy tạo một mô-đun sức khỏe và bộ điều khiển sức khỏe mới bằng cách sử dụng osceola cần thiết trong ứng dụng cơ sở dấu gạch ngang ảo.
+
+5
+00:00:46,080 --> 00:00:57,550
+Vì vậy, hãy chạy các lệnh sau.  Trợ giúp về tình trạng mô-đun Nest g và bộ điều khiển Nest g.  Tiếp theo hãy nhập mô-đun đầu cuối vào mô-đun sức khỏe.
+
+6
+00:01:00,900 --> 00:01:10,360
+Tuyệt vời.  Nhưng mô-đun đầu cuối đã được nhập, giờ đây chúng tôi có thể điều hướng đến bộ điều khiển tình trạng và thêm điểm nhận mới sẽ trả về tình trạng của ứng dụng của chúng tôi.
+
+7
+00:01:11,070 --> 00:01:17,080
+Cho đến nay, nó luôn trả về giá trị đúng nhưng chúng tôi sẽ cập nhật phương pháp này sau một chút để trả về tình trạng thực tế của ứng dụng của chúng tôi.
+
+8
+00:01:17,550 --> 00:01:26,830
+Tuy nhiên, chúng ta hãy đưa dịch vụ kiểm tra tình trạng và nhập chỉ báo tình trạng r m vào bộ điều khiển tình trạng và sử dụng chúng để kiểm tra tình trạng thực tế của ứng dụng của chúng ta.
+
+9
+00:01:30,090 --> 00:01:42,360
+Và cuối cùng, đừng quên chú thích phương pháp lành mạnh bằng trang trí kiểm tra sức khỏe.  Được rồi, hãy lưu những thay đổi của cô ấy vào thiết bị đầu cuối của chúng tôi và chạy lệnh sau để kiểm tra mọi thứ.
+
+10
+00:01:42,810 --> 00:01:50,680
+Curl nhận được chủ sở hữu địa phương ba ngàn chém sức khỏe.  Và như chúng ta có thể thấy trong phản hồi, có vẻ như mọi thứ đang hoạt động như mong đợi, thật tuyệt vời.
+
+11
+00:01:51,540 --> 00:02:03,400
+Trước khi kết thúc bài học này, hãy thêm kiểm tra tình trạng vào ứng dụng dịch vụ quy trình làm việc.  Vì vậy, hãy bắt đầu bằng cách tạo lại một mô-đun sức khỏe mới, một bộ điều khiển sức khỏe mà họ đang sử dụng lại nes jsc a.
+
+12
+00:02:03,480 --> 00:02:14,680
+Tình trạng của mô-đun Nest g và tình trạng của bộ điều khiển Nest g.  Sau đó thay thế nội dung của bộ điều khiển sức khỏe bằng cùng một mã mà chúng tôi đã sử dụng trong ứng dụng cơ sở ảo.
+
+13
+00:02:16,350 --> 00:02:23,440
+Và tương tự, hãy thay thế nội dung của mô-đun sức khỏe bằng cùng một mã mà chúng ta đã sử dụng một lần nữa trong ứng dụng cơ sở ảo.
+
+14
+00:02:24,420 --> 00:02:35,170
+Và thế là nó hoàn hảo.  Như chúng ta có thể thấy, các mô-đun sức khỏe của chúng ta hiện giống hệt nhau nên về mặt kỹ thuật, chúng ta có thể trích xuất mã chung vào thư viện dùng chung và sử dụng lại nó trong cả hai ứng dụng.
+
+15
+00:02:35,430 --> 00:02:44,350
+Tuy nhiên khi ứng dụng của chúng tôi phát triển.  Có thể họ sẽ muốn thêm nhiều lượt kiểm tra tình trạng hơn cho mỗi ứng dụng và chúng sẽ bắt đầu phân kỳ, do đó sẽ tách chúng ra.
+
+16
+00:02:45,000 --> 00:02:58,230
+Kiểm tra tình trạng rất quan trọng đối với mọi mặt sau và ứng dụng, đồng thời đặc biệt quan trọng đối với các vi dịch vụ mà chúng ta cần phải luôn lưu ý nếu bất kỳ dịch vụ nào gặp sự cố do bất kỳ lý do nào để chúng ta có thể có két an toàn và nơi khôi phục dịch vụ.
+
+17
+00:02:58,560 --> 00:03:09,340
+Đảm bảo chúng tôi không mất bất kỳ dữ liệu giao dịch nào, v.v. Mặc dù các chủ đề này nằm ngoài phạm vi của khóa học này nhưng việc kiểm tra tình trạng đã sẵn sàng là điểm khởi đầu tuyệt vời cho ứng dụng của chúng tôi.
+

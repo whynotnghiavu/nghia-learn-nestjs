@@ -1,0 +1,502 @@
+﻿1
+00:00:00,780 --> 00:00:01,470
+So far
+
+2
+00:00:01,740 --> 00:00:05,280
+we've covered the basics of microservices
+and learn how to create a simple
+
+3
+00:00:05,280 --> 00:00:08,263
+microservice based
+application using ness js.
+
+4
+00:00:08,310 --> 00:00:12,060
+We use the request response communication
+style with a nats message broker
+
+5
+00:00:12,300 --> 00:00:14,800
+to exchange messages
+between our services.
+
+6
+00:00:15,180 --> 00:00:16,050
+In this lesson
+
+7
+00:00:16,230 --> 00:00:20,160
+will be learning about how we can use the
+event based communication style to create
+
+8
+00:00:20,250 --> 00:00:23,200
+an alarm service that
+will listen for new alarms.
+
+9
+00:00:23,520 --> 00:00:24,090
+Let's start
+
+10
+00:00:24,300 --> 00:00:26,850
+by generating a new
+alarms service application
+
+11
+00:00:27,060 --> 00:00:27,917
+using the and sgs
+
+12
+00:00:28,020 --> 00:00:28,350
+ally.
+
+13
+00:00:28,860 --> 00:00:29,256
+So a
+
+14
+00:00:29,461 --> 00:00:30,270
+over to our terminal
+
+15
+00:00:30,480 --> 00:00:31,830
+and run the following command.
+
+16
+00:00:32,310 --> 00:00:33,720
+Nest g app
+
+17
+00:00:34,020 --> 00:00:36,070
+alarms dash service.
+
+18
+00:00:36,810 --> 00:00:40,770
+Also let's generate a new
+application called alarm stash
+
+19
+00:00:40,770 --> 00:00:41,970
+generator though we used
+for demonstration purposes.
+
+20
+00:00:42,300 --> 00:00:45,900
+This application will
+periodically generate
+
+21
+00:00:45,901 --> 00:00:46,901
+new alarms and send
+them to the alarm service.
+
+22
+00:00:47,610 --> 00:00:52,137
+To schedule the generation of new alarms
+will use the nastiest schedule package so
+
+23
+00:00:52,137 --> 00:00:54,090
+let's make sure we
+install it with m p m i
+
+24
+00:00:54,360 --> 00:00:56,590
+at ness jazz slush schedule.
+
+25
+00:00:57,390 --> 00:00:58,860
+Once the installation
+is complete
+
+26
+00:00:59,070 --> 00:01:03,130
+let's open up our docker compose
+yaml file and add some new services.
+
+27
+00:01:04,170 --> 00:01:07,900
+As always you can find all code
+snippets below the course video.
+
+28
+00:01:09,090 --> 00:01:12,100
+Will focus on the
+alarms service first.
+
+29
+00:01:12,210 --> 00:01:14,070
+Before we can add
+a new event handler.
+
+30
+00:01:14,430 --> 00:01:16,290
+Let's head over
+to the main ts file
+
+31
+00:01:16,740 --> 00:01:20,970
+and follow the same steps we did in
+the previous lesson to convert our http
+
+32
+00:01:20,970 --> 00:01:23,130
+application to a
+hybrid application.
+
+33
+00:01:23,460 --> 00:01:27,460
+That supports both http
+and nats entry points.
+
+34
+00:01:28,140 --> 00:01:32,310
+Note that since we haven't implemented any
+health check and points in this service we
+
+35
+00:01:32,310 --> 00:01:35,400
+could technically use
+the create microservice
+
+36
+00:01:35,401 --> 00:01:36,270
+method instead of the
+connect microservice method.
+
+37
+00:01:36,840 --> 00:01:37,230
+However
+
+38
+00:01:37,410 --> 00:01:39,510
+to keep a consistent
+with the workflow service
+
+39
+00:01:39,810 --> 00:01:41,650
+will stick with
+connect Microsoft's.
+
+40
+00:01:42,630 --> 00:01:43,170
+Next
+
+41
+00:01:43,410 --> 00:01:47,640
+let's open the alarm service
+controller file and replace
+
+42
+00:01:47,640 --> 00:01:48,660
+the contents of the alarm
+service controller class
+
+43
+00:01:48,840 --> 00:01:50,410
+with the fallen code.
+
+44
+00:01:52,320 --> 00:01:56,740
+The event pattern decorator here
+is used to declare in event handler.
+
+45
+00:01:56,790 --> 00:02:00,900
+The strength alarm dot
+created will be the name of the
+
+46
+00:02:00,900 --> 00:02:02,924
+event pattern that this event
+handler will subscribe to.
+
+47
+00:02:03,000 --> 00:02:04,410
+Will use the same event pattern
+
+48
+00:02:04,590 --> 00:02:08,770
+in the alarms generator service to
+dispatch events to the alarms service.
+
+49
+00:02:09,480 --> 00:02:14,085
+Events contrary to the messages
+are not expected to return a response.
+
+50
+00:02:14,190 --> 00:02:16,770
+Regardless of what happens
+inside of the event handler
+
+51
+00:02:17,070 --> 00:02:19,450
+nothing will be sent
+back to the center.
+
+52
+00:02:19,860 --> 00:02:24,370
+So let's save our changes and head over
+to the alarmed generator application now.
+
+53
+00:02:25,290 --> 00:02:29,220
+Alarms generator will be a simple application
+that will periodically generate new
+
+54
+00:02:29,220 --> 00:02:31,810
+alarms and sent him
+to the alarms service.
+
+55
+00:02:31,980 --> 00:02:33,700
+In a real-world application.
+
+56
+00:02:33,750 --> 00:02:37,590
+This service would of
+course be replaced by a
+
+57
+00:02:37,590 --> 00:02:38,580
+real alarm system for
+example an external service.
+
+58
+00:02:38,910 --> 00:02:42,280
+That would notify the alarm service
+when a new alarm is triggered.
+
+59
+00:02:42,511 --> 00:02:44,340
+Think of this service
+as a mock service
+
+60
+00:02:44,610 --> 00:02:47,170
+that will I'll use just for
+demonstration purposes.
+
+61
+00:02:48,180 --> 00:02:48,960
+Starting off
+
+62
+00:02:49,260 --> 00:02:52,780
+we can replace the main t
+s file with the following code.
+
+63
+00:02:53,100 --> 00:02:56,490
+Since we don't need this
+application to listen to http requests
+
+64
+00:02:56,760 --> 00:02:58,740
+we can remove the
+aap dot listen call
+
+65
+00:02:59,040 --> 00:03:02,740
+and convert this ness application
+to a stand alone application.
+
+66
+00:03:03,870 --> 00:03:07,930
+With this in place let's open up
+the alarms generator module file.
+
+67
+00:03:07,980 --> 00:03:09,570
+Import the schedule module
+
+68
+00:03:10,050 --> 00:03:13,120
+and remove the alarms
+generator controller class.
+
+69
+00:03:14,490 --> 00:03:15,060
+Also
+
+70
+00:03:15,330 --> 00:03:19,720
+let's not forget to remove the actual
+alarm generator controller file as well.
+
+71
+00:03:20,700 --> 00:03:21,210
+Next.
+
+72
+00:03:21,600 --> 00:03:23,160
+Let's create eight constants t
+
+73
+00:03:23,310 --> 00:03:25,330
+file and add the fallen coat.
+
+74
+00:03:26,820 --> 00:03:28,050
+We can use this constant
+
+75
+00:03:28,200 --> 00:03:32,370
+alarm service to register
+a new clients of the
+
+76
+00:03:32,370 --> 00:03:33,710
+clients module in the
+alarm generator module file.
+
+77
+00:03:39,780 --> 00:03:40,380
+Next up.
+
+78
+00:03:41,040 --> 00:03:44,310
+Inside of the alarms generator
+service will create a new method
+
+79
+00:03:44,430 --> 00:03:48,521
+called generate alarm that will
+emit an event to the alarm service.
+
+80
+00:03:50,130 --> 00:03:51,810
+Note that to dispatch and event.
+
+81
+00:03:52,290 --> 00:03:55,661
+We use the emit method
+instead of the send method.
+
+82
+00:03:56,190 --> 00:03:59,290
+To instruct a framework to
+trigger this method periodically
+
+83
+00:03:59,400 --> 00:04:01,510
+will use the interval decorator.
+
+84
+00:04:01,740 --> 00:04:02,610
+And lastly
+
+85
+00:04:02,850 --> 00:04:05,850
+let's inject the alarm service
+using the inject decorator
+
+86
+00:04:06,150 --> 00:04:08,640
+passing alarms underscore
+service constant to it
+
+87
+00:04:09,090 --> 00:04:13,120
+and add the private access
+modifier to the alarm service property.
+
+88
+00:04:13,890 --> 00:04:17,370
+Let's save our changes
+and head over to the terminal
+
+89
+00:04:17,370 --> 00:04:18,240
+and run the following
+command to start everything up.
+
+90
+00:04:18,750 --> 00:04:20,710
+Docker compose up.
+
+91
+00:04:21,360 --> 00:04:22,920
+Let's wait till everything's
+up and running
+
+92
+00:04:23,100 --> 00:04:24,700
+and check the logs.
+
+93
+00:04:31,170 --> 00:04:35,490
+As we can see the alarm
+services now receiving
+
+94
+00:04:35,490 --> 00:04:36,490
+new alarms from the
+alarms generator service.
+
+95
+00:04:36,780 --> 00:04:37,920
+So to summarize.
+
+96
+00:04:38,250 --> 00:04:42,030
+We learned how to use the event based
+communications thou nsg as to dispatch
+
+97
+00:04:42,060 --> 00:04:44,680
+asynchronous events
+which when our services.
+
+98
+00:04:45,000 --> 00:04:47,160
+We also learned how to use
+the event pattern decorator
+
+99
+00:04:47,430 --> 00:04:49,420
+declare an event handler.
+
+100
+00:04:49,770 --> 00:04:53,280
+The alarms gen narrator
+service is just a mock
+
+101
+00:04:53,310 --> 00:04:54,310
+service that we used for
+demonstration purposes.
+
+102
+00:04:54,510 --> 00:04:56,140
+In real world application.
+
+103
+00:04:56,280 --> 00:05:00,270
+This service will be replaced by a real
+alarm system for example an external service
+
+104
+00:05:00,270 --> 00:05:02,760
+that would notify the alarm
+service whenever a new alarm
+
+105
+00:05:02,910 --> 00:05:03,450
+is triggered.
+
+106
+00:05:04,080 --> 00:05:07,470
+Fortunately the concepts we've learned
+in this lesson would remain the same
+
+107
+00:05:07,590 --> 00:05:10,720
+and will be applicable to your
+future nasty as applications.
+

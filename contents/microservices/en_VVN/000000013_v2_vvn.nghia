@@ -1,0 +1,76 @@
+1
+00:00:00,990 --> 00:00:07,900
+Microservice có thể được định nghĩa là một kỹ thuật phát triển phần mềm cấu trúc và ứng dụng như một tập hợp các dịch vụ được liên kết lỏng lẻo.
+
+2
+00:00:08,430 --> 00:00:18,850
+Mỗi dịch vụ được thiết kế để thực hiện một chức năng duy nhất và giao tiếp với các dịch vụ khác thông qua giao diện được xác định rõ ràng bằng cách sử dụng cơ chế nhẹ như http dựa trên a b i.
+
+3
+00:00:19,230 --> 00:00:26,830
+Giờ đây, khi xây dựng các ứng dụng phức tạp hơn, chúng ta thường cần thực hiện các thao tác phức tạp trải rộng trên nhiều dịch vụ.
+
+4
+00:00:27,600 --> 00:00:45,930
+Ví dụ: khi một cảnh báo mới được tạo, trước tiên chúng tôi có thể cần phân tích dữ liệu cảnh báo bị xáo trộn đến từ hệ thống bên ngoài, sau đó chuyển nó đến dịch vụ phân loại cảnh báo do tôi điều khiển để phân loại cảnh báo và cuối cùng chuyển cảnh báo đã phân loại đến dịch vụ thông báo cảnh báo để thông báo.  các dịch vụ khác.
+
+5
+00:00:46,260 --> 00:00:56,320
+Hoặc có lẽ là người dùng về báo động đó.  Trong trường hợp sử dụng này, chúng ta cần tìm ra cách phối hợp các dịch vụ này và xác định thứ tự chúng sẽ được thực thi.
+
+6
+00:00:56,910 --> 00:01:04,840
+Có hai cách tiếp cận phổ biến cho vấn đề này.  Dàn nhạc và vũ đạo.  Chúng ta hãy xem xét từng cái một cách chi tiết hơn.
+
+7
+00:01:05,370 --> 00:01:16,720
+Điều phối là một cách tiếp cận tập trung để điều phối dịch vụ.  Theo cách tiếp cận này, chúng tôi có một thành phần trung tâm được gọi là bộ điều phối chịu trách nhiệm điều phối việc thực hiện các dịch vụ.
+
+8
+00:01:17,220 --> 00:01:23,710
+Người điều phối này nhận thức được trạng thái của từng dịch vụ và biết chính xác hành động kích hoạt từng dịch vụ.
+
+9
+00:01:23,820 --> 00:01:31,800
+Người điều phối cũng không thể chịu được rủi ro trong việc xử lý lỗi và tăng phạm vi tiếp cận.  Lưu ý rằng bộ điều phối này có thể được triển khai dưới dạng một dịch vụ riêng biệt.
+
+10
+00:01:32,190 --> 00:01:41,020
+Hoặc nó có thể là một phần của một trong các dịch vụ hiện có.  Bạn hiểu rõ hơn cách thức hoạt động của dàn nhạc.  Chúng ta hãy xem ví dụ sau.
+
+11
+00:01:41,190 --> 00:01:48,430
+Trong đoạn mã này, chúng ta có thể thấy một bộ điều phối đơn giản chịu trách nhiệm điều phối việc thực thi ba dịch vụ.
+
+12
+00:01:49,080 --> 00:01:58,470
+Phân tích dữ liệu cảnh báo, phân loại cảnh báo và thông báo.  Mỗi hoạt động được biểu diễn dưới dạng một chức năng riêng biệt.  Giả sử mobley đang gọi một microservice khác.
+
+13
+00:01:59,070 --> 00:02:06,818
+Người điều phối chịu trách nhiệm gọi các hàm này theo đúng thứ tự và nếu cần sẽ xử lý bất kỳ lỗi nào cũng như các lần thử tiếp cận.
+
+14
+00:02:07,560 --> 00:02:15,370
+Một trong những ưu điểm chính của phương pháp này là nó đơn giản và dễ thực hiện nhưng tuy nhiên các dịch vụ được liên kết chặt chẽ với nhau để được phối hợp.
+
+15
+00:02:15,990 --> 00:02:28,180
+Mặt khác.  Biên đạo là một cách tiếp cận phi tập trung để điều phối dịch vụ.  Theo cách tiếp cận này, mỗi dịch vụ chịu trách nhiệm xử lý trạng thái của chính nó và biết chính xác khi nào nên gọi các dịch vụ khác.
+
+16
+00:02:28,936 --> 00:02:39,670
+Các dịch vụ giao tiếp với nhau bằng cách sử dụng các sự kiện.  Ưu điểm của phương pháp này là nó linh hoạt hơn và có thể mở rộng hơn, tuy nhiên nó cũng phức tạp hơn và khó gỡ lỗi hơn.
+
+17
+00:02:40,560 --> 00:02:46,950
+Mỗi cách tiếp cận này đều có ưu và nhược điểm riêng vì không có giải pháp nào phù hợp cho tất cả mọi người.  Trong vài trường hợp.
+
+18
+00:02:47,340 --> 00:02:54,880
+Dàn nhạc có thể là lựa chọn tốt hơn trong khi những vũ đạo khác có thể phù hợp hơn với bạn, tất cả phụ thuộc vào trường hợp sử dụng cụ thể của bạn.
+
+19
+00:02:55,260 --> 00:03:03,340
+Trong bài học tiếp theo sẽ triển khai phương pháp điều phối trong ứng dụng của chúng ta nhưng hãy luôn nhớ rằng đây chỉ là một trong những lựa chọn thiết kế khả thi.
+

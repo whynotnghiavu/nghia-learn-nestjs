@@ -1,0 +1,276 @@
+﻿1
+00:00:00,990 --> 00:00:04,800
+Microservices can be defined as a software
+development technique that structures and
+
+2
+00:00:04,800 --> 00:00:07,900
+application as a collection
+of loosely coupled services.
+
+3
+00:00:08,430 --> 00:00:12,360
+Each service is designed to perform a
+single function and communicate with other
+
+4
+00:00:12,360 --> 00:00:16,020
+services through a well-defined
+interface using a lightweight mechanism
+
+5
+00:00:16,260 --> 00:00:18,850
+such as and http based a b i.
+
+6
+00:00:19,230 --> 00:00:24,120
+Now when building more sophisticated
+applications we often need to perform complex
+
+7
+00:00:24,120 --> 00:00:26,830
+operations that span
+multiple services.
+
+8
+00:00:27,600 --> 00:00:28,380
+For example
+
+9
+00:00:28,530 --> 00:00:30,330
+when a new alarm is created
+
+10
+00:00:30,450 --> 00:00:35,130
+we might need to first parse the obfuscated
+alarm data coming from an external system
+
+11
+00:00:35,310 --> 00:00:35,910
+then
+
+12
+00:00:36,090 --> 00:00:39,930
+pass it to the a i driven alarm
+classification service to classify the alarm
+
+13
+00:00:40,260 --> 00:00:42,360
+and finally passed
+the classified alarm
+
+14
+00:00:42,510 --> 00:00:45,930
+to the alarm notification
+service to notify other services.
+
+15
+00:00:46,260 --> 00:00:48,880
+Or perhaps a user
+about that alarm.
+
+16
+00:00:49,470 --> 00:00:53,340
+In this use case we need to come up
+with a way to coordinate these services
+
+17
+00:00:53,610 --> 00:00:56,320
+and defined the order in
+which they should be executed.
+
+18
+00:00:56,910 --> 00:00:59,039
+There are two common
+approaches to this problem.
+
+19
+00:00:59,340 --> 00:01:01,660
+Orchestration and choreography.
+
+20
+00:01:01,980 --> 00:01:04,840
+Let's take a look at each
+one of those in more detail.
+
+21
+00:01:05,370 --> 00:01:09,220
+Orchestration is a centralized
+approach to service coordination.
+
+22
+00:01:09,420 --> 00:01:14,070
+In this approach we have a central component
+called orchestrator that is responsible
+
+23
+00:01:14,070 --> 00:01:16,720
+for coordinating the
+execution of services.
+
+24
+00:01:17,220 --> 00:01:21,870
+This orchestrator is
+aware of the state of each
+
+25
+00:01:21,870 --> 00:01:23,710
+service and knows exactly
+went to evoke each service.
+
+26
+00:01:23,820 --> 00:01:28,060
+The orchestrator is also risk impossible
+for handling errors and reach rise.
+
+27
+00:01:28,140 --> 00:01:31,800
+Note that this orchestrator could be
+implemented as either a separate service.
+
+28
+00:01:32,190 --> 00:01:35,230
+Or it could be part of one
+of the existing services.
+
+29
+00:01:36,030 --> 00:01:38,250
+You better understand
+how orchestration works.
+
+30
+00:01:38,790 --> 00:01:41,020
+Let's take a look at
+the following example.
+
+31
+00:01:41,190 --> 00:01:42,540
+In this code snippet here
+
+32
+00:01:42,840 --> 00:01:47,070
+we can see a simple
+orchestrator that is responsible
+
+33
+00:01:47,070 --> 00:01:48,430
+for coordinating the
+execution of three services.
+
+34
+00:01:49,080 --> 00:01:52,630
+Parse alarm data
+classify alarm and notify.
+
+35
+00:01:52,890 --> 00:01:55,530
+Each operation is represented
+as a separate function.
+
+36
+00:01:55,860 --> 00:01:58,470
+Presume mobley calling another
+microservice under the hood.
+
+37
+00:01:59,070 --> 00:02:03,240
+The orchestrator is
+responsible for invoking
+
+38
+00:02:03,240 --> 00:02:03,960
+these functions in the
+correct order and if needed
+
+39
+00:02:04,200 --> 00:02:06,818
+handling any errors
+and reach tries.
+
+40
+00:02:07,560 --> 00:02:11,610
+One of the main advantages of this approach
+is that it's simple and easy to do but
+
+41
+00:02:11,880 --> 00:02:15,370
+however services are tightly
+coupled to the orchestrated.
+
+42
+00:02:15,990 --> 00:02:16,800
+On the other hand.
+
+43
+00:02:17,190 --> 00:02:21,130
+Choreography is a decentralized
+approach to service coordination.
+
+44
+00:02:21,390 --> 00:02:25,650
+In this approach each service is responsible
+for handling its own state and knows
+
+45
+00:02:25,650 --> 00:02:28,180
+exactly when to
+invoke other services.
+
+46
+00:02:28,936 --> 00:02:31,710
+The services communicate
+with each other using events.
+
+47
+00:02:32,070 --> 00:02:35,550
+The made advantage of this approach
+is that it's more flexible and scalable
+
+48
+00:02:35,850 --> 00:02:36,360
+however
+
+49
+00:02:36,570 --> 00:02:39,670
+it's also more complex
+in harder to debug.
+
+50
+00:02:40,560 --> 00:02:45,030
+Each of these approaches
+has its own pros and
+
+51
+00:02:45,030 --> 00:02:45,570
+cons as there is no
+one size fits all solution.
+
+52
+00:02:45,990 --> 00:02:46,950
+In some cases.
+
+53
+00:02:47,340 --> 00:02:49,860
+Orchestration might be a
+better choice while and others
+
+54
+00:02:50,100 --> 00:02:51,930
+choreography might
+work out better for you
+
+55
+00:02:52,230 --> 00:02:54,880
+it all depends on
+your specific use case.
+
+56
+00:02:55,260 --> 00:02:59,190
+In the next lesson will implement the
+orchestration approach in our application
+
+57
+00:02:59,310 --> 00:03:03,340
+but just always remember that this is
+just one of the possible design choices.
+

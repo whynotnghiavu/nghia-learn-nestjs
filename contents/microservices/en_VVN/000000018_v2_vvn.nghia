@@ -1,0 +1,208 @@
+1
+00:00:01,083 --> 00:00:08,020
+Mẫu hộp thư đi giao dịch là mẫu thiết kế có thể được sử dụng để đảm bảo tính nhất quán của dữ liệu giữa các dịch vụ khác nhau.
+
+2
+00:00:08,250 --> 00:00:15,250
+Trong mẫu này, thay vì gọi trực tiếp, các dịch vụ khác sẽ gửi tin nhắn đến nhà môi giới tin nhắn như một phần của giao dịch cục bộ.
+
+3
+00:00:15,420 --> 00:00:25,930
+Đầu tiên chúng ta đưa một thông báo mới vào bảng cơ sở dữ liệu gọi là outbox rồi.  Gửi nó đến các dịch vụ khác bằng một quy trình riêng gọi là bộ xử lý hộp thư đi.
+
+4
+00:00:27,330 --> 00:00:37,570
+Ví dụ: khi chúng tôi tạo một tòa nhà mới trong hệ thống hiện tại của mình, trước tiên chúng tôi sẽ đưa một tòa nhà mới vào cơ sở dữ liệu, sau đó tạo một quy trình công việc mới cho tòa nhà này bằng cách gọi dịch vụ quy trình làm việc.
+
+5
+00:00:37,890 --> 00:00:49,050
+Với mô hình hộp thư đi giao dịch.  Thay vì gọi dịch vụ quy trình công việc, chúng tôi chèn một bản ghi mới vào bảng hộp thư đi như một phần của cơ sở dữ liệu cục bộ cho giao dịch đại diện cho một tác vụ.
+
+6
+00:00:49,440 --> 00:01:03,040
+Mà cuối cùng chúng tôi sẽ gọi dịch vụ này.  Cuối cùng, chúng ta sẽ cần một công việc hoặc quy trình nền được gọi là bộ xử lý hộp thư đi để kiểm tra định kỳ bảng hộp thư đi để tìm thư mới và gửi chúng đến nhà môi giới thư.
+
+7
+00:01:04,230 --> 00:01:12,100
+Đừng lo lắng nếu tại thời điểm này, tất cả những điều này nghe có vẻ hơi khó hiểu, mọi thứ sẽ trở nên rõ ràng hơn nhiều khi chúng ta triển khai mẫu này trong ứng dụng của mình chỉ sau giây lát.
+
+8
+00:01:12,540 --> 00:01:28,350
+Được rồi, hãy bắt đầu mọi thứ bằng cách tạo mô-đun hộp thư đi mới trong dự án cơ sở ảo.  Biết rằng thay vì tạo mô-đun này trong cơ sở ảo, về mặt kỹ thuật, chúng tôi có thể tạo trong thư mục libs để cung cấp nó cho tất cả các ứng dụng khác trong kho lưu trữ phương châm của chúng tôi.
+
+9
+00:01:28,710 --> 00:01:38,230
+Rất có thể cuối cùng chúng ta sẽ cần chức năng này trong các ứng dụng khác vì một bài tập cố gắng tự tạo một thư viện mới và di chuyển mô-đun hộp thư đi của chúng.
+
+10
+00:01:38,550 --> 00:01:54,250
+Tiếp theo, hãy tạo một thực thể hộp thư đi mới với một vài cột trong mô-đun hộp thư đi.  Và tiếp theo, hãy tạo một tệp dịch vụ hộp thư đi mới trong mô-đun hộp thư đi.
+
+11
+00:01:55,230 --> 00:02:01,750
+Sau khi tệp được tạo, hãy chèn nhà cung cấp kho lưu trữ hộp thư đi bằng cách sử dụng trang trí kho lưu trữ.
+
+12
+00:02:06,240 --> 00:02:18,420
+Tiếp theo, hãy khai báo một phương thức nhận tin nhắn chưa được xử lý mới sẽ trả về tất cả các tin nhắn chưa được xử lý.  Phương thức này ở đây lấy tham số tùy chọn và cho phép chúng tôi lọc tin nhắn theo dịch vụ đích.
+
+13
+00:02:18,750 --> 00:02:27,670
+Ngoài ra tất cả các tin nhắn được sắp xếp theo cột được tạo tại theo thứ tự kết thúc.  Hãy lưu các thay đổi của chúng tôi và mở tệp mô-đun hộp thư đi.
+
+14
+00:02:29,370 --> 00:02:46,330
+Hãy nhập loại hoặc mô-đun cho phương thức tính năng và chuyển thực thể hộp thư đi cho nó.  Ngoài ra, sẽ cần có ứng dụng khách dịch vụ quy trình công việc trong bối cảnh của các vị trí mô-đun này, nhập mô-đun máy khách và cung cấp cấu hình dịch vụ quy trình công việc ở đó.
+
+15
+00:02:49,950 --> 00:02:57,835
+Tuyệt vời.  Lưu ý rằng việc đăng ký nhà cung cấp này ở đây có nghĩa là sẽ có hai phiên bản máy khách khác nhau cho dịch vụ quy trình công việc.
+
+16
+00:02:57,930 --> 00:03:10,410
+Một cái được cung cấp trong tệp mô-đun tòa nhà và một cái được cung cấp trong tệp mô-đun hộp thư đi.  Lý tưởng nhất.  Chúng tôi tạo một mô-đun mới chịu trách nhiệm cung cấp ứng dụng khách dịch vụ quy trình công việc nhưng để đơn giản.
+
+17
+00:03:10,740 --> 00:03:21,610
+Hiện tại sẽ để nguyên như vậy.  Bây giờ chúng ta đã có mô-đun hộp thư đi, hãy mở tệp dịch vụ tòa nhà và đưa vào nhà cung cấp nguồn dữ liệu bằng cách sử dụng phương pháp tiêu chuẩn.
+
+18
+00:03:26,670 --> 00:03:40,090
+Tiếp theo, hãy cuộn xuống phương thức tạo và cập nhật mã để khởi tạo giao dịch.  Với giao dịch được khởi tạo, hãy truy xuất kho lưu trữ tòa nhà từ đối tượng trình chạy truy vấn.
+
+19
+00:03:40,560 --> 00:03:53,280
+Cũng.  Hãy truy xuất kho lưu trữ hộp thư đi để chúng tôi có thể chèn một tin nhắn mới vào bảng hộp thư đi.  Hãy gói mọi thứ trong khối thử bắt và khôi phục giao dịch nếu xảy ra lỗi khác.
+
+20
+00:03:53,640 --> 00:04:12,910
+Hãy cam kết giao dịch.  Bây giờ, bằng cách sử dụng kho lưu trữ các tòa nhà cục bộ của chúng tôi, hãy chèn một tòa nhà mới vào cơ sở dữ liệu.
+
+21
+00:04:14,040 --> 00:04:27,030
+Sau đó nhưng vì có tin nhắn mới vào bảng hộp thư đi.  Hoàn hảo.  Bây giờ bất cứ khi nào chúng ta tạo một tòa nhà mới cũng sẽ gửi một tin nhắn mới vào bảng hộp thư đi đó.
+
+22
+00:04:27,480 --> 00:04:34,494
+Nếu giao dịch không thành công.  Tin nhắn sẽ không được chèn và do đó nó sẽ không bao giờ được gửi đến dịch vụ quy trình công việc.
+
+23
+00:04:35,040 --> 00:04:40,870
+Bước còn lại cuối cùng mà chúng ta có là tạo một công việc hoặc quy trình nền mới được gọi là bộ xử lý hộp thư đi.
+
+24
+00:04:41,340 --> 00:04:48,040
+Vì bộ xử lý sẽ kiểm tra định kỳ bảng hộp thư đi để tìm tin nhắn mới và gửi chúng đến nhà môi giới tin nhắn nếu tìm thấy.
+
+25
+00:04:48,330 --> 00:04:53,670
+Chúng tôi cũng có thể lắng nghe các sự kiện postgres để kích hoạt quy trình thượng viện nhưng vì mục đích đơn giản.
+
+26
+00:04:54,030 --> 00:05:01,420
+Sẽ sử dụng cách tiếp cận dựa trên vương miện đơn giản trong khóa học này.  Chỉ cần biết rằng bạn có nhiều lựa chọn cho api vì đây là cách xử lý vấn đề này.
+
+27
+00:05:01,650 --> 00:05:21,808
+Vì vậy, hãy tạo tệp t s của bộ xử lý hộp thư đi mới trong mô-đun hộp thư đi với nội dung sau.  Với tất cả các phần phụ thuộc cần thiết đã được đưa vào, hãy khai báo một phương thức sự kiện quy trình công việc điều phối mới sẽ gửi một sự kiện mới đến dịch vụ quy trình công việc nghệ thuật.
+
+28
+00:05:28,440 --> 00:05:35,560
+Bên trong phương thức tin nhắn hộp thư đi của quy trình này, hãy truy xuất tất cả các tin nhắn chưa được xử lý từ bảng hộp thư đi của chúng tôi.
+
+29
+00:05:39,000 --> 00:05:50,710
+Tiếp theo, hãy lặp lại các tin nhắn và gửi chúng đến nhà môi giới tin nhắn của chúng tôi.  Và cuối cùng nhưng không kém phần quan trọng, hãy đăng ký nhà cung cấp bộ xử lý hộp thư đi trong tệp mô-đun hộp thư đi.
+
+30
+00:05:54,090 --> 00:06:01,750
+Ngoài ra, đừng quên nhập mô-đun lịch trình trong tệp mô-đun ứng dụng để công việc hoặc quy trình nền của chúng tôi có thể được thực thi đúng cách.
+
+31
+00:06:03,120 --> 00:06:18,050
+Hãy lưu các thay đổi của chúng ta và trước khi kiểm tra mọi thứ khác, hãy đảm bảo rằng chúng ta cũng cập nhật trình xử lý thông báo tạo quy trình làm việc để sử dụng trình trang trí mẫu sự kiện thay vì trình trang trí mẫu thông báo vì chúng ta hiện đang sử dụng phương thức phát ra để gửi sự kiện đến dịch vụ quy trình làm việc.
+
+32
+00:06:21,270 --> 00:06:26,620
+Hãy lưu các thay đổi của chúng tôi ở đây và đi tới thiết bị đầu cuối và đảm bảo mọi thứ đều hoạt động.
+
+33
+00:06:28,050 --> 00:06:35,050
+Nếu bạn thấy bất kỳ lỗi nào, chỉ cần kiểm tra kỹ xem bạn đã làm theo tất cả các bước chúng tôi vừa trình bày hay chưa nếu ứng dụng hoạt động trơn tru.
+
+34
+00:06:35,190 --> 00:06:58,630
+Hãy tạo một tòa nhà mới bằng cách sử dụng Curl để kiểm tra mọi thứ.  Bây giờ chúng ta hãy chờ một chút.  Và như chúng ta có thể thấy, thông báo nhật ký quy trình làm việc đã được tạo có nghĩa là dịch vụ quy trình làm việc của chúng tôi đã nhận thành công các quy trình làm việc tạo sự kiện tuyệt vời, mọi thứ đều hoạt động tốt.
+
+35
+00:07:00,180 --> 00:07:06,555
+Trước khi chúng ta kết thúc bài học này, hãy tăng tốc mọi thứ lên một chút bằng cách tận dụng loại thuê bao thực thể ram.
+
+36
+00:07:06,840 --> 00:07:16,500
+Như chúng tôi đã đề cập ở phần đầu của bài học này.  Về cơ bản, chúng tôi có thể nghe các sự kiện đăng để kích hoạt quá trình gửi này bất cứ khi nào một bản ghi hộp thư đi mới được chèn vào.
+
+37
+00:07:16,920 --> 00:07:33,180
+Bài đăng sẽ phát ra một sự kiện hướng dẫn hoặc đính kèm vị trí để gửi tin nhắn đến người môi giới tin nhắn.  Với loại r m, chúng ta có thể đạt được chức năng tương tự bằng cách sử dụng các thuê bao thực thể, tuy nhiên xin lưu ý rằng phương pháp này có thể không phù hợp với mọi trường hợp sử dụng.
+
+38
+00:07:33,660 --> 00:07:45,070
+Nếu bạn muốn xử lý tin nhắn theo đợt, bạn nên sử dụng phương pháp dựa trên cron.  Sẽ chỉ giới thiệu tùy chọn này vì nó có thể phù hợp với một số trường hợp sử dụng và ứng dụng hiện có.
+
+39
+00:07:45,120 --> 00:07:54,940
+Được rồi, hãy bắt đầu với cách tiếp cận người đăng ký của đối phương.  Hãy tạo một tệp ts người đăng ký thực thể hộp thư đi mới trong mô-đun hộp thư đi với nội dung sau.
+
+40
+00:07:57,720 --> 00:08:07,660
+Hãy chia nhỏ lớp này để mọi thứ có ý nghĩa hơn nhiều.  Đầu tiên, chúng tôi thêm lớp này vào mảng người đăng ký nguồn dữ liệu để nó có thể nghe các sự kiện thực thể.
+
+41
+00:08:08,220 --> 00:08:19,960
+Phương thức listen to cho biết những thực thể nào mà người đăng ký quan tâm.  Cuối cùng.  Phương thức chèn sau được gọi sau khi thực thể được chèn vào cơ sở dữ liệu.
+
+42
+00:08:20,340 --> 00:08:26,020
+Trong phương pháp này.  Bạn có thể nhận thấy rằng chúng tôi cũng đã gửi ngay tin nhắn đến người môi giới tin nhắn.
+
+43
+00:08:26,520 --> 00:08:34,120
+Bây giờ với lớp và vị trí này, nó sẽ mở tệp mô-đun hộp thư đi và đăng ký lớp người đăng ký thực thể hộp thư đi làm nhà cung cấp.
+
+44
+00:08:34,680 --> 00:08:39,820
+Hãy lưu các thay đổi của chúng ta khi đi tới thiết bị đầu cuối và đảm bảo mọi thứ vẫn hoạt động.
+
+45
+00:08:40,530 --> 00:08:49,270
+Nếu vậy hãy tạo lại tòa nhà mới bằng cách sử dụng cuộn tròn.  Bây giờ hãy quay lại terminal của chúng ta và xem lại nhật ký một lần nữa.
+
+46
+00:08:49,740 --> 00:08:55,600
+Như chúng ta có thể thấy, một quy trình công việc mới đã được tạo gần như ngay lập tức sau khi tòa nhà được tạo và giờ đây nó đã hoạt động.
+
+47
+00:08:56,190 --> 00:09:04,390
+Vì vậy, để tóm tắt.  Trong bài học này, chúng ta đã học cách sử dụng mẫu hộp thư đi giao dịch để đảm bảo tính nhất quán của dữ liệu giữa các dịch vụ khác nhau.
+
+48
+00:09:04,740 --> 00:09:16,300
+Mẫu này đặc biệt hữu ích khi chúng ta không thể để mất tin nhắn và chúng ta cần đảm bảo rằng cuối cùng chúng sẽ được gửi đến dịch vụ tiêu dùng để đạt được những điều này ít nhất một lần được đảm bảo gửi.
+
+49
+00:09:16,650 --> 00:09:24,360
+Trước khi kết thúc, hãy tập trung vào một lưu ý nhỏ mà bạn có thể đã nghĩ tới.  Điều gì sẽ xảy ra sau khi gửi tin nhắn đến dịch vụ quy trình công việc.
+
+50
+00:09:24,690 --> 00:09:35,700
+Quá trình xử lý hộp thư đi gặp sự cố trước khi xóa thư khỏi cơ sở dữ liệu.  Trong trường hợp này, khi ứng dụng khôi phục, tin nhắn sẽ được gửi lại và rõ ràng là chúng tôi không muốn điều đó.
+
+51
+00:09:36,030 --> 00:09:42,910
+Đây là lý do tại sao mẫu hộp thư đi cho phép chúng tôi đạt được ít nhất một lần đảm bảo giao hàng chứ không phải chính xác một lần giao hàng.
+
+52
+00:09:43,050 --> 00:09:51,420
+Nói cách khác, chúng tôi không thể đảm bảo rằng tin nhắn sẽ được gửi chính xác một lần nhưng chúng tôi có thể đảm bảo rằng tin nhắn sẽ đến đích ít nhất một lần.
+

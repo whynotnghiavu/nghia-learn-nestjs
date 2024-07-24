@@ -1,0 +1,64 @@
+1
+00:00:00,840 --> 00:00:08,740
+Với cơ sở dữ liệu cho mỗi mẫu dịch vụ, mỗi dịch vụ có cơ sở dữ liệu chuyên dụng riêng mà bất kỳ dịch vụ nào khác không thể truy cập trực tiếp.
+
+2
+00:00:08,940 --> 00:00:19,300
+Mẫu này thường được sử dụng khi chúng ta muốn đạt được mức độ cách ly cao giữa các dịch vụ.  Nó cũng rất hữu ích cho các công nghệ cơ sở dữ liệu khác nhau cho các dịch vụ khác nhau.
+
+3
+00:00:19,860 --> 00:00:26,290
+Vì vậy, có một số cách khác nhau để giữ sự tồn tại của dịch vụ ở chế độ riêng tư.  Bàn riêng cho mỗi dịch vụ.
+
+4
+00:00:26,490 --> 00:00:35,680
+Điều này có nghĩa là mỗi dịch vụ.  Sở hữu một tập hợp các bảng mà chỉ dịch vụ đó mới được truy cập.  Các dịch vụ khác không thể truy cập vào các bảng này.
+
+5
+00:00:35,790 --> 00:00:43,780
+Nếu các dịch vụ khác cần truy vấn dữ liệu trong các bảng này.  Họ phải làm điều đó thông qua dịch vụ sở hữu.  Đề án lên dịch vụ của cô ấy.
+
+6
+00:00:43,980 --> 00:00:53,820
+Mỗi dịch vụ có một lược đồ cơ sở dữ liệu riêng tư cho dịch vụ đó.  Và máy chủ cơ sở dữ liệu cho mỗi dịch vụ.  Mỗi dịch vụ có máy chủ cơ sở dữ liệu chuyên dụng riêng.
+
+7
+00:00:54,270 --> 00:01:05,800
+Cách tiếp cận này đòi hỏi nhiều tài nguyên hơn nhưng nó cũng mang lại mức độ cô lập cao hơn.  Mặc dù việc có một máy chủ cơ sở dữ liệu riêng cho mỗi dịch vụ thường có ý nghĩa rất lớn đối với các tổ chức lớn hơn.
+
+8
+00:01:06,030 --> 00:01:11,410
+Nơi các nhóm đang làm việc trên các dịch vụ khác nhau.  Nó không phải lúc nào cũng là sự lựa chọn tốt nhất cho các tổ chức nhỏ hơn.
+
+9
+00:01:11,784 --> 00:01:21,400
+Hạn chế của phương pháp này là độ phức tạp và chi phí tăng lên.  Việc quản lý các giao dịch phân tán phức tạp hơn đáng kể so với các hoạt động vận chuyển cục bộ.
+
+10
+00:01:21,510 --> 00:01:32,050
+Một số truy vấn có thể yêu cầu dữ liệu từ nhiều dịch vụ.  Điều đó có nghĩa là chúng ta cần triển khai các phép nối trên các dịch vụ, điều này có thể dẫn đến độ trễ tăng lên, độ phức tạp tăng lên, v.v.
+
+11
+00:01:33,180 --> 00:01:38,640
+Mặt khác.  Việc có một máy chủ cơ sở dữ liệu dùng chung cho tất cả các dịch vụ cũng được coi là một thực tiễn không tốt.
+
+12
+00:01:39,000 --> 00:01:46,770
+Như một sự giới thiệu sự kết nối chặt chẽ giữa các dịch vụ.  Nếu một dịch vụ thay đổi lược đồ cơ sở dữ liệu.  Tất cả các dịch vụ khác cũng cần được cập nhật.
+
+13
+00:01:47,400 --> 00:01:53,310
+Ngoài ra nếu một dịch vụ có lỗi làm hỏng cơ sở dữ liệu.  Tất cả các dịch vụ khác cũng sẽ bị ảnh hưởng bởi điều này.
+
+14
+00:01:53,940 --> 00:02:01,120
+Việc phối hợp di chuyển các thay đổi lược đồ, v.v. giữa các dịch vụ cũng có thể rất khó khăn nhưng không có nghĩa là không thể.
+
+15
+00:02:02,460 --> 00:02:10,270
+Vì vậy, trong khóa học này sẽ sử dụng cơ sở dữ liệu theo cách tiếp cận dịch vụ.  Mặc dù nó có thể khiến mọi thứ trở nên quá phức tạp đối với ứng dụng nhỏ của chúng ta.
+
+16
+00:02:10,440 --> 00:02:20,400
+A có thể không phải là lựa chọn tốt nhất cho trường hợp sử dụng sản phẩm hoặc tổ chức của chúng ta.  Điều này hãy nhớ luôn đảm bảo xem xét cẩn thận những ưu và nhược điểm trước khi quyết định chọn kiến ​​trúc sư cho hệ thống của bạn.
+

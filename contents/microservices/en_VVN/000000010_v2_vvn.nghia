@@ -1,0 +1,112 @@
+1
+00:00:01,170 --> 00:00:07,780
+Trước khi đi sâu vào sự khác biệt giữa tỷ lệ dọc và tỷ lệ ngang, trước tiên chúng ta hãy xác định tỷ lệ là gì.
+
+2
+00:00:07,890 --> 00:00:19,360
+Mở rộng quy mô là quá trình bổ sung thêm tài nguyên vào ứng dụng của chúng tôi để xử lý tải tăng lên.  Điều này có thể được đo lường theo số lượng yêu cầu mỗi giây của người dùng đồng thời, v.v.
+
+3
+00:00:19,500 --> 00:00:25,320
+Chia tỷ lệ theo chiều ngang và chiều dọc tương tự nhau ở chỗ cả hai đều liên quan đến việc bổ sung thêm nhiều tài nguyên máy tính hơn vào hệ thống của chúng tôi.
+
+4
+00:00:25,650 --> 00:00:33,930
+Họ chỉ làm điều đó theo những cách khác nhau.  Chia tỷ lệ theo chiều dọc hoặc tăng tỷ lệ.  Có nghĩa là có nhiều tài nguyên bộ nhớ cpu hơn cho một máy chủ.
+
+5
+00:00:34,410 --> 00:00:46,360
+Điều này thường được thực hiện bằng cách nâng cấp phần cứng máy chủ, nghĩa là thêm nhiều ram cpu, v.v. Việc chia tỷ lệ theo chiều dọc rất đơn giản nhưng nó thường bị giới hạn ở phần cứng và có thể khá tốn kém.
+
+6
+00:00:46,740 --> 00:01:00,130
+Chia tỷ lệ theo chiều ngang hoặc thu nhỏ.  Có nghĩa là thêm nhiều máy chủ ghi chú vào hệ thống của chúng tôi.  Do đó, điều này có nghĩa là chúng ta cần phân phối tải trên nhiều máy chủ, việc này thường được thực hiện bằng bộ cân bằng tải.
+
+7
+00:01:00,840 --> 00:01:06,450
+Khi quyết định giữa tỷ lệ dọc và tỷ lệ ngang, chúng ta cần xem xét ưu và nhược điểm của từng phương pháp.
+
+8
+00:01:06,780 --> 00:01:14,010
+Hoặc ví dụ trong thế giới cơ sở dữ liệu việc chia tỷ lệ theo chiều ngang thường dựa trên việc phân vùng dữ liệu.  Trong khi với tỷ lệ dọc.
+
+9
+00:01:14,371 --> 00:01:21,400
+Việc tiêu diệt được thực hiện thông qua đa lõi chẳng hạn bằng cách phân bổ tải giữa tài nguyên cpu và ram của máy.
+
+10
+00:01:22,290 --> 00:01:27,989
+Với việc chia tỷ lệ theo chiều ngang không bị giới hạn bởi phần cứng nhưng chúng ta cần phải giải quyết các vấn đề phức tạp bổ sung khác.
+
+11
+00:01:28,350 --> 00:01:40,300
+Giống như tính nhất quán của dữ liệu cân bằng tải, v.v. Trong bài học này sẽ trình bày cách chia tỷ lệ theo chiều ngang hoạt động trong thực tế bằng cách tăng số lượng phiên bản dịch vụ của chúng tôi bằng cách sử dụng docker soạn thảo.
+
+12
+00:01:41,670 --> 00:01:54,010
+Lưu ý rằng trong các hệ thống trong thế giới thực, bạn sẽ sử dụng công cụ điều phối vùng chứa chẳng hạn như kubernetes để mở rộng quy mô dịch vụ của mình tùy thuộc vào các số liệu khác nhau, chẳng hạn như lưu lượng sử dụng bộ nhớ sử dụng CPU, v.v.
+
+13
+00:01:54,240 --> 00:02:01,390
+Chúng tôi sẽ không thể đi sâu vào kubernetes.  Vì nó hơi nằm ngoài phạm vi và độ phức tạp của những gì chúng ta đang cố gắng học trong khóa học này.
+
+14
+00:02:02,220 --> 00:02:09,940
+Vì vậy, hãy bắt đầu bằng cách mở tệp yaml docker soạn thảo nghệ thuật và thêm thuộc tính triển khai mới vào dịch vụ quy trình công việc.
+
+15
+00:02:11,430 --> 00:02:27,160
+Nhưng hãy lưu các thay đổi của chúng tôi, tạo lại các vùng chứa của chúng tôi và bắt đầu mọi thứ bằng cách soạn thảo docker.  Như chúng ta có thể thấy trong nhật ký, có nhiều phiên bản của dịch vụ quy trình công việc đang chạy, hiện có một hai ba hậu tố trên mọi thứ.
+
+16
+00:02:27,720 --> 00:02:34,870
+Tiếp theo.  Hãy điều hướng đến tệp dịch vụ quy trình công việc và khai báo một biến riêng tư mới như sau.
+
+17
+00:02:37,110 --> 00:02:42,400
+Với biến này, hãy cập nhật phương thức tạo để khóa rằng chúng tôi đang tạo một quy trình làm việc mới.
+
+18
+00:02:43,260 --> 00:02:59,770
+Hãy lưu những thay đổi của chúng ta vào thiết bị đầu cuối và tạo ba tòa nhà bằng cách sử dụng đường cong.  Bây giờ hãy chuyển sang cửa sổ terminal khác và kiểm tra các nhật ký đó.
+
+19
+00:03:01,110 --> 00:03:08,860
+Như chúng ta có thể thấy.  Thay vì phân phối tải giữa nhiều phiên bản, nats đã gửi thông báo đến tất cả các phiên bản.
+
+20
+00:03:08,940 --> 00:03:21,330
+Gọi là phát sóng nhưng thực ra đó không phải là điều chúng ta mong muốn.  Hãy giải quyết thật nhanh nào.  Trong nats khi người đăng ký tự đăng ký để lấy tin nhắn từ nhà xuất bản từ một đến n.
+
+21
+00:03:21,660 --> 00:03:28,450
+Mô hình nhắn tin Van out đảm bảo rằng mọi tin nhắn do nhà xuất bản gửi sẽ đến được tất cả những người đăng ký đã đăng ký.
+
+22
+00:03:29,250 --> 00:03:35,640
+Nats cung cấp tính năng bổ sung có tên q cho phép người đăng ký tự đăng ký như một phần của hàng đợi.
+
+23
+00:03:36,210 --> 00:03:44,290
+Những người đăng ký là một phần của hàng đợi sẽ tạo thành một nhóm hàng đợi.  Vì thế.  Làm cách nào chúng tôi có thể định cấu hình người đăng ký của mình để trở thành một phần của nhóm xếp hàng.
+
+24
+00:03:45,360 --> 00:03:59,290
+Tốt.  Chúng ta có thể thực hiện việc này bằng cách chuyển tùy chọn hàng đợi tới cấu hình máy chủ.  Vì vậy, hãy mở tệp ts chính trong ứng dụng dịch vụ quy trình công việc và cập nhật phương thức kết nối microservice để chuyển tùy chọn hàng đợi tới cấu hình máy chủ.
+
+25
+00:04:01,680 --> 00:04:14,440
+Hãy lưu lại những thay đổi của chúng ta ở phần terminal và tạo ra ba tòa nhà một lần nữa bằng cách sử dụng đường cong.  Chuyển sang cửa sổ terminal khác và một lần nữa hãy kiểm tra các nhật ký đó.
+
+26
+00:04:15,270 --> 00:04:22,450
+Và nhìn vào đó.  Như chúng ta có thể thấy.  Tải trọng hiện được phân phối giữa nhiều phiên bản của dịch vụ quy trình làm việc rất tốt.
+
+27
+00:04:23,160 --> 00:04:30,390
+Như chúng tôi đã đề cập ở phần đầu của bài học này về các hệ thống trong thế giới thực, bạn sẽ sử dụng công cụ điều phối vùng chứa chẳng hạn như kubernetes để mở rộng quy mô dịch vụ của mình.
+
+28
+00:04:30,720 --> 00:04:43,630
+Chúng tôi đang áp dụng các số liệu khác nhau, chẳng hạn như lưu lượng sử dụng bộ nhớ sử dụng cpu, v.v. Trong trường hợp của chúng tôi ở đây vì chúng tôi chỉ làm mọi việc cho mục đích trình diễn nên chúng tôi chỉ mã hóa cứng số lượng phiên bản trong tệp soạn thảo docker của mình.
+

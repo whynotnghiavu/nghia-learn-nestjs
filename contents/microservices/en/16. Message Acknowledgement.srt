@@ -1,0 +1,542 @@
+﻿1
+00:00:01,080 --> 00:00:03,420
+Acknowledgement is
+basically a notification
+
+2
+00:00:03,540 --> 00:00:07,290
+for the message broker that a particular
+message has been processed and the broker
+
+3
+00:00:07,290 --> 00:00:09,730
+does not need to
+worry about it any more.
+
+4
+00:00:09,900 --> 00:00:10,740
+In particular
+
+5
+00:00:11,040 --> 00:00:14,400
+it should read deliver the message
+to this or some other consumer.
+
+6
+00:00:14,820 --> 00:00:19,140
+With the acknowledgment
+mechanism we can ensure that
+
+7
+00:00:19,140 --> 00:00:20,100
+a message is not lost in
+case of a service failure.
+
+8
+00:00:20,460 --> 00:00:21,870
+Or message processing error.
+
+9
+00:00:22,410 --> 00:00:26,320
+You can also guarantee data
+consistency among different services.
+
+10
+00:00:27,000 --> 00:00:31,286
+By default rabbit em que transporter
+automatically acknowledges messages after their
+
+11
+00:00:31,286 --> 00:00:33,280
+received by the
+consumer service.
+
+12
+00:00:33,330 --> 00:00:33,840
+However
+
+13
+00:00:34,050 --> 00:00:35,010
+in some cases
+
+14
+00:00:35,220 --> 00:00:37,873
+we might want to manually
+acknowledge messages.
+
+15
+00:00:38,670 --> 00:00:42,490
+Let's take a closer look at show
+how all of this works in practice.
+
+16
+00:00:43,200 --> 00:00:46,980
+Let's open up the notification service
+controller file an update the send
+
+17
+00:00:46,980 --> 00:00:52,210
+notification method to always throw an
+error to simulate a message processing air.
+
+18
+00:00:53,130 --> 00:00:58,060
+In a real world system this could happen if
+an email servers down just as an example.
+
+19
+00:00:58,260 --> 00:01:02,370
+We also have to re enable the alarm the
+generator service so let's open up the alarm
+
+20
+00:01:02,372 --> 00:01:05,920
+generator service file an
+uncommon the interval decorator.
+
+21
+00:01:06,450 --> 00:01:07,440
+Now next up.
+
+22
+00:01:07,770 --> 00:01:11,100
+We need to migrate the
+notification service to rabbits q.
+
+23
+00:01:11,670 --> 00:01:14,250
+Let's first open up our
+docker compose yaml file.
+
+24
+00:01:14,790 --> 00:01:19,360
+An update the notification service
+to depend on the rabbit mq service.
+
+25
+00:01:21,600 --> 00:01:24,393
+Next declare the rabbit
+em que underscore your
+
+26
+00:01:24,510 --> 00:01:27,030
+environment variable so
+that the notification service
+
+27
+00:01:27,180 --> 00:01:29,801
+can connect to the
+rabbit em que server.
+
+28
+00:01:30,990 --> 00:01:31,990
+Similarly.
+
+29
+00:01:32,040 --> 00:01:34,810
+Let's also do the same
+for the alarms service.
+
+30
+00:01:45,720 --> 00:01:46,950
+With all of this and place
+
+31
+00:01:47,070 --> 00:01:51,390
+must navigate to the notification service
+application and open up the main t s file.
+
+32
+00:01:51,812 --> 00:01:56,350
+Update the connect microservice method
+to use the rabbit mq transport strategy.
+
+33
+00:02:00,180 --> 00:02:04,230
+Lastly we also have to update the
+alarms service application which is our
+
+34
+00:02:04,230 --> 00:02:08,310
+orchestrator to use
+the rabbit em que client
+
+35
+00:02:08,340 --> 00:02:09,340
+when sending events to
+the notifications service.
+
+36
+00:02:09,660 --> 00:02:10,080
+So.
+
+37
+00:02:10,410 --> 00:02:15,690
+Let's open up our constants t s file and
+first rename the existing constant to nats
+
+38
+00:02:15,690 --> 00:02:18,280
+underscore message
+underscore borough occur.
+
+39
+00:02:20,340 --> 00:02:25,200
+Next let's declare a new constant called
+notifications underscore service right after
+
+40
+00:02:25,200 --> 00:02:27,190
+the nats message
+broker constant.
+
+41
+00:02:27,960 --> 00:02:28,980
+With that in place.
+
+42
+00:02:29,310 --> 00:02:31,980
+Let's open up our
+alarms service module file
+
+43
+00:02:32,160 --> 00:02:36,190
+and update the clients module
+configuration to register to clients.
+
+44
+00:02:36,390 --> 00:02:41,980
+One for the nats transport strategy and
+another for the rabbit mq transport strategy.
+
+45
+00:02:42,030 --> 00:02:44,770
+Specifically for the
+notifications service.
+
+46
+00:02:45,390 --> 00:02:45,780
+Great
+
+47
+00:02:46,080 --> 00:02:47,880
+now with the climb
+provider registered
+
+48
+00:02:48,000 --> 00:02:52,260
+let's open up the alarm service controller
+file in inject the notification service
+
+49
+00:02:52,260 --> 00:02:54,700
+client with the
+inject decorator.
+
+50
+00:03:00,990 --> 00:03:05,670
+Just for purity sake let's also renamed
+the message broker property here to nats
+
+51
+00:03:05,670 --> 00:03:08,830
+message broker so we can
+distinguish between the two.
+
+52
+00:03:09,720 --> 00:03:11,040
+And the last but not least
+
+53
+00:03:11,160 --> 00:03:13,080
+let scroll down to
+the create method
+
+54
+00:03:13,350 --> 00:03:17,370
+and update decode to use the notification
+service client instead of the message
+
+55
+00:03:17,370 --> 00:03:19,450
+broker client for
+sending notifications.
+
+56
+00:03:21,480 --> 00:03:24,930
+Let's save our changes
+head over to the terminal
+
+57
+00:03:24,930 --> 00:03:25,930
+and make sure everything
+is up and running.
+
+58
+00:03:26,160 --> 00:03:30,240
+As if we can see from
+the logs the failed to send
+
+59
+00:03:30,240 --> 00:03:31,390
+notification era was
+logged down to our console.
+
+60
+00:03:32,250 --> 00:03:32,820
+However
+
+61
+00:03:33,060 --> 00:03:36,060
+the message was not redelivery
+to the consumer service.
+
+62
+00:03:36,540 --> 00:03:40,380
+This is because the rabbit mq transport
+strategy as we mentioned earlier.
+
+63
+00:03:40,800 --> 00:03:45,040
+Automatically acknowledges messages after
+delivering them to the consumer service.
+
+64
+00:03:45,150 --> 00:03:45,630
+So
+
+65
+00:03:45,900 --> 00:03:48,464
+how can we manually
+acknowledge messages.
+
+66
+00:03:48,750 --> 00:03:49,200
+Well
+
+67
+00:03:49,500 --> 00:03:52,980
+we can do this by first turning off the
+auto acknowledgement feature and then
+
+68
+00:03:52,980 --> 00:03:57,010
+manually acknowledging messages
+using the channel act method.
+
+69
+00:03:57,510 --> 00:04:02,468
+So let's open up our main
+t s file in the notification
+
+70
+00:04:02,489 --> 00:04:04,050
+service application and update
+the connect microservice method
+
+71
+00:04:04,350 --> 00:04:06,330
+setting the no act attribute
+
+72
+00:04:06,450 --> 00:04:07,660
+to false.
+
+73
+00:04:08,670 --> 00:04:12,931
+With this change in place
+now the message broker will
+
+74
+00:04:12,946 --> 00:04:14,790
+not automatically acknowledged
+messages to test it out.
+
+75
+00:04:15,150 --> 00:04:18,700
+Let's switch over to our terminal
+again and observe those logs.
+
+76
+00:04:20,430 --> 00:04:24,000
+So it seems that are
+messages are still not
+
+77
+00:04:24,000 --> 00:04:24,540
+immediately re deliver
+to the consumer service
+
+78
+00:04:24,690 --> 00:04:26,170
+but why is there.
+
+79
+00:04:26,670 --> 00:04:31,590
+Well in Rabat em que non acknowledged
+messages are not deleted from the q and a re
+
+80
+00:04:31,590 --> 00:04:35,110
+deliver to the consumer service
+when the consumer service restarts.
+
+81
+00:04:35,460 --> 00:04:39,270
+Which means that in
+order to see message is
+
+82
+00:04:39,270 --> 00:04:39,810
+being re delivered to
+the notification service
+
+83
+00:04:40,080 --> 00:04:41,620
+we need to restarted.
+
+84
+00:04:41,880 --> 00:04:46,410
+The trigger a restart
+but simply update the
+
+85
+00:04:46,470 --> 00:04:48,010
+notification service
+controller file answer save it.
+
+86
+00:04:49,680 --> 00:04:53,200
+Let's switch over to the terminal
+again and observe those locks.
+
+87
+00:04:53,820 --> 00:04:55,440
+And as we can see
+from the logs here.
+
+88
+00:04:56,010 --> 00:05:01,240
+Several previously non acknowledge messages
+were re delivered to the service great.
+
+89
+00:05:01,500 --> 00:05:02,640
+But what if we wanted
+
+90
+00:05:02,760 --> 00:05:05,130
+messages to be re
+delivered immediately
+
+91
+00:05:05,250 --> 00:05:06,990
+instead of waiting for
+the service to restart.
+
+92
+00:05:07,440 --> 00:05:07,890
+Well
+
+93
+00:05:08,010 --> 00:05:11,380
+we could do this by using
+the channel nac method.
+
+94
+00:05:11,850 --> 00:05:12,420
+For this
+
+95
+00:05:12,720 --> 00:05:15,720
+we need to inject the
+are m q context using the
+
+96
+00:05:15,900 --> 00:05:18,730
+c t x puram
+decorator as follows.
+
+97
+00:05:20,340 --> 00:05:20,820
+And then
+
+98
+00:05:21,000 --> 00:05:25,710
+inside of the send
+notification method we can use
+
+99
+00:05:25,740 --> 00:05:26,890
+the channel neck method
+to reject the message.
+
+100
+00:05:28,500 --> 00:05:30,660
+To avoid entering
+an infinite loop.
+
+101
+00:05:30,990 --> 00:05:33,780
+Will also check to see if the
+message was already re deliver.
+
+102
+00:05:34,230 --> 00:05:34,800
+If so.
+
+103
+00:05:35,130 --> 00:05:37,540
+Will acknowledge the
+message and discarded.
+
+104
+00:05:38,460 --> 00:05:41,970
+So let's save our
+changes and head over to
+
+105
+00:05:41,970 --> 00:05:42,970
+the terminal and observe
+those logs once more.
+
+106
+00:05:45,330 --> 00:05:49,620
+And as we can see the message was immediately
+re delivered to the consumer service
+
+107
+00:05:49,680 --> 00:05:54,430
+after it was reject and eventually
+acknowledged and discarded excellent.
+
+108
+00:05:55,020 --> 00:05:59,100
+So to summarize in this lesson we learned
+how to manually acknowledged messages using
+
+109
+00:05:59,100 --> 00:06:02,110
+the channel act and
+channel nac methods.
+
+110
+00:06:02,520 --> 00:06:04,650
+We also learn that
+in Rabat em que.
+
+111
+00:06:04,980 --> 00:06:08,550
+Non acknowledged
+messages are not deleted from
+
+112
+00:06:08,550 --> 00:06:09,480
+the q and a re delivered
+to the consumer service
+
+113
+00:06:09,600 --> 00:06:11,650
+when the consumer
+service restarts.
+

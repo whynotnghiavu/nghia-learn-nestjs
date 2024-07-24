@@ -1,0 +1,108 @@
+1
+00:00:01,200 --> 00:00:12,760
+Trong bài học này sẽ tạo ra các dịch vụ mới.  Dịch vụ phân loại cảnh báo và dịch vụ thông báo sẽ chịu trách nhiệm phân loại cảnh báo và thông báo cho các dịch vụ hoặc người dùng khác về cảnh báo.
+
+2
+00:00:13,470 --> 00:00:21,400
+Trong ứng dụng thực tế, dịch vụ phân loại cảnh báo sẽ phân loại cảnh báo hoặc nhóm cảnh báo bằng thuật toán ai hoặc ml.
+
+3
+00:00:22,410 --> 00:00:28,690
+Dịch vụ này sẽ sử dụng mô hình được đào tạo trước để phân loại cảnh báo là quan trọng không quan trọng hoặc không hợp lệ.
+
+4
+00:00:28,830 --> 00:00:34,110
+Với kiến ​​trúc microservices, bạn có thể tự do sử dụng bất kỳ ngôn ngữ hoặc framework lập trình nào để triển khai các dịch vụ của mình.
+
+5
+00:00:34,470 --> 00:00:43,543
+Vì vậy, ví dụ: dịch vụ này có thể được triển khai bằng python và chỉ cần hiển thị các điểm cuối http hoặc kết nối với máy chủ nat để liên lạc với các dịch vụ khác của chúng tôi.
+
+6
+00:00:44,160 --> 00:00:49,890
+Tương tự dịch vụ thông báo sẽ có nhiệm vụ thông báo cho các dịch vụ hoặc người dùng khác về báo động.
+
+7
+00:00:50,220 --> 00:00:58,300
+Ví dụ: nó có thể gửi email đến người quản lý tòa nhà hoặc bộ phận về cảnh báo.  Nó cũng có thể gửi tin nhắn sms cho nhóm bảo trì.
+
+8
+00:00:59,130 --> 00:01:08,080
+Vì tất cả các chức năng này nằm ngoài phạm vi của khóa học này nên khóa học này sẽ triển khai các dịch vụ này dưới dạng dịch vụ mô phỏng, sẽ chỉ ghi lại các cảnh báo nhận được từ bảng điều khiển.
+
+9
+00:01:08,280 --> 00:01:18,180
+Vì thế.  Hãy bắt đầu bằng cách tạo một ứng dụng dịch vụ phân loại cảnh báo mới bằng cách sử dụng nes jsc live.  Vì vậy, hãy đi tới thiết bị đầu cuối của chúng tôi và chạy lệnh sau.
+
+10
+00:01:18,630 --> 00:01:28,360
+Dịch vụ dash phân loại dấu gạch ngang của ứng dụng Nest g.  Cũng.  Phải tạo dịch vụ thông báo bằng dịch vụ dash thông báo ứng dụng Nest g.
+
+11
+00:01:29,520 --> 00:01:38,380
+Tiếp theo, hãy mở tệp docker soạn yaml và thêm các dịch vụ mới.  Trước tiên hãy tập trung vào dịch vụ phân loại cảnh báo.
+
+12
+00:01:38,580 --> 00:01:53,380
+Trước khi chúng ta có thể thêm một trình xử lý tin nhắn mới.  Hãy đi tới tệp ts chính và làm theo các bước tương tự như chúng ta đã làm trong các bài học trước để chuyển đổi ứng dụng http của mình thành một ứng dụng kết hợp hỗ trợ cả điểm vào http và nats.
+
+13
+00:01:58,590 --> 00:02:07,870
+Tiếp theo, hãy mở tệp bộ điều khiển dịch vụ phân loại cảnh báo và thay thế nội dung của lớp bộ điều khiển dịch vụ phân loại cảnh báo bằng mã sau.
+
+14
+00:02:09,030 --> 00:02:24,160
+Phương pháp phân loại cảnh báo được hiển thị ở đây sẽ trả về ngẫu nhiên các danh mục quan trọng không quan trọng hoặc không hợp lệ như chúng tôi đã đề cập trước đó trong một ứng dụng trong thế giới thực. Dịch vụ này sẽ phân loại cảnh báo hoặc nhóm cảnh báo bằng trí tuệ nhân tạo hoặc thuật toán học máy.
+
+15
+00:02:24,510 --> 00:02:41,860
+Vì thế.  Tuy nhiên, hãy lưu các thay đổi của chúng tôi và chuyển sang ứng dụng dịch vụ thông báo.  Trước khi chúng ta có thể thêm một trình xử lý sự kiện mới, hãy quay lại tệp t s chính và làm theo các bước tương tự như chúng ta vừa làm và chuyển đổi ứng dụng http của mình sang một ứng dụng kết hợp hỗ trợ cả http và điểm nhập dữ liệu.
+
+16
+00:02:42,570 --> 00:02:52,930
+Nhân tiện, thay vì cập nhật thủ công tệp ts chính này mỗi khi chúng tôi tạo một ứng dụng mới, chúng tôi có thể tạo một sơ đồ tùy chỉnh mới sẽ thực hiện tất cả những điều này và tóm tắt cho chúng tôi.
+
+17
+00:02:53,340 --> 00:03:00,430
+Hãy xem liên kết mở rộng khóa học khái niệm nâng cao bên dưới video trong phần mô tả bài học nếu bạn muốn tìm hiểu thêm về chủ đề này.
+
+18
+00:03:01,470 --> 00:03:09,610
+Tiếp theo, hãy mở tệp bộ điều khiển dịch vụ thông báo và thay thế nội dung của lớp bộ điều khiển dịch vụ thông báo bằng mã sau.
+
+19
+00:03:10,590 --> 00:03:18,370
+Bây giờ chúng ta đều là dịch vụ và địa điểm, hãy điều hướng đến ứng dụng dịch vụ báo động và tạo tệp t s hằng.
+
+20
+00:03:26,940 --> 00:03:37,030
+Và sau đó thêm hằng số giảm vào bên trong nó.  Sẽ sử dụng hằng số này để đăng ký một máy khách mới bằng cách sử dụng mô-đun máy khách trong tệp t của mô-đun dịch vụ cảnh báo.
+
+21
+00:03:38,670 --> 00:03:45,557
+Tiếp theo, hãy mở tệp bộ điều khiển dịch vụ cảnh báo trong ứng dụng khách môi giới tin nhắn tiêm bằng cách sử dụng trang trí tiêm.
+
+22
+00:03:53,760 --> 00:04:04,240
+Bây giờ sử dụng phương pháp điều phối mà chúng tôi đã giới thiệu trong bài học trước.  Hãy cập nhật phương thức tạo tại đây để phân loại cảnh báo trước rồi thông báo cho các dịch vụ khác về cảnh báo đó.
+
+23
+00:04:15,540 --> 00:04:20,280
+Hãy lưu các thay đổi của chúng tôi và đi tới thiết bị đầu cuối và chạy lệnh sau để bắt đầu mọi thứ.
+
+24
+00:04:20,580 --> 00:04:42,510
+Docker soạn thảo.  Hãy đợi cho đến khi mọi thứ hoàn tất và kiểm tra nhật ký.  Và ở đó chúng ta có thể thấy dịch vụ báo động hiện đang nhận được các cảnh báo mới từ dịch vụ tạo cảnh báo.
+
+25
+00:04:42,870 --> 00:04:50,590
+Phân loại chúng bằng dịch vụ phân loại cảnh báo và thông báo cho các dịch vụ khác về cảnh báo bằng dịch vụ thông báo.
+
+26
+00:04:50,790 --> 00:04:59,290
+Tuyệt vời.  Đã phục hồi được khá nhiều điều trong bài học này nhưng hy vọng bạn có thể thấy được sức mạnh của phương pháp điều phối đối với microservice.
+
+27
+00:04:59,760 --> 00:05:08,290
+Giờ đây, chúng tôi có thể dễ dàng quản lý việc phối hợp tương tác giữa nhiều vi dịch vụ để đạt được bất kỳ mục tiêu kinh doanh cụ thể nào.
+

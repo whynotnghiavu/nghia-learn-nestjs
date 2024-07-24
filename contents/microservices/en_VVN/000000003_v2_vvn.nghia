@@ -1,0 +1,72 @@
+1
+00:00:01,020 --> 00:00:11,520
+Dịch vụ vi mô là một kỹ thuật phát triển phần mềm.  Một biến thể của kiến ​​trúc hướng dịch vụ hoặc phong cách kiến ​​trúc esa way cấu trúc và ứng dụng như một tập hợp các mối liên kết lỏng lẻo.
+
+2
+00:00:11,880 --> 00:00:25,180
+Dịch vụ hạt mịn.  Với microservice.  Chúng tôi có thể tổ chức phần phụ trợ của mình dưới dạng một tập hợp các dịch vụ có khả năng bảo trì cao, có thể kiểm tra độc lập và có thể triển khai độc lập trong các khả năng kinh doanh được tổ chức.
+
+3
+00:00:25,920 --> 00:00:32,320
+Thông thường, chúng thuộc sở hữu của một nhóm nhỏ vì microservice đóng gói các miền cụ thể nhỏ hơn.
+
+4
+00:00:33,149 --> 00:00:38,920
+Lợi ích của microservice là rất nhiều, chúng ta hãy xem xét một số lợi ích quan trọng và có giá trị nhất.
+
+5
+00:00:39,180 --> 00:00:46,510
+Triển khai độc lập.  Chúng tôi có thể triển khai từng dịch vụ một cách độc lập.  Điều đó có nghĩa là chúng tôi có thể triển khai thường xuyên hơn và nhanh hơn.
+
+6
+00:00:46,590 --> 00:00:52,840
+Chúng tôi cũng có thể mở rộng quy mô cho từng dịch vụ một cách độc lập, nghĩa là chúng tôi chỉ có thể mở rộng quy mô cho những dịch vụ cần mở rộng quy mô.
+
+7
+00:00:53,610 --> 00:01:04,090
+Tính mô-đun.  Điều này làm cho ứng dụng dễ hiểu hơn trong việc phát triển và thử nghiệm.  Các nhóm khác nhau có thể làm việc trên các dịch vụ khác nhau mà không cần phải biết chi tiết về các dịch vụ khác.
+
+8
+00:01:04,830 --> 00:01:14,380
+Công nghệ đa dạng.  Chúng tôi có thể sử dụng các công nghệ khác nhau cho các dịch vụ khác nhau, chẳng hạn như chúng tôi có thể sử dụng known js cho một dịch vụ và java cho một dịch vụ khác.
+
+9
+00:01:14,760 --> 00:01:26,530
+Mặt khác, microservice cũng có một số nhược điểm.  Sự phức tạp.  Với microservice, chúng ta cần xử lý các hệ thống phân tán phức tạp hơn các ứng dụng nguyên khối.
+
+10
+00:01:26,850 --> 00:01:33,310
+Ngoài ra, giao tiếp dịch vụ có độ trễ cao hơn các cuộc gọi trong quá trình trong các ứng dụng nguyên khối.
+
+11
+00:01:34,380 --> 00:01:45,910
+Tính nhất quán của dữ liệu.  Việc duy trì tính nhất quán của dữ liệu trên các dịch vụ là một thách thức.  Một số hoạt động có thể yêu cầu các giao dịch trải rộng trên nhiều dịch vụ và việc thực hiện không đơn giản.
+
+12
+00:01:46,530 --> 00:01:54,250
+Đang thử nghiệm.  Việc kiểm tra các dịch vụ vi mô phức tạp hơn việc kiểm tra các ứng dụng nguyên khối.  Kiểm tra từng dịch vụ một cách riêng biệt.
+
+13
+00:01:54,360 --> 00:02:02,920
+Chúng ta cần mô phỏng tất cả các dịch vụ khác.  Ngoài ra, chúng tôi cần kiểm tra sự tích hợp giữa các dịch vụ và các bài kiểm tra kết thúc và tích hợp.
+
+14
+00:02:03,660 --> 00:02:12,310
+Và sự phức tạp của việc triển khai.  Chúng tôi cần triển khai nhiều dịch vụ ở đây, tất nhiên là phức tạp hơn việc triển khai một ứng dụng nguyên khối duy nhất.
+
+15
+00:02:12,720 --> 00:02:23,350
+Và tất nhiên có một số thứ khác mà chúng tôi chưa đi sâu vào ở đây.  Vì vậy, như chúng ta có thể thấy.  Kiến trúc microservice có những ưu và nhược điểm tương đối cũng như mọi thứ và quá trình phát triển phần mềm.
+
+16
+00:02:24,000 --> 00:02:30,750
+Nó không phải là giải pháp an toàn và nó không phù hợp với mọi ứng dụng vì nó gây ra sự phức tạp và chi phí bổ sung.
+
+17
+00:02:31,080 --> 00:02:39,520
+Các vấn đề mới và thách thức mới mà chúng ta cần giải quyết như độ trễ mạng.  Tính nhất quán của dữ liệu về khả năng chịu lỗi, v.v.
+
+18
+00:02:39,930 --> 00:02:48,550
+Vì các nhà phát triển phần mềm sẽ cần phải luôn cân nhắc cẩn thận những ưu và nhược điểm trước khi quyết định sử dụng microservice cho bất kỳ hệ thống cụ thể nào mà chúng tôi đang làm việc.
+

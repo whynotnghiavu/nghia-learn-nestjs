@@ -1,0 +1,284 @@
+1
+00:00:00,900 --> 00:00:07,450
+Trong bài học trước, chúng ta đã học cách sử dụng mẫu hộp thư đi giao dịch để đạt được đảm bảo giao hàng ít nhất một lần.
+
+2
+00:00:07,590 --> 00:00:13,840
+Điều này có nghĩa là tin nhắn của chúng tôi có thể được gửi nhiều lần và đó là lý do tại sao chúng tôi cần đảm bảo rằng trình xử lý tin nhắn của chúng tôi không hoạt động.
+
+3
+00:00:14,790 --> 00:00:21,270
+Trình xử lý bình thường là các trình xử lý có thể được gọi nhiều lần với cùng một đầu vào và luôn tạo ra cùng một đầu ra.
+
+4
+00:00:21,660 --> 00:00:28,170
+Mà không giới thiệu bất kỳ tác dụng phụ.  Vì vậy, ví dụ: nếu quy trình làm việc cho một tòa nhà nhất định đã tồn tại.
+
+5
+00:00:28,500 --> 00:00:42,960
+Chúng ta không nên tạo một quy trình công việc mới thay vào đó chúng ta chỉ cần bỏ qua thông báo.  Sớm nếu dịch vụ thêm hóa đơn của chúng tôi gặp sự cố ngay sau khi gửi tin nhắn đến nhà môi giới tin nhắn, tin nhắn sẽ được gửi lại khi tin nhắn được khôi phục dẫn đến quy trình làm việc trùng lặp.
+
+6
+00:00:43,380 --> 00:00:54,430
+Tất nhiên, điều này có thể khiến chúng ta gặp phải tình trạng trùng lặp dữ liệu không nhất quán, v.v. Trong bài học này, chúng ta sẽ tìm hiểu cách sử dụng mẫu hộp thư đến để giải quyết chính vấn đề này.
+
+7
+00:00:54,990 --> 00:00:59,980
+Mẫu hộp thư đến khá giống với mẫu hộp thư đi mà chúng ta đã đề cập trong bài học trước.
+
+8
+00:01:00,120 --> 00:01:06,240
+Tuy nhiên, mẫu hộp thư đến hữu ích hơn về phía người tiêu dùng hoặc chúng tôi có một bảng chuyên dụng gọi là hộp thư đến.
+
+9
+00:01:06,570 --> 00:01:14,890
+Chúng tôi là nguồn của tất cả các tin nhắn đến.  Thay vì gửi tin nhắn đi như trong mẫu hộp thư đi.  Và sự khác biệt trong tên của họ.
+
+10
+00:01:15,450 --> 00:01:22,570
+Dịch vụ tiêu dùng mà chúng tôi sẽ tạo này sẽ kiểm tra định kỳ bảng hộp thư đến để tìm thư mới và các quy trình tiếp theo.
+
+11
+00:01:23,190 --> 00:01:33,310
+Và trái ngược với mô hình hộp thư đi.  Trước tiên, chúng tôi lưu tin nhắn vào bảng hộp thư đến, sau đó trả lại hành động hoặc xác nhận tin nhắn cho người môi giới tin nhắn.
+
+12
+00:01:33,480 --> 00:01:40,020
+Bằng cách này, nếu dịch vụ tiêu dùng gặp sự cố trước khi gửi hành động, tin nhắn sẽ lại là đòn bẩy của Rita đối với dịch vụ tiêu dùng.
+
+13
+00:01:40,350 --> 00:01:50,910
+Do đó, bảo đảm được gọi là bảo đảm giao hàng ít nhất một lần.  Tuy nhiên, với việc sử dụng bảng hộp thư đến, chúng ta thực sự có thể dễ dàng kiểm tra xem tin nhắn đã được xử lý hay chưa.
+
+14
+00:01:51,240 --> 00:02:01,540
+Điều này thường cho phép chúng tôi đạt được đảm bảo giao hàng chính xác một lần nếu chúng tôi muốn hoặc cần.  Được rồi, về mặt lý thuyết, hãy xem tất cả những điều này hoạt động như thế nào trong thực tế.
+
+15
+00:02:01,740 --> 00:02:09,040
+Hãy bắt đầu bằng cách tạo mô-đun hộp thư đến mới trong ứng dụng dịch vụ quy trình công việc với hộp thư đến gmo lồng nhau.
+
+16
+00:02:09,780 --> 00:02:18,490
+Lại.  Thay vì tạo mô-đun này trong dự án dịch vụ quy trình làm việc.  Về mặt kỹ thuật, chúng tôi có thể tạo thư mục cuộc sống để nó có sẵn cho tất cả các ứng dụng khác.
+
+17
+00:02:18,870 --> 00:02:25,350
+Rốt cuộc, rất có thể chúng ta sẽ cần chức năng này và các dịch vụ khác, vì vậy một lần nữa như một bài tập.
+
+18
+00:02:25,680 --> 00:02:35,890
+Cố gắng tự tạo một thư viện mới và di chuyển mô-đun hộp thư đến của chúng.  Kế tiếp.  Hãy tạo một thực thể mới trong hộp với một vài cột trong mô-đun hộp thư đến.
+
+19
+00:02:41,940 --> 00:02:57,940
+Tiếp theo, hãy tạo một tệp ts dịch vụ hộp thư đến mới trong mô-đun hộp thư đến với hộp thư đến của g.  Sau khi các tệp được tạo, hãy đưa nhà cung cấp nguồn dữ liệu vào bằng cách sử dụng phương pháp tiêu chuẩn.
+
+20
+00:02:59,490 --> 00:03:07,540
+Tiếp theo phải khai báo một phương thức xử lý tin nhắn hộp thư đến mới sẽ chịu trách nhiệm xử lý các tin nhắn từ bảng hộp thư đến.
+
+21
+00:03:08,730 --> 00:03:14,410
+Lưu ý rằng phương pháp này hơi khác so với những gì chúng tôi đã triển khai trong bài học về mẫu hộp thư đi giao dịch.
+
+22
+00:03:14,730 --> 00:03:25,510
+Đầu tiên thay vì trả lại các tin nhắn chưa được xử lý.  Đã chuyển chúng đến hàm xử lý.  Chức năng này sẽ chịu trách nhiệm xử lý các tin nhắn và cập nhật trạng thái của chúng để xử lý.
+
+23
+00:03:26,880 --> 00:03:34,120
+Lý do chúng tôi chọn cách tiếp cận kiểu gọi lại ở đây là vì chúng tôi muốn tận dụng phương thức giao dịch từ lớp nguồn dữ liệu.
+
+24
+00:03:34,470 --> 00:03:42,910
+Phương pháp này sẽ tự động khôi phục giao dịch nếu xảy ra lỗi.  Bằng cách này, chúng tôi thậm chí sẽ không phải lo lắng về việc tự mình khôi phục giao dịch.
+
+25
+00:03:43,380 --> 00:03:54,910
+Được rồi, hãy lưu các thay đổi của chúng ta và mở mô-đun hộp thư đến t dưới dạng tệp.  Ở đây, hãy nhập loại hoặc mô-đun cho phương thức tính năng và chuyển thực thể mới đó vào hộp đó.
+
+26
+00:03:57,780 --> 00:04:05,950
+Tuyệt vời.  Ngoài ra, hãy đảm bảo xuất loại mô-đun và nhà cung cấp dịch vụ hộp thư đến để chúng tôi có thể sử dụng chúng và các mô-đun khác.
+
+27
+00:04:06,960 --> 00:04:14,170
+Bây giờ chúng ta đã có mô-đun hộp thư đến và địa điểm, hãy mở tệp mô-đun quy trình công việc và nhập mô-đun hộp thư đến vào đó.
+
+28
+00:04:17,580 --> 00:04:25,540
+Tiếp theo, hãy mở tệp bộ điều khiển quy trình công việc để loại bỏ nhà cung cấp kho lưu trữ hộp thư đến bằng cách sử dụng trình trang trí kho lưu trữ chèn như mọi khi.
+
+29
+00:04:30,570 --> 00:04:40,660
+Tiếp theo, hãy cuộn xuống phương thức tạo và chữ ký cập nhật để chấp nhận đối tượng ngữ cảnh.  Sẽ cần điều này để xác nhận tin nhắn chỉ trong giây lát.
+
+30
+00:04:41,370 --> 00:04:48,160
+Bên trong phương thức tạo.  Đầu tiên chúng ta hãy nhập một tin nhắn mới vào bảng hộp thư đến nếu nó chưa tồn tại.
+
+31
+00:04:49,980 --> 00:05:09,130
+Và sau đó chúng ta hãy thừa nhận thông điệp đó.  Hoàn hảo.  Bây giờ để hướng dẫn thỏ em que gửi lại tin nhắn ngay lập tức nếu truy vấn sql đó không thành công, chúng ta có thể gói mọi thứ trong khối thử bắt và đưa tin nhắn vào khối bắt đó.
+
+32
+00:05:09,300 --> 00:05:15,990
+Tuy nhiên, điều này có thể không lý tưởng vì nó có thể gây ra nhiều tải cho cơ sở dữ liệu trong ngày tương tự như việc ép buộc brute.
+
+33
+00:05:16,440 --> 00:05:22,170
+Thêm về điều này trong giây lát.  Bây giờ có hai điều nữa chúng ta cần làm trước khi có thể kiểm tra mọi thứ.
+
+34
+00:05:22,860 --> 00:05:34,095
+Trước tiên, chúng ta cần cập nhật tệp ts chính của dịch vụ quy trình công việc và đặt tùy chọn biết thành sai.  Bằng cách này, nhà môi giới tin nhắn sẽ không tự động xác nhận tin nhắn.
+
+35
+00:05:34,500 --> 00:05:41,200
+Thứ hai.  Chúng ta cần tạo tệp bộ xử lý hộp thư đến quy trình công việc trong mô-đun quy trình công việc với nội dung sau.
+
+36
+00:05:43,290 --> 00:05:54,220
+Tiếp theo sẽ tiêm dịch vụ hộp thư đến bằng cách sử dụng nội dung dựa trên hàm tạo tiêu chuẩn.  Bây giờ hãy sử dụng dịch vụ này để xử lý mọi tin nhắn chưa được xử lý.
+
+37
+00:05:56,070 --> 00:06:12,900
+Tiếp theo, hãy lặp lại tất cả các tin nhắn và xử lý chúng song song.  Trong mã ở đây, chúng tôi đang kiểm tra xem mẫu thông báo có bằng với tài liệu tạo quy trình công việc hay không và nếu có.
+
+38
+00:06:13,410 --> 00:06:22,930
+Chúng ta sẽ gọi phương thức tạo quy trình làm việc.  Vì vậy, hãy tạo phương pháp tạo quy trình công việc mới này.  Và hãy phá vỡ nó.
+
+39
+00:06:25,470 --> 00:06:32,610
+Trước tiên, chúng ta cần truy xuất kho lưu trữ quy trình làm việc từ phiên bản trình quản lý thực thể.  Tiếp theo sử dụng phương thức create.
+
+40
+00:06:33,060 --> 00:06:39,146
+Chúng tôi tạo một thực thể quy trình làm việc mới rồi lưu nó vào cơ sở dữ liệu bằng phương pháp lưu kho lưu trữ.
+
+41
+00:06:39,691 --> 00:06:49,540
+Cuối cùng nhưng không kém phần quan trọng, chúng tôi cập nhật trạng thái tin nhắn thành đã xử lý để nó sẽ không được xử lý lại.  Vì mọi thao tác đều đã được bao bọc trong một giao dịch.
+
+42
+00:06:49,800 --> 00:07:02,800
+Tất cả những thay đổi này sẽ chỉ được cam kết với cơ sở dữ liệu nếu tất cả các hoạt động thành công.  Bây giờ với lớp và địa điểm này, hãy đăng ký tại nhà cung cấp bộ xử lý hộp thư đến quy trình công việc trong tệp mô-đun quy trình công việc.
+
+43
+00:07:05,850 --> 00:07:14,680
+Và cuối cùng nhưng không kém phần quan trọng, hãy nhập mô-đun lịch trình vào tệp mô-đun dịch vụ quy trình công việc để công việc hoặc quy trình nền của chúng ta có thể được thực thi đúng cách.
+
+44
+00:07:15,180 --> 00:07:21,850
+Xuất sắc.  Hãy lưu các thay đổi của chúng ta và đi tới thiết bị đầu cuối để đảm bảo mọi thứ vẫn hoạt động.
+
+45
+00:07:22,110 --> 00:07:41,080
+Nếu không có người thừa kế, hãy tạo một tòa nhà mới bằng cách sử dụng Curl.  Chúng ta hãy chờ một chút.  Và.  Như chúng ta có thể thấy, thông báo nhật ký quy trình làm việc đã được tạo, điều đó có nghĩa là dịch vụ quy trình làm việc đã xử lý thành công thông báo đó một cách tuyệt vời.
+
+46
+00:07:41,910 --> 00:07:50,770
+Tuy nhiên, vì chúng tôi đang chạy song song ba dịch vụ quy trình làm việc riêng biệt.  Cả ba nút sẽ xử lý cùng một thông báo tại cùng một thời điểm.
+
+47
+00:07:50,940 --> 00:07:59,070
+Đây là lý do tại sao chúng ta nên sử dụng các công việc lặp lại bull hoặc bull mq hỗ trợ khóa và chỉ có thể được thực thi bằng một ghi chú mỗi lần.
+
+48
+00:07:59,430 --> 00:08:10,140
+Thay vì cách tiếp cận lịch trình tồi tệ nhất mà chúng tôi đang sử dụng vì mục đích đơn giản trong khóa học này.  Ngoài ra, chúng ta có thể tự thực hiện một cơ chế khóa bằng cách sử dụng read us.
+
+49
+00:08:10,590 --> 00:08:18,570
+Với việc sử dụng hướng dẫn phụ lục đã đặt.  Chúng ta có thể tạo một khóa, nó sẽ được lấy bằng một ghi chú tại một thời điểm và sau khi công việc hoàn thành.
+
+50
+00:08:18,930 --> 00:08:26,490
+Nút giải phóng khóa bằng del.  Chúng ta cũng có thể thực hiện một cách tiếp cận khác và cố gắng phân chia khối lượng công việc giữa các nốt nhạc.
+
+51
+00:08:27,038 --> 00:08:36,600
+Rằng mỗi silex chỉ ghi chú một tập hợp con của tin nhắn theo quy trình.  Điều đó không trùng lặp với bất kỳ ghi chú nào khác thay vì chỉ sắp xếp tất cả các tin nhắn theo ngày tạo.
+
+52
+00:08:37,287 --> 00:08:46,180
+Bằng cách này, chúng ta có thể xử lý tin nhắn và song song mà không cần khóa.  Tuy nhiên cách làm này không phải lúc nào cũng khả thi nên hãy giữ khoảng thời gian đó trong một tháng.
+
+53
+00:08:46,380 --> 00:08:55,390
+Trong bài học này, để kết thúc mọi thứ, chúng ta sẽ triển khai một cơ chế khóa mpl rất hay bằng cách sử dụng mệnh đề for update no wait trong truy vấn sql.
+
+54
+00:08:55,560 --> 00:09:06,210
+Điều khoản này cho phép chúng ta khóa cơ sở dữ liệu Rosen và ngăn các giao dịch khác đọc chúng.  Nếu một giao dịch khác cố đọc một hàng bị khóa thì nó sẽ thất bại ngay lập tức và có lỗi.
+
+55
+00:09:06,810 --> 00:09:12,520
+Bằng cách này, chúng tôi có thể đảm bảo rằng chỉ một giao dịch duy nhất có thể xử lý một tin nhắn nhất định tại bất kỳ thời điểm nào.
+
+56
+00:09:12,780 --> 00:09:19,470
+Mặc dù cách tiếp cận này hoạt động nhưng nó không hề lý tưởng vì sẽ phải lưu ý rằng việc chạy các công việc định kỳ về cơ bản không làm được gì ngoài việc thất bại.
+
+57
+00:09:20,040 --> 00:09:25,750
+Đây là lý do tại sao lý tưởng nhất là chúng ta nên sử dụng một trong những cách tiếp cận khác mà chúng ta vừa đề cập lúc trước.
+
+58
+00:09:26,070 --> 00:09:35,020
+Được rồi, hãy đi tới tệp dịch vụ hộp thư đến và cập nhật phương thức tin nhắn trong hộp thư đến của quy trình, thêm một đối tượng cấu hình mới gọi là khóa.
+
+59
+00:09:35,370 --> 00:09:46,031
+Trong ví dụ này, chúng tôi sẽ sử dụng chế độ bi quan đúng đắn với tùy chọn đã mở khóa được đặt thành không có cách nào.  Điều đó có nghĩa là truy vấn sql sẽ chứa mệnh đề for update no wait.
+
+60
+00:09:46,560 --> 00:09:52,240
+Hoặc cập nhật khiến Rose được truy xuất bằng câu lệnh chọn bị khóa như thể đối với một bản cập nhật.
+
+61
+00:09:52,320 --> 00:09:59,920
+Điều này giúp chúng không bị khóa, sửa đổi hoặc xóa bởi bất kỳ giao dịch nào khác cho đến khi giao dịch hiện tại diễn ra.
+
+62
+00:10:00,120 --> 00:10:06,850
+Điều này có nghĩa là các giao dịch khác cố gắng cập nhật sẽ xóa hoặc chọn cập nhật trên các Rose này.
+
+63
+00:10:07,484 --> 00:10:18,654
+Vì không có cách nào được chỉ định nếu một giao dịch khác đã khóa bất kỳ Hoa hồng nào đã chọn.  Bất kỳ dịch vụ nào khác đang cố gắng đọc các hàng đó cũng sẽ thất bại ngay lập tức khi phát sóng.
+
+64
+00:10:18,854 --> 00:10:24,324
+Được rồi, hãy lưu các thay đổi của chúng ta và đi tới thiết bị đầu cuối của chúng ta và đảm bảo mọi thứ đều hoạt động.
+
+65
+00:10:24,374 --> 00:10:38,324
+Nếu không có lỗi, hãy tạo một tòa nhà khác bằng cách sử dụng cuộn tròn.  Và thật tuyệt vời khi chúng ta chỉ có thể thấy một dịch vụ quy trình làm việc xử lý tin nhắn.
+
+66
+00:10:38,744 --> 00:10:47,474
+Hai người còn lại thất bại với một không khí tuyệt vời, mọi thứ đều thành công.  Vì vậy, chỉ cần gói lại mọi thứ, hãy nhớ rằng các bảng khóa phát sinh nên được sử dụng một cách thận trọng.
+
+67
+00:10:47,804 --> 00:10:59,774
+Vì nó có thể ảnh hưởng đến hiệu suất và tính đồng thời của ứng dụng của bạn.  Chúng tôi phải làm điều đó ở đây chỉ vì mục đích đơn giản vì chúng tôi muốn gói gọn mọi thứ trong bài học này nhưng như chúng tôi đã đề cập trước đó.
+
+68
+00:11:00,134 --> 00:11:14,004
+Muốn thực hiện các cách tiếp cận khác như bull bull am chẳng hạn.  Quan trọng hơn.  Luôn đảm bảo kiểm tra kỹ lưỡng bất kỳ chiến lược khóa nào bạn chọn để đảm bảo chiến lược đó hoạt động như mong đợi và không gây ra bất kỳ ảnh hưởng bất lợi nào đến hệ thống của bạn.
+
+69
+00:11:14,714 --> 00:11:23,484
+Ngoài ra, hãy lưu ý xử lý các lỗi tiềm ẩn có thể xảy ra khi sử dụng tính năng không chờ để tránh sự cố ứng dụng hoặc hành vi không mong muốn.
+
+70
+00:11:23,564 --> 00:11:30,074
+Ngoài ra, chỉ cần nhớ rằng với chiến lược hiện tại, một trong ba dịch vụ quy trình làm việc sẽ luôn gặp lỗi khi phát sóng.
+
+71
+00:11:30,614 --> 00:11:36,014
+Đây là lý do tại sao đối với các ứng dụng sản xuất, bạn nên luôn chọn một trong những cách tiếp cận khác dành cho nam giới và phần trước trong bài học này.
+

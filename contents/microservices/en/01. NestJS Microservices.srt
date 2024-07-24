@@ -1,0 +1,117 @@
+﻿1
+00:00:00,994 --> 00:00:03,164
+Everyone and welcome
+to the official nest
+
+2
+00:00:03,390 --> 00:00:03,900
+courses.
+
+3
+00:00:04,260 --> 00:00:05,190
+In this extension
+
+4
+00:00:05,490 --> 00:00:09,358
+will be going through some microservices
+concepts in scs from top to bottom.
+
+5
+00:00:09,690 --> 00:00:13,470
+Getting you up to speed
+and creating enterprise great
+
+6
+00:00:13,470 --> 00:00:15,370
+applications with the
+help of nastiest in no time.
+
+7
+00:00:15,510 --> 00:00:15,930
+So
+
+8
+00:00:16,140 --> 00:00:18,461
+let's introduced the
+instructors with as course.
+
+9
+00:00:18,600 --> 00:00:23,250
+My name is Mark part of
+the and sgs core team and
+
+10
+00:00:23,250 --> 00:00:23,970
+together with Camille
+the creator of ness Jess
+
+11
+00:00:24,090 --> 00:00:26,770
+were excited to have
+you learning nest with us.
+
+12
+00:00:27,210 --> 00:00:30,930
+To get the most out of this
+course try to coat alongside
+
+13
+00:00:30,930 --> 00:00:32,460
+us and remember that you
+can pause the videos at any time.
+
+14
+00:00:33,120 --> 00:00:36,360
+Please note that this extension
+is a continuation knowledge wise
+
+15
+00:00:36,570 --> 00:00:38,980
+of the nastiest
+fundamentals course.
+
+16
+00:00:39,150 --> 00:00:40,650
+Before you start
+watching this course
+
+17
+00:00:40,950 --> 00:00:44,430
+we recommend taking a step back and checking
+out the official fundamentals course
+
+18
+00:00:44,700 --> 00:00:46,410
+if you're not already
+comfortable witness
+
+19
+00:00:46,530 --> 00:00:46,726
+asked
+
+20
+00:00:46,848 --> 00:00:47,848
+is.
+
+21
+00:00:48,000 --> 00:00:49,020
+In this extension
+
+22
+00:00:49,170 --> 00:00:52,320
+Wilson that you're
+familiar with everything
+
+23
+00:00:52,320 --> 00:00:52,800
+that we've covered in
+that fundamentals course.
+
+24
+00:00:53,160 --> 00:00:53,580
+So
+
+25
+00:00:53,820 --> 00:00:55,870
+let's go ahead and get started.
+

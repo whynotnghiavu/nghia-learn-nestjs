@@ -1,0 +1,164 @@
+1
+00:00:00,990 --> 00:00:07,090
+Trong bài học này sẽ cấu hình docker soạn thảo để chạy các ứng dụng dịch vụ cơ sở ảo và quy trình làm việc của chúng tôi.
+
+2
+00:00:07,260 --> 00:00:14,280
+Như đã được cung cấp một cơ sở dữ liệu sql postgres chuyên dụng hoặc từng ứng dụng.  Nếu bạn không quen với docker soạn thư.
+
+3
+00:00:14,670 --> 00:00:24,450
+Nó là một công cụ để xác định và chạy các ứng dụng docker đa container.  Với docker soạn thảo, chúng ta có thể sử dụng tệp yaml để định cấu hình các dịch vụ ứng dụng của mình.
+
+4
+00:00:24,810 --> 00:00:34,960
+Chỉ với một lệnh duy nhất, chúng ta có thể tạo và khởi động tất cả các dịch vụ từ cấu hình của mình.  Hãy bắt đầu bằng cách tạo một tệp docker dash mới soạn vâng trong thư mục gốc của dự án của chúng tôi.
+
+5
+00:00:35,070 --> 00:00:43,840
+Tệp này sẽ chứa cấu hình cho thiết lập soạn thảo docker của chúng tôi.  Một lần nữa, bạn có thể tìm thấy nội dung của tệp này bên dưới video khóa học.
+
+6
+00:00:44,130 --> 00:00:54,790
+Cũng.  Chúng tôi sẽ cần một dockerfile sẽ được sử dụng để xây dựng hình ảnh docker cho các ứng dụng của chúng tôi.  Hãy tạo một dockerfile mới trong thư mục gốc của dự án và thêm đoạn mã sau.
+
+7
+00:00:58,650 --> 00:01:05,860
+Với nơi bạo lực này, hãy đến thiết bị đầu cuối của chúng tôi và chạy các lệnh sau.  Docker soạn thảo.
+
+8
+00:01:12,244 --> 00:01:23,560
+Kiểm tra xem mọi thứ có hoạt động như mong đợi không.  Hãy sử dụng Curl để tạo lại một tòa nhà mới.  Như chúng ta có thể thấy yêu cầu vẫn chưa thành công.
+
+9
+00:01:23,910 --> 00:01:28,890
+Điều này là do chúng tôi cần cập nhật ứng dụng cơ sở ảo để sử dụng máy chủ dịch vụ quy trình làm việc.
+
+10
+00:01:29,310 --> 00:01:40,230
+Thay vì sử dụng máy chủ cục bộ.  Kể từ bây giờ hoặc các ứng dụng đang chạy bên trong vùng chứa docker.  Để khắc phục điều này, hãy mở tệp ts dịch vụ tòa nhà và cập nhật phương thức tạo quy trình làm việc.
+
+11
+00:01:40,646 --> 00:01:55,630
+Sử dụng máy chủ dịch vụ dash của quy trình làm việc thay vì máy chủ cục bộ.  Hãy thử lại lệnh cuộn tròn đó.  Và như chúng ta có thể thấy, yêu cầu hiện đã thành công.
+
+12
+00:01:56,520 --> 00:02:07,420
+Tuy nhiên, dịch vụ của chúng tôi chưa kết nối với cơ sở dữ liệu tương ứng.  Vì đây là nội dung chúng tôi đã đề cập trong khóa học cơ bản nên chúng tôi sẽ bỏ qua chi tiết và chỉ chuyển ngay vào mã.
+
+13
+00:02:08,160 --> 00:02:19,740
+Đầu tiên khi bạn cài đặt một số phụ thuộc cần thiết.  Sẽ sử dụng loại rm cho khóa học này hoặc nhu cầu của tôi nhưng tất nhiên bạn có thể cần sử dụng thứ gì đó hoàn toàn khác trong ứng dụng hoặc tổ chức của mình nhưng đừng lo lắng.
+
+14
+00:02:20,070 --> 00:02:26,010
+Mọi thứ chúng tôi đang làm trong khóa học này sẽ vẫn như cũ.  Vì vậy, chúng ta hãy tiếp tục và cài đặt những gì đã chém cô ấy hoặc anh ấy một cách khó chịu nhất.
+
+15
+00:02:26,520 --> 00:02:33,760
+Một thanh anh ta và trang tổng đề xuất.  Sau khi quá trình cài đặt hoàn tất.  Sẽ tạo ra hai thực thể.
+
+16
+00:02:33,900 --> 00:02:43,180
+Xây dựng trong ứng dụng cơ sở ảo.  Và quy trình làm việc trong ứng dụng quy trình công việc.  Vì các thực thể này sẽ sống trong các ứng dụng riêng biệt.
+
+17
+00:02:43,380 --> 00:02:54,430
+Chúng ta sẽ không thể tuyên bố có quá nhiều mối quan hệ giữa chúng.  Thay vào đó, chúng tôi sẽ sử dụng trường ID tòa nhà trong thực thể quy trình làm việc để lưu trữ ý tưởng về tòa nhà chứa quy trình làm việc.
+
+18
+00:02:55,710 --> 00:03:05,650
+Tiếp theo, hãy đảm bảo rằng chúng tôi cập nhật mô-đun ứng dụng cơ sở ảo để nhập mô-đun ram loại r và định cấu hình nó để kết nối với cơ sở dữ liệu cơ sở bảng điều khiển ảo.
+
+19
+00:03:11,700 --> 00:03:17,890
+Chúng tôi cũng cần cập nhật mô-đun ứng dụng dịch vụ quy trình làm việc để kết nối với cơ sở dữ liệu dịch vụ quy trình làm việc.
+
+20
+00:03:22,590 --> 00:03:31,630
+Với điều này và nơi.  Hãy mở tệp dịch vụ tòa nhà và sử dụng kho lưu trữ loại hoặc ram ở đây thay thế tất cả các phương thức mô phỏng.
+
+21
+00:03:36,930 --> 00:03:46,210
+Tiếp theo, hãy cập nhật tệp t của mô-đun tòa nhà để nhập loại hoặc dấu chấm mô-đun cho tính năng.  Truyền thực thể tòa nhà vào mảng.
+
+22
+00:03:46,260 --> 00:03:56,020
+Rằng dịch vụ có thể đưa vào kho lưu trữ của tòa nhà.  Và tương tự như vậy, hãy cập nhật dịch vụ quy trình công việc mà anh ấy có tệp thay thế tất cả các phương thức mô phỏng ở đây.
+
+23
+00:03:59,910 --> 00:04:08,350
+Và đừng quên mô-đun quy trình công việc và hãy đảm bảo rằng chúng tôi cũng nhập loại hoặc mô-đun để chuyển tính năng vào thực thể quy trình làm việc tại đây.
+
+24
+00:04:08,610 --> 00:04:16,260
+Tuyệt vời.  Một lần nữa, chúng ta đang tiến triển nhanh chóng ở đây vì chúng ta đã đề cập đến tất cả các khái niệm m cơ bản này và khóa học cơ bản.
+
+25
+00:04:16,768 --> 00:04:25,660
+Bạn có thể tìm thấy mã để sao chép và dán bên dưới video khóa học như mọi khi.  Chuyển sang các chủ đề mới hơn để sử dụng lại các lớp đối tượng truyền dữ liệu giữa các ứng dụng.
+
+26
+00:04:25,770 --> 00:04:32,400
+Khi cần tạo thư viện quy trình công việc mới bằng cách sử dụng tháng 7 nhanh nhất.  Đi tới thiết bị đầu cuối của chúng tôi và chạy lệnh sau.
+
+27
+00:04:32,850 --> 00:04:43,270
+Quy trình làm việc của Nest g lib.  Hãy bắt đầu bằng cách xóa các tệp được tạo tự động không cần thiết khỏi thư viện quy trình công việc.
+
+28
+00:04:48,660 --> 00:04:55,590
+Tiếp theo.  Sẽ tạo một thư mục chi tiết mới và tạo tệp quy trình làm việc tạo dấu gạch ngang dot d to duck ts.
+
+29
+00:04:55,950 --> 00:05:07,210
+Đại diện cho đối tượng truyền dữ liệu để tạo quy trình công việc mới.  Trước khi tiếp tục, hãy cài đặt gói biến áp lớp và gói cá sấu lớp val sẽ sử dụng cho mục đích xác thực.
+
+30
+00:05:07,530 --> 00:05:22,540
+Cuối cùng.  Đã khai báo lớp chi tiết tạo quy trình công việc và thêm các trình trang trí xác thực cần thiết.  Bên cạnh tệp này, hãy tạo quy trình làm việc cập nhật dấu chấm tệp d t n t s đại diện cho đối tượng truyền dữ liệu để cập nhật quy trình công việc.
+
+31
+00:05:22,980 --> 00:05:30,690
+Cuối cùng, hãy cập nhật tệp chỉ mục t để xuất cả hai lớp này.  Tuyệt vời.  Bây giờ với một nơi nào đó.
+
+32
+00:05:31,050 --> 00:05:39,490
+Hãy mở tệp dịch vụ quy trình công việc của chúng tôi và cập nhật phương pháp chính xác để sử dụng đối tượng truyền dữ liệu nổi công việc tuyệt vời mới được tạo của chúng tôi.
+
+33
+00:05:39,900 --> 00:05:46,900
+Chúng tôi cũng có thể xóa các lớp chi tiết được tạo tự động ở đây mà trước đây được tạo bởi sơ đồ tài nguyên Nest g.
+
+34
+00:05:47,790 --> 00:05:55,390
+Một điều cần lưu ý.  Đừng quên cập nhật tệp bộ điều khiển quy trình làm việc để sử dụng các lớp đối tượng truyền dữ liệu mới này.
+
+35
+00:05:55,710 --> 00:06:07,360
+Hãy đánh giá để lưu các thay đổi của chúng tôi và đạt được mức độ an toàn loại tối đa.  Hãy cập nhật tệp t dịch vụ tòa nhà để sử dụng lớp đối tượng truyền dữ liệu thư viện quy trình làm việc.
+
+36
+00:06:09,870 --> 00:06:19,690
+Xuất sắc.  Vì bây giờ dịch vụ của chúng tôi trả về Jason thay vì văn bản thuần túy.  Hãy đảm bảo thay đổi phương thức văn bản chấm rez đó để Jason nghỉ ngơi.
+
+37
+00:06:21,060 --> 00:06:43,570
+Và cuối cùng cho mục đích gỡ lỗi.  Hãy ghi nội dung phản hồi vào bảng điều khiển.  Với điều này tại chỗ.  Hãy lưu các thay đổi của chúng tôi vào thiết bị đầu cuối của chúng tôi. Tôi chạy lệnh cuộn tròn sau.
+
+38
+00:06:44,550 --> 00:06:53,310
+Như chúng ta có thể thấy yêu cầu đã thành công và chúng ta có thể thấy nội dung phản hồi trong bảng điều khiển rất tuyệt vời.  Điều này có nghĩa là chúng tôi đã tạo thành công một tòa nhà mới.
+
+39
+00:06:53,814 --> 00:06:59,280
+Hãy chuyển sang cửa sổ terminal khác và kiểm tra xem liệu quy trình công việc đã được tạo chưa.  Hoàn hảo.
+
+40
+00:06:59,700 --> 00:07:08,070
+Như chúng ta có thể thấy, có một quy trình công việc mới với tên quy trình làm việc của tôi và ID tòa nhà được đặt thành một giống như chúng tôi đã vượt qua và là tốc độ lệnh cuộn tròn.
+
+41
+00:07:08,520 --> 00:07:16,930
+Bây giờ chúng ta phải có các microservices giao tiếp với nhau trong khi sử dụng các cơ sở dữ liệu riêng biệt.  Chúng tôi đã bắt đầu đạt được một số tiến bộ thực sự rồi.
+

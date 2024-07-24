@@ -1,0 +1,1096 @@
+﻿1
+00:00:00,900 --> 00:00:04,680
+In the previous lesson we learned how
+to use the transactional outbox pattern to
+
+2
+00:00:04,680 --> 00:00:07,450
+achieve the at least
+once delivery guarantee.
+
+3
+00:00:07,590 --> 00:00:11,160
+This means our messages might be delivered
+more than once and that's why we need to
+
+4
+00:00:11,160 --> 00:00:12,480
+make sure that our
+message handlers
+
+5
+00:00:12,660 --> 00:00:13,840
+are idempotent.
+
+6
+00:00:14,790 --> 00:00:18,750
+Idempotent handlers are handlers that
+can be called multiple times with the same
+
+7
+00:00:18,750 --> 00:00:21,270
+input and always
+produce the same output.
+
+8
+00:00:21,660 --> 00:00:23,610
+Without introducing
+any side effects.
+
+9
+00:00:24,060 --> 00:00:25,200
+So for example
+
+10
+00:00:25,440 --> 00:00:28,170
+if the workflow for a given
+building already exists.
+
+11
+00:00:28,500 --> 00:00:31,200
+We should not create
+a new workflow instead
+
+12
+00:00:31,470 --> 00:00:33,760
+we should simply
+ignore the message.
+
+13
+00:00:33,930 --> 00:00:37,530
+Early if our bill adding
+service crashed right
+
+14
+00:00:37,530 --> 00:00:38,010
+after sending a message
+to the message broker
+
+15
+00:00:38,310 --> 00:00:42,360
+the message will be sent
+again when the message
+
+16
+00:00:42,360 --> 00:00:42,960
+recovers leading to
+duplicate workflows.
+
+17
+00:00:43,380 --> 00:00:46,530
+Which might of course lead us
+to having data inconsistencies
+
+18
+00:00:46,710 --> 00:00:48,400
+duplicate etc.
+
+19
+00:00:49,440 --> 00:00:54,430
+In this lesson will learn how to use the
+inbox pattern to solve this very problem.
+
+20
+00:00:54,990 --> 00:00:58,680
+The inbox pattern is
+fairly similar to the outbox
+
+21
+00:00:58,680 --> 00:00:59,980
+pattern that we covered
+in just the previous lesson.
+
+22
+00:01:00,120 --> 00:01:03,300
+The inbox pattern though is
+more useful on the consumer side
+
+23
+00:01:03,600 --> 00:01:05,010
+or we have a dedicated table
+
+24
+00:01:05,220 --> 00:01:06,240
+called inbox.
+
+25
+00:01:06,570 --> 00:01:08,890
+We're source all
+incoming messages.
+
+26
+00:01:08,970 --> 00:01:11,310
+Instead of outgoing
+messages as within the
+
+27
+00:01:11,430 --> 00:01:12,330
+outbox pattern.
+
+28
+00:01:12,930 --> 00:01:14,890
+And the difference
+in their names.
+
+29
+00:01:15,450 --> 00:01:17,640
+This consumer service
+that we will create
+
+30
+00:01:17,850 --> 00:01:22,570
+periodically checked the inbox table for
+new messages and subsequently processes.
+
+31
+00:01:23,190 --> 00:01:25,170
+And contrary to
+the outbox pattern.
+
+32
+00:01:25,650 --> 00:01:28,200
+We first save the
+message to the inbox table
+
+33
+00:01:28,500 --> 00:01:29,760
+and then return act
+
+34
+00:01:30,060 --> 00:01:31,440
+or acknowledge the message
+
+35
+00:01:31,620 --> 00:01:33,310
+to the message broker.
+
+36
+00:01:33,480 --> 00:01:38,400
+This way if the consumer service crashes
+before sending act the message will be Rita
+
+37
+00:01:38,400 --> 00:01:40,020
+lever to the consumer
+service again.
+
+38
+00:01:40,350 --> 00:01:41,910
+Hence the guarantee is known as
+
+39
+00:01:42,090 --> 00:01:44,620
+at least once
+delivery guarantee.
+
+40
+00:01:45,150 --> 00:01:45,600
+However
+
+41
+00:01:45,900 --> 00:01:49,530
+with the use of the inbox
+table we can actually easily
+
+42
+00:01:49,530 --> 00:01:50,910
+check if the message was
+already processed or not.
+
+43
+00:01:51,240 --> 00:01:54,720
+Which usually lets us achieve
+the exactly once delivery guarantee
+
+44
+00:01:54,960 --> 00:01:57,100
+if we want or need it.
+
+45
+00:01:57,570 --> 00:01:58,800
+All right enough theory
+
+46
+00:01:58,980 --> 00:02:01,540
+let's see how all of
+this works in practice.
+
+47
+00:02:01,740 --> 00:02:04,110
+Let's start by creating
+a new inbox module
+
+48
+00:02:04,380 --> 00:02:07,740
+in the workflows service
+application with nest gmo
+
+49
+00:02:08,040 --> 00:02:09,040
+inbox.
+
+50
+00:02:09,780 --> 00:02:10,200
+Again.
+
+51
+00:02:10,620 --> 00:02:13,500
+Instead of generating this module
+in the workflows service project.
+
+52
+00:02:13,860 --> 00:02:17,490
+We could technically
+generated in the lives folder
+
+53
+00:02:17,490 --> 00:02:18,490
+making it available to
+all other applications.
+
+54
+00:02:18,870 --> 00:02:22,380
+It is after all very likely
+that we may end up needing
+
+55
+00:02:22,380 --> 00:02:23,340
+this functionality and
+other services after all
+
+56
+00:02:23,640 --> 00:02:25,350
+so once again as an exercise.
+
+57
+00:02:25,680 --> 00:02:29,890
+Try to generate a new library yourself
+and move the inbox module their.
+
+58
+00:02:30,330 --> 00:02:30,780
+Next.
+
+59
+00:02:31,350 --> 00:02:35,890
+Let's create a new in box entity with
+a few columns in the inbox module.
+
+60
+00:02:41,940 --> 00:02:42,300
+Next
+
+61
+00:02:42,420 --> 00:02:47,400
+let's generate a new inbox service ts
+file in the inbox module with nest g s
+
+62
+00:02:47,640 --> 00:02:48,640
+inbox.
+
+63
+00:02:52,830 --> 00:02:53,910
+Once the files generated
+
+64
+00:02:54,060 --> 00:02:57,940
+let's inject the data source
+provider using the standard approach.
+
+65
+00:02:59,490 --> 00:03:00,060
+Next up
+
+66
+00:03:00,271 --> 00:03:03,090
+must declare a new process
+inbox messages method
+
+67
+00:03:03,360 --> 00:03:07,540
+that will be responsible for processing
+messages from the inbox table.
+
+68
+00:03:08,730 --> 00:03:11,790
+Note that this method is slightly
+different than what we implemented in the
+
+69
+00:03:11,790 --> 00:03:14,410
+transactional outbox
+pattern lesson.
+
+70
+00:03:14,730 --> 00:03:17,832
+First instead of returning
+unprocessed messages.
+
+71
+00:03:17,880 --> 00:03:20,560
+Were passing them
+to the process function.
+
+72
+00:03:20,610 --> 00:03:24,270
+This function will be in
+charge of processing the
+
+73
+00:03:24,330 --> 00:03:25,510
+messages and updating
+their status to process.
+
+74
+00:03:26,880 --> 00:03:29,550
+The reason we chose the
+callback style approach here
+
+75
+00:03:29,670 --> 00:03:34,120
+is because we want to leverage the
+transaction method from the data source class.
+
+76
+00:03:34,470 --> 00:03:35,070
+This method
+
+77
+00:03:35,370 --> 00:03:38,520
+will automatically roll back the
+transaction if an error occurs.
+
+78
+00:03:38,880 --> 00:03:39,450
+This way
+
+79
+00:03:39,630 --> 00:03:42,910
+we won't even have to worry about
+rolling back the transaction ourselves.
+
+80
+00:03:43,380 --> 00:03:47,740
+Okay so let's save our changes
+and open up the inbox module t as file.
+
+81
+00:03:48,120 --> 00:03:48,450
+Here
+
+82
+00:03:48,690 --> 00:03:51,180
+let's import the type or a
+module for feature method
+
+83
+00:03:51,540 --> 00:03:54,910
+and passing that
+new in box entity to it.
+
+84
+00:03:57,780 --> 00:03:58,780
+Great.
+
+85
+00:03:58,980 --> 00:04:01,740
+Let's also make sure to
+export the type are a module
+
+86
+00:04:02,040 --> 00:04:05,950
+and inbox service provider so we
+can use them and other modules.
+
+87
+00:04:06,960 --> 00:04:11,370
+Now that we have the inbox module and place
+let's open up the workflows module file
+
+88
+00:04:11,490 --> 00:04:14,170
+an import the inbox modul there.
+
+89
+00:04:17,580 --> 00:04:21,750
+Next let's open up the workflows controller
+file in eject the inbox repository
+
+90
+00:04:21,750 --> 00:04:25,540
+provider using the inject
+repository decorator like always.
+
+91
+00:04:30,570 --> 00:04:31,020
+Next
+
+92
+00:04:31,320 --> 00:04:32,970
+let's scroll down to
+the create method
+
+93
+00:04:33,300 --> 00:04:36,850
+and updated signature to
+accept the context object.
+
+94
+00:04:37,380 --> 00:04:40,660
+Will need this for acknowledging
+messages in just a moment.
+
+95
+00:04:41,370 --> 00:04:42,570
+Inside the create method.
+
+96
+00:04:43,080 --> 00:04:48,160
+Let's first in sir a new message into
+the inbox table if it doesn't exist yet.
+
+97
+00:04:49,980 --> 00:04:50,970
+And afterwards
+
+98
+00:04:51,180 --> 00:04:53,230
+let's acknowledge that message.
+
+99
+00:04:56,520 --> 00:04:57,520
+Perfect.
+
+100
+00:04:57,810 --> 00:05:02,790
+Now to instruct rabbit em que to immediately
+re deliver the message if that sql query
+
+101
+00:05:02,790 --> 00:05:05,820
+fails we could wrap
+everything in a try catch block
+
+102
+00:05:06,120 --> 00:05:09,130
+and nacht the message
+in that catch block.
+
+103
+00:05:09,300 --> 00:05:09,840
+However
+
+104
+00:05:10,050 --> 00:05:13,920
+this might not be
+ideal because it could
+
+105
+00:05:13,920 --> 00:05:14,430
+potentially cause a lot of
+load on the day database
+
+106
+00:05:14,580 --> 00:05:15,990
+similar to brute forcing.
+
+107
+00:05:16,440 --> 00:05:18,340
+More on this in a moment.
+
+108
+00:05:18,630 --> 00:05:22,170
+Now there are two more things we need
+to do before we can test everything out.
+
+109
+00:05:22,860 --> 00:05:27,660
+First we need to update
+the workflows service
+
+110
+00:05:27,724 --> 00:05:29,500
+main t s file and set the
+know an option to false.
+
+111
+00:05:30,241 --> 00:05:34,095
+This way the message broker won't
+automatically acknowledge messages.
+
+112
+00:05:34,500 --> 00:05:35,070
+Second.
+
+113
+00:05:35,400 --> 00:05:39,720
+We need to create the
+workflows inbox processor file
+
+114
+00:05:39,720 --> 00:05:41,200
+in the workflows module
+with the following content.
+
+115
+00:05:43,290 --> 00:05:43,740
+Next
+
+116
+00:05:43,860 --> 00:05:48,550
+will inject the inbox service using the
+standard constructor based injection.
+
+117
+00:05:49,710 --> 00:05:50,160
+Now
+
+118
+00:05:50,340 --> 00:05:54,220
+let's use this service to process
+any unprocessed messages.
+
+119
+00:05:56,070 --> 00:05:58,470
+Next let's iterate
+over all messages
+
+120
+00:05:58,590 --> 00:06:00,700
+and process them in parallel.
+
+121
+00:06:06,960 --> 00:06:11,160
+In the code here were
+checking to see if the
+
+122
+00:06:11,160 --> 00:06:11,910
+message pattern is equal
+to workflows doc create
+
+123
+00:06:12,060 --> 00:06:12,900
+and if so.
+
+124
+00:06:13,410 --> 00:06:15,330
+We're going to call the
+create workflow method.
+
+125
+00:06:15,660 --> 00:06:16,050
+So
+
+126
+00:06:16,230 --> 00:06:18,760
+let's create this new
+create workflow method.
+
+127
+00:06:21,120 --> 00:06:22,930
+And let's break it down.
+
+128
+00:06:25,470 --> 00:06:30,520
+First we need to retrieve the workflow
+repository from the entity manager instance.
+
+129
+00:06:30,750 --> 00:06:32,610
+Next using the create method.
+
+130
+00:06:33,060 --> 00:06:35,100
+We create a new workflow entity
+
+131
+00:06:35,250 --> 00:06:39,146
+and then save it to the database
+using the repositories save method.
+
+132
+00:06:39,691 --> 00:06:44,400
+Last but not least we
+update the message status
+
+133
+00:06:44,400 --> 00:06:45,910
+to processed so that it
+won't be processed again.
+
+134
+00:06:46,290 --> 00:06:49,540
+Since every operation is
+already wrapped in a transaction.
+
+135
+00:06:49,800 --> 00:06:54,844
+All these changes will be committed to the
+database only if all operations succeed.
+
+136
+00:06:55,320 --> 00:06:57,060
+Now with this class and place
+
+137
+00:06:57,240 --> 00:07:00,450
+let's register at the workflows
+inbox processor provider
+
+138
+00:07:00,660 --> 00:07:02,800
+in the workflows module file.
+
+139
+00:07:05,850 --> 00:07:06,990
+And last but not least
+
+140
+00:07:07,170 --> 00:07:11,130
+let's import the schedule
+module in the workflow service
+
+141
+00:07:11,130 --> 00:07:12,690
+module file so that our
+background job or process
+
+142
+00:07:12,900 --> 00:07:14,680
+can be executed properly.
+
+143
+00:07:15,180 --> 00:07:16,180
+Excellent.
+
+144
+00:07:16,950 --> 00:07:20,550
+Let's save our changes
+and head over to the terminal
+
+145
+00:07:20,580 --> 00:07:21,850
+a make sure everything
+is still up and running.
+
+146
+00:07:22,110 --> 00:07:25,690
+If there are no heirs let's
+create a new building using curl.
+
+147
+00:07:27,150 --> 00:07:28,930
+Let's wait a little bit.
+
+148
+00:07:33,060 --> 00:07:33,480
+And.
+
+149
+00:07:33,810 --> 00:07:34,530
+As we can see
+
+150
+00:07:34,770 --> 00:07:38,310
+there's that created workflow log message
+which means that the workflow service
+
+151
+00:07:38,370 --> 00:07:41,080
+successfully processed
+the message fantastic.
+
+152
+00:07:41,910 --> 00:07:42,570
+However
+
+153
+00:07:42,750 --> 00:07:46,480
+since we're running three separate
+workflow services in parallel.
+
+154
+00:07:46,650 --> 00:07:50,770
+All three nodes will process the
+same message at this same time.
+
+155
+00:07:50,940 --> 00:07:56,010
+This is why we should rather use bull or
+bull mq repeatable jobs that support locking
+
+156
+00:07:56,070 --> 00:07:59,070
+and can be executed only
+by a single note at a time.
+
+157
+00:07:59,430 --> 00:08:01,950
+Instead of the nastiest
+schedule approach we're using
+
+158
+00:08:02,190 --> 00:08:04,750
+for simplicity's
+sake in this course.
+
+159
+00:08:05,040 --> 00:08:09,870
+Alternatively we could
+implement a locking
+
+160
+00:08:09,870 --> 00:08:10,140
+mechanism ourselves
+using for example read us.
+
+161
+00:08:10,590 --> 00:08:12,630
+With the use of the
+set annex instruction.
+
+162
+00:08:12,990 --> 00:08:14,310
+We could create a lock
+
+163
+00:08:14,610 --> 00:08:16,800
+it would be acquired
+by a single note at a time
+
+164
+00:08:17,250 --> 00:08:18,570
+and once the job is completed.
+
+165
+00:08:18,930 --> 00:08:21,820
+The node releases
+the lock using del.
+
+166
+00:08:22,140 --> 00:08:24,240
+We could also take
+another approach
+
+167
+00:08:24,480 --> 00:08:26,490
+and try to split the
+workload between the notes.
+
+168
+00:08:27,038 --> 00:08:30,940
+That every notes silex only a
+subset of message as the process.
+
+169
+00:08:30,990 --> 00:08:32,940
+That doesn't overlap
+with any other notes
+
+170
+00:08:33,240 --> 00:08:36,600
+instead of simply ordering all
+messages by their creation date.
+
+171
+00:08:37,287 --> 00:08:37,980
+This way
+
+172
+00:08:38,100 --> 00:08:41,580
+we could process messages and
+parallel without the need for locking.
+
+173
+00:08:41,970 --> 00:08:42,510
+However
+
+174
+00:08:42,750 --> 00:08:46,180
+this approach is not always
+feasible so keep that a month.
+
+175
+00:08:46,380 --> 00:08:50,430
+In this lesson just
+to finish things off will
+
+176
+00:08:50,430 --> 00:08:50,970
+implement a very sick
+mpl locking mechanism
+
+177
+00:08:51,240 --> 00:08:55,390
+using the for update no
+wait clause in the sql query.
+
+178
+00:08:55,560 --> 00:08:58,140
+This clause allows us to
+lock rosen the database
+
+179
+00:08:58,410 --> 00:09:00,780
+and prevent other
+transactions from reading them.
+
+180
+00:09:01,470 --> 00:09:04,170
+If another transaction
+tries to read a locked row
+
+181
+00:09:04,410 --> 00:09:06,210
+it will fail immediately
+with an error.
+
+182
+00:09:06,810 --> 00:09:10,830
+This way we could ensure
+that only a single transaction
+
+183
+00:09:10,830 --> 00:09:12,520
+can process a given
+message at any given time.
+
+184
+00:09:12,780 --> 00:09:14,430
+While this approach works
+
+185
+00:09:14,580 --> 00:09:18,870
+it's far from ideal as
+will have to notes running
+
+186
+00:09:18,900 --> 00:09:19,470
+cron jobs that basically
+do nothing but fail.
+
+187
+00:09:20,040 --> 00:09:21,330
+This is why ideally
+
+188
+00:09:21,600 --> 00:09:25,750
+we should instead use one of the other
+approaches we just mentioned a moment ago.
+
+189
+00:09:26,070 --> 00:09:30,630
+Alright so let's head
+over to the inbox service
+
+190
+00:09:30,630 --> 00:09:31,440
+file and update the process
+inbox messages method
+
+191
+00:09:31,740 --> 00:09:35,020
+adding a new configuration
+object called lock.
+
+192
+00:09:35,370 --> 00:09:36,270
+In this example
+
+193
+00:09:36,407 --> 00:09:40,920
+are going to use the pessimistic right mode
+with the unlocked option set to no way.
+
+194
+00:09:41,370 --> 00:09:43,590
+Which means that are
+sql query will contain the
+
+195
+00:09:43,740 --> 00:09:46,031
+for update no wait clause.
+
+196
+00:09:46,560 --> 00:09:51,000
+Or update causes the
+Rose retrieved by the select
+
+197
+00:09:51,000 --> 00:09:52,240
+statement to be locked
+as though as for an update.
+
+198
+00:09:52,320 --> 00:09:57,210
+This prevents them from being locked
+modified or deleted by any other transactions
+
+199
+00:09:57,240 --> 00:09:59,920
+until the current
+transaction hence.
+
+200
+00:10:00,120 --> 00:10:04,650
+This means that other
+transactions that attempt to
+
+201
+00:10:04,679 --> 00:10:05,550
+update delete or select
+for update on these Rose
+
+202
+00:10:05,670 --> 00:10:06,850
+will be.
+
+203
+00:10:07,484 --> 00:10:09,314
+Since no way is specified
+
+204
+00:10:09,584 --> 00:10:13,644
+if another transaction has already
+locked any of the selected Rose.
+
+205
+00:10:13,694 --> 00:10:17,654
+Any other service
+trying to read those rows
+
+206
+00:10:17,654 --> 00:10:18,654
+will fail immediately
+with an air as well.
+
+207
+00:10:18,854 --> 00:10:21,974
+All right so let's save our changes
+and head over to our terminal
+
+208
+00:10:22,094 --> 00:10:24,324
+and make sure everything
+is up and running.
+
+209
+00:10:24,374 --> 00:10:26,624
+If there are no errors let's
+create another building
+
+210
+00:10:26,744 --> 00:10:28,044
+using curl.
+
+211
+00:10:34,364 --> 00:10:38,324
+And great as we can see only one
+workflow service process the message.
+
+212
+00:10:38,744 --> 00:10:42,534
+The other two failed with an
+air fantastic everything worked.
+
+213
+00:10:42,674 --> 00:10:46,964
+So just the wrap things
+up remember that locking
+
+214
+00:10:46,964 --> 00:10:47,474
+tables arose should
+be used with caution.
+
+215
+00:10:47,804 --> 00:10:51,714
+As it can impact the performance
+and concurrency of your application.
+
+216
+00:10:52,574 --> 00:10:56,924
+We had to do it here just
+for simplicity's sake as we
+
+217
+00:10:56,924 --> 00:10:57,974
+wanted to cohesively wrap
+everything up in this lesson
+
+218
+00:10:58,424 --> 00:10:59,774
+but as we mentioned earlier.
+
+219
+00:11:00,134 --> 00:11:02,414
+Would want to go with other
+approaches like bull bull am
+
+220
+00:11:02,684 --> 00:11:03,344
+for example.
+
+221
+00:11:03,764 --> 00:11:04,604
+More importantly.
+
+222
+00:11:04,934 --> 00:11:08,414
+Always make sure to test whatever
+locking strategy you choose thoroughly
+
+223
+00:11:08,804 --> 00:11:10,664
+to ensure it behaves as expected
+
+224
+00:11:11,054 --> 00:11:14,004
+and doesn't cause any
+adverse effects on your system.
+
+225
+00:11:14,714 --> 00:11:15,344
+Additionally
+
+226
+00:11:15,614 --> 00:11:19,814
+be mindful of handling potential errors
+that might occur when using no wait
+
+227
+00:11:19,994 --> 00:11:23,484
+to avoid application crashes
+or unexpected behavior.
+
+228
+00:11:23,564 --> 00:11:24,134
+Also
+
+229
+00:11:24,254 --> 00:11:26,204
+just remember that
+with the current strategy
+
+230
+00:11:26,534 --> 00:11:30,074
+to out of the three workflow
+services will always fail with an air.
+
+231
+00:11:30,614 --> 00:11:34,094
+This is why for production applications
+you should always choose one of the other
+
+232
+00:11:34,094 --> 00:11:36,014
+approaches men and
+earlier in this lesson.
+
+233
+00:11:36,374 --> 00:11:39,474
+As they will bring you other
+benefits your application as well.
+

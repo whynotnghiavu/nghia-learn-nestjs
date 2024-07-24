@@ -1,0 +1,120 @@
+1
+00:00:00,780 --> 00:00:08,263
+Cho đến nay, chúng ta đã đề cập đến những kiến ​​thức cơ bản về microservice và tìm hiểu cách tạo một ứng dụng dựa trên microservice đơn giản bằng cách sử dụng Ness js.
+
+2
+00:00:08,310 --> 00:00:14,800
+Chúng tôi sử dụng kiểu giao tiếp phản hồi yêu cầu với nhà môi giới tin nhắn nats để trao đổi tin nhắn giữa các dịch vụ của chúng tôi.
+
+3
+00:00:15,180 --> 00:00:23,200
+Trong bài học này, chúng ta sẽ tìm hiểu cách sử dụng phong cách giao tiếp dựa trên sự kiện để tạo một dịch vụ cảnh báo sẽ lắng nghe các cảnh báo mới.
+
+4
+00:00:23,520 --> 00:00:31,830
+Hãy bắt đầu bằng cách tạo một ứng dụng dịch vụ báo động mới bằng cách sử dụng và sgs ally.  Vì vậy, hãy đến thiết bị đầu cuối của chúng tôi và chạy lệnh sau.
+
+5
+00:00:32,310 --> 00:00:41,970
+Dịch vụ báo động của ứng dụng Nest g.  Ngoài ra, hãy tạo một ứng dụng mới có tên là trình tạo ngăn chặn cảnh báo mặc dù chúng tôi sử dụng cho mục đích trình diễn.
+
+6
+00:00:42,300 --> 00:00:56,590
+Ứng dụng này sẽ định kỳ tạo ra các báo động mới và gửi chúng đến dịch vụ báo động.  Để lên lịch tạo cảnh báo mới, chúng tôi sẽ sử dụng gói lịch trình nhanh nhất, vì vậy hãy đảm bảo rằng chúng tôi cài đặt nó với mp m i at ness jazz slush lịch trình.
+
+7
+00:00:57,390 --> 00:01:03,130
+Sau khi quá trình cài đặt hoàn tất, hãy mở tệp docker soạn yaml của chúng tôi và thêm một số dịch vụ mới.
+
+8
+00:01:04,170 --> 00:01:12,100
+Như mọi khi, bạn có thể tìm thấy tất cả các đoạn mã bên dưới video khóa học.  Sẽ tập trung vào dịch vụ báo động trước tiên.
+
+9
+00:01:12,210 --> 00:01:23,130
+Trước khi chúng ta có thể thêm một trình xử lý sự kiện mới.  Chúng ta hãy đi tới tệp ts chính và làm theo các bước tương tự như chúng ta đã làm trong bài học trước để chuyển đổi ứng dụng http sang ứng dụng kết hợp.
+
+10
+00:01:23,460 --> 00:01:36,270
+Điều đó hỗ trợ cả điểm vào http và nats.  Lưu ý rằng vì chúng tôi chưa triển khai bất kỳ điểm và kiểm tra tình trạng nào trong dịch vụ này nên về mặt kỹ thuật chúng tôi có thể sử dụng phương pháp tạo vi dịch vụ thay vì phương pháp kết nối vi dịch vụ.
+
+11
+00:01:36,840 --> 00:01:50,410
+Tuy nhiên, để giữ sự nhất quán với quy trình làm việc, dịch vụ sẽ gắn bó với kết nối của Microsoft.  Tiếp theo, hãy mở tệp bộ điều khiển dịch vụ cảnh báo và thay thế nội dung của lớp bộ điều khiển dịch vụ cảnh báo bằng mã bị lỗi.
+
+12
+00:01:52,320 --> 00:02:02,924
+Trình trang trí mẫu sự kiện ở đây được sử dụng để khai báo trong trình xử lý sự kiện.  Dấu chấm cảnh báo cường độ được tạo sẽ là tên của mẫu sự kiện mà trình xử lý sự kiện này sẽ đăng ký.
+
+13
+00:02:03,000 --> 00:02:08,770
+Sẽ sử dụng cùng một mẫu sự kiện trong dịch vụ tạo cảnh báo để gửi sự kiện đến dịch vụ cảnh báo.
+
+14
+00:02:09,480 --> 00:02:19,450
+Các sự kiện trái ngược với thông báo dự kiến ​​sẽ không trả về phản hồi.  Bất kể điều gì xảy ra bên trong trình xử lý sự kiện, sẽ không có gì được gửi trở lại trung tâm.
+
+15
+00:02:19,860 --> 00:02:31,810
+Vì vậy, hãy lưu các thay đổi của chúng tôi và chuyển sang ứng dụng trình tạo cảnh báo ngay bây giờ.  Trình tạo báo động sẽ là một ứng dụng đơn giản sẽ định kỳ tạo các báo động mới và gửi anh ta đến dịch vụ báo động.
+
+16
+00:02:31,980 --> 00:02:38,580
+Trong một ứng dụng thực tế.  Tất nhiên, dịch vụ này sẽ được thay thế bằng một hệ thống báo động thực sự, ví dụ như một dịch vụ bên ngoài.
+
+17
+00:02:38,910 --> 00:02:47,170
+Điều đó sẽ thông báo cho dịch vụ cảnh báo khi cảnh báo mới được kích hoạt.  Hãy coi dịch vụ này như một dịch vụ thử nghiệm mà tôi sẽ sử dụng chỉ nhằm mục đích trình diễn.
+
+18
+00:02:48,180 --> 00:03:02,740
+Bắt đầu, chúng ta có thể thay thế tệp t s chính bằng đoạn mã sau.  Vì chúng tôi không cần ứng dụng này để nghe các yêu cầu http nên chúng tôi có thể xóa cuộc gọi nghe aap dot và chuyển đổi ứng dụng này thành một ứng dụng độc lập.
+
+19
+00:03:03,870 --> 00:03:13,120
+Với điều này, hãy mở tệp mô-đun trình tạo báo động.  Nhập mô-đun lịch trình và xóa lớp bộ điều khiển trình tạo cảnh báo.
+
+20
+00:03:14,490 --> 00:03:25,330
+Ngoài ra, đừng quên xóa tệp bộ điều khiển trình tạo cảnh báo thực tế.  Kế tiếp.  Hãy tạo một tệp t có tám hằng số và thêm lớp áo khoác đã rơi xuống.
+
+21
+00:03:26,820 --> 00:03:33,710
+Chúng ta có thể sử dụng dịch vụ cảnh báo liên tục này để đăng ký khách hàng mới của mô-đun máy khách trong tệp mô-đun trình tạo cảnh báo.
+
+22
+00:03:39,780 --> 00:03:48,521
+Tiếp theo.  Bên trong dịch vụ tạo cảnh báo sẽ tạo một phương thức mới gọi là tạo cảnh báo sẽ phát ra một sự kiện cho dịch vụ cảnh báo.
+
+23
+00:03:50,130 --> 00:04:01,510
+Lưu ý rằng để gửi và sự kiện.  Chúng tôi sử dụng phương thức phát ra thay vì phương thức gửi.  Để hướng dẫn một khung kích hoạt phương thức này theo định kỳ, chúng ta sẽ sử dụng trình trang trí khoảng thời gian.
+
+24
+00:04:01,740 --> 00:04:13,120
+Và cuối cùng, hãy đưa dịch vụ cảnh báo bằng cách sử dụng trình trang trí tiêm chuyển hằng số dịch vụ gạch dưới cảnh báo cho dịch vụ đó và thêm công cụ sửa đổi truy cập riêng tư vào thuộc tính dịch vụ cảnh báo.
+
+25
+00:04:13,890 --> 00:04:18,240
+Hãy lưu các thay đổi của chúng tôi và đi tới thiết bị đầu cuối và chạy lệnh sau để bắt đầu mọi thứ.
+
+26
+00:04:18,750 --> 00:04:36,490
+Docker soạn thảo.  Hãy đợi cho đến khi mọi thứ hoàn tất và kiểm tra nhật ký.  Như chúng ta có thể thấy các dịch vụ cảnh báo hiện đang nhận được cảnh báo mới từ dịch vụ tạo cảnh báo.
+
+27
+00:04:36,780 --> 00:04:44,680
+Vì vậy, để tóm tắt.  Chúng tôi đã học cách sử dụng thông tin liên lạc dựa trên sự kiện để gửi các sự kiện không đồng bộ khi dịch vụ của chúng tôi.
+
+28
+00:04:45,000 --> 00:04:54,310
+Chúng ta cũng đã học cách sử dụng trình trang trí mẫu sự kiện để khai báo một trình xử lý sự kiện.  Dịch vụ trình tường thuật gen cảnh báo chỉ là một dịch vụ mô phỏng mà chúng tôi sử dụng cho mục đích trình diễn.
+
+29
+00:04:54,510 --> 00:05:03,450
+Trong ứng dụng thế giới thực.  Dịch vụ này sẽ được thay thế bằng một hệ thống báo động thực, ví dụ như một dịch vụ bên ngoài sẽ thông báo cho dịch vụ báo động bất cứ khi nào một báo động mới được kích hoạt.
+
+30
+00:05:04,080 --> 00:05:10,720
+May mắn thay, các khái niệm chúng ta đã học trong bài học này vẫn được giữ nguyên và có thể áp dụng cho các ứng dụng khó chịu trong tương lai của bạn.
+

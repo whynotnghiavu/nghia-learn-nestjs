@@ -1,0 +1,76 @@
+1
+00:00:00,750 --> 00:00:09,971
+Trong bài học này, chúng ta hãy đi sâu vào tìm hiểu về sự khác biệt giữa phong cách phản hồi yêu cầu và phong cách giao tiếp theo sự kiện cũng như thời điểm sử dụng từng phong cách đó.
+
+2
+00:00:10,950 --> 00:00:17,010
+Thông báo phản hồi yêu cầu của bạn rất hữu ích khi bạn cần trao đổi tin nhắn giữa các dịch vụ bên ngoài khác nhau.
+
+3
+00:00:17,370 --> 00:00:26,470
+Với mô hình này, bạn có thể chắc chắn rằng một dịch vụ đã thực sự nhận được tin nhắn mà không cần phải triển khai giao thức xác nhận tin nhắn hoặc hành động theo cách thủ công.
+
+4
+00:00:27,720 --> 00:00:35,580
+Giống như bất kỳ mô hình phát triển phần mềm nào, không có gì là viên đạn bạc.  Hãy cố gắng ghi nhớ rằng mô hình phản hồi yêu cầu không phải lúc nào cũng là lựa chọn tốt nhất.
+
+5
+00:00:35,970 --> 00:00:46,990
+Ví dụ: việc cắt xén các trình vận chuyển sử dụng tính bền vững của cơ sở nhật ký chẳng hạn như kafka được tối ưu hóa để giải quyết nhiều vấn đề khác nhau hoặc phù hợp với mô hình nhắn tin sự kiện.
+
+6
+00:00:47,970 --> 00:00:55,590
+Để kích hoạt loại thông báo phản hồi yêu cầu.  Ness tạo ra các kênh logic mà người ta chịu trách nhiệm truyền dữ liệu.
+
+7
+00:00:55,980 --> 00:01:04,960
+Trong khi người kia chờ phản hồi đến.  Có phải một số phương tiện vận chuyển cơ bản như nats hỗ trợ kênh đôi này được cung cấp ngay lập tức.
+
+8
+00:01:05,460 --> 00:01:17,620
+Hoặc những tổ khác sẽ bù đắp cho tôi khi tạo các kênh riêng biệt theo cách thủ công có thể gây tốn kém cho việc này, vì vậy nếu bạn không yêu cầu thông báo phản hồi yêu cầu thì bạn nên cân nhắc sử dụng phương pháp dựa trên sự kiện.
+
+9
+00:01:17,940 --> 00:01:24,100
+Để tạo trình xử lý tin nhắn dựa trên mô hình phản hồi yêu cầu của họ, chúng ta có thể sử dụng trình trang trí mẫu tin nhắn.
+
+10
+00:01:24,330 --> 00:01:32,010
+Trong khi phương thức phản hồi yêu cầu là lý tưởng để trao đổi tin nhắn giữa các dịch vụ.  Nó ít phù hợp hơn khi tin nhắn của bạn dựa trên sự kiện.
+
+11
+00:01:32,400 --> 00:01:43,120
+Ví dụ.  Khi bạn chỉ muốn xuất bản các sự kiện mà không cần chờ phản hồi.  Trong trường hợp đó.  Bạn không cần chi phí cần thiết để đáp ứng yêu cầu duy trì hai kênh.
+
+12
+00:01:44,160 --> 00:01:49,350
+Giả sử bạn chỉ muốn thông báo cho một dịch vụ khác rằng một tình trạng nào đó đã xảy ra trong phần này của hệ thống.
+
+13
+00:01:49,830 --> 00:01:59,080
+Nếu đó là trường hợp sử dụng của bạn thì rất có thể bạn nên sử dụng kiểu thông báo dựa trên sự kiện.  Để khai báo một trình xử lý sự kiện, chúng ta có thể đơn giản là người trang trí mẫu sự kiện.
+
+14
+00:02:00,090 --> 00:02:08,610
+Nest cung cấp một số chiến lược truyền tải tích hợp bao gồm http.  Nats kafka.  Thỏ m q và nhiều người khác.
+
+15
+00:02:09,120 --> 00:02:18,340
+Mỗi chiến lược truyền tải này có thể được sử dụng cho cả phong cách giao tiếp dựa trên sự kiện và phản hồi yêu cầu nhưng một số trong số chúng phù hợp hơn với chiến lược này chứ không phải chiến lược kia.
+
+16
+00:02:18,720 --> 00:02:25,320
+Ví dụ: http là giao thức phản hồi yêu cầu nên nó phù hợp hơn với kiểu giao tiếp phản hồi yêu cầu.
+
+17
+00:02:25,890 --> 00:02:32,470
+Mặt khác, Châu Phi là nhà môi giới tin nhắn nên phù hợp hơn với phong cách giao tiếp dựa trên sự kiện.
+
+18
+00:02:33,210 --> 00:02:40,350
+Với Ness js, chúng tôi cũng có thể tích hợp với các giao thức và nhà môi giới tin nhắn khác bằng cách tạo các chiến lược vận chuyển tùy chỉnh của riêng mình.
+
+19
+00:02:40,680 --> 00:02:51,460
+Tuy nhiên, chúng tôi sẽ không đi sâu vào chủ đề này trong khóa học này.  Nếu bạn muốn tìm hiểu thêm về điều này, hãy xem tài liệu chính thức nhất trong một liên kết có thể được tìm thấy trong video khóa học.
+

@@ -1,0 +1,156 @@
+1
+00:00:00,780 --> 00:00:09,340
+Nats là một nhà môi giới tin nhắn nguồn mở hiệu suất cao, nhẹ dành cho các hệ thống phân tán, ứng dụng gốc lớn và kiến ​​trúc dịch vụ vi mô.
+
+2
+00:00:09,630 --> 00:00:25,600
+Nó cung cấp một giải pháp đơn giản nhưng mạnh mẽ.  At cho phép chúng ta dễ dàng xây dựng các hệ thống phân tán.  Máy chủ nats được viết bằng ngôn ngữ lập trình go nhưng thư viện máy khách Clay để tương tác với máy chủ có sẵn cho hàng chục ngôn ngữ lập trình chính.
+
+3
+00:00:26,370 --> 00:00:34,650
+Nats hỗ trợ cả hai giao hàng tối đa một lần và ít nhất một lần.  Nó có thể chạy ở mọi nơi từ các máy chủ lớn và phiên bản đám mây.
+
+4
+00:00:34,980 --> 00:00:44,490
+Thông qua các cổng biên và thậm chí cả Internet của các thiết bị i o t.  Ness gs cung cấp một số tích hợp môi giới tin nhắn tích hợp bao gồm cả mạng.
+
+5
+00:00:45,000 --> 00:00:54,220
+Chúng tôi quyết định sử dụng nó trong khóa học này.  Bởi vì nó dễ thiết lập và hỗ trợ nguyên bản kiểu giao tiếp phản hồi yêu cầu, giúp việc di chuyển trở nên đơn giản.
+
+6
+00:00:54,270 --> 00:01:10,140
+Vì chúng tôi hiện đang sử dụng http để liên lạc giữa các dịch vụ của mình.  Lưu ý rằng hầu hết mọi chiến lược truyền tải được hỗ trợ bởi js khó chịu nhất đều có thể được sử dụng cho cả kiểu giao tiếp dựa trên sự kiện và phản hồi yêu cầu nhưng một số trong số chúng phù hợp hơn cho cái này hoặc cái kia.
+
+7
+00:01:10,560 --> 00:01:23,290
+Sẽ đi sâu hơn vào chủ đề này trong các bài học sau.  Được rồi, hãy bắt đầu bằng cách cài đặt gói microservices nes js sẽ sử dụng để thêm hỗ trợ cho microservice vào ứng dụng Nest Chest của chúng ta.
+
+8
+00:01:23,730 --> 00:01:32,740
+Cho đến nay, chúng tôi không cần gói này vì chúng tôi đang sử dụng http để liên lạc giữa các dịch vụ của chúng tôi, gói này được Ness Jess Court hỗ trợ ngay lập tức.
+
+9
+00:01:33,480 --> 00:01:41,290
+Hãy cài đặt trình điều khiển nats sẽ sử dụng để kết nối với máy chủ nats.  Sau khi quá trình cài đặt hoàn tất.
+
+10
+00:01:41,460 --> 00:01:48,550
+Hãy mở tệp docker soạn yaml và thêm một dịch vụ mới có tên là nets sẽ chạy máy chủ bị lỗi.
+
+11
+00:01:50,010 --> 00:01:59,650
+Chúng ta cũng hãy thêm một biến môi trường mới có tên natsu rl vào dịch vụ quy trình làm việc và các dịch vụ cơ sở ảo sẽ chứa url của máy chủ nats.
+
+12
+00:02:00,900 --> 00:02:07,150
+Thay vì sử dụng máy chủ cục bộ làm máy chủ, chúng tôi đã sử dụng nats, tên của dịch vụ mà chúng tôi đã xác định ở trên.
+
+13
+00:02:07,200 --> 00:02:17,020
+Điều này là do docker soạn tự động tạo mạng cho các dịch vụ của chúng tôi và thêm máy chủ dns vào đó để phân giải tên dịch vụ và địa chỉ IP tương ứng.
+
+14
+00:02:17,850 --> 00:02:23,740
+Điều này có nghĩa là chúng ta có thể sử dụng tên dịch vụ thay vì địa chỉ IP để kết nối với các dịch vụ khác.  Cũng.
+
+15
+00:02:23,790 --> 00:02:33,520
+Hoặc hai đến hai là cổng mặc định mà nats server bài học.  Và cuối cùng.  Hãy đảm bảo cả hai dịch vụ đều phụ thuộc vào dịch vụ nats.
+
+16
+00:02:36,690 --> 00:02:51,700
+Hãy lưu những thay đổi của chúng tôi.  Mở tệp ts chính trong ứng dụng dịch vụ quy trình làm việc và cập nhật chức năng khởi động để chuyển đổi ứng dụng http của chúng tôi, ứng dụng kết hợp hỗ trợ cả điểm vào http và nats.
+
+17
+00:02:53,160 --> 00:03:00,191
+Chúng tôi sẽ sử dụng kết nối microservice để kết nối với máy chủ nats và bắt đầu tất cả các microservice khởi động lại microservice.
+
+18
+00:03:00,570 --> 00:03:08,110
+Cũng sẽ cần nhập các giao diện tùy chọn enum vận chuyển và microservice từ gói microservice mới nhất.
+
+19
+00:03:08,700 --> 00:03:20,650
+Lưu ý rằng thay vì sử dụng Nest Factory, hãy tạo microservice.  Chúng tôi đang sử dụng phương thức tạo nhà máy nes để triển khai một ứng dụng kết hợp hỗ trợ cả điểm vào http và nats.
+
+20
+00:03:21,150 --> 00:03:34,440
+Điều này là do chúng tôi muốn duy trì tính năng kiểm tra tình trạng http và các điểm có sẵn trong hoặc ứng dụng.  Tuyệt vời vì vậy tiếp theo hãy điều hướng đến tệp bộ điều khiển quy trình làm việc và lên phương thức tạo để sử dụng trình trang trí mẫu thông báo.
+
+21
+00:03:34,770 --> 00:03:45,295
+Thay vì bài viết trang trí.  Quy trình công việc được tạo sẽ là tên của mẫu thông báo sẽ sử dụng để gửi thông báo đến dịch vụ quy trình công việc.
+
+22
+00:03:45,480 --> 00:03:51,160
+Sẽ sử dụng cùng một mẫu tin nhắn trong dịch vụ cơ sở ảo để gửi tin nhắn đến dịch vụ quy trình công việc.
+
+23
+00:03:52,440 --> 00:04:02,320
+Bây giờ chúng ta cũng hãy sử dụng trang trí tải trọng thay vì trang trí nội dung.  Tuyệt vời, hãy lưu các thay đổi của chúng tôi và chuyển sang ứng dụng cơ sở ảo ngay bây giờ.
+
+24
+00:04:02,490 --> 00:04:12,240
+Đây.  Hãy tạo một tệp constance ts mới trong thư mục nguồn và tại mã bị lỗi.  Dịch vụ quy trình công việc không đổi.
+
+25
+00:04:12,690 --> 00:04:18,160
+Sẽ đại diện cho mã thông báo tiêm của chúng tôi sẽ được sử dụng để đưa ứng dụng khách dịch vụ quy trình công việc vào nhà cung cấp.
+
+26
+00:04:19,500 --> 00:04:31,332
+Kế tiếp.  Hãy mở tệp mô-đun tòa nhà và nhập mô-đun khách hàng.  Hãy chuyển cấu hình máy khách sang phương thức đăng ký dấu chấm của mô-đun máy khách.
+
+27
+00:04:31,770 --> 00:04:39,790
+Và cuối cùng nhưng không kém phần quan trọng.  Hãy mở tệp dịch vụ tòa nhà để đẩy ứng dụng khách dịch vụ quy trình làm việc vào lớp dịch vụ tòa nhà.
+
+28
+00:04:42,090 --> 00:04:49,720
+Tại sao proxy là một phiên bản trừu tượng của máy khách lại che giấu việc triển khai nội bộ của chiến lược truyền tải hiện được chọn.
+
+29
+00:04:49,770 --> 00:04:59,590
+Trong trường hợp của chúng tôi, đó sẽ là khách hàng nats.  Nhờ sự trừu tượng này, chúng ta có thể dễ dàng chuyển đổi giữa các chiến lược vận chuyển khác nhau mà không cần phải sửa đổi đáng kể lớp phủ.
+
+30
+00:05:00,300 --> 00:05:08,890
+Với nhà cung cấp này đã thêm nội dung cuộn xuống phương thức tạo quy trình công việc và được cập nhật để sử dụng ứng dụng khách dịch vụ quy trình làm việc thay vì chức năng tìm nạp.
+
+31
+00:05:13,680 --> 00:05:20,580
+Vì gửi trả về và rx nên luồng có thể quan sát được của Jess rất hữu ích khi truyền dữ liệu giữa các dịch vụ mà chúng tôi cần sử dụng.
+
+32
+00:05:21,030 --> 00:05:28,600
+Hãy lưu những thay đổi của chúng tôi.  Mở terminal và chạy lệnh sau để bắt đầu mọi thứ.  Docker soạn thảo.
+
+33
+00:05:30,120 --> 00:05:42,190
+Kiểm tra xem mọi thứ có hoạt động như mong đợi hay không, hãy sử dụng tính năng cuộn tròn để tạo một tòa nhà mới.  Tuyệt vời.  Như chúng ta có thể thấy yêu cầu đã thành công, chúng ta có thể thấy nội dung phản hồi trở lại trong bảng điều khiển.
+
+34
+00:05:42,840 --> 00:05:49,120
+Ngoài ra, nếu chúng ta chuyển sang cửa sổ terminal khác, chúng ta có thể thấy rằng một quy trình làm việc mới cũng đã được tạo một cách hoàn hảo.
+
+35
+00:05:49,950 --> 00:05:58,620
+Vì vậy, như chúng ta có thể thấy.  Đây là cách đơn giản để chuyển đổi từ http sang nats Ines Jess.  Bây giờ ngay trước khi chúng ta kết thúc bài học này.
+
+36
+00:05:59,070 --> 00:06:05,670
+Chúng ta cũng hãy bật xác thực trong cả hai dịch vụ.  Đã khôi phục xác thực trong khóa học cơ bản trong trường hợp bạn muốn tìm hiểu thêm về nó.
+
+37
+00:06:06,570 --> 00:06:14,140
+Vì vậy, hãy mở tệp t s chính trong ứng dụng dịch vụ quy trình làm việc và cập nhật hàm khởi động để kích hoạt xác thực.
+
+38
+00:06:14,820 --> 00:06:22,210
+Ngoài ra, chúng tôi cần cập nhật phương thức kết nối microservice để được hướng dẫn kế thừa các đường dẫn chung từ ứng dụng http.
+
+39
+00:06:24,120 --> 00:06:36,280
+Và cuối cùng chúng ta cũng làm điều tương tự trong ứng dụng cơ sở ảo.  Và đó là tất cả những gì chúng ta đã sẵn sàng cho lúc này.
+

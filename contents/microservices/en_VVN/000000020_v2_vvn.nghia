@@ -1,0 +1,232 @@
+1
+00:00:01,050 --> 00:00:12,670
+Theo dõi phân tán là một kỹ thuật được sử dụng trong bối cảnh kiến ​​trúc vi dịch vụ nhằm giám sát và phân tích luồng yêu cầu khi chúng truyền qua nhiều dịch vụ trong hệ thống phân tán.
+
+2
+00:00:13,410 --> 00:00:23,440
+Hiểu được sự tương tác giữa các dịch vụ là rất quan trọng để chẩn đoán các vấn đề về hiệu suất, hiểu được hành vi của hệ thống và tối ưu hóa hiệu suất tổng thể của hệ thống.
+
+3
+00:00:23,730 --> 00:00:32,320
+Khi một người dùng yêu cầu việc này được xử lý.  Nó thường liên quan đến nhiều dịch vụ vi mô được kết nối với nhau, hoạt động cùng nhau để thực hiện yêu cầu đó.
+
+4
+00:00:32,940 --> 00:00:46,120
+Tính năng theo dõi phân tán giúp theo dõi hành trình của yêu cầu thông qua các dịch vụ, cho phép các nhà phát triển và nhóm vận hành có được những hiểu biết có giá trị về cách các dịch vụ cộng tác và xác định các tắc nghẽn hoặc lỗi tiềm ẩn.
+
+5
+00:00:46,590 --> 00:00:54,430
+Điều này đặc biệt hữu ích trong các hệ thống phức tạp vì một yêu cầu duy nhất có thể kích hoạt một loạt sự kiện trải dài trên nhiều dịch vụ.
+
+6
+00:00:55,350 --> 00:01:04,570
+Để triển khai tính năng theo dõi phân tán trong hệ thống của mình, chúng tôi thường chỉ định một mã định danh duy nhất cho mỗi yêu cầu và truyền bá qua hệ thống khi yêu cầu được xử lý.
+
+7
+00:01:05,040 --> 00:01:18,310
+Vì mã định danh được gọi là ID theo dõi.  Vì ID theo dõi sẽ được chuyển cùng với yêu cầu nên nó có thể được sử dụng để tương quan với tất cả nhật ký và sự kiện được tạo bởi các dịch vụ liên quan đến việc xử lý yêu cầu đó.
+
+8
+00:01:19,260 --> 00:01:29,723
+Sau đó, chúng tôi có thể sử dụng hệ thống theo dõi để trực quan hóa toàn bộ dấu vết, hiểu rõ độ trễ giữa các dịch vụ, xác định các điểm nghẽn, phát hiện lỗi và tối ưu hóa hiệu suất.
+
+9
+00:01:30,390 --> 00:01:38,080
+Trong bài học này sẽ tập trung vào cách tự động tạo id theo dõi và truyền chúng qua hệ thống trong các ứng dụng Nest JS của chúng tôi.
+
+10
+00:01:38,340 --> 00:01:53,230
+Để bắt đầu.  Hãy tạo một thư viện mới có tên là truy tìm bằng cách sử dụng tổ, xem ally.  Hãy mở tệp dịch vụ theo dõi mới được tạo và thêm mã sau đây.
+
+11
+00:01:55,230 --> 00:02:02,670
+Phương pháp này chỉ đơn giản tạo ra một ID ngẫu nhiên mà bạn sẽ sử dụng làm ID theo dõi của chúng tôi.  Chúng ta chỉ cần ID xoang một lần.
+
+12
+00:02:03,120 --> 00:02:19,300
+Khi yêu cầu http truy cập vào ứng dụng hoặc khi một công việc định kỳ được kích hoạt.  Sau khi có ID theo dõi, chúng tôi cần truyền bá nó qua hệ thống để có thể sử dụng nó để xử lý muộn tất cả nhật ký sự kiện do các dịch vụ liên quan đến việc xử lý yêu cầu này tạo ra.
+
+13
+00:02:19,620 --> 00:02:34,560
+Trong bài học này sẽ tập trung vào việc thêm tính năng theo dõi vào đường dẫn xử lý sự kiện của trình tạo cảnh báo.  Vì vậy, hãy truy cập tệp dịch vụ tạo cảnh báo và cập nhật phương thức tạo cảnh báo để tạo ID theo dõi bằng dịch vụ theo dõi mới của chúng tôi.
+
+14
+00:02:35,010 --> 00:03:13,600
+Trong phần tiêu đề thư được xé nát dưới phím ID theo dõi.  Lưu ý rằng để xây dựng đối tượng tiêu đề, chúng tôi sử dụng chức năng tiêu đề nats như chúng tôi đang sử dụng nats trong hệ thống của mình nhưng nếu hệ thống của bạn đang sử dụng thứ gì đó ngoài nats thì bạn muốn sử dụng chức năng tương đương ở đó.
+
+15
+00:03:13,950 --> 00:03:22,270
+Bây giờ, bất kỳ mô-đun tạo báo động nào cũng có thể sử dụng được dịch vụ theo dõi.  Chúng ta chỉ cần nhập mô-đun theo dõi vì vậy hãy tiếp tục và thực hiện điều đó ngay bây giờ.
+
+16
+00:03:22,950 --> 00:03:36,400
+Dì hoàn hảo.  Nhưng tất cả những điều này và địa điểm, chúng tôi không thể chuyển trọng tâm sang dịch vụ báo động.  Mục tiêu của chúng tôi bây giờ là đảm bảo rằng ID theo dõi được truyền đi trong hệ thống khi dịch vụ cảnh báo xử lý thông báo.
+
+17
+00:03:36,840 --> 00:03:50,190
+Ngoài ra, hãy đảm bảo tự động điều chỉnh ID theo dõi cho thông điệp tường trình để hãy tạo một lớp lager hát địa hình mới mở rộng lớp lager bảng điều khiển mặc định và ghi đè phương thức ngữ cảnh định dạng cho chúng ta.
+
+18
+00:03:50,820 --> 00:03:58,300
+Để đạt được điều này.  Hãy tạo một tệp mới trong thư viện theo dõi có tên là tracing dot lager dot t s và thêm đoạn mã sau.
+
+19
+00:03:59,760 --> 00:04:11,640
+Và hãy xuống lớp ăn sáng.  Đầu tiên chúng ta cần đưa bối cảnh yêu cầu và các đối tượng truy vấn vào.  Đối tượng bối cảnh yêu cầu thể hiện bối cảnh thực thi của yêu cầu đến.
+
+20
+00:04:12,000 --> 00:04:21,490
+Cái nào sẽ được sử dụng để trích xuất ID theo dõi từ đó.  Ở đây chúng tôi giả định rằng trình ghi nhật ký sẽ chỉ được sử dụng bởi các dịch vụ sử dụng phương thức vận chuyển nats.
+
+21
+00:04:22,350 --> 00:04:29,130
+Đối tượng enquirer chứa đối tượng máy chủ sẽ được sử dụng để trích xuất tên của lớp bằng cách sử dụng logger.
+
+22
+00:04:29,550 --> 00:04:36,880
+Vì vậy, ví dụ: nếu chúng ta sử dụng trình ghi nhật ký trong dịch vụ cảnh báo thì đối tượng người hỏi sẽ chứa phiên bản dịch vụ cảnh báo.
+
+23
+00:04:38,010 --> 00:04:45,040
+Và tương tự như vậy, nếu chúng ta đưa trình ghi nhật ký vào bộ điều khiển cảnh báo thì đối tượng người truy vấn sẽ chứa phiên bản bộ điều khiển cảnh báo.
+
+24
+00:04:45,270 --> 00:04:55,470
+Điều này có nghĩa là nhà cung cấp lớn hơn sẽ không chỉ có phạm vi yêu cầu mà còn có phạm vi nhất thời.  Điều đó có nghĩa là một phiên bản mới của trình ghi nhật ký sẽ được tạo cho mỗi lớp sử dụng nó.
+
+25
+00:04:56,100 --> 00:05:04,630
+Bây giờ vào bối cảnh định dạng của phương thức.  Ở đây chúng ta cần trích xuất ID theo dõi từ ngữ cảnh yêu cầu độc lập với thông điệp tường trình.
+
+26
+00:05:05,280 --> 00:05:13,930
+Cuối cùng, chúng ta cần đăng ký công ty theo dõi làm nhà cung cấp trong mô-đun theo dõi, vì vậy hãy mở tệp t của mô-đun theo dõi và thêm mã sau đây.
+
+27
+00:05:18,360 --> 00:05:27,490
+Xuất sắc.  Với địa điểm này, hãy điều hướng đến dịch vụ cảnh báo của chúng tôi và cập nhật tệp mô-đun cảnh báo để nhập mô-đun theo dõi.
+
+28
+00:05:33,960 --> 00:05:42,880
+Tiếp theo, hãy chuyển đến tệp bộ điều khiển dịch vụ cảnh báo và cập nhật để đưa vào công cụ theo dõi.  Thay thế phiên bản lager cục bộ hiện có.
+
+29
+00:05:47,490 --> 00:06:04,620
+Hãy lưu các thay đổi của chúng ta vào terminal và bắt đầu mọi thứ với docker soạn thảo.  Sau khi ứng dụng được thiết lập và chạy.
+
+30
+00:06:05,010 --> 00:06:23,380
+Chúng ta hãy chờ một chút và quan sát ổ khóa.  Như chúng ta có thể thấy tất cả nhật ký trong bộ điều khiển dịch vụ cảnh báo đều chứa dấu vết idina tuyệt vời.
+
+31
+00:06:23,640 --> 00:06:31,960
+Tuy nhiên, ID theo dõi của chúng tôi chưa được truyền tới bộ phân loại cảnh báo và dịch vụ thông báo, hãy tiếp tục và sửa lỗi cho chúng tôi ngay bây giờ.
+
+32
+00:06:32,310 --> 00:06:40,440
+Vì điều này sẽ tạo một lớp proxy máy khách mới cập nhật nội bộ các tiêu đề thư với ID theo dõi trước khi xuất bản một thư.
+
+33
+00:06:40,890 --> 00:06:50,830
+Vì vậy, khi tạo một mô-đun mới, trước tiên hãy gọi nats dash client.  Và hãy đảm bảo chọn thư viện theo dõi làm đích mô-đun.
+
+34
+00:06:54,690 --> 00:07:12,010
+Tiếp theo bên trong mô-đun này, hãy tạo một tệp mới có tên constance với nội dung sau.  Tệp này chỉ đơn giản xuất một hằng số sẽ đại diện cho nhà cung cấp khách hàng nats.
+
+35
+00:07:12,900 --> 00:07:19,210
+Tiếp theo, hãy tạo một tệp khác và gọi nó là nats dash client dot proxy với nội dung sau.
+
+36
+00:07:21,210 --> 00:07:29,681
+Như chúng ta có thể thấy nơi tiêm phiên bản proxy máy khách đại diện cho nhà môi giới tin nhắn của chúng ta và đối tượng ngữ cảnh vào hàm tạo.
+
+37
+00:07:30,750 --> 00:07:40,270
+Chúng tôi sẽ sử dụng proxy máy khách để xuất bản tin nhắn tới nhà môi giới tin nhắn và đối tượng ngữ cảnh để truy cập ID theo dõi mà chúng tôi đã đính kèm vào tin nhắn trước đó.
+
+38
+00:07:40,650 --> 00:07:49,780
+Lớp proxy máy khách nats cũng được đánh dấu là phạm vi yêu cầu, điều đó có nghĩa là một phiên bản mới của lớp này sẽ được tạo cho mỗi yêu cầu đến.
+
+39
+00:07:50,100 --> 00:07:56,380
+Đây là điều quan trọng hiện nay vì chúng tôi muốn đảm bảo rằng mỗi yêu cầu đều có phiên bản riêng của lớp proxy máy khách nats.
+
+40
+00:07:57,240 --> 00:08:05,230
+Tiếp theo, hãy thêm một phương thức mới gọi là đặt ID theo dõi. Phương thức này sẽ chịu trách nhiệm cập nhật tiêu đề thư bằng ID theo dõi.
+
+41
+00:08:09,570 --> 00:08:19,960
+Ở đây chúng tôi đang kiểm tra xem tin nhắn có phải là một phiên bản của bản ghi nats hay biết hay không.  Nếu nó là.  Tuyển dụng một phiên bản mới của bản ghi nats, xây dựng lớp của họ và cập nhật các tiêu đề của nó bằng ID theo dõi.
+
+42
+00:08:20,340 --> 00:08:27,160
+Nếu không, chúng tôi sẽ tạo một phiên bản mới của bản ghi nats xây dựng lớp của chúng và cập nhật dữ liệu cũng như tiêu đề của nó bằng ID theo dõi.
+
+43
+00:08:28,410 --> 00:08:44,350
+Cuối cùng, hãy thêm một phương thức mới gọi là cent và phát ra để bắt chước proxy máy khách một PR.  Cuối cùng nhưng không kém phần quan trọng, hãy mở tệp mô-đun máy khách nats và đăng ký proxy máy khách nats này làm nhà cung cấp và đảm bảo xuất.
+
+44
+00:08:45,780 --> 00:08:52,330
+Ngoài ra, đừng quên nhập mô-đun máy khách vào đây với cấu hình giống hệt như chúng ta có trong các ứng dụng khác.
+
+45
+00:09:01,770 --> 00:09:10,001
+Tuyệt vời nhưng tại thời điểm này, hãy quay lại dịch vụ báo động của chúng tôi và cập nhật tệp mô-đun dịch vụ báo động để nhập mô-đun máy khách nats.
+
+46
+00:09:10,230 --> 00:09:25,841
+Bạn cũng có thể xóa cấu hình nats khỏi mảng mô-đun máy khách.  Cuối cùng nhưng không kém phần quan trọng, hãy cập nhật tệp bộ điều khiển dịch vụ cảnh báo để đưa proxy máy khách nats thay vì chỉ proxy máy khách.
+
+47
+00:09:33,990 --> 00:09:42,690
+Ngay trước khi chúng tôi kiểm tra mọi thứ, hãy cập nhật dịch vụ phân loại cảnh báo để sử dụng công cụ theo dõi thay vì phiên bản công cụ quản lý cục bộ.
+
+48
+00:09:43,050 --> 00:09:57,857
+Khi mở tệp mô-đun dịch vụ phân loại cảnh báo của chúng tôi và nhập mô-đun theo dõi vào đó.  Tiếp theo, hãy mở tệp bộ điều khiển dịch vụ phân loại cảnh báo và thay thế phiên bản lager cục bộ bằng lager theo dõi mới của chúng tôi.
+
+49
+00:10:02,490 --> 00:10:18,038
+Hãy lưu những thay đổi của chúng tôi.  Đi đến thiết bị đầu cuối và xem các nhật ký đó.  Như chúng ta có thể thấy ID theo dõi hiện đã được truyền đến lớp cảnh báo của các dịch vụ của chúng tôi rất tuyệt vời.
+
+50
+00:10:18,748 --> 00:10:33,968
+Phần còn thiếu cuối cùng là dịch vụ thông báo.  Tuy nhiên, nó sử dụng rabbit mq thay vì nats nên chúng tôi sẽ phải tạo một lớp proxy máy khách thỏ mới tương tự như lớp proxy máy khách nats mà chúng tôi vừa tạo.
+
+51
+00:10:34,318 --> 00:10:42,818
+Vì đây sẽ là công việc lặp đi lặp lại nên chúng tôi sẽ không thực hiện việc này trong khóa học này, bạn có thể coi đây là bài tập về nhà nếu bạn muốn rèn luyện kỹ năng của mình và tự làm.
+
+52
+00:10:42,958 --> 00:10:52,778
+Vì vậy, tóm lại, tính năng theo dõi phân tán là một công cụ mạnh mẽ cho phép các nhà phát triển, nhà điều hành và nhóm có được hiểu biết sâu sắc về kiến ​​trúc vi dịch vụ phức tạp.
+
+53
+00:10:53,128 --> 00:11:01,148
+Giờ đây, chúng tôi đã tự thiết lập tất cả các yếu tố cơ bản để có thể sử dụng trong bất kỳ ứng dụng vi dịch vụ nhỏ nhất nào trên thế giới thực mà bạn phát triển trong tương lai.
+
+54
+00:11:01,380 --> 00:11:09,968
+Truy tìm phân tán là dịch vụ vi mô rất có lợi.  Vì nó thúc đẩy sự hiểu biết tốt hơn, gỡ lỗi mượt mà hơn, tối ưu hóa hiệu suất hiệu quả hơn.
+
+55
+00:11:10,198 --> 00:11:26,168
+Biến nó thành một phần thiết yếu trong việc xây dựng và duy trì các hệ thống dựa trên vi dịch vụ linh hoạt.  Đối với các ứng dụng sản xuất, hãy cân nhắc sử dụng các công cụ thiết bị phức tạp hơn như đo từ xa mở kết hợp với jaeger để trực quan hóa và phân tích.
+
+56
+00:11:26,998 --> 00:11:33,218
+Những công cụ này cung cấp giải pháp toàn diện hơn cho việc theo dõi phân tán và có thể dễ dàng tích hợp với các ứng dụng khó chịu nhất.
+
+57
+00:11:33,988 --> 00:11:40,268
+Và đó là tất cả cho khóa học này nhưng xin cảm ơn bạn một lần nữa vì đã ở đây hỗ trợ sjs và học Nest cùng chúng tôi.
+
+58
+00:11:40,348 --> 00:11:49,239
+Chúng tôi hy vọng bạn đã học được nhiều điều với khóa học này.  Hãy nhớ xem toàn bộ danh mục các khóa học để tìm hiểu mọi thứ khác, từ các kỹ thuật nâng cao đến các nguyên tắc cơ bản về lồng.
+

@@ -1,0 +1,314 @@
+﻿1
+00:00:00,960 --> 00:00:04,720
+Health checks are an essential part
+of any production-ready application.
+
+2
+00:00:04,830 --> 00:00:09,220
+They allow us to monitor the health of our
+application as well as its dependencies.
+
+3
+00:00:09,330 --> 00:00:11,340
+Database external services etc
+
+4
+00:00:11,790 --> 00:00:14,650
+and quickly detect any
+issues that may arise.
+
+5
+00:00:15,150 --> 00:00:19,590
+Most cloud providers and container orchestrators
+also use health checks to determine
+
+6
+00:00:19,620 --> 00:00:22,990
+if our applique patient is healthy
+and ready to receive traffic.
+
+7
+00:00:23,250 --> 00:00:24,150
+In this lesson
+
+8
+00:00:24,390 --> 00:00:27,638
+will learn how to add health
+checks to our nest js services.
+
+9
+00:00:27,870 --> 00:00:28,800
+Before we proceed.
+
+10
+00:00:29,190 --> 00:00:33,360
+Let's install the nastiest
+terminus package that
+
+11
+00:00:33,360 --> 00:00:34,360
+will use to add health
+checks to our services.
+
+12
+00:00:35,520 --> 00:00:37,740
+Once the installation
+process is complete
+
+13
+00:00:38,010 --> 00:00:41,220
+let's generate a new health
+module and health controller
+
+14
+00:00:41,400 --> 00:00:45,400
+using the necessary osceola in
+the virtual dash facility application.
+
+15
+00:00:46,080 --> 00:00:46,380
+So
+
+16
+00:00:46,620 --> 00:00:48,120
+let's run the
+following commands.
+
+17
+00:00:48,450 --> 00:00:50,100
+Nest g module health
+
+18
+00:00:50,430 --> 00:00:52,930
+and nest g controller help.
+
+19
+00:00:53,400 --> 00:00:53,820
+Next
+
+20
+00:00:54,000 --> 00:00:57,550
+let's import the terminus
+module into the health module.
+
+21
+00:01:00,900 --> 00:01:01,900
+Great.
+
+22
+00:01:02,040 --> 00:01:03,900
+But the terminus module imported
+
+23
+00:01:04,110 --> 00:01:08,190
+we can now navigate to the health controller
+and add a new get and point that will
+
+24
+00:01:08,190 --> 00:01:10,360
+return the health
+of our application.
+
+25
+00:01:11,070 --> 00:01:12,960
+So far it always returns true
+
+26
+00:01:13,110 --> 00:01:17,080
+but we'll update this method in a bit to
+return the actual health of our application.
+
+27
+00:01:17,550 --> 00:01:19,980
+Though let's inject the
+health checks service
+
+28
+00:01:20,250 --> 00:01:23,550
+and type r m health indicator
+into the health controller
+
+29
+00:01:23,910 --> 00:01:26,830
+and use them to check the
+actual health of our application.
+
+30
+00:01:30,090 --> 00:01:31,020
+And lastly
+
+31
+00:01:31,320 --> 00:01:36,221
+let's not forget to annotate the is healthy
+method with the health check decorator.
+
+32
+00:01:36,990 --> 00:01:37,350
+Right
+
+33
+00:01:37,590 --> 00:01:39,870
+let's save our changes
+head of her to our terminal
+
+34
+00:01:40,230 --> 00:01:42,360
+and run the following
+command to test everything out.
+
+35
+00:01:42,810 --> 00:01:45,940
+Curl get local hosts three
+thousand slash health.
+
+36
+00:01:46,140 --> 00:01:49,620
+And as we can see in
+the response it seems that
+
+37
+00:01:49,680 --> 00:01:50,680
+everything is working
+as expected fantastic.
+
+38
+00:01:51,540 --> 00:01:53,070
+Before we wrap up this lesson
+
+39
+00:01:53,370 --> 00:01:56,640
+let's add health checks to the
+workflows service application as well.
+
+40
+00:01:57,030 --> 00:02:00,840
+So let's start by generating a new
+health module an health controller they're
+
+41
+00:02:01,080 --> 00:02:02,187
+using the nes jsc a
+
+42
+00:02:02,400 --> 00:02:03,400
+again.
+
+43
+00:02:03,480 --> 00:02:04,830
+Nest g module health
+
+44
+00:02:05,220 --> 00:02:07,600
+and nest g controller health.
+
+45
+00:02:08,730 --> 00:02:12,840
+And then replaced the contents of the health
+controller with the same code we used in
+
+46
+00:02:12,840 --> 00:02:14,680
+the virtual facility
+application.
+
+47
+00:02:16,350 --> 00:02:20,430
+And similarly let's
+replace the contents of the
+
+48
+00:02:20,430 --> 00:02:21,210
+health module with the same
+code we used once again
+
+49
+00:02:21,390 --> 00:02:23,440
+in the virtual
+facility application.
+
+50
+00:02:24,420 --> 00:02:26,200
+And that's it perfect.
+
+51
+00:02:26,430 --> 00:02:30,150
+As we can see our health
+modules are currently identical
+
+52
+00:02:30,150 --> 00:02:31,440
+so we could technically
+extract the common code
+
+53
+00:02:31,710 --> 00:02:32,940
+into a shared library
+
+54
+00:02:33,270 --> 00:02:35,170
+and reuse it in
+both applications.
+
+55
+00:02:35,430 --> 00:02:37,230
+However as our
+application grows.
+
+56
+00:02:37,590 --> 00:02:41,100
+Will probably want to
+add more health checks to
+
+57
+00:02:41,100 --> 00:02:41,970
+each application and
+they will start to diverge
+
+58
+00:02:42,240 --> 00:02:42,690
+therefore
+
+59
+00:02:42,840 --> 00:02:44,350
+will keep them separate.
+
+60
+00:02:45,000 --> 00:02:49,380
+Health checks are vital to
+any back and application
+
+61
+00:02:49,380 --> 00:02:50,380
+and especially important
+for microservices
+
+62
+00:02:50,670 --> 00:02:53,580
+we need to always be aware
+if any single service goes down
+
+63
+00:02:53,880 --> 00:02:57,630
+to do any variety of
+reasons so we can have
+
+64
+00:02:57,630 --> 00:02:58,230
+fail safes and place
+to recover the service.
+
+65
+00:02:58,560 --> 00:03:01,840
+Making sure we don't lose
+any transactional data etc.
+
+66
+00:03:02,550 --> 00:03:06,030
+Although these topics are out of the
+scope of this course having health checks
+
+67
+00:03:06,030 --> 00:03:09,340
+already in place is a great
+starting point for our application.
+

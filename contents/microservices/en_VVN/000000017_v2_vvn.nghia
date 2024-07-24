@@ -1,0 +1,60 @@
+1
+00:00:00,990 --> 00:00:11,740
+Trong các ứng dụng nguyên khối, chúng tôi có thể sử dụng axit cho các giao dịch cơ sở dữ liệu của mình, viết tắt của sự cô lập và độ bền nhất quán nguyên tử để đảm bảo tính nhất quán của dữ liệu.
+
+2
+00:00:12,900 --> 00:00:23,710
+Tuy nhiên, với kiến ​​trúc microservice, chúng ta không còn có được điều xa xỉ này nữa.  Thay vào đó, chúng tôi cần đưa ra một cách tiếp cận khác để đảm bảo tính nhất quán của dữ liệu giữa tất cả các dịch vụ khác nhau của mình.
+
+3
+00:00:24,060 --> 00:00:35,890
+Ví dụ trong hệ thống hiện tại của chúng tôi.  Khi chúng tôi tạo một tòa nhà mới, trước tiên chúng tôi sẽ đưa một tòa nhà mới vào cơ sở dữ liệu, sau đó tạo một quy trình công việc mới cho tòa nhà này, tôi gọi dịch vụ quy trình công việc.
+
+4
+00:00:37,080 --> 00:00:42,780
+Tuy nhiên, điều gì sẽ xảy ra nếu các dịch vụ của quy trình công việc ngừng hoạt động và nhà môi giới tin nhắn của chúng tôi không gửi được tin nhắn sau đó.
+
+5
+00:00:43,290 --> 00:00:49,090
+Điều gì sẽ xảy ra nếu vì một số lý do không rõ ràng.  Dịch vụ quy trình công việc không tạo được quy trình công việc mới cho tòa nhà này.
+
+6
+00:00:49,170 --> 00:00:57,070
+Mặc dù trong trường hợp này sẽ dẫn đến trạng thái không nhất quán trong hệ thống của chúng tôi và chúng tôi cũng sẽ không có cơ chế để phục hồi kể từ ngày này.
+
+7
+00:00:58,050 --> 00:01:05,910
+Tất nhiên, chúng tôi có thể kết hợp cả hai lệnh gọi trong một giao dịch cơ sở dữ liệu và thay đổi dữ liệu khôi phục nếu quá trình tạo quy trình làm việc không thành công nhưng điều này không phải lúc nào cũng đơn giản như vậy.
+
+8
+00:01:06,480 --> 00:01:18,520
+Nếu chúng tôi có nhiều dịch vụ liên quan, giả sử các dịch vụ phải được gọi và một đơn đặt hàng cụ thể.  Một số thay đổi có thể đã được cam kết với cơ sở dữ liệu trong việc khôi phục các thay đổi cục bộ sẽ không giúp ích nhiều cho chúng tôi.
+
+9
+00:01:19,230 --> 00:01:27,700
+Nó thậm chí có thể khiến chúng ta rơi vào tình huống tồi tệ hơn nếu một số lần khôi phục đó không thành công, v.v. Vậy làm cách nào chúng ta có thể giải quyết vấn đề này.
+
+10
+00:01:28,020 --> 00:01:35,800
+Vâng, có một số cách tiếp cận khác nhau nhưng trong khóa học này sẽ tập trung vào hai trong số đó.  Mẫu hộp thư đến và hộp thư đi tốt hơn.
+
+11
+00:01:36,690 --> 00:01:42,640
+Ngoài ra còn có một kỹ thuật thứ ba được gọi là sagas, rất hữu ích cho việc thiết kế các giao dịch kinh doanh lâu dài.
+
+12
+00:01:42,960 --> 00:01:50,680
+Nhưng thật không may, chúng tôi sẽ không có thời gian để đề cập đến vấn đề đó trong khóa học này mà chúng tôi đi sâu vào nó trong phần mở rộng khóa học về kiến ​​trúc và mẫu nâng cao.
+
+13
+00:01:50,730 --> 00:02:06,790
+Vì nó là một chủ đề lớn hơn và rộng hơn nhiều.  Với các mẫu hộp thư đến và hộp thư đi này, chúng tôi có thể đạt được cái gọi là mô hình nhất quán cuối cùng này, nghĩa là trạng thái hệ thống cuối cùng sẽ trở nên nhất quán nhưng như tên ngụ ý, việc này có thể mất một thời gian.
+
+14
+00:02:07,680 --> 00:02:14,110
+Nói cách khác, chúng tôi không thể đảm bảo rằng hệ thống sẽ ngay lập tức trở nên nhất quán và chúng tôi cần tính đến điều này.
+
+15
+00:02:14,370 --> 00:02:27,370
+Việc chúng tôi có thể sử dụng tính nhất quán cuối cùng trong hệ thống của mình hay không phụ thuộc vào yêu cầu ứng dụng trong trường hợp sử dụng cụ thể và nhu cầu kinh doanh để luôn đảm bảo đánh giá cẩn thận ưu và nhược điểm của từng phương pháp trước khi đưa ra quyết định.
+

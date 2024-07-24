@@ -1,0 +1,298 @@
+﻿1
+00:00:01,020 --> 00:00:03,660
+Micro services are a software
+development technique.
+
+2
+00:00:04,080 --> 00:00:07,920
+A variant of the service oriented
+architecture or esa way architectural style
+
+3
+00:00:08,130 --> 00:00:11,520
+that structures and application
+as a collection of loosely coupled.
+
+4
+00:00:11,880 --> 00:00:13,480
+Fine grained services.
+
+5
+00:00:14,400 --> 00:00:15,670
+With microservices.
+
+6
+00:00:16,050 --> 00:00:19,980
+We could organize
+our backend as a set of
+
+7
+00:00:20,070 --> 00:00:20,790
+services that are highly
+maintainable testable
+
+8
+00:00:21,030 --> 00:00:22,440
+independently deployable
+
+9
+00:00:22,680 --> 00:00:25,180
+in organized around
+business capabilities.
+
+10
+00:00:25,920 --> 00:00:28,260
+Often times they are
+owned by a small team
+
+11
+00:00:28,530 --> 00:00:32,320
+since microservices encapsulate
+specific smaller domains.
+
+12
+00:00:33,149 --> 00:00:35,400
+The benefits of
+microservices are numerous
+
+13
+00:00:35,547 --> 00:00:38,920
+let's look at some of the most
+important and valuable benefits.
+
+14
+00:00:39,180 --> 00:00:40,720
+Independent deployments.
+
+15
+00:00:40,980 --> 00:00:43,390
+We can deploy each
+service independently.
+
+16
+00:00:43,560 --> 00:00:46,510
+Which means we can
+deploy more often and faster.
+
+17
+00:00:46,590 --> 00:00:50,490
+We can also scale each service
+independently which means
+
+18
+00:00:50,490 --> 00:00:52,840
+we can scale only the
+services that need to be scaled.
+
+19
+00:00:53,610 --> 00:00:54,610
+Modularity.
+
+20
+00:00:54,930 --> 00:00:57,480
+This makes the application
+easier to understand
+
+21
+00:00:57,600 --> 00:00:58,830
+develop and test.
+
+22
+00:00:59,340 --> 00:01:02,790
+Different teams can
+work on different services
+
+23
+00:01:02,790 --> 00:01:04,090
+without having to know
+the details of other services.
+
+24
+00:01:04,830 --> 00:01:06,460
+Technology diversity.
+
+25
+00:01:06,600 --> 00:01:10,470
+We could use different
+technologies for different
+
+26
+00:01:10,501 --> 00:01:11,850
+services for example we can
+use know js for one service
+
+27
+00:01:12,180 --> 00:01:14,380
+and java for another service.
+
+28
+00:01:14,760 --> 00:01:15,570
+On the other hand
+
+29
+00:01:15,840 --> 00:01:16,650
+microservices
+
+30
+00:01:16,770 --> 00:01:18,460
+also have some drawbacks.
+
+31
+00:01:18,960 --> 00:01:19,960
+Complexity.
+
+32
+00:01:20,250 --> 00:01:23,490
+With microservices we need
+to deal with distributed systems
+
+33
+00:01:23,610 --> 00:01:26,530
+which are more complex
+than the monolithic applications.
+
+34
+00:01:26,850 --> 00:01:27,420
+Also
+
+35
+00:01:27,630 --> 00:01:32,310
+enter service communication
+has a higher latency
+
+36
+00:01:32,310 --> 00:01:33,310
+then in-process calls in
+monolithic applications.
+
+37
+00:01:34,380 --> 00:01:35,800
+Data consistency.
+
+38
+00:01:36,150 --> 00:01:39,330
+Maintaining data consistency
+across services is challenging.
+
+39
+00:01:39,660 --> 00:01:43,410
+Some operations may require
+transactions that span multiple services
+
+40
+00:01:43,710 --> 00:01:45,910
+which is not that
+simple to implement.
+
+41
+00:01:46,530 --> 00:01:47,010
+Testing.
+
+42
+00:01:47,520 --> 00:01:51,880
+Testing microservices is more complex
+than testing monolithic applications.
+
+43
+00:01:52,260 --> 00:01:54,250
+The test each
+service in isolation.
+
+44
+00:01:54,360 --> 00:01:56,680
+We need to mock
+all the other services.
+
+45
+00:01:56,880 --> 00:01:57,450
+Also
+
+46
+00:01:57,660 --> 00:02:00,090
+we need to test the
+integration between services
+
+47
+00:02:00,420 --> 00:02:02,920
+and to end and
+integration tests.
+
+48
+00:02:03,660 --> 00:02:05,380
+And deployment complexity.
+
+49
+00:02:05,610 --> 00:02:07,590
+We need to deploy
+multiple services here
+
+50
+00:02:07,830 --> 00:02:12,310
+which is of course more complex than
+deploying a single monolithic application.
+
+51
+00:02:12,720 --> 00:02:16,210
+And of course there are several others
+that we didn't get to dive into here.
+
+52
+00:02:16,290 --> 00:02:17,310
+So as we can see.
+
+53
+00:02:17,611 --> 00:02:22,020
+Microservice architecture
+has its fair share of pros
+
+54
+00:02:22,020 --> 00:02:23,350
+and cons as thus everything
+and software development.
+
+55
+00:02:24,000 --> 00:02:25,530
+It's not a silver bullet
+
+56
+00:02:25,770 --> 00:02:27,960
+and it's not suitable
+for every application
+
+57
+00:02:28,110 --> 00:02:30,750
+as a introduces additional
+complexity and overhead.
+
+58
+00:02:31,080 --> 00:02:31,980
+New problems
+
+59
+00:02:32,280 --> 00:02:34,020
+and new challenges
+that we need to deal with
+
+60
+00:02:34,410 --> 00:02:35,880
+such as network latency.
+
+61
+00:02:36,240 --> 00:02:39,520
+Fault tolerance
+data consistency etc.
+
+62
+00:02:39,930 --> 00:02:41,100
+As software developers
+
+63
+00:02:41,370 --> 00:02:45,030
+will need to always carefully consider
+the pros and cons before we decide to use
+
+64
+00:02:45,030 --> 00:02:48,550
+microservices for any given
+system we're working on.
+

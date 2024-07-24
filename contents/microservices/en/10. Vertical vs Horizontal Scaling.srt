@@ -1,0 +1,471 @@
+﻿1
+00:00:01,170 --> 00:00:04,980
+Before we dive into the differences
+between vertical and horizontal scaling
+
+2
+00:00:05,190 --> 00:00:07,780
+let's first define
+what scaling is.
+
+3
+00:00:07,890 --> 00:00:08,400
+Scaling
+
+4
+00:00:08,640 --> 00:00:11,700
+is the process of adding more
+resources to our application
+
+5
+00:00:11,820 --> 00:00:14,080
+to handle the increased load.
+
+6
+00:00:14,880 --> 00:00:19,360
+This can be measured in terms of
+requests per second concurrent users etc.
+
+7
+00:00:19,500 --> 00:00:23,670
+Scaling horizontally and vertically are
+similar in that they both involve adding more
+
+8
+00:00:23,670 --> 00:00:25,320
+computing resources
+to our system.
+
+9
+00:00:25,650 --> 00:00:26,940
+They just do it
+in different ways.
+
+10
+00:00:27,540 --> 00:00:28,530
+Vertically scaling
+
+11
+00:00:28,740 --> 00:00:29,490
+or scaling up.
+
+12
+00:00:29,910 --> 00:00:33,930
+Means more resources cpu
+memory etc to a single server.
+
+13
+00:00:34,410 --> 00:00:36,660
+This is usually done by
+upgrading the servers hardware
+
+14
+00:00:36,900 --> 00:00:39,940
+meaning adding more ram cpu etc.
+
+15
+00:00:41,010 --> 00:00:42,690
+Vertical scaling
+is straightforward
+
+16
+00:00:42,840 --> 00:00:44,580
+but it's usually
+limited to the hardware
+
+17
+00:00:44,700 --> 00:00:46,360
+and can be quite expensive.
+
+18
+00:00:46,740 --> 00:00:48,900
+Horizontal scaling
+or scaling out.
+
+19
+00:00:49,200 --> 00:00:52,380
+Means adding more servers
+notes machines to our system.
+
+20
+00:00:52,830 --> 00:00:57,030
+Consequently this means
+that we need to distribute the
+
+21
+00:00:57,060 --> 00:00:58,080
+load across multiple
+servers which is typically done
+
+22
+00:00:58,290 --> 00:01:00,130
+using a load balancer.
+
+23
+00:01:00,840 --> 00:01:03,750
+When deciding between
+vertical and horizontal scaling
+
+24
+00:01:03,930 --> 00:01:06,450
+we need to consider the pros
+and cons of each approach.
+
+25
+00:01:06,780 --> 00:01:08,610
+Or example in a database world
+
+26
+00:01:08,910 --> 00:01:12,670
+horizontal scaling is usually
+based on the partitioning of data.
+
+27
+00:01:12,720 --> 00:01:14,010
+While with vertical scaling.
+
+28
+00:01:14,371 --> 00:01:16,180
+Killing is done
+through multi-core
+
+29
+00:01:16,320 --> 00:01:17,010
+for example
+
+30
+00:01:17,130 --> 00:01:21,400
+by spreading the load between the
+cpu and ram resources of the machine.
+
+31
+00:01:22,290 --> 00:01:23,520
+With horizontal scaling
+
+32
+00:01:23,670 --> 00:01:25,080
+were not limited by the hardware
+
+33
+00:01:25,380 --> 00:01:25,740
+but
+
+34
+00:01:25,920 --> 00:01:27,989
+we need to deal with
+other additional complexity.
+
+35
+00:01:28,350 --> 00:01:29,520
+Much as load balancing
+
+36
+00:01:29,730 --> 00:01:31,750
+data consistency etc.
+
+37
+00:01:32,100 --> 00:01:35,970
+In this lesson will demonstrate how
+horizontal scaling works in practice
+
+38
+00:01:36,270 --> 00:01:38,520
+by increasing the number
+of instances of our service
+
+39
+00:01:38,670 --> 00:01:40,300
+using docker compose.
+
+40
+00:01:41,670 --> 00:01:46,680
+Note that in real world
+systems you would use a
+
+41
+00:01:46,680 --> 00:01:47,347
+container orchestration
+tool such as kubernetes
+
+42
+00:01:47,490 --> 00:01:48,600
+to scale your services
+
+43
+00:01:48,870 --> 00:01:51,450
+depending on different
+metrics such a cpu usage
+
+44
+00:01:51,720 --> 00:01:54,010
+memory usage traffic etc.
+
+45
+00:01:54,240 --> 00:01:55,977
+We won't be able to
+dive into kubernetes.
+
+46
+00:01:56,310 --> 00:01:57,870
+Since it's a bit
+outside of the scope
+
+47
+00:01:58,080 --> 00:02:01,390
+and complexity of what we're
+trying to learn in this course.
+
+48
+00:02:02,220 --> 00:02:02,610
+So
+
+49
+00:02:02,850 --> 00:02:06,000
+let's get started by opening
+up art docker compose yaml file
+
+50
+00:02:06,150 --> 00:02:09,940
+and adding a new deploy
+property to the workflows service.
+
+51
+00:02:11,430 --> 00:02:15,450
+But save our changes
+recreate our containers
+
+52
+00:02:15,450 --> 00:02:16,930
+and start everything up
+with docker compose up.
+
+53
+00:02:18,630 --> 00:02:20,370
+As we can already
+see in the logs
+
+54
+00:02:20,580 --> 00:02:23,580
+there are multiple instances of
+the workflows service running now
+
+55
+00:02:23,700 --> 00:02:24,150
+see
+
+56
+00:02:24,300 --> 00:02:27,160
+the one two three
+suffixes on everything.
+
+57
+00:02:27,720 --> 00:02:28,320
+Next up.
+
+58
+00:02:28,770 --> 00:02:30,990
+Let's navigate to the
+workflows service file
+
+59
+00:02:31,200 --> 00:02:34,870
+and declare a new private
+variable lager as follows.
+
+60
+00:02:37,110 --> 00:02:38,340
+With this variable in place
+
+61
+00:02:38,610 --> 00:02:42,400
+let's update the create method to
+lock that we're creating a new workflow.
+
+62
+00:02:43,260 --> 00:02:44,220
+Let's save our changes
+
+63
+00:02:44,490 --> 00:02:44,640
+had
+
+64
+00:02:44,790 --> 00:02:47,950
+to the terminal and create
+three buildings using curl.
+
+65
+00:02:55,830 --> 00:02:56,220
+Now
+
+66
+00:02:56,490 --> 00:02:59,770
+let's switch to the other terminal
+window and check those logs.
+
+67
+00:03:01,110 --> 00:03:02,040
+As we can see.
+
+68
+00:03:02,490 --> 00:03:05,460
+Instead of distributing load
+between multiple instances
+
+69
+00:03:05,760 --> 00:03:08,860
+nats delivered the
+message to all instances.
+
+70
+00:03:08,940 --> 00:03:10,810
+Which is known as broadcasting
+
+71
+00:03:11,040 --> 00:03:12,510
+but that's actually
+not what we want.
+
+72
+00:03:12,870 --> 00:03:14,920
+Let's fixed up real quick.
+
+73
+00:03:15,540 --> 00:03:20,070
+In nats when subscribers register themselves
+to retrieve messages from a publisher
+
+74
+00:03:20,340 --> 00:03:21,330
+the one to n.
+
+75
+00:03:21,660 --> 00:03:25,560
+Van out pattern of messaging ensures
+that any message sent by a publisher
+
+76
+00:03:25,740 --> 00:03:28,450
+reaches all subscribers
+that have registered.
+
+77
+00:03:29,250 --> 00:03:31,620
+Nats provides in
+additional feature named
+
+78
+00:03:31,740 --> 00:03:32,250
+q
+
+79
+00:03:32,490 --> 00:03:35,640
+which allows subscribers to register
+themselves as part of a queue.
+
+80
+00:03:36,210 --> 00:03:37,980
+Subscribers that
+are part of a queue
+
+81
+00:03:38,280 --> 00:03:39,600
+form a queue group.
+
+82
+00:03:40,020 --> 00:03:40,440
+So.
+
+83
+00:03:40,770 --> 00:03:44,290
+How can we configure our subscribers
+to be a part of a queue group that.
+
+84
+00:03:45,360 --> 00:03:45,840
+Well.
+
+85
+00:03:46,200 --> 00:03:49,750
+We can do this by passing the
+queue option to the server configuration.
+
+86
+00:03:49,890 --> 00:03:53,800
+So let's open up the main t s file
+in the workflows service application
+
+87
+00:03:53,940 --> 00:03:55,920
+and update the connect
+microservice method
+
+88
+00:03:56,160 --> 00:03:59,290
+to pass the queue option
+to the server configuration.
+
+89
+00:04:01,680 --> 00:04:02,850
+Let's save our changes
+
+90
+00:04:03,120 --> 00:04:07,390
+head over to the terminal and crete
+three buildings once again using curl.
+
+91
+00:04:10,350 --> 00:04:14,440
+Switch to the other terminal window
+and once again let's check those logs.
+
+92
+00:04:15,270 --> 00:04:16,020
+And look at that.
+
+93
+00:04:16,350 --> 00:04:17,130
+As we can see.
+
+94
+00:04:17,460 --> 00:04:22,450
+The load now distributed between multiple
+instances of the workflows service great.
+
+95
+00:04:23,160 --> 00:04:26,940
+As we mentioned at the beginning of this
+lesson in real-world systems you would use a
+
+96
+00:04:26,940 --> 00:04:30,390
+container orchestration tool such
+as kubernetes to scale your services.
+
+97
+00:04:30,720 --> 00:04:33,210
+Were putting on different
+metrics such a cpu usage
+
+98
+00:04:33,420 --> 00:04:35,280
+memory usage traffic etc.
+
+99
+00:04:35,700 --> 00:04:36,660
+In our case here
+
+100
+00:04:36,900 --> 00:04:39,120
+since we're just doing things
+for demonstration purposes
+
+101
+00:04:39,360 --> 00:04:41,310
+we simply hard-coded
+the number of instances
+
+102
+00:04:41,580 --> 00:04:43,630
+in our docker compose file.
+
